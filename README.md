@@ -1,7 +1,9 @@
-Extensions used:
+## Extensions used: (biggaboy212)
 
-https://marketplace.visualstudio.com/items?itemName=NilsSoderman.batch-runner (for build.bat)
+[Github Pull Requests](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github)
 
-https://marketplace.visualstudio.com/items?itemName=JohnnyMorganz.luau-lsp
+[Luau Language Server](https://marketplace.visualstudio.com/items?itemName=JohnnyMorganz.luau-lsp)
 
-https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens
+[Batch Runner](https://marketplace.visualstudio.com/items?itemName=NilsSoderman.batch-runner) (For [build.bat](build/build.bat))
+
+[Error Lens](https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens)
