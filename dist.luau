@@ -7,7 +7,6 @@
     RIOT V2
 
     This file was built with DarkLua, it is not intended for manual editing.
-    
 --]]
 
 local a a={cache={},load=function(b)if not a.cache[b]then a.cache[b]={c=a[b]()}
