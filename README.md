@@ -1,4 +1,10 @@
-## Extensions used (biggaboy212)
+# RIOT V2
+
+Authored by biggaboy212
+
+## Project Setup
+
+### Extensions used (biggaboy212)
 
 [Github Pull Requests](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github)
 
@@ -8,5 +14,6 @@
 
 [Error Lens](https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens)
 
-## To Build
+### To Build
+
 Use [DarkLua](https://github.com/seaofvoices/darklua/releases/tag/v0.16.0)
