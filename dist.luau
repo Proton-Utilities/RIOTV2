@@ -977,20 +977,19 @@ zero,p(R))return{corners=R,topLeft=Vector2.new(k(S.X),k(S.Y)),topRight=Vector2.
 new(k(T.X),k(S.Y)),bottomLeft=Vector2.new(k(S.X),k(T.Y)),bottomRight=Vector2.
 new(k(T.X),k(T.Y))}end,function(P,Q)local R,S,T,U=P.X,P.Y,n(Q),m(Q)return
 Vector2.new(R*T-S*U,R*U+S*T)end,function(P,Q,R)if Q=='Team Color'or(P.interface.
-sharedSettings.useTeamColor and not R)then return P.interface.getTeamColor(P.
-player)or Color3.new(1,1,1)end return Q end,{}S.__index=S function S.new(T,U)
-local V=setmetatable({},S)V.player=assert(T,
-'Missing argument #1 (Player expected)')V.interface=assert(U,
-'Missing argument #2 (table expected)')V:Construct()return V end function S:
-_create(T,U)local V=Drawing.new(T)for W,X in next,U do pcall(function()V[W]=X
-end)end self.bin[#self.bin+1]=V return V end function S:Construct()self.
-charCache={}self.childCount=0 self.bin={}self.drawings={box3d={{self:_create(
+shared.useTeamColor and not R)then return P.interface.getTeamColor(P.player)or
+Color3.new(1,1,1)end return Q end,{}S.__index=S function S.new(T,U)local V=
+setmetatable({},S)V.player=assert(T,'Missing argument #1 (Player expected)')V.
+interface=assert(U,'Missing argument #2 (table expected)')V:Construct()return V
+end function S:_create(T,U)local V=Drawing.new(T)for W,X in next,U do pcall(
+function()V[W]=X end)end self.bin[#self.bin+1]=V return V end function S:
+Construct()self.charCache={}self.childCount=0 self.bin={}self.drawings={box3d={{
+self:_create('Line',{Thickness=1,Visible=false}),self:_create('Line',{Thickness=
+1,Visible=false}),self:_create('Line',{Thickness=1,Visible=false})},{self:
+_create('Line',{Thickness=1,Visible=false}),self:_create('Line',{Thickness=1,
+Visible=false}),self:_create('Line',{Thickness=1,Visible=false})},{self:_create(
 'Line',{Thickness=1,Visible=false}),self:_create('Line',{Thickness=1,Visible=
 false}),self:_create('Line',{Thickness=1,Visible=false})},{self:_create('Line',{
-Thickness=1,Visible=false}),self:_create('Line',{Thickness=1,Visible=false}),
-self:_create('Line',{Thickness=1,Visible=false})},{self:_create('Line',{
-Thickness=1,Visible=false}),self:_create('Line',{Thickness=1,Visible=false}),
-self:_create('Line',{Thickness=1,Visible=false})},{self:_create('Line',{
 Thickness=1,Visible=false}),self:_create('Line',{Thickness=1,Visible=false}),
 self:_create('Line',{Thickness=1,Visible=false})}},visible={tracerOutline=self:
 _create('Line',{Thickness=2,Visible=false}),tracer=self:_create('Line',{
@@ -1006,95 +1005,94 @@ _create('Triangle',{Thickness=3,Visible=false}),arrow=self:_create('Triangle',{
 Filled=true,Visible=false})}}self.renderConnection=c.RenderStepped:Connect(
 function(T)self:Update(T)self:Render(T)end)end function S:Destruct()self.
 renderConnection:Disconnect()for T=1,#self.bin do self.bin[T]:Remove()end o(self
-)end function S:Update()local T=self.interface self.options=T.teamSettings[T.
-isFriendly(self.player)and'friendly'or'enemy']self.character=T.getCharacter(self
-.player)self.health,self.maxHealth=T.getHealth(self.player)self.weapon=T.
-getWeapon(self.player)self.enabled=self.options.enabled and self.character and
-not(#T.whitelist>0 and not r(T.whitelist,self.player.UserId))local U=self.
-enabled and y(self.character,'Head')if not U then self.charCache={}self.onScreen
-=false return end local V,W,X=O(U.Position)self.onScreen=W self.distance=X if T.
-sharedSettings.limitDistance and X>T.sharedSettings.maxDistance then self.
-onScreen=false end if self.onScreen then local Y,Z=self.charCache,A(self.
-character)if not Y[1]or self.childCount~=#Z then o(Y)for _=1,#Z do local aa=Z[_]
-if w(aa,'BasePart')and T.isBodyPart(aa.Name)then Y[#Y+1]=aa end end self.
-childCount=#Z end self.corners=P(N(Y))elseif self.options.offScreenArrow then
-local aa=i.CFrame local Y=u(aa.Position,aa.RightVector,Vector3.yAxis)local Z=B(Y
-,U.Position)self.direction=Vector2.new(Z.X,Z.Z).Unit end end function S:Render()
-local aa,T,U,V,W,X,Y,Z=self.onScreen or false,self.enabled or false,self.
-drawings.visible,self.drawings.hidden,self.drawings.box3d,self.interface,self.
-options,self.corners U.box.Visible=T and aa and Y.box U.boxOutline.Visible=U.box
-.Visible and Y.boxOutline if U.box.Visible then local _=U.box _.Position=Z.
-topLeft _.Size=Z.bottomRight-Z.topLeft _.Color=R(self,Y.boxColor[1])_.
-Transparency=Y.boxColor[2]local ab=U.boxOutline ab.Position=_.Position ab.Size=_
-.Size ab.Color=R(self,Y.boxOutlineColor[1],true)ab.Transparency=Y.
-boxOutlineColor[2]end U.boxFill.Visible=T and aa and Y.boxFill if U.boxFill.
-Visible then local ab=U.boxFill ab.Position=Z.topLeft ab.Size=Z.bottomRight-Z.
-topLeft ab.Color=R(self,Y.boxFillColor[1])ab.Transparency=Y.boxFillColor[2]end U
-.healthBar.Visible=T and aa and Y.healthBar U.healthBarOutline.Visible=U.
-healthBar.Visible and Y.healthBarOutline if U.healthBar.Visible then local ab,_,
-ac=Z.topLeft-I,Z.bottomLeft-I,U.healthBar ac.To=_ ac.From=F(_,ab,self.health/
-self.maxHealth)ac.Color=C(Y.dyingColor,Y.healthyColor,self.health/self.maxHealth
-)local ad=U.healthBarOutline ad.To=_+J ad.From=ab-J ad.Color=R(self,Y.
-healthBarOutlineColor[1],true)ad.Transparency=Y.healthBarOutlineColor[2]end U.
-name.Visible=T and aa and Y.name if U.name.Visible then local ab=U.name ab.Size=
-X.sharedSettings.textSize ab.Font=X.sharedSettings.textFont ab.Color=R(self,Y.
-nameColor[1])ab.Transparency=Y.nameColor[2]ab.Outline=Y.nameOutline ab.
-OutlineColor=R(self,Y.nameOutlineColor,true)ab.Position=(Z.topLeft+Z.topRight)*
-0.5-Vector2.yAxis*ab.TextBounds.Y-K end local ab=Z and Z.topRight.Y or 0 U.
-distance.Visible=T and aa and self.distance and Y.distance if U.distance.Visible
-then local ac=U.distance ac.Text=l(self.distance*0.28)..'M'ac.Size=X.
-sharedSettings.textSize ac.Font=X.sharedSettings.textFont ac.Color=R(self,Y.
-distanceColor[1])ac.Transparency=Y.distanceColor[2]ac.Outline=Y.distanceOutline
-ac.OutlineColor=R(self,Y.distanceOutlineColor,true)ac.Position=Vector2.new(Z.
-topRight.X+L.X+ac.TextBounds.X*0.5,ab-ac.TextBounds.Y*0.5-L.Y)ab=ab+ac.
-TextBounds.Y+L.Y end U.weapon.Visible=T and aa and Y.weapon if U.weapon.Visible
-then local ac=U.weapon ac.Text=self.weapon ac.Size=X.sharedSettings.textSize ac.
-Font=X.sharedSettings.textFont ac.Color=R(self,Y.weaponColor[1])ac.Transparency=
-Y.weaponColor[2]ac.Outline=Y.weaponOutline ac.OutlineColor=R(self,Y.
+)end function S:Update()local T=self.interface self.options=T.team[T.isFriendly(
+self.player)and'friendly'or'enemy']self.character=T.getCharacter(self.player)
+self.health,self.maxHealth=T.getHealth(self.player)self.weapon=T.getWeapon(self.
+player)self.enabled=self.options.enabled and self.character and not(#T.whitelist
+>0 and not r(T.whitelist,self.player.UserId))local U=self.enabled and y(self.
+character,'Head')if not U then self.charCache={}self.onScreen=false return end
+local V,W,X=O(U.Position)self.onScreen=W self.distance=X if T.shared.
+limitDistance and X>T.shared.maxDistance then self.onScreen=false end if self.
+onScreen then local Y,Z=self.charCache,A(self.character)if not Y[1]or self.
+childCount~=#Z then o(Y)for _=1,#Z do local aa=Z[_]if w(aa,'BasePart')and T.
+isBodyPart(aa.Name)then Y[#Y+1]=aa end end self.childCount=#Z end self.corners=
+P(N(Y))elseif self.options.offScreenArrow then local aa=i.CFrame local Y=u(aa.
+Position,aa.RightVector,Vector3.yAxis)local Z=B(Y,U.Position)self.direction=
+Vector2.new(Z.X,Z.Z).Unit end end function S:Render()local aa,T,U,V,W,X,Y,Z=self
+.onScreen or false,self.enabled or false,self.drawings.visible,self.drawings.
+hidden,self.drawings.box3d,self.interface,self.options,self.corners U.box.
+Visible=T and aa and Y.box U.boxOutline.Visible=U.box.Visible and Y.boxOutline
+if U.box.Visible then local _=U.box _.Position=Z.topLeft _.Size=Z.bottomRight-Z.
+topLeft _.Color=R(self,Y.boxColor[1])_.Transparency=Y.boxColor[2]local ab=U.
+boxOutline ab.Position=_.Position ab.Size=_.Size ab.Color=R(self,Y.
+boxOutlineColor[1],true)ab.Transparency=Y.boxOutlineColor[2]end U.boxFill.
+Visible=T and aa and Y.boxFill if U.boxFill.Visible then local ab=U.boxFill ab.
+Position=Z.topLeft ab.Size=Z.bottomRight-Z.topLeft ab.Color=R(self,Y.
+boxFillColor[1])ab.Transparency=Y.boxFillColor[2]end U.healthBar.Visible=T and
+aa and Y.healthBar U.healthBarOutline.Visible=U.healthBar.Visible and Y.
+healthBarOutline if U.healthBar.Visible then local ab,_,ac=Z.topLeft-I,Z.
+bottomLeft-I,U.healthBar ac.To=_ ac.From=F(_,ab,self.health/self.maxHealth)ac.
+Color=C(Y.dyingColor,Y.healthyColor,self.health/self.maxHealth)local ad=U.
+healthBarOutline ad.To=_+J ad.From=ab-J ad.Color=R(self,Y.healthBarOutlineColor[
+1],true)ad.Transparency=Y.healthBarOutlineColor[2]end U.name.Visible=T and aa
+and Y.name if U.name.Visible then local ab=U.name ab.Size=X.shared.textSize ab.
+Font=X.shared.textFont ab.Color=R(self,Y.nameColor[1])ab.Transparency=Y.
+nameColor[2]ab.Outline=Y.nameOutline ab.OutlineColor=R(self,Y.nameOutlineColor,
+true)ab.Position=(Z.topLeft+Z.topRight)*0.5-Vector2.yAxis*ab.TextBounds.Y-K end
+local ab=Z and Z.topRight.Y or 0 U.distance.Visible=T and aa and self.distance
+and Y.distance if U.distance.Visible then local ac=U.distance ac.Text=l(self.
+distance*0.28)..'M'ac.Size=X.shared.textSize ac.Font=X.shared.textFont ac.Color=
+R(self,Y.distanceColor[1])ac.Transparency=Y.distanceColor[2]ac.Outline=Y.
+distanceOutline ac.OutlineColor=R(self,Y.distanceOutlineColor,true)ac.Position=
+Vector2.new(Z.topRight.X+L.X+ac.TextBounds.X*0.5,ab-ac.TextBounds.Y*0.5-L.Y)ab=
+ab+ac.TextBounds.Y+L.Y end U.weapon.Visible=T and aa and Y.weapon if U.weapon.
+Visible then local ac=U.weapon ac.Text=self.weapon ac.Size=X.shared.textSize ac.
+Font=X.shared.textFont ac.Color=R(self,Y.weaponColor[1])ac.Transparency=Y.
+weaponColor[2]ac.Outline=Y.weaponOutline ac.OutlineColor=R(self,Y.
 weaponOutlineColor,true)ac.Position=Vector2.new(Z.topRight.X+L.X+ac.TextBounds.X
 *0.5,ab-ac.TextBounds.Y*0.5)ab=ab+ac.TextBounds.Y+L.Y end U.healthText.Visible=T
 and aa and Y.healthText if U.healthText.Visible then local ac=U.healthText ac.
-Text=l(self.health)..'HP'ac.Size=X.sharedSettings.textSize ac.Font=X.
-sharedSettings.textFont ac.Color=R(self,Y.healthTextColor[1])ac.Transparency=Y.
-healthTextColor[2]ac.Outline=Y.healthTextOutline ac.OutlineColor=R(self,Y.
-healthTextOutlineColor,true)ac.Position=Vector2.new(Z.topRight.X+L.X+ac.
-TextBounds.X*0.5,ab-ac.TextBounds.Y*0.5)end U.tracer.Visible=T and aa and Y.
-tracer U.tracerOutline.Visible=U.tracer.Visible and Y.tracerOutline if U.tracer.
-Visible then local ac=U.tracer ac.Color=R(self,Y.tracerColor[1])ac.Transparency=
-Y.tracerColor[2]ac.To=(Z.bottomLeft+Z.bottomRight)*0.5 ac.From=Y.tracerOrigin==
-'Middle'and j*0.5 or Y.tracerOrigin=='Top'and j*Vector2.new(0.5,0)or Y.
-tracerOrigin=='Bottom'and j*Vector2.new(0.5,1)or Y.tracerOrigin=='Mouse'and f:
-GetMouseLocation()local ad=U.tracerOutline ad.Color=R(self,Y.tracerOutlineColor[
-1],true)ad.Transparency=Y.tracerOutlineColor[2]ad.To=ac.To ad.From=ac.From end V
-.arrow.Visible=T and(not aa)and Y.offScreenArrow V.arrowOutline.Visible=V.arrow.
-Visible and Y.offScreenArrowOutline if V.arrow.Visible and self.direction then
-local ac=V.arrow ac.PointA=D(E(j*0.5+self.direction*Y.offScreenArrowRadius,
-Vector2.one*25),j-Vector2.one*25)ac.PointB=ac.PointA-Q(self.direction,0.45)*Y.
-offScreenArrowSize ac.PointC=ac.PointA-Q(self.direction,-0.45)*Y.
-offScreenArrowSize ac.Color=R(self,Y.offScreenArrowColor[1])ac.Transparency=Y.
-offScreenArrowColor[2]local ad=V.arrowOutline ad.PointA=ac.PointA ad.PointB=ac.
-PointB ad.PointC=ac.PointC ad.Color=R(self,Y.offScreenArrowOutlineColor[1],true)
-ad.Transparency=Y.offScreenArrowOutlineColor[2]end local ac=T and aa and Y.box3d
-for ad=1,#W do local _=W[ad]for ae=1,#_ do local af=_[ae]af.Visible=ac af.Color=
-R(self,Y.box3dColor[1])af.Transparency=Y.box3dColor[2]end if ac then local ae=_[
-1]ae.From=Z.corners[ad]ae.To=Z.corners[ad==4 and 1 or ad+1]local af=_[2]af.From=
-Z.corners[ad==4 and 1 or ad+1]af.To=Z.corners[ad==4 and 5 or ad+5]local ag=_[3]
-ag.From=Z.corners[ad==4 and 5 or ad+5]ag.To=Z.corners[ad==4 and 8 or ad+4]end
-end end local aa={}aa.__index=aa function aa.new(ab,ac)local ad=setmetatable({},
-aa)ad.player=assert(ab,'Missing argument #1 (Player expected)')ad.interface=
-assert(ac,'Missing argument #2 (table expected)')ad:Construct()return ad end
-function aa:Construct()self.highlight=Instance.new('Highlight',g)self.
-updateConnection=c.RenderStepped:Connect(function()self:Update()end)end function
-aa:Destruct()self.updateConnection:Disconnect()self.highlight:Destroy()o(self)
-end function aa:Update()local ab,ac=self.highlight,self.interface local ad,ae=ac
-.getCharacter(self.player),ac.teamSettings[ac.isFriendly(self.player)and
-'friendly'or'enemy']local af=ae.enabled and ad and not(#ac.whitelist>0 and not
-r(ac.whitelist,self.player.UserId))ab.Enabled=af and ae.chams if ab.Enabled then
-ab.Adornee=ad ab.FillColor=R(self,ae.chamsFillColor[1])ab.FillTransparency=ae.
-chamsFillColor[2]ab.OutlineColor=R(self,ae.chamsOutlineColor[1],true)ab.
-OutlineTransparency=ae.chamsOutlineColor[2]ab.DepthMode=ae.chamsVisibleOnly and
-'Occluded'or'AlwaysOnTop'end end local ab={}ab.__index=ab function ab.new(ac,ad)
-local ae=setmetatable({},ab)ae.instance=assert(ac,
+Text=l(self.health)..'HP'ac.Size=X.shared.textSize ac.Font=X.shared.textFont ac.
+Color=R(self,Y.healthTextColor[1])ac.Transparency=Y.healthTextColor[2]ac.Outline
+=Y.healthTextOutline ac.OutlineColor=R(self,Y.healthTextOutlineColor,true)ac.
+Position=Vector2.new(Z.topRight.X+L.X+ac.TextBounds.X*0.5,ab-ac.TextBounds.Y*0.5
+)end U.tracer.Visible=T and aa and Y.tracer U.tracerOutline.Visible=U.tracer.
+Visible and Y.tracerOutline if U.tracer.Visible then local ac=U.tracer ac.Color=
+R(self,Y.tracerColor[1])ac.Transparency=Y.tracerColor[2]ac.To=(Z.bottomLeft+Z.
+bottomRight)*0.5 ac.From=Y.tracerOrigin=='Middle'and j*0.5 or Y.tracerOrigin==
+'Top'and j*Vector2.new(0.5,0)or Y.tracerOrigin=='Bottom'and j*Vector2.new(0.5,1)
+or Y.tracerOrigin=='Mouse'and f:GetMouseLocation()local ad=U.tracerOutline ad.
+Color=R(self,Y.tracerOutlineColor[1],true)ad.Transparency=Y.tracerOutlineColor[2
+]ad.To=ac.To ad.From=ac.From end V.arrow.Visible=T and(not aa)and Y.
+offScreenArrow V.arrowOutline.Visible=V.arrow.Visible and Y.
+offScreenArrowOutline if V.arrow.Visible and self.direction then local ac=V.
+arrow ac.PointA=D(E(j*0.5+self.direction*Y.offScreenArrowRadius,Vector2.one*25),
+j-Vector2.one*25)ac.PointB=ac.PointA-Q(self.direction,0.45)*Y.offScreenArrowSize
+ac.PointC=ac.PointA-Q(self.direction,-0.45)*Y.offScreenArrowSize ac.Color=R(self
+,Y.offScreenArrowColor[1])ac.Transparency=Y.offScreenArrowColor[2]local ad=V.
+arrowOutline ad.PointA=ac.PointA ad.PointB=ac.PointB ad.PointC=ac.PointC ad.
+Color=R(self,Y.offScreenArrowOutlineColor[1],true)ad.Transparency=Y.
+offScreenArrowOutlineColor[2]end local ac=T and aa and Y.box3d for ad=1,#W do
+local _=W[ad]for ae=1,#_ do local af=_[ae]af.Visible=ac af.Color=R(self,Y.
+box3dColor[1])af.Transparency=Y.box3dColor[2]end if ac then local ae=_[1]ae.From
+=Z.corners[ad]ae.To=Z.corners[ad==4 and 1 or ad+1]local af=_[2]af.From=Z.corners
+[ad==4 and 1 or ad+1]af.To=Z.corners[ad==4 and 5 or ad+5]local ag=_[3]ag.From=Z.
+corners[ad==4 and 5 or ad+5]ag.To=Z.corners[ad==4 and 8 or ad+4]end end end
+local aa={}aa.__index=aa function aa.new(ab,ac)local ad=setmetatable({},aa)ad.
+player=assert(ab,'Missing argument #1 (Player expected)')ad.interface=assert(ac,
+'Missing argument #2 (table expected)')ad:Construct()return ad end function aa:
+Construct()self.highlight=Instance.new('Highlight',g)self.updateConnection=c.
+RenderStepped:Connect(function()self:Update()end)end function aa:Destruct()self.
+updateConnection:Disconnect()self.highlight:Destroy()o(self)end function aa:
+Update()local ab,ac=self.highlight,self.interface local ad,ae=ac.getCharacter(
+self.player),ac.team[ac.isFriendly(self.player)and'friendly'or'enemy']local af=
+ae.enabled and ad and not(#ac.whitelist>0 and not r(ac.whitelist,self.player.
+UserId))ab.Enabled=af and ae.chams if ab.Enabled then ab.Adornee=ad ab.FillColor
+=R(self,ae.chamsFillColor[1])ab.FillTransparency=ae.chamsFillColor[2]ab.
+OutlineColor=R(self,ae.chamsOutlineColor[1],true)ab.OutlineTransparency=ae.
+chamsOutlineColor[2]ab.DepthMode=ae.chamsVisibleOnly and'Occluded'or
+'AlwaysOnTop'end end local ab={}ab.__index=ab function ab.new(ac,ad)local ae=
+setmetatable({},ab)ae.instance=assert(ac,
 'Missing argument #1 (Instance Expected)')ae.options=assert(ad,
 'Missing argument #2 (table expected)')ae:Construct()return ae end function ab:
 Construct()local ac=self.options ac.enabled=ac.enabled==nil and true or ac.
@@ -1113,53 +1111,52 @@ then ad.Position=ag ad.Color=ae.textColor[1]ad.Transparency=ae.textColor[2]ad.
 Outline=ae.textOutline ad.OutlineColor=ae.textOutlineColor ad.Size=ae.textSize
 ad.Font=ae.textFont ad.Text=ae.text:gsub('{name}',string.upper(ac.Name)):gsub(
 '{distance}',l(U*0.28)..'M'):gsub('{position}',string.upper(tostring(af)))end
-return nil end local ac={_hasLoaded=false,_objectCache={},whitelist={},
-sharedSettings={textSize=13,textFont=4,limitDistance=false,maxDistance=150,
-useTeamColor=false,includeLocalPlayer=false},teamSettings={enemy={enabled=false,
-box=false,boxColor={Color3.new(1,0,0),1},boxOutline=true,boxOutlineColor={Color3
-.new(),1},boxFill=false,boxFillColor={Color3.new(1,0,0),0.5},healthBar=false,
-healthyColor=Color3.fromRGB(58,161,47),dyingColor=Color3.fromRGB(161,47,47),
-healthBarOutline=true,healthBarOutlineColor={Color3.new(),0.5},healthText=false,
-healthTextColor={Color3.new(1,1,1),1},healthTextOutline=true,
-healthTextOutlineColor=Color3.new(),box3d=false,box3dColor={Color3.new(1,0,0),1}
-,name=false,nameColor={Color3.new(1,1,1),1},nameOutline=true,nameOutlineColor=
-Color3.new(),weapon=false,weaponColor={Color3.new(1,1,1),1},weaponOutline=true,
-weaponOutlineColor=Color3.new(),distance=false,distanceColor={Color3.new(1,1,1),
-1},distanceOutline=true,distanceOutlineColor=Color3.new(),tracer=false,
-tracerOrigin='Bottom',tracerColor={Color3.new(1,0,0),1},tracerOutline=true,
-tracerOutlineColor={Color3.new(),1},offScreenArrow=false,offScreenArrowColor={
-Color3.new(1,1,1),1},offScreenArrowSize=15,offScreenArrowRadius=150,
-offScreenArrowOutline=true,offScreenArrowOutlineColor={Color3.new(),1},chams=
-false,chamsVisibleOnly=false,chamsFillColor={Color3.new(0.2,0.2,0.2),0.5},
-chamsOutlineColor={Color3.new(1,0,0),0}},friendly={enabled=false,box=false,
-boxColor={Color3.new(0,1,0),1},boxOutline=true,boxOutlineColor={Color3.new(),1},
-boxFill=false,boxFillColor={Color3.new(0,1,0),0.5},healthBar=false,healthyColor=
-Color3.new(0,1,0),dyingColor=Color3.new(1,0,0),healthBarOutline=true,
+return nil end local ac={_hasLoaded=false,_objectCache={},whitelist={},shared={
+textSize=13,textFont=4,limitDistance=false,maxDistance=150,useTeamColor=false,
+includeLocalPlayer=false},team={enemy={enabled=false,box=false,boxColor={Color3.
+new(1,0,0),1},boxOutline=true,boxOutlineColor={Color3.new(),1},boxFill=false,
+boxFillColor={Color3.new(1,0,0),0.5},healthBar=false,healthyColor=Color3.
+fromRGB(58,161,47),dyingColor=Color3.fromRGB(161,47,47),healthBarOutline=true,
 healthBarOutlineColor={Color3.new(),0.5},healthText=false,healthTextColor={
 Color3.new(1,1,1),1},healthTextOutline=true,healthTextOutlineColor=Color3.new(),
-box3d=false,box3dColor={Color3.new(0,1,0),1},name=false,nameColor={Color3.new(1,
+box3d=false,box3dColor={Color3.new(1,0,0),1},name=false,nameColor={Color3.new(1,
 1,1),1},nameOutline=true,nameOutlineColor=Color3.new(),weapon=false,weaponColor=
 {Color3.new(1,1,1),1},weaponOutline=true,weaponOutlineColor=Color3.new(),
 distance=false,distanceColor={Color3.new(1,1,1),1},distanceOutline=true,
 distanceOutlineColor=Color3.new(),tracer=false,tracerOrigin='Bottom',tracerColor
-={Color3.new(0,1,0),1},tracerOutline=true,tracerOutlineColor={Color3.new(),1},
+={Color3.new(1,0,0),1},tracerOutline=true,tracerOutlineColor={Color3.new(),1},
 offScreenArrow=false,offScreenArrowColor={Color3.new(1,1,1),1},
 offScreenArrowSize=15,offScreenArrowRadius=150,offScreenArrowOutline=true,
 offScreenArrowOutlineColor={Color3.new(),1},chams=false,chamsVisibleOnly=false,
-chamsFillColor={Color3.new(0.2,0.2,0.2),0.5},chamsOutlineColor={Color3.new(0,1,0
-),0}}}}function ac.AddInstance(ad,ae)local af=ac._objectCache if af[ad]then warn
-'Instance handler already exists.'else af[ad]={ab.new(ad,ae)}end return af[ad][1
-]end function ac.Load()assert(not ac._hasLoaded,'Esp has already been loaded.')
-local ad,ae,af=function(ad)ac._objectCache[ad]={S.new(ad,ac),aa.new(ad,ac)}end,
-function(ad)local ae=ac._objectCache[ad]if ae then for af=1,#ae do ae[af]:
-Destruct()end ac._objectCache[ad]=nil end end,d:GetPlayers()for ag=ac.
-sharedSettings.includeLocalPlayer and 1 or 2,#af do ad(af[ag])end ac.playerAdded
-=d.PlayerAdded:Connect(ad)ac.playerRemoving=d.PlayerRemoving:Connect(ae)ac.
-_hasLoaded=true end function ac.Unload()assert(ac._hasLoaded,
-'Esp has not been loaded yet.')for ad,ae in next,ac._objectCache do for af=1,#ae
-do ae[af]:Destruct()end ac._objectCache[ad]=nil end ac.playerAdded:Disconnect()
-ac.playerRemoving:Disconnect()ac._hasLoaded=false end function ac.getWeapon(ad)
-local ae='None'if ad and ad.Character then local af=ad.Character:
+chamsFillColor={Color3.new(0.2,0.2,0.2),0.5},chamsOutlineColor={Color3.new(1,0,0
+),0}},friendly={enabled=false,box=false,boxColor={Color3.new(0,1,0),1},
+boxOutline=true,boxOutlineColor={Color3.new(),1},boxFill=false,boxFillColor={
+Color3.new(0,1,0),0.5},healthBar=false,healthyColor=Color3.new(0,1,0),dyingColor
+=Color3.new(1,0,0),healthBarOutline=true,healthBarOutlineColor={Color3.new(),0.5
+},healthText=false,healthTextColor={Color3.new(1,1,1),1},healthTextOutline=true,
+healthTextOutlineColor=Color3.new(),box3d=false,box3dColor={Color3.new(0,1,0),1}
+,name=false,nameColor={Color3.new(1,1,1),1},nameOutline=true,nameOutlineColor=
+Color3.new(),weapon=false,weaponColor={Color3.new(1,1,1),1},weaponOutline=true,
+weaponOutlineColor=Color3.new(),distance=false,distanceColor={Color3.new(1,1,1),
+1},distanceOutline=true,distanceOutlineColor=Color3.new(),tracer=false,
+tracerOrigin='Bottom',tracerColor={Color3.new(0,1,0),1},tracerOutline=true,
+tracerOutlineColor={Color3.new(),1},offScreenArrow=false,offScreenArrowColor={
+Color3.new(1,1,1),1},offScreenArrowSize=15,offScreenArrowRadius=150,
+offScreenArrowOutline=true,offScreenArrowOutlineColor={Color3.new(),1},chams=
+false,chamsVisibleOnly=false,chamsFillColor={Color3.new(0.2,0.2,0.2),0.5},
+chamsOutlineColor={Color3.new(0,1,0),0}}}}function ac.AddInstance(ad,ae)local af
+=ac._objectCache if af[ad]then warn'Instance handler already exists.'else af[ad]
+={ab.new(ad,ae)}end return af[ad][1]end function ac.Load()assert(not ac.
+_hasLoaded,'Esp has already been loaded.')local ad,ae,af=function(ad)ac.
+_objectCache[ad]={S.new(ad,ac),aa.new(ad,ac)}end,function(ad)local ae=ac.
+_objectCache[ad]if ae then for af=1,#ae do ae[af]:Destruct()end ac._objectCache[
+ad]=nil end end,d:GetPlayers()for ag=ac.shared.includeLocalPlayer and 1 or 2,#af
+do ad(af[ag])end ac.playerAdded=d.PlayerAdded:Connect(ad)ac.playerRemoving=d.
+PlayerRemoving:Connect(ae)ac._hasLoaded=true end function ac.Unload()assert(ac.
+_hasLoaded,'Esp has not been loaded yet.')for ad,ae in next,ac._objectCache do
+for af=1,#ae do ae[af]:Destruct()end ac._objectCache[ad]=nil end ac.playerAdded:
+Disconnect()ac.playerRemoving:Disconnect()ac._hasLoaded=false end function ac.
+getWeapon(ad)local ae='None'if ad and ad.Character then local af=ad.Character:
 FindFirstChildOfClass'Tool'if af then ae=af.Name end end return string.upper(ae)
 end function ac.isFriendly(ad)return ad.Team and ad.Team==h.Team end function ac
 .getTeamColor(ad)return ad.Team and ad.Team.TeamColor and ad.Team.TeamColor.
@@ -1243,19 +1240,19 @@ assert(Q,'Aimbot.Whitelist: User '..P..' is not blacklisted.')e(ai.Blacklisted,Q
 )end function K.GetClosestPlayer()O()local ai=K.Locked N()return ai end K.Load=
 ah setmetatable(K,{__call=ah})return K end function a.e()local aa,ab={},a.load
 'a'GetService=ab.SecureService local ac=a.load'b'UIName=
-'RIOT V2 | Operations: Siege'local ad=a.load'c'ESP_E=ad.teamSettings.enemy ESP_F
-=ad.teamSettings.friendly local ae=a.load'd'Aimbot_S=ae.Settings Aimbot_F=ae.
-FOVSettings local af,ag=GetService'ReplicatedStorage',GetService'Workspace'local
-ah=af:FindFirstChild'Skorpio_Engine'local ai,b=ah and ah:FindFirstChild
-'GunModels',ag:FindFirstChild'SE_Workspace'local c=b and b:FindFirstChild
-'Drones'ActiveDronesESP={Settings={},Objects={}}local d=ag:FindFirstChild
-'Gadgets'ActiveGadgetsESP={Settings={},Objects={}}local e=b and b:FindFirstChild
-'Cameras'ActiveCamerasESP={Settings={},Objects={}}local f=ag:FindFirstChild
-'Objective'ActiveBombsESP={Settings={},Objects={}}local g=function(g,h,i,j,k)for
-l,m in pairs(g)do if m[h]and m[h][i]~=nil then if k and typeof(m[h][i])=='table'
-then m[h][i][k]=j else m[h][i]=j end end end return i,j end function aa.init()
-local h,i,j=ac:TabsWindow{Title=UIName..' - getriot.cc',Size=UDim2.new(0,350,0,
-550),Position=UDim2.new(0.5,0,0,70)},{Success=`<font color="rgb(40, 240, 10)">[Success]</font>`
+'RIOT V2 | Operations: Siege'local ad=a.load'c'ESP_E=ad.team.enemy ESP_F=ad.team
+.friendly local ae=a.load'd'Aimbot_S=ae.Settings Aimbot_F=ae.FOVSettings local
+af,ag=GetService'ReplicatedStorage',GetService'Workspace'local ah=af:
+FindFirstChild'Skorpio_Engine'local ai,b=ah and ah:FindFirstChild'GunModels',ag:
+FindFirstChild'SE_Workspace'local c=b and b:FindFirstChild'Drones'
+ActiveDronesESP={Settings={},Objects={}}local d=ag:FindFirstChild'Gadgets'
+ActiveGadgetsESP={Settings={},Objects={}}local e=b and b:FindFirstChild'Cameras'
+ActiveCamerasESP={Settings={},Objects={}}local f=ag:FindFirstChild'Objective'
+ActiveBombsESP={Settings={},Objects={}}local g=function(g,h,i,j,k)for l,m in
+pairs(g)do if m[h]and m[h][i]~=nil then if k and typeof(m[h][i])=='table'then m[
+h][i][k]=j else m[h][i]=j end end end return i,j end function aa.init()local h,i
+,j=ac:TabsWindow{Title=UIName..' - getriot.cc',Size=UDim2.new(0,350,0,550),
+Position=UDim2.new(0.5,0,0,70)},{Success=`<font color="rgb(40, 240, 10)">[Success]</font>`
 ,Init=`<font color="rgb(240, 140, 10)">[Init]</font>`,Info=`<font color="rgb(10, 140, 240)">[Info]</font>`
 }local k={Console=h:CreateTab{Name='Console'},Combat=h:CreateTab{Name='Combat'},
 Visuals=h:CreateTab{Name='Visuals'},Misc=h:CreateTab{Name='Misc'},Settings=h:
@@ -1301,17 +1298,17 @@ Callback=function(u,v)Aimbot_F.Color=v l(i.Info,u.Label,':',v)end}n:DragColor3{
 Value=Color3.fromRGB(40,240,10),Label='Color (Locked)',Callback=function(u,v)
 Aimbot_F.LockedColor=v l(i.Info,u.Label,':',v)end}k.Visuals:Separator{Text=
 'Shared Settings'}local u local v=k.Visuals:Checkbox{Label='Limit Distance',
-Value=false,Callback=function(v,w)ad.sharedSettings.limitDistance=w if u then u:
+Value=false,Callback=function(v,w)ad.shared.limitDistance=w if u then u:
 SetDisabled(not w)end l(i.Info,v.Label,':',w)end}u=k.Visuals:SliderFloat{Label=
 'Limit',Minimum=1,Maximum=500,Value=150,Format='Distance Limit = %.0f',Callback=
-function(w,x)ad.sharedSettings.maxDistance=x l(i.Info,w.Label,':',x)end}u:
-SetDisabled(not v.Value)k.Visuals:Separator{Text='ESP'}local w,x=k.Visuals:
-TabSelector{Size=UDim2.new(1,0,0,400)},function(w,x)x:Checkbox{Label='Enabled',
-Value=false,Callback=function(y,z)w.enabled=z l(i.Info,y.Label,':',z)end}x:
-Separator{Text='Boxes'}x:Checkbox{Label='Enabled',Value=true,Callback=function(y
-,z)w.box=z l(i.Info,y.Label,':',z)end}x:DragColor3{Value=Color3.fromRGB(77,92,
-143),Label='Color',Callback=function(y,z)w.boxColor[1]=z l(i.Info,y.Label,':',z)
-end}x:SliderFloat{Label='Transparency',Minimum=0,Maximum=1,Value=0,Format=
+function(w,x)ad.shared.maxDistance=x l(i.Info,w.Label,':',x)end}u:SetDisabled(
+not v.Value)k.Visuals:Separator{Text='ESP'}local w,x=k.Visuals:TabSelector{Size=
+UDim2.new(1,0,0,400)},function(w,x)x:Checkbox{Label='Enabled',Value=false,
+Callback=function(y,z)w.enabled=z l(i.Info,y.Label,':',z)end}x:Separator{Text=
+'Boxes'}x:Checkbox{Label='Enabled',Value=true,Callback=function(y,z)w.box=z l(i.
+Info,y.Label,':',z)end}x:DragColor3{Value=Color3.fromRGB(77,92,143),Label=
+'Color',Callback=function(y,z)w.boxColor[1]=z l(i.Info,y.Label,':',z)end}x:
+SliderFloat{Label='Transparency',Minimum=0,Maximum=1,Value=0,Format=
 'Transparency = %.3f',Callback=function(y,z)w.boxColor[2]=1-z w.boxOutlineColor[
 2]=1-z l(i.Info,y.Label,':',z)end}x:Separator{Text='Box Fill'}x:Checkbox{Label=
 'Enabled',Value=true,Callback=function(y,z)w.boxFill=z l(i.Info,y.Label,':',z)
@@ -1380,9 +1377,9 @@ table.insert(B.Objects,ad.AddInstance(C,{enabled=B.Settings.enabled or false,
 text='{name} | {distance}',textColor=B.Settings.textColor or{Color3.new(1,1,1),1
 },textOutline=B.Settings.textOutline or true,textOutlineColor=B.Settings.
 textOutlineColor or{Color3.new(0,0,0),1},textSize=B.Settings.textSize or 13,
-textFont=4,limitDistance=ad.sharedSettings.limitDistance or false,maxDistance=ad
-.sharedSettings.maxDistance or 150}))end for D,E in pairs(A:GetChildren())do C(E
-)end A.ChildAdded:Connect(function(F)C(F)end)end,function(A,B)A:Checkbox{Label=
+textFont=4,limitDistance=ad.shared.limitDistance or false,maxDistance=ad.shared.
+maxDistance or 150}))end for D,E in pairs(A:GetChildren())do C(E)end A.
+ChildAdded:Connect(function(F)C(F)end)end,function(A,B)A:Checkbox{Label=
 'Enabled',Value=false,Callback=function(C,D)local E,F=g(B.Objects,'options',
 'enabled',D)B.Settings[E]=F l(i.Info,C.Label,':',D)end}A:DragColor3{Value=Color3
 .fromRGB(255,255,255),Label='Text Color',Callback=function(C,D)local E,F=g(B.

@@ -5,12 +5,12 @@ local file = {}
 --// Modules
 local Functions = require("core/functions.luau"); 	GetService 	= Functions.SecureService
 local UI 		= require("core/ui.luau"); 			UIName	 	= "RIOT V2 | Operations: Siege";
-local ESP 		= require("modules/esp.luau"); 		ESP_E 		= ESP.teamSettings.enemy; 	ESP_F 		= ESP.teamSettings.friendly;
-local Aimbot 	= require("modules/aimbot.luau"); 	Aimbot_S 	= Aimbot.Settings; 			Aimbot_F 	= Aimbot.FOVSettings
+local ESP 		= require("modules/esp.luau"); 		ESP_E 		= ESP.team.enemy; 	ESP_F 		= ESP.team.friendly;
+local Aimbot 	= require("modules/aimbot.luau"); 	Aimbot_S 	= Aimbot.Settings; 	Aimbot_F 	= Aimbot.FOVSettings
 
 --// Services
-local ReplicatedStorage = GetService("ReplicatedStorage")
-local Workspace 		= GetService("Workspace")
+local ReplicatedStorage: 	ReplicatedStorage 	= GetService("ReplicatedStorage")
+local Workspace: 			Workspace  			= GetService("Workspace")
 
 --// Game References
 local Skorpio_Engine: 	Configuration 	= ReplicatedStorage:FindFirstChild("Skorpio_Engine")
@@ -22,7 +22,7 @@ local Cameras: 			Folder 			= SE_Workspace and SE_Workspace:FindFirstChild("Came
 local Objective: 		Folder 			= Workspace:FindFirstChild("Objective"); 					ActiveBombsESP 		= { Settings={}, Objects={} }
 
 --// Functions
-local function batchUpdate(Table, TableKey, Key, Value, Index)
+local function batchUpdate(Table: {}, TableKey: string, Key: string, Value: any, Index: number) -- idfk
 	for _, v in pairs(Table) do
 		if v[TableKey] and v[TableKey][Key] ~= nil then
 			if Index and typeof(v[TableKey][Key]) == "table" then
@@ -286,7 +286,7 @@ function file.init()
 		Label = "Limit Distance",
 		Value = false,
 		Callback = function(self, Value)
-			ESP.sharedSettings.limitDistance = Value;
+			ESP.shared.limitDistance = Value;
 			if DistanceLimit then
 				DistanceLimit:SetDisabled(not Value)
 			end
@@ -301,7 +301,7 @@ function file.init()
 		Value = 150,
 		Format = "Distance Limit = %.0f",
 		Callback = function(self, Value)
-			ESP.sharedSettings.maxDistance = Value
+			ESP.shared.maxDistance = Value
 
 			consPrint(LogStates.Info, self.Label, ":", Value)
 		end
@@ -746,8 +746,8 @@ function file.init()
 				textOutlineColor = ActiveFolder.Settings.textOutlineColor or {Color3.new(0,0,0), 1},
 				textSize = ActiveFolder.Settings.textSize or 13,
 				textFont = 4,
-				limitDistance = ESP.sharedSettings.limitDistance or false,
-				maxDistance = ESP.sharedSettings.maxDistance or 150
+				limitDistance = ESP.shared.limitDistance or false,
+				maxDistance = ESP.shared.maxDistance or 150
 			}))
 		end
 		for _, Object: BasePart in pairs(Folder:GetChildren()) do

@@ -99,7 +99,7 @@ local function rotateVector(vector, radians)
 end
 
 local function parseColor(self, color, isOutline)
-	if color == "Team Color" or (self.interface.sharedSettings.useTeamColor and not isOutline) then
+	if color == "Team Color" or (self.interface.shared.useTeamColor and not isOutline) then
 		return self.interface.getTeamColor(self.player) or Color3.new(1,1,1);
 	end
 	return color;
@@ -190,7 +190,7 @@ end
 function EspObject:Update()
 	local interface = self.interface;
 
-	self.options = interface.teamSettings[interface.isFriendly(self.player) and "friendly" or "enemy"];
+	self.options = interface.team[interface.isFriendly(self.player) and "friendly" or "enemy"];
 	self.character = interface.getCharacter(self.player);
 	self.health, self.maxHealth = interface.getHealth(self.player);
 	self.weapon = interface.getWeapon(self.player);
@@ -207,7 +207,7 @@ function EspObject:Update()
 	self.onScreen = onScreen;
 	self.distance = depth;
 
-	if interface.sharedSettings.limitDistance and depth > interface.sharedSettings.maxDistance then
+	if interface.shared.limitDistance and depth > interface.shared.maxDistance then
 		self.onScreen = false;
 	end
 
@@ -292,8 +292,8 @@ function EspObject:Render()
 	visible.name.Visible = enabled and onScreen and options.name;
 	if visible.name.Visible then
 		local name = visible.name;
-		name.Size = interface.sharedSettings.textSize;
-		name.Font = interface.sharedSettings.textFont;
+		name.Size = interface.shared.textSize;
+		name.Font = interface.shared.textFont;
 		name.Color = parseColor(self, options.nameColor[1]);
 		name.Transparency = options.nameColor[2];
 		name.Outline = options.nameOutline;
@@ -307,8 +307,8 @@ function EspObject:Render()
 	if visible.distance.Visible then
 		local distance = visible.distance
 		distance.Text = round(self.distance * 0.28) .. "M"
-		distance.Size = interface.sharedSettings.textSize
-		distance.Font = interface.sharedSettings.textFont
+		distance.Size = interface.shared.textSize
+		distance.Font = interface.shared.textFont
 		distance.Color = parseColor(self, options.distanceColor[1])
 		distance.Transparency = options.distanceColor[2]
 		distance.Outline = options.distanceOutline
@@ -326,8 +326,8 @@ function EspObject:Render()
 	if visible.weapon.Visible then
 		local weapon = visible.weapon
 		weapon.Text = self.weapon
-		weapon.Size = interface.sharedSettings.textSize
-		weapon.Font = interface.sharedSettings.textFont
+		weapon.Size = interface.shared.textSize
+		weapon.Font = interface.shared.textFont
 		weapon.Color = parseColor(self, options.weaponColor[1])
 		weapon.Transparency = options.weaponColor[2]
 		weapon.Outline = options.weaponOutline
@@ -345,8 +345,8 @@ function EspObject:Render()
 	if visible.healthText.Visible then
 		local healthText = visible.healthText
 		healthText.Text = round(self.health) .. "HP"
-		healthText.Size = interface.sharedSettings.textSize
-		healthText.Font = interface.sharedSettings.textFont
+		healthText.Size = interface.shared.textSize
+		healthText.Font = interface.shared.textFont
 		healthText.Color = parseColor(self, options.healthTextColor[1])
 		healthText.Transparency = options.healthTextColor[2]
 		healthText.Outline = options.healthTextOutline
@@ -452,7 +452,7 @@ function ChamObject:Update()
 	local highlight = self.highlight;
 	local interface = self.interface;
 	local character = interface.getCharacter(self.player);
-	local options = interface.teamSettings[interface.isFriendly(self.player) and "friendly" or "enemy"];
+	local options = interface.team[interface.isFriendly(self.player) and "friendly" or "enemy"];
 	local enabled = options.enabled and character and not (#interface.whitelist > 0 and not find(interface.whitelist, self.player.UserId));
 
 	highlight.Enabled = enabled and options.chams;
@@ -545,7 +545,7 @@ local EspInterface = {
 	_hasLoaded = false,
 	_objectCache = {},
 	whitelist = {},
-	sharedSettings = {
+	shared = {
 		textSize = 13,
 		textFont = 4,
 		limitDistance = false,
@@ -553,7 +553,7 @@ local EspInterface = {
 		useTeamColor = false,
 		includeLocalPlayer = false
 	},
-	teamSettings = {
+	team = {
 		enemy = {
 			enabled = false,
 			box = false,
@@ -683,7 +683,7 @@ function EspInterface.Load()
 
 	local plrs = players:GetPlayers()
 
-	for i = EspInterface.sharedSettings.includeLocalPlayer and 1 or 2, #plrs do
+	for i = EspInterface.shared.includeLocalPlayer and 1 or 2, #plrs do
 		createObject(plrs[i]);
 	end
 
