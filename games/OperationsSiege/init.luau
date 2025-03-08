@@ -4,14 +4,40 @@ local file = {}
 
 --// Modules
 local Functions = require("core/functions.luau"); 	GetService 	= Functions.SecureService
-local UI 		= require("core/ui.luau"); 			UIName	 	= "RIOT V2 | K.A.T.";
-local ESP 		= require("modules/esp.luau"); 		ESP_E 		= ESP.teamSettings.enemy; 	ESP_F 		= ESP.teamSettings.friendly;
-local Aimbot 	= require("modules/aimbot.luau"); 	Aimbot_S 	= Aimbot.Settings; 			Aimbot_F 	= Aimbot.FOVSettings
+local UI 		= require("core/ui.luau"); 			UIName	 	= "RIOT V2";
+local ESP 		= require("modules/esp.luau"); 		ESP_E 		= ESP.team.enemy; 	ESP_F 		= ESP.team.friendly;
+local Aimbot 	= require("modules/aimbot.luau"); 	Aimbot_S 	= Aimbot.Settings; 	Aimbot_F 	= Aimbot.FOVSettings
+
+--// Services
+local ReplicatedStorage: 	ReplicatedStorage 	= GetService("ReplicatedStorage")
+local Workspace: 			Workspace  			= GetService("Workspace")
+
+--// Game References
+local Skorpio_Engine: 	Configuration 	= ReplicatedStorage:FindFirstChild("Skorpio_Engine")
+local Models: 			Folder 			= Skorpio_Engine and Skorpio_Engine:FindFirstChild("GunModels")
+local SE_Workspace: 	Folder 			= Workspace:FindFirstChild("SE_Workspace")
+local Drones: 			Folder 			= SE_Workspace and SE_Workspace:FindFirstChild("Drones"); 	ActiveDronesESP 	= { Settings={}, Objects={} }
+local Gadgets: 			Folder 			= Workspace:FindFirstChild("Gadgets"); 						ActiveGadgetsESP 	= { Settings={}, Objects={} }
+local Cameras: 			Folder 			= SE_Workspace and SE_Workspace:FindFirstChild("Cameras"); 	ActiveCamerasESP 	= { Settings={}, Objects={} }
+local Objective: 		Folder 			= Workspace:FindFirstChild("Objective"); 					ActiveBombsESP 		= { Settings={}, Objects={} }
 
 --// Functions
-function file.init()
+local function batchUpdate(Table: {}, TableKey: string, Key: string, Value: any, Index: number) -- idfk
+	for _, v in pairs(Table) do
+		if v[TableKey] and v[TableKey][Key] ~= nil then
+			if Index and typeof(v[TableKey][Key]) == "table" then
+				v[TableKey][Key][Index] = Value
+			else
+				v[TableKey][Key] = Value
+			end
+		end
+	end
+	return Key, Value
+end
+
+function file.init(gameName)
 	local Main = UI:TabsWindow({
-		Title = UIName .. " - getriot.cc",
+		Title = string.format("%q | %q - getriot.cc", tostring(UIName), tostring(gameName)),
 		Size = UDim2.new(0, 350, 0, 550),
 		Position = UDim2.new(0.5, 0, 0, 70)
 	})
@@ -98,7 +124,7 @@ function file.init()
 		Label = "Trigger Keybind",
 		Value = Enum.KeyCode.E,
 		IgnoreGameProcessed = false,
-		OnSet = function(self, KeyCode)
+		OnKeybindSet = function(self, KeyCode)
 			Aimbot_S.TriggerKey = KeyCode
 		end,
 	})
@@ -155,7 +181,7 @@ function file.init()
 		Label = "Smoothing", 
 		Minimum = 1.0, 
 		Maximum = 20.0,
-		Value = 1,
+		Value = 2.0,
 		Format = "Smoothing = %.3f",
 		Callback = function(self, Value)
 			Aimbot_S.Sensitivity2 = Value
@@ -213,7 +239,7 @@ function file.init()
 		Label = "Circle Sides", 
 		Minimum = 3, 
 		Maximum = 80,
-		Value = 20,
+		Value = 25,
 		Format = "Sides = %.0f",
 		Callback = function(self, Value)
 			Aimbot_F.NumSides = Value
@@ -260,7 +286,7 @@ function file.init()
 		Label = "Limit Distance",
 		Value = false,
 		Callback = function(self, Value)
-			ESP.sharedSettings.limitDistance = Value;
+			ESP.shared.limitDistance = Value;
 			if DistanceLimit then
 				DistanceLimit:SetDisabled(not Value)
 			end
@@ -275,7 +301,7 @@ function file.init()
 		Value = 150,
 		Format = "Distance Limit = %.0f",
 		Callback = function(self, Value)
-			ESP.sharedSettings.maxDistance = Value
+			ESP.shared.maxDistance = Value
 
 			consPrint(LogStates.Info, self.Label, ":", Value)
 		end
@@ -709,6 +735,142 @@ function file.init()
 	local Friendly = ESPTabs:CreateTab({
 		Name="Friendly",
 	}); insertSets(ESP_F, Friendly)
+
+	local function addESPObjListener(Folder: Folder, ActiveFolder: {})
+		local function addESPObj(Object: BasePart)
+			table.insert(ActiveFolder.Objects, ESP.AddInstance(Object, {
+				enabled = ActiveFolder.Settings.enabled or false,
+				text = "{name} | {distance}",
+				textColor = ActiveFolder.Settings.textColor or {Color3.new(1,1,1), 1},
+				textOutline = ActiveFolder.Settings.textOutline or true,
+				textOutlineColor = ActiveFolder.Settings.textOutlineColor or {Color3.new(0,0,0), 1},
+				textSize = ActiveFolder.Settings.textSize or 13,
+				textFont = 4,
+				limitDistance = ESP.shared.limitDistance or false,
+				maxDistance = ESP.shared.maxDistance or 150
+			}))
+		end
+		if Folder then
+			for _, Object: BasePart in pairs(Folder:GetChildren()) do
+				addESPObj(Object)
+			end
+			Folder.ChildAdded:Connect(function(Object)
+				addESPObj(Object)
+			end)
+		end
+	end
+
+	local function addESPObjSettings(Header, ActiveFolder: {})
+		Header:Checkbox({
+			Label = "Enabled",
+			Value = false,
+			Callback = function(self, Value)
+				local Index, Val = batchUpdate(ActiveFolder.Objects, "options", "enabled", Value)
+				ActiveFolder.Settings[Index] = Val
+		
+				consPrint(LogStates.Info, self.Label, ":", Value)
+			end
+		})
+		Header:DragColor3({
+			Value = Color3.fromRGB(255, 255, 255),
+			Label = "Text Color",
+			Callback = function(self, Value)
+				local Index, Val = batchUpdate(ActiveFolder.Objects, "options", "textColor", Value, 1)
+				ActiveFolder.Settings[Index] = Val
+		
+				consPrint(LogStates.Info, self.Label, ":", Value)
+			end
+		})
+		Header:SliderFloat({
+			Label = "Text Transparency", 
+			Minimum = 0.0, 
+			Maximum = 1.0,
+			Value = 0,
+			Format = "Transparency = %.3f",
+			Callback = function(self, Value)
+				local Index, Val = batchUpdate(ActiveFolder.Objects, "options", "textColor", 1-Value, 2)
+				ActiveFolder.Settings[Index] = Val
+		
+				consPrint(LogStates.Info, self.Label, ":", Value)
+			end
+		})
+		Header:Checkbox({
+			Label = "Text Outline",
+			Value = true,
+			Callback = function(self, Value)
+				local Index, Val = batchUpdate(ActiveFolder.Objects, "options", "textOutline", Value)
+				ActiveFolder.Settings[Index] = Val
+		
+				consPrint(LogStates.Info, self.Label, ":", Value)
+			end
+		})
+		Header:DragColor3({
+			Value = Color3.fromRGB(0, 0, 0),
+			Label = "Text Outline Color",
+			Callback = function(self, Value)
+				local Index, Val = batchUpdate(ActiveFolder.Objects, "options", "textOutlineColor", Value, 1)
+				ActiveFolder.Settings[Index] = Val
+		
+				consPrint(LogStates.Info, self.Label, ":", Value)
+			end
+		})
+		Header:SliderFloat({
+			Label = "Text Outline Transparency", 
+			Minimum = 0.0, 
+			Maximum = 1.0,
+			Value = 0,
+			Format = "Transparency = %.3f",
+			Callback = function(self, Value)
+				local Index, Val = batchUpdate(ActiveFolder.Objects, "options", "textOutlineColor", 1-Value, 2)
+				ActiveFolder.Settings[Index] = Val
+		
+				consPrint(LogStates.Info, self.Label, ":", Value)
+			end
+		})
+	end
+
+	addESPObjListener(Drones, ActiveDronesESP)
+	addESPObjListener(Gadgets, ActiveGadgetsESP)
+	addESPObjListener(Cameras, ActiveCamerasESP)
+	addESPObjListener(Objective, ActiveBombsESP)
+
+	local DronesTab = ESPTabs:CreateTab({
+		Name="Drones",
+	}); addESPObjSettings(DronesTab, ActiveDronesESP)
+
+	local GadgetsTab = ESPTabs:CreateTab({
+		Name="Gadgets",
+	}); addESPObjSettings(GadgetsTab, ActiveGadgetsESP)
+
+	local CamerasTab = ESPTabs:CreateTab({
+		Name="Cameras",
+	}); addESPObjSettings(CamerasTab, ActiveCamerasESP)
+
+	local BombsTab = ESPTabs:CreateTab({
+		Name="Bombs",
+	}); addESPObjSettings(BombsTab, ActiveBombsESP)
+
+	--[[ MISC ]]--
+	local reloadLoop; Tabs.Misc:Checkbox({
+		Label = "Spam Reload Sound",
+		Value = false,
+		Callback = function(self, Value)
+			if Value then
+				reloadLoop = task.spawn(function()
+					while self.Value do
+						Skorpio_Engine.Events.ReloadSound:FireServer("AR")
+						task.wait(0.05)
+					end
+				end)
+			else
+				if reloadLoop then
+					task.cancel(reloadLoop)
+				end
+			end
+	
+			consPrint(LogStates.Info, self.Label, ":", Value)
+		end
+	})
 	
 
 	--[[ SETTINGS ]]--
@@ -720,6 +882,23 @@ function file.init()
 			Main:SetVisible(not Main.Visible)
 		end,
 	})
+
+	--// Initialize
+	ESP.getWeapon = function(player)
+		local weapon = "None"
+		local character = Functions.GetCharacter(player)
+	
+		if player and character then
+			local Tool: Model = character:FindFirstChildOfClass("Model")
+			local ToolName = Tool and string.sub(Tool.Name, 2)
+
+			if Tool and Models and Models:FindFirstChild(ToolName) then
+				weapon = ToolName
+			end
+		end
+	
+		return string.upper(weapon)
+	end	
 
 	ESP.Load()
 	Aimbot.Load()

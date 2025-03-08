@@ -2920,7 +2920,7 @@ export type Keybind = {
 	Enabled: boolean?,
 	IgnoreGameProcessed: boolean?,
 	Callback: ((Enum.KeyCode) -> any)?,
-	OnSet: ((Enum.KeyCode) -> any)?,
+	OnKeybindSet: ((Enum.KeyCode) -> any)?,
 
 	SetValue: ((Keybind, New: Enum.KeyCode) -> any)?,
 	WaitForNewKey: ((Keybind) -> any)?,
@@ -2928,94 +2928,134 @@ export type Keybind = {
 ReGui:DefineElement("Keybind", {
 	Base = {
 		Label = "Keybind",
+		ColorTag = "Frame",
 		Value = nil,
 		DeleteKey = Enum.KeyCode.Backspace,
-		Callback = EmptyFunction,
-		OnSet = EmptyFunction,
 		IgnoreGameProcessed = true,
 		Enabled = true,
-		ColorTag = "Frame",
+		Disabled = false,
+		Callback = EmptyFunction,
+		OnKeybindSet = EmptyFunction,
+		OnBlacklistedKeybindSet = EmptyFunction,
+		KeyBlacklist = {},
 		UiPadding = UDim.new(),
 		AutomaticSize = Enum.AutomaticSize.None,
 		Size = UDim2.new(0.4, 0, 0, 19)
 	},
-	Create = function(self, Config: Keybind)
+	Create = function(Canvas, Config: Keybind)
 		local Value = Config.Value
-		local Label = Config.Label
+		local LabelText = Config.Label
+		local Disabled = Config.Disabled
+		local KeyBlacklist = Config.KeyBlacklist
 
 		--// Create keybind object
 		local Object = ReGui:InsertPrefab("Button", Config)
 		local Class = ReGui:MergeMetatables(Config, Object)
 
-		self:Label({
-			Parent = Object, 
-			Text = Label,
+		local KBFolder = Instance.new("Folder")
+		local Label = Canvas:Label({
+			Parent = KBFolder, 
+			Text = LabelText,
 			Position = UDim2.new(1, 5, 0.5),
 			AnchorPoint = Vector2.new(0, 0.5)
 		})
+		KBFolder.Parent = Object
+		
+		local function Callback(Func, ...)
+			return Func(Object, ...)
+		end
+		
+		local function KeyIsBlacklisted(KeyCode: Enum.KeyCode)
+			local Blacklisted = table.find(KeyBlacklist, KeyCode)
+			return Blacklisted
+		end
+		
+		function Config:SetDisabled(Disabled: boolean)
+			self.Disabled = Disabled
+			Object.Interactable = not Disabled
+			Canvas:SetColorTags({
+				[Label] = Disabled and "LabelDisabled" or "Label"
+			}, true)
+		end
 
-		function Config:SetValue(New: Enum.KeyCode)
-			local DeleteKey = Config.DeleteKey
-			local OnSet = Config.OnSet
+		function Config:SetValue(KeyCode: Enum.KeyCode)
+			local OnKeybindSet = self.OnKeybindSet
+			local DeleteKey = self.DeleteKey
 
-			--// Remove keybind
-			if not New or New == DeleteKey then
-				Object.Text = "Not set"
-				self.Value = nil
-				return OnSet(self, self.Value)
+			--// Remove keybind 
+			if KeyCode == DeleteKey then
+				KeyCode = nil
 			end
-
-			Object.Text = New.Name
-			self.Value = New
-			return OnSet(self, self.Value)
+			
+			self.Value = KeyCode
+			Object.Text = KeyCode and KeyCode.Name or "Not set"
+			
+			--// Invoke OnKeybindSet callback
+			Callback(OnKeybindSet, KeyCode)
 		end
 
 		function Config:WaitForNewKey()
-			local Previous = self.Value
-
+			self._WaitingForNewKey = true
 			Object.Text = "..."
 			Object.Interactable = false
-
-			--// Wait for new key
-			local Key = UserInputService.InputBegan:Wait()
-			local KeyCode = Key.KeyCode
-
-			wait() Object.Interactable = true
+		end
+		
+		local function CheckNewKey(KeyCode: Enum.KeyCode)
+			local OnBlacklistedKeybindSet = Config.OnBlacklistedKeybindSet
+			local Previous = Config.Value
 
 			--// Check if window is focused
 			if not UserInputService.WindowFocused then return end 
+			
+			--// Check if keycode is blacklisted
+			if KeyIsBlacklisted(KeyCode) then
+				--// Invoke OnKeybindSet callback
+				Callback(OnBlacklistedKeybindSet, KeyCode)
+				return
+			end
+			
+			Object.Interactable = true
+			Config._WaitingForNewKey = false
 
 			--// Reset back to previous if new key is unknown
 			if KeyCode.Name == "Unknown" then
-				return self:SetValue(Previous)
+				return Config:SetValue(Previous)
 			end
 
 			--// Set new keybind
-			self:SetValue(KeyCode)
+			Config:SetValue(KeyCode)
 		end
 
-		local function InputBegan(Input, GameProcessed)
+		local function InputBegan(Input, GameProcessed: boolean)
 			local IgnoreGameProcessed = Config.IgnoreGameProcessed
-			local Enabled = Config.Enabled and Object.Interactable
-			local Callback = Config.Callback 
-			local NullKey = Config.NullKey
+			local DeleteKey = Config.DeleteKey
+			local Enabled = Config.Enabled
 			local Previous = Config.Value
+			local Func = Config.Callback
 
 			local KeyCode = Input.KeyCode
+			
+			--// OnKeybindSet
+			if Config._WaitingForNewKey then
+				CheckNewKey(KeyCode)
+				return
+			end
 
 			--// Check input state
-			if not Enabled then return end
+			if not Enabled and Object.Interactable then return end
 			if not IgnoreGameProcessed and GameProcessed then return end
 
 			--// Check KeyCode
-			if KeyCode == NullKey then return end
+			if KeyCode == DeleteKey then return end
 			if KeyCode ~= Previous then return end 
-
-			return Callback(Input.KeyCode)
+			
+			--// Invoke callback
+			Callback(Func, KeyCode)
 		end
 
 		--// Update object state
 		Config:SetValue(Value)
+		Config:SetDisabled(Disabled)
 
 		--// Connect events
 		Config.Connection = UserInputService.InputBegan:Connect(InputBegan)
