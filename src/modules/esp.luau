@@ -1,4 +1,5 @@
 local GetService = require("../core/functions.luau").SecureService
+
 -- services
 local runService = GetService("RunService");
 local players = GetService("Players");
@@ -54,7 +55,6 @@ local VERTICES = {
 };
 
 -- functions
-
 local function getBoundingBox(parts)
 	local min, max;
 	for i = 1, #parts do

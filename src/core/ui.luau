@@ -22,9 +22,9 @@ local ReGui = {
 	Repository = "https://github.com/depthso/Dear-ReGui/",
 
 	Debug = false,
-	PrefabsId = 71968920594655,
+	PrefabsId = 117781589903262,
 	DefaultTitle = "ReGui",
-	ContainerName = "ReGui",
+	ContainerName = "riUi",
 	DoubleClickThreshold = 0.3,
 
 	Container = nil,
@@ -6234,7 +6234,7 @@ function WindowClass:SetFocused(Focused: true)
 	local TitleLabel = self.TitleLabel
 	local Collapsed = self.Collapsed
 
-	local Border = ContentFrame:FindFirstChildOfClass("UIStroke")
+	local Border = self.WindowFrame:FindFirstChildOfClass("UIStroke")
 
 	--// Color tags
 	local Tags = {

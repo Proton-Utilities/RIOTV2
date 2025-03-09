@@ -21,7 +21,7 @@ b.GetHumanoid(c)local d,e=pcall(function()local d=b.GetCharacter(c)return d and
 d:FindFirstChildOfClass'Humanoid'or nil end)return d and e or nil end return b
 end function a.b()local b={Version='1.3.2',Author='Depso',License='MIT',
 Repository='https://github.com/depthso/Dear-ReGui/',Debug=false,PrefabsId=
-71968920594655,DefaultTitle='ReGui',ContainerName='ReGui',DoubleClickThreshold=
+117781589903262,DefaultTitle='ReGui',ContainerName='riUi',DoubleClickThreshold=
 0.3,Container=nil,Prefabs=nil,Tooltip=nil,ActiveWindow=nil,ThemeConfigs={},
 Elements={},Animation={DefaultTweenInfo=TweenInfo.new(0.08)},_FlagCache={},
 Windows={},AnimationConnections={},MouseEvents={DoubleClick={},Click={}}}b.Icons
@@ -883,8 +883,8 @@ ThemeConfigs,self.TagsList,self.Focused if not v then v=self.Theme end assert(w[
 v],`{v} is not a valid theme!`)self.Theme=v b:MultiUpdateColors{Animate=false,
 Theme=v,Objects=x}self:SetFocused(y)return self end function u:SetFocused(v)v=v
 ==nil and true or v self.Focused=v if v then b:SetFocusedWindow(self)end local w
-,x,y,z,A=self.ContentFrame,self.TitleBar,self.Theme,self.TitleLabel,self.
-Collapsed local B=w:FindFirstChildOfClass'UIStroke'local C={Focused={[B]=
+,x,y,z,A,B=self.ContentFrame,self.TitleBar,self.Theme,self.TitleLabel,self.
+Collapsed,self.WindowFrame:FindFirstChildOfClass'UIStroke'local C={Focused={[B]=
 'BorderActive',[x]='TitleBarBgActive',[z]={TextColor3='TitleActive'}},UnFocused=
 {[B]='Border',[x]='TitleBarBg',[z]={TextColor3='Title'}},Collapsed={[B]='Border'
 ,[x]='TitleBarBgCollapsed',[z]={TextColor3='Title'}}}local D=v and C.Focused or
@@ -1248,8 +1248,8 @@ ah setmetatable(K,{__call=ah})return K end function a.e()local aa,ab={},a.load
 'a'GetService=ab.SecureService local ac=a.load'b'UIName='RIOT V2'local ad=a.load
 'c'ESP_E=ad.team.enemy ESP_F=ad.team.friendly local ae=a.load'd'Aimbot_S=ae.
 Settings Aimbot_F=ae.FOVSettings function aa.init(af)local ag,ah,ai=ac:
-TabsWindow{Title=string.format('%q | %q - getriot.cc',UIName,af),Size=UDim2.new(
-0,350,0,550),Position=UDim2.new(0.5,0,0,70)},{Success=`<font color="rgb(40, 240, 10)">[Success]</font>`
+TabsWindow{Title=UIName..' | '..af..' - getriot.cc',Size=UDim2.new(0,350,0,550),
+Position=UDim2.new(0.5,0,0,70)},{Success=`<font color="rgb(40, 240, 10)">[Success]</font>`
 ,Init=`<font color="rgb(240, 140, 10)">[Init]</font>`,Info=`<font color="rgb(10, 140, 240)">[Info]</font>`
 }local b={Console=ag:CreateTab{Name='Console'},Combat=ag:CreateTab{Name='Combat'
 },Visuals=ag:CreateTab{Name='Visuals'},Settings=ag:CreateTab{Name='Settings'}}ai
@@ -1266,126 +1266,263 @@ then g.Text=f[i]end end local i=e:Label{RichText=true,Text=
 'Locked to: <font color="rgb(240, 40, 10)">none</font>'}Aimbot_S.AutoLockedLabel
 =function(j)if j then i.Text=string.format(
 'Locked to: <font color="rgb(40, 240, 10)">%q</font>',j.Name)else i.Text=
-'Locked to: <font color="rgb(240, 40, 10)">None</font>'end end e:Keybind{Label=
-'Trigger Keybind',Value=Enum.KeyCode.E,IgnoreGameProcessed=false,OnKeybindSet=
-function(j,k)Aimbot_S.TriggerKey=k end}e:Checkbox{Label='Toggle',Value=true,
-Callback=function(j,k)Aimbot_S.Toggle=k c(ah.Info,j.Label,':',k)end}e:Combo{
-Selected='Head',Label='Aiming Bone',Items={'Head','Torso'},Callback=function(j,k
-)Aimbot_S.LockPart=k c(ah.Info,j.Label,':',k)end}e:Checkbox{Label='Team Check',
-Value=true,Callback=function(j,k)Aimbot_S.TeamCheck=k c(ah.Info,j.Label,':',k)
-end}e:Checkbox{Label='Alive Check',Value=true,Callback=function(j,k)Aimbot_S.
-AliveCheck=k c(ah.Info,j.Label,':',k)end}e:Checkbox{Label='Wall Check',Value=
-true,Callback=function(j,k)Aimbot_S.WallCheck=k c(ah.Info,j.Label,':',k)end}e:
-SliderFloat{Label='Smoothing',Minimum=1,Maximum=20,Value=2,Format=
-'Smoothing = %.3f',Callback=function(j,k)Aimbot_S.Sensitivity2=k c(ah.Info,j.
-Label,':',k)end}e:SliderFloat{Label='Shake Multiplier',Minimum=0,Maximum=10,
-Value=0,Format='Multiplier = %.1f',Callback=function(j,k)Aimbot_S.
-ShakeMultiplier=k c(ah.Info,j.Label,':',k)end}e:Separator{Text='FOV Settings'}e:
-Checkbox{Label='Enabled',Value=true,Callback=function(j,k)Aimbot_F.Enabled=k c(
-ah.Info,j.Label,':',k)end}e:Checkbox{Label='Visible',Value=true,Callback=
-function(j,k)Aimbot_F.Visible=k c(ah.Info,j.Label,':',k)end}e:SliderFloat{Label=
-'Radius',Minimum=0,Maximum=500,Value=120,Format='Radius = %.0f',Callback=
-function(j,k)Aimbot_F.Radius=k c(ah.Info,j.Label,':',k)end}e:SliderFloat{Label=
-'Circle Sides',Minimum=3,Maximum=80,Value=25,Format='Sides = %.0f',Callback=
-function(j,k)Aimbot_F.NumSides=k c(ah.Info,j.Label,':',k)end}e:SliderFloat{Label
-='Transparency',Minimum=0,Maximum=1,Value=0,Format='Transparency = %.3f',
-Callback=function(j,k)Aimbot_F.Transparency=k c(ah.Info,j.Label,':',k)end}e:
-DragColor3{Value=Color3.fromRGB(240,40,10),Label='Color',Callback=function(j,k)
-Aimbot_F.Color=k c(ah.Info,j.Label,':',k)end}e:DragColor3{Value=Color3.fromRGB(
-40,240,10),Label='Color (Locked)',Callback=function(j,k)Aimbot_F.LockedColor=k
-c(ah.Info,j.Label,':',k)end}b.Visuals:Separator{Text='Shared Settings'}local j
-local k=b.Visuals:Checkbox{Label='Limit Distance',Value=false,Callback=function(
-k,l)ad.shared.limitDistance=l if j then j:SetDisabled(not l)end c(ah.Info,k.
-Label,':',l)end}j=b.Visuals:SliderFloat{Label='Limit',Minimum=1,Maximum=500,
-Value=150,Format='Distance Limit = %.0f',Callback=function(l,m)ad.shared.
-maxDistance=m c(ah.Info,l.Label,':',m)end}j:SetDisabled(not k.Value)b.Visuals:
-Separator{Text='ESP'}local l,m=b.Visuals:TabSelector{Size=UDim2.new(1,0,0,400)},
-function(l,m)m:Checkbox{Label='Enabled',Value=false,Callback=function(n,o)l.
-enabled=o c(ah.Info,n.Label,':',o)end}m:Separator{Text='Boxes'}m:Checkbox{Label=
-'Enabled',Value=true,Callback=function(n,o)l.box=o c(ah.Info,n.Label,':',o)end}m
-:DragColor3{Value=Color3.fromRGB(77,92,143),Label='Color',Callback=function(n,o)
-l.boxColor[1]=o c(ah.Info,n.Label,':',o)end}m:SliderFloat{Label='Transparency',
-Minimum=0,Maximum=1,Value=0,Format='Transparency = %.3f',Callback=function(n,o)l
-.boxColor[2]=1-o l.boxOutlineColor[2]=1-o c(ah.Info,n.Label,':',o)end}m:
-Separator{Text='Box Fill'}m:Checkbox{Label='Enabled',Value=true,Callback=
-function(n,o)l.boxFill=o c(ah.Info,n.Label,':',o)end}m:DragColor3{Value=Color3.
-fromRGB(0,0,0),Label='Color',Callback=function(n,o)l.boxFillColor[1]=o c(ah.Info
-,n.Label,':',o)end}m:SliderFloat{Label='Transparency',Minimum=0,Maximum=1,Value=
-0.2,Format='Transparency = %.3f',Callback=function(n,o)l.boxFillColor[2]=o c(ah.
-Info,n.Label,':',o)end}m:Separator{Text='Chams'}m:Checkbox{Label='Enabled',Value
-=true,Callback=function(n,o)l.chams=o c(ah.Info,n.Label,':',o)end}m:Checkbox{
-Label='Always On Top',Value=true,Callback=function(n,o)l.chamsVisibleOnly=not o
-c(ah.Info,n.Label,':',o)end}m:DragColor3{Value=Color3.fromRGB(100,120,250),Label
-='Color (Fill)',Callback=function(n,o)l.chamsFillColor[1]=o c(ah.Info,n.Label,
-':',o)end}m:SliderFloat{Label='Transparency (Fill)',Minimum=0,Maximum=1,Value=
-0.8,Format='Transparency = %.3f',Callback=function(n,o)l.chamsFillColor[2]=o c(
-ah.Info,n.Label,':',o)end}m:DragColor3{Value=Color3.fromRGB(25,85,255),Label=
-'Color (Outline)',Callback=function(n,o)l.chamsOutlineColor[1]=o c(ah.Info,n.
-Label,':',o)end}m:SliderFloat{Label='Transparency (Outline)',Minimum=0,Maximum=1
-,Value=0,Format='Transparency = %.3f',Callback=function(n,o)l.chamsOutlineColor[
-2]=o c(ah.Info,n.Label,':',o)end}m:Separator{Text='Tracers'}m:Checkbox{Label=
-'Enabled',Value=true,Callback=function(n,o)l.tracer=o c(ah.Info,n.Label,':',o)
-end}m:DragColor3{Value=Color3.fromRGB(77,92,143),Label='Color',Callback=function
-(n,o)l.tracerColor[1]=o c(ah.Info,n.Label,':',o)end}m:SliderFloat{Label=
-'Transparency',Minimum=0,Maximum=1,Value=0,Format='Transparency = %.3f',Callback
-=function(n,o)l.tracerColor[2]=1-o l.tracerOutlineColor[2]=1-o c(ah.Info,n.Label
-,':',o)end}m:Combo{Selected='Top',Label='Tracer Origin',Items={'Top','Middle',
-'Bottom','Mouse'},Callback=function(n,o)l.tracerOrigin=o c(ah.Info,n.Label,':',o
-)end}m:Separator{Text='Health Bars'}m:Checkbox{Label='Enabled',Value=true,
-Callback=function(n,o)l.healthBar=o c(ah.Info,n.Label,':',o)end}m:DragColor3{
-Value=Color3.fromRGB(58,161,47),Label='Healthy Color',Callback=function(n,o)l.
-healthyColor=o end}m:DragColor3{Value=Color3.fromRGB(161,47,47),Label=
-'Dying Color',Callback=function(n,o)l.dyingColor=o c(ah.Info,n.Label,':',o)end}m
-:Separator{Text='Off Screen Arrows'}m:Checkbox{Label='Enabled',Value=true,
-Callback=function(n,o)l.offScreenArrow=o c(ah.Info,n.Label,':',o)end}m:
-DragColor3{Value=Color3.fromRGB(255,255,255),Label='Color',Callback=function(n,o
-)l.offScreenArrowColor[1]=o c(ah.Info,n.Label,':',o)end}m:SliderFloat{Label=
-'Transparency',Minimum=0,Maximum=1,Value=0,Format='Transparency = %.3f',Callback
-=function(n,o)l.offScreenArrowColor[2]=1-o l.offScreenArrowOutlineColor[2]=1-o
-c(ah.Info,n.Label,':',o)end}m:SliderInt{Label='Size',Value=15,Minimum=1,Maximum=
-50,Callback=function(n,o)l.offScreenArrowSize=o c(ah.Info,n.Label,':',o)end}m:
-SliderInt{Label='Radius',Value=150,Minimum=1,Maximum=800,Callback=function(n,o)l
-.offScreenArrowRadius=o c(ah.Info,n.Label,':',o)end}m:Separator{Text='Names'}m:
-Checkbox{Label='Enabled',Value=true,Callback=function(n,o)l.name=o c(ah.Info,n.
-Label,':',o)end}m:DragColor3{Value=Color3.fromRGB(221,215,148),Label='Color',
-Callback=function(n,o)l.nameColor[1]=o c(ah.Info,n.Label,':',o)end}m:SliderFloat
-{Label='Transparency',Minimum=0,Maximum=1,Value=0,Format='Transparency = %.3f',
-Callback=function(n,o)l.nameColor[2]=1-o c(ah.Info,n.Label,':',o)end}m:Separator
-{Text='Distance Text'}m:Checkbox{Label='Enabled',Value=true,Callback=function(n,
-o)l.distance=o c(ah.Info,n.Label,':',o)end}m:DragColor3{Value=Color3.fromRGB(221
-,215,148),Label='Color',Callback=function(n,o)l.distanceColor[1]=o c(ah.Info,n.
-Label,':',o)end}m:SliderFloat{Label='Transparency',Minimum=0,Maximum=1,Value=0,
-Format='Transparency = %.3f',Callback=function(n,o)l.distanceColor[2]=1-o c(ah.
-Info,n.Label,':',o)end}m:Separator{Text='Weapon Text'}m:Checkbox{Label=
-'Weapon Text',Value=true,Callback=function(n,o)l.weapon=o c(ah.Info,n.Label,':',
-o)end}m:DragColor3{Value=Color3.fromRGB(200,173,182),Label='Color',Callback=
-function(n,o)l.weaponColor[1]=o c(ah.Info,n.Label,':',o)end}m:SliderFloat{Label=
-'Transparency',Minimum=0,Maximum=1,Value=0,Format='Transparency = %.3f',Callback
-=function(n,o)l.weaponColor[2]=1-o c(ah.Info,n.Label,':',o)end}m:Separator{Text=
-'Health Text'}m:Checkbox{Label='Health Text',Value=true,Callback=function(n,o)l.
-healthText=o c(ah.Info,n.Label,':',o)end}m:DragColor3{Value=Color3.fromRGB(200,
-173,182),Label='Color',Callback=function(n,o)l.healthTextColor[1]=o c(ah.Info,n.
-Label,':',o)end}m:SliderFloat{Label='Transparency',Minimum=0,Maximum=1,Value=0,
-Format='Transparency = %.3f',Callback=function(n,o)l.healthTextColor[2]=1-o c(ah
-.Info,n.Label,':',o)end}end local n=l:CreateTab{Name='Enemy'}m(ESP_E,n)local o=l
-:CreateTab{Name='Friendly'}m(ESP_F,o)b.Settings:Keybind{Label='Menu Keybind',
-Value=Enum.KeyCode.Home,IgnoreGameProcessed=false,Callback=function(p,r)ag:
-SetVisible(not ag.Visible)end}ad.Load()ae.Load()c(ah.Success,UIName..
-' loaded successfully.')end return aa end function a.f()local aa,ab={},a.load'a'
-GetService=ab.SecureService local ac=a.load'b'UIName='RIOT V2'local ad=a.load'c'
-ESP_E=ad.team.enemy ESP_F=ad.team.friendly local ae=a.load'd'Aimbot_S=ae.
-Settings Aimbot_F=ae.FOVSettings local af,ag=GetService'ReplicatedStorage',
-GetService'Workspace'local ah=af:FindFirstChild'Skorpio_Engine'local ai,b=ah and
-ah:FindFirstChild'GunModels',ag:FindFirstChild'SE_Workspace'local c=b and b:
-FindFirstChild'Drones'ActiveDronesESP={Settings={},Objects={}}local d=ag:
-FindFirstChild'Gadgets'ActiveGadgetsESP={Settings={},Objects={}}local e=b and b:
-FindFirstChild'Cameras'ActiveCamerasESP={Settings={},Objects={}}local f=ag:
-FindFirstChild'Objective'ActiveBombsESP={Settings={},Objects={}}local g=function
-(g,h,i,j,k)for l,m in pairs(g)do if m[h]and m[h][i]~=nil then if k and typeof(m[
-h][i])=='table'then m[h][i][k]=j else m[h][i]=j end end end return i,j end
-function aa.init(h)local i,j,k=ac:TabsWindow{Title=string.format(
-'%q | %q - getriot.cc',tostring(UIName),tostring(h)),Size=UDim2.new(0,350,0,550)
-,Position=UDim2.new(0.5,0,0,70)},{Success=`<font color="rgb(40, 240, 10)">[Success]</font>`
+'Locked to: <font color="rgb(240, 40, 10)">None</font>'end end local j,k e:Combo
+{Selected='Camera',Label='Lock Mode',Items={'Camera','Mouse'},Callback=function(
+l,m)local n={Camera=1,Mouse=2}Aimbot_S.LockMode=n[m]local o=function(o,p)if j
+and k then j:SetDisabled(o)k:SetDisabled(p)end end if m=='Camera'then o(false,
+true)elseif m=='Mouse'then o(true,false)end c(ah.Info,l.Label,':',m)end}e:
+Keybind{Label='Trigger Keybind',Value=Enum.KeyCode.E,IgnoreGameProcessed=false,
+OnKeybindSet=function(l,m)Aimbot_S.TriggerKey=m end}e:Checkbox{Label=
+'Toggle Activation',Value=true,Callback=function(l,m)Aimbot_S.Toggle=m c(ah.Info
+,l.Label,':',m)end}e:Combo{Selected='Head',Label='Aiming Bone',Items={'Head',
+'Torso'},Callback=function(l,m)Aimbot_S.LockPart=m c(ah.Info,l.Label,':',m)end}e
+:Checkbox{Label='Team Check',Value=true,Callback=function(l,m)Aimbot_S.TeamCheck
+=m c(ah.Info,l.Label,':',m)end}e:Checkbox{Label='Alive Check',Value=true,
+Callback=function(l,m)Aimbot_S.AliveCheck=m c(ah.Info,l.Label,':',m)end}e:
+Checkbox{Label='Wall Check',Value=true,Callback=function(l,m)Aimbot_S.WallCheck=
+m c(ah.Info,l.Label,':',m)end}j=e:SliderFloat{Label='Smoothing (Camera)',Minimum
+=0,Maximum=1,Value=0,Format='Smoothing = %.3f',Callback=function(l,m)Aimbot_S.
+Sensitivity=m c(ah.Info,l.Label,':',m)end}k=e:SliderFloat{Label=
+'Smoothing (Mouse)',Minimum=1,Maximum=20,Value=1,Format='Smoothing = %.1f',
+Callback=function(l,m)Aimbot_S.Sensitivity2=m c(ah.Info,l.Label,':',m)end}k:
+SetDisabled(true)e:Separator{Text='FOV Settings'}e:Checkbox{Label='Enabled',
+Value=true,Callback=function(l,m)Aimbot_F.Enabled=m c(ah.Info,l.Label,':',m)end}
+e:Checkbox{Label='Visible',Value=true,Callback=function(l,m)Aimbot_F.Visible=m
+c(ah.Info,l.Label,':',m)end}e:SliderFloat{Label='Radius',Minimum=0,Maximum=500,
+Value=120,Format='Radius = %.0f',Callback=function(l,m)Aimbot_F.Radius=m c(ah.
+Info,l.Label,':',m)end}e:SliderFloat{Label='Circle Sides',Minimum=3,Maximum=80,
+Value=25,Format='Sides = %.0f',Callback=function(l,m)Aimbot_F.NumSides=m c(ah.
+Info,l.Label,':',m)end}e:SliderFloat{Label='Transparency',Minimum=0,Maximum=1,
+Value=0,Format='Transparency = %.3f',Callback=function(l,m)Aimbot_F.Transparency
+=m c(ah.Info,l.Label,':',m)end}e:DragColor3{Value=Color3.fromRGB(240,40,10),
+Label='Color',Callback=function(l,m)Aimbot_F.Color=m c(ah.Info,l.Label,':',m)end
+}e:DragColor3{Value=Color3.fromRGB(40,240,10),Label='Color (Locked)',Callback=
+function(l,m)Aimbot_F.LockedColor=m c(ah.Info,l.Label,':',m)end}b.Visuals:
+Separator{Text='Shared Settings'}local l local m=b.Visuals:Checkbox{Label=
+'Limit Distance',Value=false,Callback=function(m,n)ad.shared.limitDistance=n if
+l then l:SetDisabled(not n)end c(ah.Info,m.Label,':',n)end}l=b.Visuals:
+SliderFloat{Label='Limit',Minimum=1,Maximum=500,Value=150,Format=
+'Distance Limit = %.0f',Callback=function(n,o)ad.shared.maxDistance=o c(ah.Info,
+n.Label,':',o)end}l:SetDisabled(not m.Value)b.Visuals:Separator{Text='ESP'}local
+n,o=b.Visuals:TabSelector{Size=UDim2.new(1,0,0,400)},function(n,o)o:Checkbox{
+Label='Enabled',Value=false,Callback=function(p,r)n.enabled=r c(ah.Info,p.Label,
+':',r)end}o:Separator{Text='Boxes'}o:Checkbox{Label='Enabled',Value=true,
+Callback=function(p,r)n.box=r c(ah.Info,p.Label,':',r)end}o:DragColor3{Value=
+Color3.fromRGB(77,92,143),Label='Color',Callback=function(p,r)n.boxColor[1]=r c(
+ah.Info,p.Label,':',r)end}o:SliderFloat{Label='Transparency',Minimum=0,Maximum=1
+,Value=0,Format='Transparency = %.3f',Callback=function(p,r)n.boxColor[2]=1-r n.
+boxOutlineColor[2]=1-r c(ah.Info,p.Label,':',r)end}o:Separator{Text='Box Fill'}o
+:Checkbox{Label='Enabled',Value=true,Callback=function(p,r)n.boxFill=r c(ah.Info
+,p.Label,':',r)end}o:DragColor3{Value=Color3.fromRGB(0,0,0),Label='Color',
+Callback=function(p,r)n.boxFillColor[1]=r c(ah.Info,p.Label,':',r)end}o:
+SliderFloat{Label='Transparency',Minimum=0,Maximum=1,Value=0.2,Format=
+'Transparency = %.3f',Callback=function(p,r)n.boxFillColor[2]=r c(ah.Info,p.
+Label,':',r)end}o:Separator{Text='Chams'}o:Checkbox{Label='Enabled',Value=true,
+Callback=function(p,r)n.chams=r c(ah.Info,p.Label,':',r)end}o:Checkbox{Label=
+'Always On Top',Value=true,Callback=function(p,r)n.chamsVisibleOnly=not r c(ah.
+Info,p.Label,':',r)end}o:DragColor3{Value=Color3.fromRGB(100,120,250),Label=
+'Color (Fill)',Callback=function(p,r)n.chamsFillColor[1]=r c(ah.Info,p.Label,':'
+,r)end}o:SliderFloat{Label='Transparency (Fill)',Minimum=0,Maximum=1,Value=0.8,
+Format='Transparency = %.3f',Callback=function(p,r)n.chamsFillColor[2]=r c(ah.
+Info,p.Label,':',r)end}o:DragColor3{Value=Color3.fromRGB(25,85,255),Label=
+'Color (Outline)',Callback=function(p,r)n.chamsOutlineColor[1]=r c(ah.Info,p.
+Label,':',r)end}o:SliderFloat{Label='Transparency (Outline)',Minimum=0,Maximum=1
+,Value=0.5,Format='Transparency = %.3f',Callback=function(p,r)n.
+chamsOutlineColor[2]=r c(ah.Info,p.Label,':',r)end}o:Separator{Text='Tracers'}o:
+Checkbox{Label='Enabled',Value=true,Callback=function(p,r)n.tracer=r c(ah.Info,p
+.Label,':',r)end}o:DragColor3{Value=Color3.fromRGB(77,92,143),Label='Color',
+Callback=function(p,r)n.tracerColor[1]=r c(ah.Info,p.Label,':',r)end}o:
+SliderFloat{Label='Transparency',Minimum=0,Maximum=1,Value=0,Format=
+'Transparency = %.3f',Callback=function(p,r)n.tracerColor[2]=1-r n.
+tracerOutlineColor[2]=1-r c(ah.Info,p.Label,':',r)end}o:Combo{Selected='Top',
+Label='Tracer Origin',Items={'Top','Middle','Bottom','Mouse'},Callback=function(
+p,r)n.tracerOrigin=r c(ah.Info,p.Label,':',r)end}o:Separator{Text='Health Bars'}
+o:Checkbox{Label='Enabled',Value=true,Callback=function(p,r)n.healthBar=r c(ah.
+Info,p.Label,':',r)end}o:DragColor3{Value=Color3.fromRGB(58,161,47),Label=
+'Healthy Color',Callback=function(p,r)n.healthyColor=r end}o:DragColor3{Value=
+Color3.fromRGB(161,47,47),Label='Dying Color',Callback=function(p,r)n.dyingColor
+=r c(ah.Info,p.Label,':',r)end}o:Separator{Text='Off Screen Arrows'}o:Checkbox{
+Label='Enabled',Value=true,Callback=function(p,r)n.offScreenArrow=r c(ah.Info,p.
+Label,':',r)end}o:DragColor3{Value=Color3.fromRGB(255,255,255),Label='Color',
+Callback=function(p,r)n.offScreenArrowColor[1]=r c(ah.Info,p.Label,':',r)end}o:
+SliderFloat{Label='Transparency',Minimum=0,Maximum=1,Value=0,Format=
+'Transparency = %.3f',Callback=function(p,r)n.offScreenArrowColor[2]=1-r n.
+offScreenArrowOutlineColor[2]=1-r c(ah.Info,p.Label,':',r)end}o:SliderInt{Label=
+'Size',Value=15,Minimum=1,Maximum=50,Callback=function(p,r)n.offScreenArrowSize=
+r c(ah.Info,p.Label,':',r)end}o:SliderInt{Label='Radius',Value=150,Minimum=1,
+Maximum=800,Callback=function(p,r)n.offScreenArrowRadius=r c(ah.Info,p.Label,':'
+,r)end}o:Separator{Text='Names'}o:Checkbox{Label='Enabled',Value=true,Callback=
+function(p,r)n.name=r c(ah.Info,p.Label,':',r)end}o:DragColor3{Value=Color3.
+fromRGB(221,215,148),Label='Color',Callback=function(p,r)n.nameColor[1]=r c(ah.
+Info,p.Label,':',r)end}o:SliderFloat{Label='Transparency',Minimum=0,Maximum=1,
+Value=0,Format='Transparency = %.3f',Callback=function(p,r)n.nameColor[2]=1-r c(
+ah.Info,p.Label,':',r)end}o:Separator{Text='Distance Text'}o:Checkbox{Label=
+'Enabled',Value=true,Callback=function(p,r)n.distance=r c(ah.Info,p.Label,':',r)
+end}o:DragColor3{Value=Color3.fromRGB(221,215,148),Label='Color',Callback=
+function(p,r)n.distanceColor[1]=r c(ah.Info,p.Label,':',r)end}o:SliderFloat{
+Label='Transparency',Minimum=0,Maximum=1,Value=0,Format='Transparency = %.3f',
+Callback=function(p,r)n.distanceColor[2]=1-r c(ah.Info,p.Label,':',r)end}o:
+Separator{Text='Weapon Text'}o:Checkbox{Label='Weapon Text',Value=true,Callback=
+function(p,r)n.weapon=r c(ah.Info,p.Label,':',r)end}o:DragColor3{Value=Color3.
+fromRGB(200,173,182),Label='Color',Callback=function(p,r)n.weaponColor[1]=r c(ah
+.Info,p.Label,':',r)end}o:SliderFloat{Label='Transparency',Minimum=0,Maximum=1,
+Value=0,Format='Transparency = %.3f',Callback=function(p,r)n.weaponColor[2]=1-r
+c(ah.Info,p.Label,':',r)end}o:Separator{Text='Health Text'}o:Checkbox{Label=
+'Health Text',Value=true,Callback=function(p,r)n.healthText=r c(ah.Info,p.Label,
+':',r)end}o:DragColor3{Value=Color3.fromRGB(200,173,182),Label='Color',Callback=
+function(p,r)n.healthTextColor[1]=r c(ah.Info,p.Label,':',r)end}o:SliderFloat{
+Label='Transparency',Minimum=0,Maximum=1,Value=0,Format='Transparency = %.3f',
+Callback=function(p,r)n.healthTextColor[2]=1-r c(ah.Info,p.Label,':',r)end}end
+local p=n:CreateTab{Name='Enemy'}o(ESP_E,p)local r=n:CreateTab{Name='Friendly'}
+o(ESP_F,r)b.Settings:Keybind{Label='Menu Keybind',Value=Enum.KeyCode.Home,
+IgnoreGameProcessed=false,Callback=function(s,u)ag:SetVisible(not ag.Visible)end
+}ad.Load()ae.Load()c(ah.Success,UIName..' loaded successfully.')end return aa
+end function a.f()local aa,ab={},a.load'a'GetService=ab.SecureService local ac=a
+.load'b'UIName='RIOT V2'local ad=a.load'c'ESP_E=ad.team.enemy ESP_F=ad.team.
+friendly local ae=a.load'd'Aimbot_S=ae.Settings Aimbot_F=ae.FOVSettings function
+aa.init(af)local ag,ah,ai=ac:TabsWindow{Title=UIName..' | '..af..' - getriot.cc'
+,Size=UDim2.new(0,350,0,550),Position=UDim2.new(0.5,0,0,70)},{Success=`<font color="rgb(40, 240, 10)">[Success]</font>`
+,Init=`<font color="rgb(240, 140, 10)">[Init]</font>`,Info=`<font color="rgb(10, 140, 240)">[Info]</font>`
+}local b={Console=ag:CreateTab{Name='Console'},Combat=ag:CreateTab{Name='Combat'
+},Visuals=ag:CreateTab{Name='Visuals'},Settings=ag:CreateTab{Name='Settings'}}ai
+=b.Console:Console{Value=ah.Init..' UI Initialized',ReadOnly=true,AutoScroll=
+true,RichText=true,MaxLines=250,Size=UDim2.new(1,0,0,480)}local c,d=function(...
+)return ai:AppendText(...)end,b.Combat:TabSelector{Size=UDim2.new(1,0,0,500)}
+local e=d:CreateTab{Name='Aimbot'}e:Separator{Text='Aimbot Settings'}local f,g={
+[true]='Active: <font color="rgb(40, 240, 10)">true</font>',[false]=
+'Active: <font color="rgb(240, 40, 10)">false</font>'}local h=e:Checkbox{Label=
+'Enabled',Value=false,Callback=function(h,i)Aimbot_S.Enabled=i if g and g.Text==
+f[true]and i==false then g.Text=f[false]end c(ah.Info,h.Label,':',i)end}g=e:
+Label{RichText=true,Text=f[false]}Aimbot_S.AutoStateLabel=function(i)if h.Value
+then g.Text=f[i]end end local i=e:Label{RichText=true,Text=
+'Locked to: <font color="rgb(240, 40, 10)">none</font>'}Aimbot_S.AutoLockedLabel
+=function(j)if j then i.Text=string.format(
+'Locked to: <font color="rgb(40, 240, 10)">%q</font>',j.Name)else i.Text=
+'Locked to: <font color="rgb(240, 40, 10)">None</font>'end end local j,k e:Combo
+{Selected='Camera',Label='Lock Mode',Items={'Camera','Mouse'},Callback=function(
+l,m)local n={Camera=1,Mouse=2}Aimbot_S.LockMode=n[m]local o=function(o,p)if j
+and k then j:SetDisabled(o)k:SetDisabled(p)end end if m=='Camera'then o(false,
+true)elseif m=='Mouse'then o(true,false)end c(ah.Info,l.Label,':',m)end}e:
+Keybind{Label='Trigger Keybind',Value=Enum.KeyCode.E,IgnoreGameProcessed=false,
+OnKeybindSet=function(l,m)Aimbot_S.TriggerKey=m end}e:Checkbox{Label=
+'Toggle Activation',Value=true,Callback=function(l,m)Aimbot_S.Toggle=m c(ah.Info
+,l.Label,':',m)end}e:Combo{Selected='Head',Label='Aiming Bone',Items={'Head',
+'Torso'},Callback=function(l,m)Aimbot_S.LockPart=m c(ah.Info,l.Label,':',m)end}e
+:Checkbox{Label='Team Check',Value=true,Callback=function(l,m)Aimbot_S.TeamCheck
+=m c(ah.Info,l.Label,':',m)end}e:Checkbox{Label='Alive Check',Value=true,
+Callback=function(l,m)Aimbot_S.AliveCheck=m c(ah.Info,l.Label,':',m)end}e:
+Checkbox{Label='Wall Check',Value=true,Callback=function(l,m)Aimbot_S.WallCheck=
+m c(ah.Info,l.Label,':',m)end}j=e:SliderFloat{Label='Smoothing (Camera)',Minimum
+=0,Maximum=1,Value=0,Format='Smoothing = %.3f',Callback=function(l,m)Aimbot_S.
+Sensitivity=m c(ah.Info,l.Label,':',m)end}k=e:SliderFloat{Label=
+'Smoothing (Mouse)',Minimum=1,Maximum=20,Value=1,Format='Smoothing = %.1f',
+Callback=function(l,m)Aimbot_S.Sensitivity2=m c(ah.Info,l.Label,':',m)end}k:
+SetDisabled(true)e:Separator{Text='FOV Settings'}e:Checkbox{Label='Enabled',
+Value=true,Callback=function(l,m)Aimbot_F.Enabled=m c(ah.Info,l.Label,':',m)end}
+e:Checkbox{Label='Visible',Value=true,Callback=function(l,m)Aimbot_F.Visible=m
+c(ah.Info,l.Label,':',m)end}e:SliderFloat{Label='Radius',Minimum=0,Maximum=500,
+Value=120,Format='Radius = %.0f',Callback=function(l,m)Aimbot_F.Radius=m c(ah.
+Info,l.Label,':',m)end}e:SliderFloat{Label='Circle Sides',Minimum=3,Maximum=80,
+Value=25,Format='Sides = %.0f',Callback=function(l,m)Aimbot_F.NumSides=m c(ah.
+Info,l.Label,':',m)end}e:SliderFloat{Label='Transparency',Minimum=0,Maximum=1,
+Value=0,Format='Transparency = %.3f',Callback=function(l,m)Aimbot_F.Transparency
+=m c(ah.Info,l.Label,':',m)end}e:DragColor3{Value=Color3.fromRGB(240,40,10),
+Label='Color',Callback=function(l,m)Aimbot_F.Color=m c(ah.Info,l.Label,':',m)end
+}e:DragColor3{Value=Color3.fromRGB(40,240,10),Label='Color (Locked)',Callback=
+function(l,m)Aimbot_F.LockedColor=m c(ah.Info,l.Label,':',m)end}b.Visuals:
+Separator{Text='Shared Settings'}local l local m=b.Visuals:Checkbox{Label=
+'Limit Distance',Value=false,Callback=function(m,n)ad.shared.limitDistance=n if
+l then l:SetDisabled(not n)end c(ah.Info,m.Label,':',n)end}l=b.Visuals:
+SliderFloat{Label='Limit',Minimum=1,Maximum=500,Value=150,Format=
+'Distance Limit = %.0f',Callback=function(n,o)ad.shared.maxDistance=o c(ah.Info,
+n.Label,':',o)end}l:SetDisabled(not m.Value)b.Visuals:Separator{Text='ESP'}local
+n,o=b.Visuals:TabSelector{Size=UDim2.new(1,0,0,400)},function(n,o)o:Checkbox{
+Label='Enabled',Value=false,Callback=function(p,r)n.enabled=r c(ah.Info,p.Label,
+':',r)end}o:Separator{Text='Boxes'}o:Checkbox{Label='Enabled',Value=true,
+Callback=function(p,r)n.box=r c(ah.Info,p.Label,':',r)end}o:DragColor3{Value=
+Color3.fromRGB(77,92,143),Label='Color',Callback=function(p,r)n.boxColor[1]=r c(
+ah.Info,p.Label,':',r)end}o:SliderFloat{Label='Transparency',Minimum=0,Maximum=1
+,Value=0,Format='Transparency = %.3f',Callback=function(p,r)n.boxColor[2]=1-r n.
+boxOutlineColor[2]=1-r c(ah.Info,p.Label,':',r)end}o:Separator{Text='Box Fill'}o
+:Checkbox{Label='Enabled',Value=true,Callback=function(p,r)n.boxFill=r c(ah.Info
+,p.Label,':',r)end}o:DragColor3{Value=Color3.fromRGB(0,0,0),Label='Color',
+Callback=function(p,r)n.boxFillColor[1]=r c(ah.Info,p.Label,':',r)end}o:
+SliderFloat{Label='Transparency',Minimum=0,Maximum=1,Value=0.2,Format=
+'Transparency = %.3f',Callback=function(p,r)n.boxFillColor[2]=r c(ah.Info,p.
+Label,':',r)end}o:Separator{Text='Chams'}o:Checkbox{Label='Enabled',Value=true,
+Callback=function(p,r)n.chams=r c(ah.Info,p.Label,':',r)end}o:Checkbox{Label=
+'Always On Top',Value=true,Callback=function(p,r)n.chamsVisibleOnly=not r c(ah.
+Info,p.Label,':',r)end}o:DragColor3{Value=Color3.fromRGB(100,120,250),Label=
+'Color (Fill)',Callback=function(p,r)n.chamsFillColor[1]=r c(ah.Info,p.Label,':'
+,r)end}o:SliderFloat{Label='Transparency (Fill)',Minimum=0,Maximum=1,Value=0.8,
+Format='Transparency = %.3f',Callback=function(p,r)n.chamsFillColor[2]=r c(ah.
+Info,p.Label,':',r)end}o:DragColor3{Value=Color3.fromRGB(25,85,255),Label=
+'Color (Outline)',Callback=function(p,r)n.chamsOutlineColor[1]=r c(ah.Info,p.
+Label,':',r)end}o:SliderFloat{Label='Transparency (Outline)',Minimum=0,Maximum=1
+,Value=0.5,Format='Transparency = %.3f',Callback=function(p,r)n.
+chamsOutlineColor[2]=r c(ah.Info,p.Label,':',r)end}o:Separator{Text='Tracers'}o:
+Checkbox{Label='Enabled',Value=true,Callback=function(p,r)n.tracer=r c(ah.Info,p
+.Label,':',r)end}o:DragColor3{Value=Color3.fromRGB(77,92,143),Label='Color',
+Callback=function(p,r)n.tracerColor[1]=r c(ah.Info,p.Label,':',r)end}o:
+SliderFloat{Label='Transparency',Minimum=0,Maximum=1,Value=0,Format=
+'Transparency = %.3f',Callback=function(p,r)n.tracerColor[2]=1-r n.
+tracerOutlineColor[2]=1-r c(ah.Info,p.Label,':',r)end}o:Combo{Selected='Top',
+Label='Tracer Origin',Items={'Top','Middle','Bottom','Mouse'},Callback=function(
+p,r)n.tracerOrigin=r c(ah.Info,p.Label,':',r)end}o:Separator{Text='Health Bars'}
+o:Checkbox{Label='Enabled',Value=true,Callback=function(p,r)n.healthBar=r c(ah.
+Info,p.Label,':',r)end}o:DragColor3{Value=Color3.fromRGB(58,161,47),Label=
+'Healthy Color',Callback=function(p,r)n.healthyColor=r end}o:DragColor3{Value=
+Color3.fromRGB(161,47,47),Label='Dying Color',Callback=function(p,r)n.dyingColor
+=r c(ah.Info,p.Label,':',r)end}o:Separator{Text='Off Screen Arrows'}o:Checkbox{
+Label='Enabled',Value=true,Callback=function(p,r)n.offScreenArrow=r c(ah.Info,p.
+Label,':',r)end}o:DragColor3{Value=Color3.fromRGB(255,255,255),Label='Color',
+Callback=function(p,r)n.offScreenArrowColor[1]=r c(ah.Info,p.Label,':',r)end}o:
+SliderFloat{Label='Transparency',Minimum=0,Maximum=1,Value=0,Format=
+'Transparency = %.3f',Callback=function(p,r)n.offScreenArrowColor[2]=1-r n.
+offScreenArrowOutlineColor[2]=1-r c(ah.Info,p.Label,':',r)end}o:SliderInt{Label=
+'Size',Value=15,Minimum=1,Maximum=50,Callback=function(p,r)n.offScreenArrowSize=
+r c(ah.Info,p.Label,':',r)end}o:SliderInt{Label='Radius',Value=150,Minimum=1,
+Maximum=800,Callback=function(p,r)n.offScreenArrowRadius=r c(ah.Info,p.Label,':'
+,r)end}o:Separator{Text='Names'}o:Checkbox{Label='Enabled',Value=true,Callback=
+function(p,r)n.name=r c(ah.Info,p.Label,':',r)end}o:DragColor3{Value=Color3.
+fromRGB(221,215,148),Label='Color',Callback=function(p,r)n.nameColor[1]=r c(ah.
+Info,p.Label,':',r)end}o:SliderFloat{Label='Transparency',Minimum=0,Maximum=1,
+Value=0,Format='Transparency = %.3f',Callback=function(p,r)n.nameColor[2]=1-r c(
+ah.Info,p.Label,':',r)end}o:Separator{Text='Distance Text'}o:Checkbox{Label=
+'Enabled',Value=true,Callback=function(p,r)n.distance=r c(ah.Info,p.Label,':',r)
+end}o:DragColor3{Value=Color3.fromRGB(221,215,148),Label='Color',Callback=
+function(p,r)n.distanceColor[1]=r c(ah.Info,p.Label,':',r)end}o:SliderFloat{
+Label='Transparency',Minimum=0,Maximum=1,Value=0,Format='Transparency = %.3f',
+Callback=function(p,r)n.distanceColor[2]=1-r c(ah.Info,p.Label,':',r)end}o:
+Separator{Text='Weapon Text'}o:Checkbox{Label='Weapon Text',Value=true,Callback=
+function(p,r)n.weapon=r c(ah.Info,p.Label,':',r)end}o:DragColor3{Value=Color3.
+fromRGB(200,173,182),Label='Color',Callback=function(p,r)n.weaponColor[1]=r c(ah
+.Info,p.Label,':',r)end}o:SliderFloat{Label='Transparency',Minimum=0,Maximum=1,
+Value=0,Format='Transparency = %.3f',Callback=function(p,r)n.weaponColor[2]=1-r
+c(ah.Info,p.Label,':',r)end}o:Separator{Text='Health Text'}o:Checkbox{Label=
+'Health Text',Value=true,Callback=function(p,r)n.healthText=r c(ah.Info,p.Label,
+':',r)end}o:DragColor3{Value=Color3.fromRGB(200,173,182),Label='Color',Callback=
+function(p,r)n.healthTextColor[1]=r c(ah.Info,p.Label,':',r)end}o:SliderFloat{
+Label='Transparency',Minimum=0,Maximum=1,Value=0,Format='Transparency = %.3f',
+Callback=function(p,r)n.healthTextColor[2]=1-r c(ah.Info,p.Label,':',r)end}end
+local p=n:CreateTab{Name='Enemy'}o(ESP_E,p)local r=n:CreateTab{Name='Friendly'}
+o(ESP_F,r)b.Settings:Keybind{Label='Menu Keybind',Value=Enum.KeyCode.Home,
+IgnoreGameProcessed=false,Callback=function(s,u)ag:SetVisible(not ag.Visible)end
+}ad.Load()ae.Load()c(ah.Success,UIName..' loaded successfully.')end return aa
+end function a.g()local aa,ab={},a.load'a'GetService=ab.SecureService local ac=a
+.load'b'UIName='RIOT V2'local ad=a.load'c'ESP_E=ad.team.enemy ESP_F=ad.team.
+friendly local ae=a.load'd'Aimbot_S=ae.Settings Aimbot_F=ae.FOVSettings local af
+,ag=GetService'ReplicatedStorage',GetService'Workspace'local ah=af:
+FindFirstChild'Skorpio_Engine'local ai,b=ah and ah:FindFirstChild'GunModels',ag:
+FindFirstChild'SE_Workspace'local c=b and b:FindFirstChild'Drones'
+ActiveDronesESP={Settings={},Objects={}}local d=ag:FindFirstChild'Gadgets'
+ActiveGadgetsESP={Settings={},Objects={}}local e=b and b:FindFirstChild'Cameras'
+ActiveCamerasESP={Settings={},Objects={}}local f=ag:FindFirstChild'Objective'
+ActiveBombsESP={Settings={},Objects={}}local g=function(g,h,i,j,k)for l,m in
+pairs(g)do if m[h]and m[h][i]~=nil then if k and typeof(m[h][i])=='table'then m[
+h][i][k]=j else m[h][i]=j end end end return i,j end function aa.init(h)local i,
+j,k=ac:TabsWindow{Title=UIName..' | '..h..' - getriot.cc',Size=UDim2.new(0,350,0
+,550),Position=UDim2.new(0.5,0,0,70)},{Success=`<font color="rgb(40, 240, 10)">[Success]</font>`
 ,Init=`<font color="rgb(240, 140, 10)">[Init]</font>`,Info=`<font color="rgb(10, 140, 240)">[Info]</font>`
 }local l={Console=i:CreateTab{Name='Console'},Combat=i:CreateTab{Name='Combat'},
 Visuals=i:CreateTab{Name='Visuals'},Misc=i:CreateTab{Name='Misc'},Settings=i:
@@ -1403,144 +1540,151 @@ r.Text=p[u]end end local u=o:Label{RichText=true,Text=
 'Locked to: <font color="rgb(240, 40, 10)">none</font>'}Aimbot_S.AutoLockedLabel
 =function(v)if v then u.Text=string.format(
 'Locked to: <font color="rgb(40, 240, 10)">%q</font>',v.Name)else u.Text=
-'Locked to: <font color="rgb(240, 40, 10)">None</font>'end end o:Keybind{Label=
-'Trigger Keybind',Value=Enum.KeyCode.E,IgnoreGameProcessed=false,OnKeybindSet=
-function(v,w)Aimbot_S.TriggerKey=w end}o:Checkbox{Label='Toggle',Value=true,
-Callback=function(v,w)Aimbot_S.Toggle=w m(j.Info,v.Label,':',w)end}o:Combo{
-Selected='Head',Label='Aiming Bone',Items={'Head','Torso'},Callback=function(v,w
-)Aimbot_S.LockPart=w m(j.Info,v.Label,':',w)end}o:Checkbox{Label='Team Check',
-Value=true,Callback=function(v,w)Aimbot_S.TeamCheck=w m(j.Info,v.Label,':',w)end
-}o:Checkbox{Label='Alive Check',Value=true,Callback=function(v,w)Aimbot_S.
-AliveCheck=w m(j.Info,v.Label,':',w)end}o:Checkbox{Label='Wall Check',Value=true
-,Callback=function(v,w)Aimbot_S.WallCheck=w m(j.Info,v.Label,':',w)end}o:
-SliderFloat{Label='Smoothing',Minimum=1,Maximum=20,Value=2,Format=
-'Smoothing = %.3f',Callback=function(v,w)Aimbot_S.Sensitivity2=w m(j.Info,v.
-Label,':',w)end}o:SliderFloat{Label='Shake Multiplier',Minimum=0,Maximum=10,
-Value=0,Format='Multiplier = %.1f',Callback=function(v,w)Aimbot_S.
-ShakeMultiplier=w m(j.Info,v.Label,':',w)end}o:Separator{Text='FOV Settings'}o:
-Checkbox{Label='Enabled',Value=true,Callback=function(v,w)Aimbot_F.Enabled=w m(j
-.Info,v.Label,':',w)end}o:Checkbox{Label='Visible',Value=true,Callback=function(
-v,w)Aimbot_F.Visible=w m(j.Info,v.Label,':',w)end}o:SliderFloat{Label='Radius',
-Minimum=0,Maximum=500,Value=120,Format='Radius = %.0f',Callback=function(v,w)
-Aimbot_F.Radius=w m(j.Info,v.Label,':',w)end}o:SliderFloat{Label='Circle Sides',
-Minimum=3,Maximum=80,Value=25,Format='Sides = %.0f',Callback=function(v,w)
-Aimbot_F.NumSides=w m(j.Info,v.Label,':',w)end}o:SliderFloat{Label=
-'Transparency',Minimum=0,Maximum=1,Value=0,Format='Transparency = %.3f',Callback
-=function(v,w)Aimbot_F.Transparency=w m(j.Info,v.Label,':',w)end}o:DragColor3{
-Value=Color3.fromRGB(240,40,10),Label='Color',Callback=function(v,w)Aimbot_F.
-Color=w m(j.Info,v.Label,':',w)end}o:DragColor3{Value=Color3.fromRGB(40,240,10),
-Label='Color (Locked)',Callback=function(v,w)Aimbot_F.LockedColor=w m(j.Info,v.
-Label,':',w)end}l.Visuals:Separator{Text='Shared Settings'}local v local w=l.
-Visuals:Checkbox{Label='Limit Distance',Value=false,Callback=function(w,x)ad.
-shared.limitDistance=x if v then v:SetDisabled(not x)end m(j.Info,w.Label,':',x)
-end}v=l.Visuals:SliderFloat{Label='Limit',Minimum=1,Maximum=500,Value=150,Format
-='Distance Limit = %.0f',Callback=function(x,y)ad.shared.maxDistance=y m(j.Info,
-x.Label,':',y)end}v:SetDisabled(not w.Value)l.Visuals:Separator{Text='ESP'}local
-x,y=l.Visuals:TabSelector{Size=UDim2.new(1,0,0,400)},function(x,y)y:Checkbox{
-Label='Enabled',Value=false,Callback=function(z,A)x.enabled=A m(j.Info,z.Label,
-':',A)end}y:Separator{Text='Boxes'}y:Checkbox{Label='Enabled',Value=true,
-Callback=function(z,A)x.box=A m(j.Info,z.Label,':',A)end}y:DragColor3{Value=
-Color3.fromRGB(77,92,143),Label='Color',Callback=function(z,A)x.boxColor[1]=A m(
-j.Info,z.Label,':',A)end}y:SliderFloat{Label='Transparency',Minimum=0,Maximum=1,
-Value=0,Format='Transparency = %.3f',Callback=function(z,A)x.boxColor[2]=1-A x.
-boxOutlineColor[2]=1-A m(j.Info,z.Label,':',A)end}y:Separator{Text='Box Fill'}y:
-Checkbox{Label='Enabled',Value=true,Callback=function(z,A)x.boxFill=A m(j.Info,z
-.Label,':',A)end}y:DragColor3{Value=Color3.fromRGB(0,0,0),Label='Color',Callback
-=function(z,A)x.boxFillColor[1]=A m(j.Info,z.Label,':',A)end}y:SliderFloat{Label
-='Transparency',Minimum=0,Maximum=1,Value=0.2,Format='Transparency = %.3f',
-Callback=function(z,A)x.boxFillColor[2]=A m(j.Info,z.Label,':',A)end}y:Separator
-{Text='Chams'}y:Checkbox{Label='Enabled',Value=true,Callback=function(z,A)x.
-chams=A m(j.Info,z.Label,':',A)end}y:Checkbox{Label='Always On Top',Value=true,
-Callback=function(z,A)x.chamsVisibleOnly=not A m(j.Info,z.Label,':',A)end}y:
+'Locked to: <font color="rgb(240, 40, 10)">None</font>'end end local v,w o:Combo
+{Selected='Mouse',Label='Lock Mode',Items={'Camera','Mouse'},Callback=function(x
+,y)local z={Camera=1,Mouse=2}Aimbot_S.LockMode=z[y]local A=function(A,B)if v and
+w then v:SetDisabled(A)w:SetDisabled(B)end end if y=='Camera'then A(false,true)
+elseif y=='Mouse'then A(true,false)end m(j.Info,x.Label,':',y)end}o:Keybind{
+Label='Trigger Keybind',Value=Enum.KeyCode.E,IgnoreGameProcessed=false,
+OnKeybindSet=function(x,y)Aimbot_S.TriggerKey=y end}o:Checkbox{Label=
+'Toggle Activation',Value=true,Callback=function(x,y)Aimbot_S.Toggle=y m(j.Info,
+x.Label,':',y)end}o:Combo{Selected='Head',Label='Aiming Bone',Items={'Head',
+'Torso'},Callback=function(x,y)Aimbot_S.LockPart=y m(j.Info,x.Label,':',y)end}o:
+Checkbox{Label='Team Check',Value=true,Callback=function(x,y)Aimbot_S.TeamCheck=
+y m(j.Info,x.Label,':',y)end}o:Checkbox{Label='Alive Check',Value=true,Callback=
+function(x,y)Aimbot_S.AliveCheck=y m(j.Info,x.Label,':',y)end}o:Checkbox{Label=
+'Wall Check',Value=true,Callback=function(x,y)Aimbot_S.WallCheck=y m(j.Info,x.
+Label,':',y)end}v=o:SliderFloat{Label='Smoothing (Camera)',Minimum=0,Maximum=1,
+Value=0,Format='Smoothing = %.3f',Callback=function(x,y)Aimbot_S.Sensitivity=y
+m(j.Info,x.Label,':',y)end}v:SetDisabled(true)w=o:SliderFloat{Label=
+'Smoothing (Mouse)',Minimum=1,Maximum=20,Value=1,Format='Smoothing = %.1f',
+Callback=function(x,y)Aimbot_S.Sensitivity2=y m(j.Info,x.Label,':',y)end}o:
+Separator{Text='FOV Settings'}o:Checkbox{Label='Enabled',Value=true,Callback=
+function(x,y)Aimbot_F.Enabled=y m(j.Info,x.Label,':',y)end}o:Checkbox{Label=
+'Visible',Value=true,Callback=function(x,y)Aimbot_F.Visible=y m(j.Info,x.Label,
+':',y)end}o:SliderFloat{Label='Radius',Minimum=0,Maximum=500,Value=120,Format=
+'Radius = %.0f',Callback=function(x,y)Aimbot_F.Radius=y m(j.Info,x.Label,':',y)
+end}o:SliderFloat{Label='Circle Sides',Minimum=3,Maximum=80,Value=25,Format=
+'Sides = %.0f',Callback=function(x,y)Aimbot_F.NumSides=y m(j.Info,x.Label,':',y)
+end}o:SliderFloat{Label='Transparency',Minimum=0,Maximum=1,Value=0,Format=
+'Transparency = %.3f',Callback=function(x,y)Aimbot_F.Transparency=y m(j.Info,x.
+Label,':',y)end}o:DragColor3{Value=Color3.fromRGB(240,40,10),Label='Color',
+Callback=function(x,y)Aimbot_F.Color=y m(j.Info,x.Label,':',y)end}o:DragColor3{
+Value=Color3.fromRGB(40,240,10),Label='Color (Locked)',Callback=function(x,y)
+Aimbot_F.LockedColor=y m(j.Info,x.Label,':',y)end}l.Visuals:Separator{Text=
+'Shared Settings'}local x local y=l.Visuals:Checkbox{Label='Limit Distance',
+Value=false,Callback=function(y,z)ad.shared.limitDistance=z if x then x:
+SetDisabled(not z)end m(j.Info,y.Label,':',z)end}x=l.Visuals:SliderFloat{Label=
+'Limit',Minimum=1,Maximum=500,Value=150,Format='Distance Limit = %.0f',Callback=
+function(z,A)ad.shared.maxDistance=A m(j.Info,z.Label,':',A)end}x:SetDisabled(
+not y.Value)l.Visuals:Separator{Text='ESP'}local z,A=l.Visuals:TabSelector{Size=
+UDim2.new(1,0,0,400)},function(z,A)A:Checkbox{Label='Enabled',Value=false,
+Callback=function(B,C)z.enabled=C m(j.Info,B.Label,':',C)end}A:Separator{Text=
+'Boxes'}A:Checkbox{Label='Enabled',Value=true,Callback=function(B,C)z.box=C m(j.
+Info,B.Label,':',C)end}A:DragColor3{Value=Color3.fromRGB(77,92,143),Label=
+'Color',Callback=function(B,C)z.boxColor[1]=C m(j.Info,B.Label,':',C)end}A:
+SliderFloat{Label='Transparency',Minimum=0,Maximum=1,Value=0,Format=
+'Transparency = %.3f',Callback=function(B,C)z.boxColor[2]=1-C z.boxOutlineColor[
+2]=1-C m(j.Info,B.Label,':',C)end}A:Separator{Text='Box Fill'}A:Checkbox{Label=
+'Enabled',Value=true,Callback=function(B,C)z.boxFill=C m(j.Info,B.Label,':',C)
+end}A:DragColor3{Value=Color3.fromRGB(0,0,0),Label='Color',Callback=function(B,C
+)z.boxFillColor[1]=C m(j.Info,B.Label,':',C)end}A:SliderFloat{Label=
+'Transparency',Minimum=0,Maximum=1,Value=0.2,Format='Transparency = %.3f',
+Callback=function(B,C)z.boxFillColor[2]=C m(j.Info,B.Label,':',C)end}A:Separator
+{Text='Chams'}A:Checkbox{Label='Enabled',Value=true,Callback=function(B,C)z.
+chams=C m(j.Info,B.Label,':',C)end}A:Checkbox{Label='Always On Top',Value=true,
+Callback=function(B,C)z.chamsVisibleOnly=not C m(j.Info,B.Label,':',C)end}A:
 DragColor3{Value=Color3.fromRGB(100,120,250),Label='Color (Fill)',Callback=
-function(z,A)x.chamsFillColor[1]=A m(j.Info,z.Label,':',A)end}y:SliderFloat{
+function(B,C)z.chamsFillColor[1]=C m(j.Info,B.Label,':',C)end}A:SliderFloat{
 Label='Transparency (Fill)',Minimum=0,Maximum=1,Value=0.8,Format=
-'Transparency = %.3f',Callback=function(z,A)x.chamsFillColor[2]=A m(j.Info,z.
-Label,':',A)end}y:DragColor3{Value=Color3.fromRGB(25,85,255),Label=
-'Color (Outline)',Callback=function(z,A)x.chamsOutlineColor[1]=A m(j.Info,z.
-Label,':',A)end}y:SliderFloat{Label='Transparency (Outline)',Minimum=0,Maximum=1
-,Value=0,Format='Transparency = %.3f',Callback=function(z,A)x.chamsOutlineColor[
-2]=A m(j.Info,z.Label,':',A)end}y:Separator{Text='Tracers'}y:Checkbox{Label=
-'Enabled',Value=true,Callback=function(z,A)x.tracer=A m(j.Info,z.Label,':',A)end
-}y:DragColor3{Value=Color3.fromRGB(77,92,143),Label='Color',Callback=function(z,
-A)x.tracerColor[1]=A m(j.Info,z.Label,':',A)end}y:SliderFloat{Label=
-'Transparency',Minimum=0,Maximum=1,Value=0,Format='Transparency = %.3f',Callback
-=function(z,A)x.tracerColor[2]=1-A x.tracerOutlineColor[2]=1-A m(j.Info,z.Label,
-':',A)end}y:Combo{Selected='Top',Label='Tracer Origin',Items={'Top','Middle',
-'Bottom','Mouse'},Callback=function(z,A)x.tracerOrigin=A m(j.Info,z.Label,':',A)
-end}y:Separator{Text='Health Bars'}y:Checkbox{Label='Enabled',Value=true,
-Callback=function(z,A)x.healthBar=A m(j.Info,z.Label,':',A)end}y:DragColor3{
-Value=Color3.fromRGB(58,161,47),Label='Healthy Color',Callback=function(z,A)x.
-healthyColor=A end}y:DragColor3{Value=Color3.fromRGB(161,47,47),Label=
-'Dying Color',Callback=function(z,A)x.dyingColor=A m(j.Info,z.Label,':',A)end}y:
-Separator{Text='Off Screen Arrows'}y:Checkbox{Label='Enabled',Value=true,
-Callback=function(z,A)x.offScreenArrow=A m(j.Info,z.Label,':',A)end}y:DragColor3
-{Value=Color3.fromRGB(255,255,255),Label='Color',Callback=function(z,A)x.
-offScreenArrowColor[1]=A m(j.Info,z.Label,':',A)end}y:SliderFloat{Label=
-'Transparency',Minimum=0,Maximum=1,Value=0,Format='Transparency = %.3f',Callback
-=function(z,A)x.offScreenArrowColor[2]=1-A x.offScreenArrowOutlineColor[2]=1-A
-m(j.Info,z.Label,':',A)end}y:SliderInt{Label='Size',Value=15,Minimum=1,Maximum=
-50,Callback=function(z,A)x.offScreenArrowSize=A m(j.Info,z.Label,':',A)end}y:
-SliderInt{Label='Radius',Value=150,Minimum=1,Maximum=800,Callback=function(z,A)x
-.offScreenArrowRadius=A m(j.Info,z.Label,':',A)end}y:Separator{Text='Names'}y:
-Checkbox{Label='Enabled',Value=true,Callback=function(z,A)x.name=A m(j.Info,z.
-Label,':',A)end}y:DragColor3{Value=Color3.fromRGB(221,215,148),Label='Color',
-Callback=function(z,A)x.nameColor[1]=A m(j.Info,z.Label,':',A)end}y:SliderFloat{
+'Transparency = %.3f',Callback=function(B,C)z.chamsFillColor[2]=C m(j.Info,B.
+Label,':',C)end}A:DragColor3{Value=Color3.fromRGB(25,85,255),Label=
+'Color (Outline)',Callback=function(B,C)z.chamsOutlineColor[1]=C m(j.Info,B.
+Label,':',C)end}A:SliderFloat{Label='Transparency (Outline)',Minimum=0,Maximum=1
+,Value=0.5,Format='Transparency = %.3f',Callback=function(B,C)z.
+chamsOutlineColor[2]=C m(j.Info,B.Label,':',C)end}A:Separator{Text='Tracers'}A:
+Checkbox{Label='Enabled',Value=true,Callback=function(B,C)z.tracer=C m(j.Info,B.
+Label,':',C)end}A:DragColor3{Value=Color3.fromRGB(77,92,143),Label='Color',
+Callback=function(B,C)z.tracerColor[1]=C m(j.Info,B.Label,':',C)end}A:
+SliderFloat{Label='Transparency',Minimum=0,Maximum=1,Value=0,Format=
+'Transparency = %.3f',Callback=function(B,C)z.tracerColor[2]=1-C z.
+tracerOutlineColor[2]=1-C m(j.Info,B.Label,':',C)end}A:Combo{Selected='Top',
+Label='Tracer Origin',Items={'Top','Middle','Bottom','Mouse'},Callback=function(
+B,C)z.tracerOrigin=C m(j.Info,B.Label,':',C)end}A:Separator{Text='Health Bars'}A
+:Checkbox{Label='Enabled',Value=true,Callback=function(B,C)z.healthBar=C m(j.
+Info,B.Label,':',C)end}A:DragColor3{Value=Color3.fromRGB(58,161,47),Label=
+'Healthy Color',Callback=function(B,C)z.healthyColor=C end}A:DragColor3{Value=
+Color3.fromRGB(161,47,47),Label='Dying Color',Callback=function(B,C)z.dyingColor
+=C m(j.Info,B.Label,':',C)end}A:Separator{Text='Off Screen Arrows'}A:Checkbox{
+Label='Enabled',Value=true,Callback=function(B,C)z.offScreenArrow=C m(j.Info,B.
+Label,':',C)end}A:DragColor3{Value=Color3.fromRGB(255,255,255),Label='Color',
+Callback=function(B,C)z.offScreenArrowColor[1]=C m(j.Info,B.Label,':',C)end}A:
+SliderFloat{Label='Transparency',Minimum=0,Maximum=1,Value=0,Format=
+'Transparency = %.3f',Callback=function(B,C)z.offScreenArrowColor[2]=1-C z.
+offScreenArrowOutlineColor[2]=1-C m(j.Info,B.Label,':',C)end}A:SliderInt{Label=
+'Size',Value=15,Minimum=1,Maximum=50,Callback=function(B,C)z.offScreenArrowSize=
+C m(j.Info,B.Label,':',C)end}A:SliderInt{Label='Radius',Value=150,Minimum=1,
+Maximum=800,Callback=function(B,C)z.offScreenArrowRadius=C m(j.Info,B.Label,':',
+C)end}A:Separator{Text='Names'}A:Checkbox{Label='Enabled',Value=true,Callback=
+function(B,C)z.name=C m(j.Info,B.Label,':',C)end}A:DragColor3{Value=Color3.
+fromRGB(221,215,148),Label='Color',Callback=function(B,C)z.nameColor[1]=C m(j.
+Info,B.Label,':',C)end}A:SliderFloat{Label='Transparency',Minimum=0,Maximum=1,
+Value=0,Format='Transparency = %.3f',Callback=function(B,C)z.nameColor[2]=1-C m(
+j.Info,B.Label,':',C)end}A:Separator{Text='Distance Text'}A:Checkbox{Label=
+'Enabled',Value=true,Callback=function(B,C)z.distance=C m(j.Info,B.Label,':',C)
+end}A:DragColor3{Value=Color3.fromRGB(221,215,148),Label='Color',Callback=
+function(B,C)z.distanceColor[1]=C m(j.Info,B.Label,':',C)end}A:SliderFloat{Label
+='Transparency',Minimum=0,Maximum=1,Value=0,Format='Transparency = %.3f',
+Callback=function(B,C)z.distanceColor[2]=1-C m(j.Info,B.Label,':',C)end}A:
+Separator{Text='Weapon Text'}A:Checkbox{Label='Weapon Text',Value=true,Callback=
+function(B,C)z.weapon=C m(j.Info,B.Label,':',C)end}A:DragColor3{Value=Color3.
+fromRGB(200,173,182),Label='Color',Callback=function(B,C)z.weaponColor[1]=C m(j.
+Info,B.Label,':',C)end}A:SliderFloat{Label='Transparency',Minimum=0,Maximum=1,
+Value=0,Format='Transparency = %.3f',Callback=function(B,C)z.weaponColor[2]=1-C
+m(j.Info,B.Label,':',C)end}A:Separator{Text='Health Text'}A:Checkbox{Label=
+'Health Text',Value=true,Callback=function(B,C)z.healthText=C m(j.Info,B.Label,
+':',C)end}A:DragColor3{Value=Color3.fromRGB(200,173,182),Label='Color',Callback=
+function(B,C)z.healthTextColor[1]=C m(j.Info,B.Label,':',C)end}A:SliderFloat{
 Label='Transparency',Minimum=0,Maximum=1,Value=0,Format='Transparency = %.3f',
-Callback=function(z,A)x.nameColor[2]=1-A m(j.Info,z.Label,':',A)end}y:Separator{
-Text='Distance Text'}y:Checkbox{Label='Enabled',Value=true,Callback=function(z,A
-)x.distance=A m(j.Info,z.Label,':',A)end}y:DragColor3{Value=Color3.fromRGB(221,
-215,148),Label='Color',Callback=function(z,A)x.distanceColor[1]=A m(j.Info,z.
-Label,':',A)end}y:SliderFloat{Label='Transparency',Minimum=0,Maximum=1,Value=0,
-Format='Transparency = %.3f',Callback=function(z,A)x.distanceColor[2]=1-A m(j.
-Info,z.Label,':',A)end}y:Separator{Text='Weapon Text'}y:Checkbox{Label=
-'Weapon Text',Value=true,Callback=function(z,A)x.weapon=A m(j.Info,z.Label,':',A
-)end}y:DragColor3{Value=Color3.fromRGB(200,173,182),Label='Color',Callback=
-function(z,A)x.weaponColor[1]=A m(j.Info,z.Label,':',A)end}y:SliderFloat{Label=
-'Transparency',Minimum=0,Maximum=1,Value=0,Format='Transparency = %.3f',Callback
-=function(z,A)x.weaponColor[2]=1-A m(j.Info,z.Label,':',A)end}y:Separator{Text=
-'Health Text'}y:Checkbox{Label='Health Text',Value=true,Callback=function(z,A)x.
-healthText=A m(j.Info,z.Label,':',A)end}y:DragColor3{Value=Color3.fromRGB(200,
-173,182),Label='Color',Callback=function(z,A)x.healthTextColor[1]=A m(j.Info,z.
-Label,':',A)end}y:SliderFloat{Label='Transparency',Minimum=0,Maximum=1,Value=0,
-Format='Transparency = %.3f',Callback=function(z,A)x.healthTextColor[2]=1-A m(j.
-Info,z.Label,':',A)end}end local z=x:CreateTab{Name='Enemy'}y(ESP_E,z)local A=x:
-CreateTab{Name='Friendly'}y(ESP_F,A)local B,C=function(B,C)local D=function(D)
-table.insert(C.Objects,ad.AddInstance(D,{enabled=C.Settings.enabled or false,
-text='{name} | {distance}',textColor=C.Settings.textColor or{Color3.new(1,1,1),1
-},textOutline=C.Settings.textOutline or true,textOutlineColor=C.Settings.
-textOutlineColor or{Color3.new(0,0,0),1},textSize=C.Settings.textSize or 13,
-textFont=4,limitDistance=ad.shared.limitDistance or false,maxDistance=ad.shared.
-maxDistance or 150}))end if B then for E,F in pairs(B:GetChildren())do D(F)end B
-.ChildAdded:Connect(function(G)D(G)end)end end,function(B,C)B:Checkbox{Label=
-'Enabled',Value=false,Callback=function(D,E)local F,G=g(C.Objects,'options',
-'enabled',E)C.Settings[F]=G m(j.Info,D.Label,':',E)end}B:DragColor3{Value=Color3
-.fromRGB(255,255,255),Label='Text Color',Callback=function(D,E)local F,G=g(C.
-Objects,'options','textColor',E,1)C.Settings[F]=G m(j.Info,D.Label,':',E)end}B:
-SliderFloat{Label='Text Transparency',Minimum=0,Maximum=1,Value=0,Format=
-'Transparency = %.3f',Callback=function(D,E)local F,G=g(C.Objects,'options',
-'textColor',1-E,2)C.Settings[F]=G m(j.Info,D.Label,':',E)end}B:Checkbox{Label=
-'Text Outline',Value=true,Callback=function(D,E)local F,G=g(C.Objects,'options',
-'textOutline',E)C.Settings[F]=G m(j.Info,D.Label,':',E)end}B:DragColor3{Value=
-Color3.fromRGB(0,0,0),Label='Text Outline Color',Callback=function(D,E)local F,G
-=g(C.Objects,'options','textOutlineColor',E,1)C.Settings[F]=G m(j.Info,D.Label,
-':',E)end}B:SliderFloat{Label='Text Outline Transparency',Minimum=0,Maximum=1,
-Value=0,Format='Transparency = %.3f',Callback=function(D,E)local F,G=g(C.Objects
-,'options','textOutlineColor',1-E,2)C.Settings[F]=G m(j.Info,D.Label,':',E)end}
-end B(c,ActiveDronesESP)B(d,ActiveGadgetsESP)B(e,ActiveCamerasESP)B(f,
-ActiveBombsESP)local D=x:CreateTab{Name='Drones'}C(D,ActiveDronesESP)local E=x:
-CreateTab{Name='Gadgets'}C(E,ActiveGadgetsESP)local F=x:CreateTab{Name='Cameras'
-}C(F,ActiveCamerasESP)local G=x:CreateTab{Name='Bombs'}C(G,ActiveBombsESP)local
-H l.Misc:Checkbox{Label='Spam Reload Sound',Value=false,Callback=function(I,J)if
-J then H=task.spawn(function()while I.Value do ah.Events.ReloadSound:FireServer
-'AR'task.wait(0.05)end end)else if H then task.cancel(H)end end m(j.Info,I.Label
-,':',J)end}l.Settings:Keybind{Label='Menu Keybind',Value=Enum.KeyCode.Home,
-IgnoreGameProcessed=false,Callback=function(I,J)i:SetVisible(not i.Visible)end}
-ad.getWeapon=function(I)local J,K='None',ab.GetCharacter(I)if I and K then local
-L=K:FindFirstChildOfClass'Model'local M=L and string.sub(L.Name,2)if L and ai
-and ai:FindFirstChild(M)then J=M end end return string.upper(J)end ad.Load()ae.
+Callback=function(B,C)z.healthTextColor[2]=1-C m(j.Info,B.Label,':',C)end}end
+local B=z:CreateTab{Name='Enemy'}A(ESP_E,B)local C=z:CreateTab{Name='Friendly'}
+A(ESP_F,C)local D,E=function(D,E)local F=function(F)table.insert(E.Objects,ad.
+AddInstance(F,{enabled=E.Settings.enabled or false,text='{name} | {distance}',
+textColor=E.Settings.textColor or{Color3.new(1,1,1),1},textOutline=E.Settings.
+textOutline or true,textOutlineColor=E.Settings.textOutlineColor or{Color3.new(0
+,0,0),1},textSize=E.Settings.textSize or 13,textFont=4,limitDistance=ad.shared.
+limitDistance or false,maxDistance=ad.shared.maxDistance or 150}))end if D then
+for G,H in pairs(D:GetChildren())do F(H)end D.ChildAdded:Connect(function(I)F(I)
+end)end end,function(D,E)D:Checkbox{Label='Enabled',Value=false,Callback=
+function(F,G)local H,I=g(E.Objects,'options','enabled',G)E.Settings[H]=I m(j.
+Info,F.Label,':',G)end}D:DragColor3{Value=Color3.fromRGB(255,255,255),Label=
+'Text Color',Callback=function(F,G)local H,I=g(E.Objects,'options','textColor',G
+,1)E.Settings[H]=I m(j.Info,F.Label,':',G)end}D:SliderFloat{Label=
+'Text Transparency',Minimum=0,Maximum=1,Value=0,Format='Transparency = %.3f',
+Callback=function(F,G)local H,I=g(E.Objects,'options','textColor',1-G,2)E.
+Settings[H]=I m(j.Info,F.Label,':',G)end}D:Checkbox{Label='Text Outline',Value=
+true,Callback=function(F,G)local H,I=g(E.Objects,'options','textOutline',G)E.
+Settings[H]=I m(j.Info,F.Label,':',G)end}D:DragColor3{Value=Color3.fromRGB(0,0,0
+),Label='Text Outline Color',Callback=function(F,G)local H,I=g(E.Objects,
+'options','textOutlineColor',G,1)E.Settings[H]=I m(j.Info,F.Label,':',G)end}D:
+SliderFloat{Label='Text Outline Transparency',Minimum=0,Maximum=1,Value=0,Format
+='Transparency = %.3f',Callback=function(F,G)local H,I=g(E.Objects,'options',
+'textOutlineColor',1-G,2)E.Settings[H]=I m(j.Info,F.Label,':',G)end}end D(c,
+ActiveDronesESP)D(d,ActiveGadgetsESP)D(e,ActiveCamerasESP)D(f,ActiveBombsESP)
+local F=z:CreateTab{Name='Drones'}E(F,ActiveDronesESP)local G=z:CreateTab{Name=
+'Gadgets'}E(G,ActiveGadgetsESP)local H=z:CreateTab{Name='Cameras'}E(H,
+ActiveCamerasESP)local I=z:CreateTab{Name='Bombs'}E(I,ActiveBombsESP)local J l.
+Misc:Checkbox{Label='Spam Reload Sound',Value=false,Callback=function(K,L)if L
+then J=task.spawn(function()while K.Value do ah.Events.ReloadSound:FireServer
+'AR'task.wait(0.05)end end)else if J then task.cancel(J)end end m(j.Info,K.Label
+,':',L)end}l.Settings:Keybind{Label='Menu Keybind',Value=Enum.KeyCode.Home,
+IgnoreGameProcessed=false,Callback=function(K,L)i:SetVisible(not i.Visible)end}
+ad.getWeapon=function(K)local L,M='None',ab.GetCharacter(K)if K and M then local
+N=M:FindFirstChildOfClass'Model'local O=N and string.sub(N.Name,2)if N and ai
+and ai:FindFirstChild(O)then L=O end end return string.upper(L)end ad.Load()ae.
 Load()m(j.Success,UIName..' loaded successfully.')end return aa end end local aa
-=cloneref(game)local ab,ac=aa.PlaceId,{Universal={File=a.load'e'},[
-'Operations: Siege']={File=a.load'f',Places={13997018456,13997264379}}}for ad,ae
-in pairs(ac)do if ae.Places then for af,ag in ipairs(ae.Places)do if ag==ab then
-ae.File.init(ad)return end end end end ac.Universal.File.init'Universal'
+=cloneref(game)local ab,ac=aa.PlaceId,{Universal={File=a.load'e'},Arsenal={File=
+a.load'f',Places={286090429}},['Operations: Siege']={File=a.load'g',Places={
+13997018456,13997264379}}}for ad,ae in pairs(ac)do if ae.Places then for af,ag
+in ipairs(ae.Places)do if ag==ab then ae.File.init(ad)return end end end end ac.
+Universal.File.init'Universal'

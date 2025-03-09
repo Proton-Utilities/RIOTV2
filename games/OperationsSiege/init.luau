@@ -37,7 +37,7 @@ end
 
 function file.init(gameName)
 	local Main = UI:TabsWindow({
-		Title = string.format("%q | %q - getriot.cc", tostring(UIName), tostring(gameName)),
+		Title = UIName .. " | " .. gameName .. " - getriot.cc",
 		Size = UDim2.new(0, 350, 0, 550),
 		Position = UDim2.new(0.5, 0, 0, 70)
 	})
@@ -78,6 +78,7 @@ function file.init(gameName)
 	}); local consPrint = function(...) return Log:AppendText(...)  end
 
 	--[[ AIMING ]]--
+	--[[ AIMING ]]--
 	local AimingTabSelector = Tabs.Combat:TabSelector({Size = UDim2.new(1, 0, 0, 500)})
 	local AimbotTab = AimingTabSelector:CreateTab({
 		Name="Aimbot",
@@ -90,6 +91,7 @@ function file.init(gameName)
 		[true] = 'Active: <font color="rgb(40, 240, 10)">true</font>',
 		[false] = 'Active: <font color="rgb(240, 40, 10)">false</font>'
 	}
+
 	local AimbotToggle = AimbotTab:Checkbox({
 		Label = "Enabled",
 		Value = false,
@@ -102,6 +104,7 @@ function file.init(gameName)
 			consPrint(LogStates.Info, self.Label, ":", Value)
 		end
 	})
+
 	ActiveLabel = AimbotTab:Label({
 		RichText = true,
 		Text = ActiveLabelStates[false]
@@ -110,6 +113,7 @@ function file.init(gameName)
 			ActiveLabel.Text = ActiveLabelStates[State]
 		end
 	end
+
 	local LockedLabel = AimbotTab:Label({
 		RichText = true,
 		Text = 'Locked to: <font color="rgb(240, 40, 10)">none</font>'
@@ -120,6 +124,37 @@ function file.init(gameName)
 			LockedLabel.Text = 'Locked to: <font color="rgb(240, 40, 10)">None</font>'
 		end
 	end
+
+    local CamSmoother, MouseSmoother = nil, nil; 
+	AimbotTab:Combo({
+		Selected = "Mouse",
+		Label = "Lock Mode",
+		Items = {
+			"Camera",
+			"Mouse"
+		},
+		Callback = function(self, Value)
+			local lmLookup = { Camera = 1, Mouse = 2 }
+
+			Aimbot_S.LockMode = lmLookup[Value]
+
+			local function setSmoothers(st1, st2)
+				if CamSmoother and MouseSmoother then
+					CamSmoother:SetDisabled(st1)
+					MouseSmoother:SetDisabled(st2)
+				end
+			end
+
+			if Value == "Camera" then
+				setSmoothers(false, true)
+			elseif Value == "Mouse" then
+				setSmoothers(true, false)
+			end
+			
+			consPrint(LogStates.Info, self.Label, ":", Value)
+		end,
+	})
+	
 	AimbotTab:Keybind({
 		Label = "Trigger Keybind",
 		Value = Enum.KeyCode.E,
@@ -128,8 +163,9 @@ function file.init(gameName)
 			Aimbot_S.TriggerKey = KeyCode
 		end,
 	})
+
 	AimbotTab:Checkbox({
-		Label = "Toggle",
+		Label = "Toggle Activation",
 		Value = true,
 		Callback = function(self, Value)
 			Aimbot_S.Toggle = Value
@@ -137,6 +173,7 @@ function file.init(gameName)
 			consPrint(LogStates.Info, self.Label, ":", Value)
 		end
 	})
+
 	AimbotTab:Combo({
 		Selected = "Head",
 		Label = "Aiming Bone",
@@ -150,6 +187,7 @@ function file.init(gameName)
 			consPrint(LogStates.Info, self.Label, ":", Value)
 		end,
 	})
+
 	AimbotTab:Checkbox({
 		Label = "Team Check",
 		Value = true,
@@ -159,6 +197,7 @@ function file.init(gameName)
 			consPrint(LogStates.Info, self.Label, ":", Value)
 		end
 	})
+
 	AimbotTab:Checkbox({
 		Label = "Alive Check",
 		Value = true,
@@ -168,6 +207,7 @@ function file.init(gameName)
 			consPrint(LogStates.Info, self.Label, ":", Value)
 		end
 	})
+
 	AimbotTab:Checkbox({
 		Label = "Wall Check",
 		Value = true,
@@ -177,26 +217,29 @@ function file.init(gameName)
 			consPrint(LogStates.Info, self.Label, ":", Value)
 		end
 	})
-	AimbotTab:SliderFloat({
-		Label = "Smoothing", 
-		Minimum = 1.0, 
-		Maximum = 20.0,
-		Value = 2.0,
+
+	CamSmoother = AimbotTab:SliderFloat({
+		Label = "Smoothing (Camera)", 
+		Minimum = 0.0, 
+		Maximum = 1.0,
+		Value = 0.0,
 		Format = "Smoothing = %.3f",
 		Callback = function(self, Value)
-			Aimbot_S.Sensitivity2 = Value
+			Aimbot_S.Sensitivity = Value
 
 			consPrint(LogStates.Info, self.Label, ":", Value)
 		end
 	})
-	AimbotTab:SliderFloat({
-		Label = "Shake Multiplier", 
-		Minimum = 0.0, 
-		Maximum = 10.0,
-		Value = 0,
-		Format = "Multiplier = %.1f",
+	CamSmoother:SetDisabled(true)
+
+	MouseSmoother = AimbotTab:SliderFloat({
+		Label = "Smoothing (Mouse)", 
+		Minimum = 1.0, 
+		Maximum = 20.0,
+		Value = 1.0,
+		Format = "Smoothing = %.1f",
 		Callback = function(self, Value)
-			Aimbot_S.ShakeMultiplier = Value
+			Aimbot_S.Sensitivity2 = Value
 
 			consPrint(LogStates.Info, self.Label, ":", Value)
 		end
@@ -214,6 +257,7 @@ function file.init(gameName)
 			consPrint(LogStates.Info, self.Label, ":", Value)
 		end
 	})
+
 	AimbotTab:Checkbox({
 		Label = "Visible",
 		Value = true,
@@ -223,6 +267,7 @@ function file.init(gameName)
 			consPrint(LogStates.Info, self.Label, ":", Value)
 		end
 	})
+
 	AimbotTab:SliderFloat({
 		Label = "Radius", 
 		Minimum = 0, 
@@ -235,6 +280,7 @@ function file.init(gameName)
 			consPrint(LogStates.Info, self.Label, ":", Value)
 		end
 	})
+
 	AimbotTab:SliderFloat({
 		Label = "Circle Sides", 
 		Minimum = 3, 
@@ -247,6 +293,7 @@ function file.init(gameName)
 			consPrint(LogStates.Info, self.Label, ":", Value)
 		end
 	})
+
 	AimbotTab:SliderFloat({
 		Label = "Transparency", 
 		Minimum = 0.0, 
@@ -259,6 +306,7 @@ function file.init(gameName)
 			consPrint(LogStates.Info, self.Label, ":", Value)
 		end
 	})
+
 	AimbotTab:DragColor3({
 		Value = Color3.fromRGB(240, 40, 10),
 		Label = "Color",
@@ -268,6 +316,7 @@ function file.init(gameName)
 			consPrint(LogStates.Info, self.Label, ":", Value)
 		end
 	})
+
 	AimbotTab:DragColor3({
 		Value = Color3.fromRGB(40, 240, 10),
 		Label = "Color (Locked)",
@@ -446,7 +495,7 @@ function file.init(gameName)
 			Label = "Transparency (Outline)", 
 			Minimum = 0.0, 
 			Maximum = 1.0,
-			Value = 0,
+			Value = 0.5,
 			Format = "Transparency = %.3f",
 			Callback = function(self, Value)
 				ESPTarg.chamsOutlineColor[2] = Value

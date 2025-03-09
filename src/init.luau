@@ -8,6 +8,12 @@ local files = {
     ["Universal"] = {
         File = require("games/Universal/init.luau")
     },
+    ["Arsenal"] = {
+        File = require("games/Arsenal/init.luau"), 
+        Places = {
+            286090429
+        }
+    },
     ["Operations: Siege"] = {
         File = require("games/OperationsSiege/init.luau"), 
         Places = {
