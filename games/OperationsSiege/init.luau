@@ -37,7 +37,7 @@ end
 
 function file.init(gameName)
 	local Main = UI:TabsWindow({
-		Title = string.format("%q | %q - getriot.cc", tostring(UIName), tostring(gameName)),
+		Title = UIName .. " | " .. gameName .. " - getriot.cc",
 		Size = UDim2.new(0, 350, 0, 550),
 		Position = UDim2.new(0.5, 0, 0, 70)
 	})

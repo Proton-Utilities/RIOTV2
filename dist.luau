@@ -1248,8 +1248,8 @@ ah setmetatable(K,{__call=ah})return K end function a.e()local aa,ab={},a.load
 'a'GetService=ab.SecureService local ac=a.load'b'UIName='RIOT V2'local ad=a.load
 'c'ESP_E=ad.team.enemy ESP_F=ad.team.friendly local ae=a.load'd'Aimbot_S=ae.
 Settings Aimbot_F=ae.FOVSettings function aa.init(af)local ag,ah,ai=ac:
-TabsWindow{Title=string.format('%q | %q - getriot.cc',UIName,af),Size=UDim2.new(
-0,350,0,550),Position=UDim2.new(0.5,0,0,70)},{Success=`<font color="rgb(40, 240, 10)">[Success]</font>`
+TabsWindow{Title=UIName..' | '..af..' - getriot.cc',Size=UDim2.new(0,350,0,550),
+Position=UDim2.new(0.5,0,0,70)},{Success=`<font color="rgb(40, 240, 10)">[Success]</font>`
 ,Init=`<font color="rgb(240, 140, 10)">[Init]</font>`,Info=`<font color="rgb(10, 140, 240)">[Info]</font>`
 }local b={Console=ag:CreateTab{Name='Console'},Combat=ag:CreateTab{Name='Combat'
 },Visuals=ag:CreateTab{Name='Visuals'},Settings=ag:CreateTab{Name='Settings'}}ai
@@ -1383,18 +1383,17 @@ FindFirstChild'Cameras'ActiveCamerasESP={Settings={},Objects={}}local f=ag:
 FindFirstChild'Objective'ActiveBombsESP={Settings={},Objects={}}local g=function
 (g,h,i,j,k)for l,m in pairs(g)do if m[h]and m[h][i]~=nil then if k and typeof(m[
 h][i])=='table'then m[h][i][k]=j else m[h][i]=j end end end return i,j end
-function aa.init(h)local i,j,k=ac:TabsWindow{Title=string.format(
-'%q | %q - getriot.cc',tostring(UIName),tostring(h)),Size=UDim2.new(0,350,0,550)
-,Position=UDim2.new(0.5,0,0,70)},{Success=`<font color="rgb(40, 240, 10)">[Success]</font>`
-,Init=`<font color="rgb(240, 140, 10)">[Init]</font>`,Info=`<font color="rgb(10, 140, 240)">[Info]</font>`
-}local l={Console=i:CreateTab{Name='Console'},Combat=i:CreateTab{Name='Combat'},
-Visuals=i:CreateTab{Name='Visuals'},Misc=i:CreateTab{Name='Misc'},Settings=i:
-CreateTab{Name='Settings'}}k=l.Console:Console{Value=j.Init..' UI Initialized',
-ReadOnly=true,AutoScroll=true,RichText=true,MaxLines=250,Size=UDim2.new(1,0,0,
-480)}local m,n=function(...)return k:AppendText(...)end,l.Combat:TabSelector{
-Size=UDim2.new(1,0,0,500)}local o=n:CreateTab{Name='Aimbot'}o:Separator{Text=
-'Aimbot Settings'}local p,r={[true]=
-'Active: <font color="rgb(40, 240, 10)">true</font>',[false]=
+function aa.init(h)local i,j,k=ac:TabsWindow{Title=UIName..' | '..h..
+' - getriot.cc',Size=UDim2.new(0,350,0,550),Position=UDim2.new(0.5,0,0,70)},{
+Success=`<font color="rgb(40, 240, 10)">[Success]</font>`,Init=`<font color="rgb(240, 140, 10)">[Init]</font>`
+,Info=`<font color="rgb(10, 140, 240)">[Info]</font>`}local l={Console=i:
+CreateTab{Name='Console'},Combat=i:CreateTab{Name='Combat'},Visuals=i:CreateTab{
+Name='Visuals'},Misc=i:CreateTab{Name='Misc'},Settings=i:CreateTab{Name=
+'Settings'}}k=l.Console:Console{Value=j.Init..' UI Initialized',ReadOnly=true,
+AutoScroll=true,RichText=true,MaxLines=250,Size=UDim2.new(1,0,0,480)}local m,n=
+function(...)return k:AppendText(...)end,l.Combat:TabSelector{Size=UDim2.new(1,0
+,0,500)}local o=n:CreateTab{Name='Aimbot'}o:Separator{Text='Aimbot Settings'}
+local p,r={[true]='Active: <font color="rgb(40, 240, 10)">true</font>',[false]=
 'Active: <font color="rgb(240, 40, 10)">false</font>'}local s=o:Checkbox{Label=
 'Enabled',Value=false,Callback=function(s,u)Aimbot_S.Enabled=u if r and r.Text==
 p[true]and u==false then r.Text=p[false]end m(j.Info,s.Label,':',u)end}r=o:Label

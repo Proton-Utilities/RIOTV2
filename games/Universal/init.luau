@@ -10,7 +10,7 @@ local Aimbot 	= require("modules/aimbot.luau"); 	Aimbot_S 	= Aimbot.Settings; 	A
 
 function file.init(gameName)
 	local Main = UI:TabsWindow({
-		Title = string.format("%q | %q - getriot.cc", UIName, gameName),
+		Title = UIName .. " | " .. gameName .. " - getriot.cc",
 		Size = UDim2.new(0, 350, 0, 550),
 		Position = UDim2.new(0.5, 0, 0, 70)
 	})
