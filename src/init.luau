@@ -1,37 +1,34 @@
 --!nocheck
 --!nolint
 
-local game = cloneref(game)
-local gPID = game.PlaceId
+local Files = {
+    ["linoriaBase"] = {
+        Name = "linoriaBase",
+        Load = require("games/linoriaBase/init.luau"),
+    },
 
-local files = {
+    ["riotUiBase"] = {
+        Name = "riotUiBase",
+        Load = require("games/riotUiBase/init.luau"),
+    },
+
     ["Universal"] = {
-        File = require("games/Universal/init.luau")
-    },
-    ["Arsenal"] = {
-        File = require("games/Arsenal/init.luau"), 
-        Places = {
-            286090429
-        }
-    },
-    ["Operations: Siege"] = {
-        File = require("games/OperationsSiege/init.luau"), 
-        Places = {
-            13997018456, 
-            13997264379
-        }
-    },
+        Name = "Universal",
+        Load = require("games/Universal/init.luau"),
+    }
 }
 
-for gameName, data in pairs(files) do
-    if data.Places then
-        for _, placeId in ipairs(data.Places) do
-            if placeId == gPID then
-                data.File.init(gameName)
+for _, Game in pairs(Files) do
+    if Game.Places then
+        for _, PlaceId in ipairs(Game.Places) do
+            if PlaceId == game.PlaceId then
+                Game:Load()
                 return
             end
         end
     end
 end
 
-files.Universal.File.init("Universal")
+--Files.newBase:Load()
+--Files.Universal:Load()
+Files.riotUiBase:Load()

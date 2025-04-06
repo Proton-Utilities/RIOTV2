@@ -4,8 +4,12 @@
 --!optimize 2
 
 --[[
-    RIOT V2
+    @repository https://github.com/Proton-Utilities/RIOTV2
 
-    This file was built with DarkLua, it is not intended for manual editing.
+    @author biggaboy212
+    @name RIOT V2
+    @version v1.0-alpha.1
+
+    This file was automatically generated with darklua, it is not intended for manual editing.
 --]]
 

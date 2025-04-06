@@ -50,6 +50,18 @@ local ReGui = {
 }
 
 ReGui.Icons = {
+	-- from riot
+	["RDefaultImage"] = "rbxassetid://134552883719543",
+	["RShieldCheck"] = "rbxassetid://72905476505849",
+	["RShield"] = "rbxassetid://125424227377940",
+	["RArchive"] = "rbxassetid://86530498402003",
+	["RFolder"] = "rbxassetid://134156031333431",
+	["RBolt"] = "rbxassetid://99791134265440",
+	["RGlobe"] = "rbxassetid://132856339478739",
+	["RComputer"] = "rbxassetid://136037119434947",
+	["RSettings"] = "rbxassetid://71732494649961",
+
+	-- ui def
 	Dot = "rbxasset://textures/whiteCircle.png",
 	Arrow = "rbxassetid://4731371527",
 	Close = "rbxasset://textures/AnimationEditor/icon_close.png",
@@ -5643,6 +5655,104 @@ local function GenerateColor3Input(Name: string, InputType: string, InputCount: 
 	})
 end
 
+export type InputColor4Flags = {
+	Label: string?,
+	Value: {Color: Color3, Transparency: number}?,
+	Callback: (InputColor4Flags, Value: {Color: Color3, Transparency: number}) -> any,
+
+	ValueChanged: (InputColor4Flags) -> nil,
+	SetValue: (InputColor4Flags, Value: {Color: Color3, Transparency: number}) -> InputColor4Flags,
+}
+
+local function GenerateColor4Input(Name: string, InputType: string, InputCount: number, Extra)
+	ReGui:DefineElement(Name, {
+		Base = {
+			Label = Name,
+			Callback = EmptyFunction,
+			Value = {Color = ReGui.Accent.Light, Transparency = 0},
+			Disabled = false,
+			Minimum = {0,0,0,0},
+			Maximum = {255,255,255,255},
+			BaseInputConfig = {},
+			InputConfigs = {
+				[1] = {Format = "R: %.f"},
+				[2] = {Format = "G: %.f"},
+				[3] = {Format = "B: %.f"},
+				[4] = {Format = "A: %.f"},
+			}
+		},
+		Create = function(self, Config: InputColor4Flags)
+			--// Unpack configuration
+			local BaseInputConfig = Config.BaseInputConfig
+			local Value = Config.Value
+			local Disabled = Config.Disabled
+
+			--// Create Object
+			local InputConfig = Copy(Config, {
+				Value = {Color = Color3.new(1,1,1), Transparency = 0},
+				Callback = function(self, ...)
+					if Config.ValueChanged then
+						Config:ValueChanged(...)
+					end
+				end,
+			})
+			
+			local Object = self[InputType](self, InputConfig)
+			local Class = ReGui:MergeMetatables(Config, Object)
+			local Row = Object.Row
+
+			--// Preview frame
+			local Preview = Row:Button({
+				BackgroundTransparency = Config.Value.Transparency,
+				Size = UDim2.fromOffset(19, 19),
+				UiPadding = 0,
+				Text = "",
+				Ratio = 1,
+				ColorTag = "",
+				ElementStyle = ""
+			})
+
+			local function Callback(...)
+				local func = Config.Callback
+				return func(Class, ...)
+			end
+
+			local function SetPreview(Color: Color3, Transparency: number)
+				Preview.BackgroundColor3 = Color
+				Preview.BackgroundTransparency = Transparency
+				Callback({Color = Color, Transparency = Transparency})
+			end
+
+			function Config:ValueChanged(Value)
+				local R, G, B, A = Value[1], Value[2], Value[3], Value[4]
+				local Color = Color3.fromRGB(R, G, B)
+				local Transparency = 1 - (A / 255)
+
+				self.Value = {Color = Color, Transparency = Transparency}
+				SetPreview(Color, Transparency)
+			end
+
+			function Config:SetValue(Value: {Color: Color3, Transparency: number})
+				self.Value = Value
+				SetPreview(Value.Color, Value.Transparency)
+
+				--// Update Drag elements
+				Object:SetValue({
+					math.round(Value.Color.R * 255),
+					math.round(Value.Color.G * 255),
+					math.round(Value.Color.B * 255),
+					math.round((1 - Value.Transparency) * 255)
+				})
+			end
+
+			--// Update object state
+			Config:SetValue(Value)
+
+			return Class, Row
+		end,
+	})
+end
+
 
 export type InputCFrameFlags = {
 	Label: string?,
@@ -5742,6 +5852,10 @@ GenerateMultiInput("DragFloat4", "DragFloat", 4)
 GenerateColor3Input("InputColor3", "InputInt3")
 GenerateColor3Input("SliderColor3", "SliderInt3")
 GenerateColor3Input("DragColor3", "DragInt3")
+
+GenerateColor4Input("InputColor4", "InputInt3")
+GenerateColor4Input("SliderColor4", "SliderInt3")
+GenerateColor4Input("DragColor4", "DragInt3")
 
 GenerateCFrameInput("InputCFrame", "InputInt3")
 GenerateCFrameInput("SliderCFrame", "SliderInt3")

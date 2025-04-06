@@ -1,31 +1,32 @@
 --!nocheck
+--!nolint LocalUnused
 
-local file = {}
+return function(gameName)
+	--// Imports
+	local Functions = require("core/functions.luau");
+	local UI = require("core/ui.luau");	
+	local ESP = require("modules/esp.luau");
+	local Aiming = require("modules/aiming.luau"); 
 
---// Modules
-local Functions = require("core/functions.luau"); 	GetService 	= Functions.SecureService
-local UI 		= require("core/ui.luau"); 			UIName	 	= "RIOT V2";
-local ESP 		= require("modules/esp.luau"); 		ESP_E 		= ESP.team.enemy; 	ESP_F 		= ESP.team.friendly;
-local Aimbot 	= require("modules/aimbot.luau"); 	Aimbot_S 	= Aimbot.Settings; 	Aimbot_F 	= Aimbot.FOVSettings
+	--// Variables
+	local ESPEnemy = ESP.team.enemy; 	
+	local ESPFriendly = ESP.team.friendly;	
 
-function file.init(gameName)
+	local AimbotSettings = Aiming.Aimbot; 
+	local TriggerbotSettings = Aiming.Triggerbot;
+	local FOVSettings = Aiming.FOVSettings; 
+
+	--// Methods
+	local GetService = Functions.SecureService	
+
+	--// UI Begin
 	local Main = UI:TabsWindow({
-		Title = UIName .. " | " .. gameName .. " - getriot.cc",
+		Title = `RIOT V2 | {gameName} - getriot.cc`,
 		Size = UDim2.new(0, 350, 0, 550),
 		Position = UDim2.new(0.5, 0, 0, 70)
 	})
 
-	local Log = nil
-	local LogStates = {
-		Success = `<font color="rgb(40, 240, 10)">[Success]</font>`,
-		Init = `<font color="rgb(240, 140, 10)">[Init]</font>`,
-		Info = `<font color="rgb(10, 140, 240)">[Info]</font>`,
-	}
-
 	local Tabs = {
-		Console = Main:CreateTab({
-			Name = "Console"
-		}),
 		Combat = Main:CreateTab({
 			Name = "Combat"
 		}),
@@ -37,264 +38,192 @@ function file.init(gameName)
 		})
 	}
 
-	--[[ CONSOLE ]]--
-	Log = Tabs.Console:Console({
-		Value = LogStates.Init .. " UI Initialized",
-		ReadOnly = true,
-		AutoScroll = true,
-		RichText = true,
-		MaxLines = 250,
-		Size = UDim2.new(1, 0, 0, 480)
-	}); local consPrint = function(...) return Log:AppendText(...)  end
-
 	--[[ AIMING ]]--
-	local AimingTabSelector = Tabs.Combat:TabSelector({Size = UDim2.new(1, 0, 0, 500)})
-	local AimbotTab = AimingTabSelector:CreateTab({
-		Name="Aimbot",
-	})
-	AimbotTab:Separator({Text = "Aimbot Settings"})
+	local AimingTabSelector = Tabs.Combat:TabSelector({Size = UDim2.new(1, 0, 0, 310)})
 
-	-- Aimbot Settings
-	local ActiveLabel = nil
+	-- Aimbot Tab
+	local AimbotTab = AimingTabSelector:CreateTab({ Name = "Aimbot" })
+
+	local ActiveLabel
 	local ActiveLabelStates = {
 		[true] = 'Active: <font color="rgb(40, 240, 10)">true</font>',
 		[false] = 'Active: <font color="rgb(240, 40, 10)">false</font>'
 	}
 
 	local AimbotToggle = AimbotTab:Checkbox({
-		Label = "Enabled",
-		Value = false,
+		Label = "Enabled", Value = false,
 		Callback = function(self, Value)
-			Aimbot_S.Enabled = Value
-			if ActiveLabel and ActiveLabel.Text == ActiveLabelStates[true] and Value == false then
+			AimbotSettings.Enabled = Value
+			if ActiveLabel and ActiveLabel.Text == ActiveLabelStates[true] and not Value then
 				ActiveLabel.Text = ActiveLabelStates[false]
 			end
-
-			consPrint(LogStates.Info, self.Label, ":", Value)
 		end
 	})
 
-	ActiveLabel = AimbotTab:Label({
-		RichText = true,
-		Text = ActiveLabelStates[false]
-	}); Aimbot_S.AutoStateLabel = function(State)
+	ActiveLabel = AimbotTab:Label({ RichText = true, Text = ActiveLabelStates[false] })
+	AimbotSettings.AutoStateLabel = function(State)
 		if AimbotToggle.Value then
 			ActiveLabel.Text = ActiveLabelStates[State]
 		end
 	end
 
-	local LockedLabel = AimbotTab:Label({
-		RichText = true,
-		Text = 'Locked to: <font color="rgb(240, 40, 10)">none</font>'
-	}); Aimbot_S.AutoLockedLabel = function(Player)
-		if Player then
-			LockedLabel.Text = string.format('Locked to: <font color="rgb(40, 240, 10)">%q</font>', Player.Name)
-		else
-			LockedLabel.Text = 'Locked to: <font color="rgb(240, 40, 10)">None</font>'
-		end
+	local LockedLabel = AimbotTab:Label({ RichText = true, Text = 'Target: <font color="rgb(240, 40, 10)">none</font>' })
+	AimbotSettings.AutoLockedLabel = function(Player)
+		LockedLabel.Text = Player and string.format('Target: <font color="rgb(40, 240, 10)">%q</font>', Player.Name) or 'Target: <font color="rgb(240, 40, 10)">None</font>'
 	end
 
-    local CamSmoother, MouseSmoother = nil, nil; 
+	local CamSmoother, MouseSmoother
 	AimbotTab:Combo({
-		Selected = "Camera",
-		Label = "Lock Mode",
-		Items = {
-			"Camera",
-			"Mouse"
-		},
+		Selected = "Camera", Label = "Lock Mode", Items = {"Camera", "Mouse"},
 		Callback = function(self, Value)
-			local lmLookup = { Camera = 1, Mouse = 2 }
-
-			Aimbot_S.LockMode = lmLookup[Value]
-
-			local function setSmoothers(st1, st2)
-				if CamSmoother and MouseSmoother then
-					CamSmoother:SetDisabled(st1)
-					MouseSmoother:SetDisabled(st2)
-				end
+			AimbotSettings.LockMode = ({ Camera = 1, Mouse = 2 })[Value]
+			if CamSmoother and MouseSmoother then
+				CamSmoother:SetDisabled(Value ~= "Camera")
+				MouseSmoother:SetDisabled(Value ~= "Mouse")
 			end
-
-			if Value == "Camera" then
-				setSmoothers(false, true)
-			elseif Value == "Mouse" then
-				setSmoothers(true, false)
-			end
-			
-			consPrint(LogStates.Info, self.Label, ":", Value)
-		end,
+		end
 	})
-	
+
 	AimbotTab:Keybind({
-		Label = "Trigger Keybind",
-		Value = Enum.KeyCode.E,
-		IgnoreGameProcessed = false,
+		Label = "Trigger Keybind", Value = Enum.KeyCode.E,
 		OnKeybindSet = function(self, KeyCode)
-			Aimbot_S.TriggerKey = KeyCode
-		end,
+			AimbotSettings.TriggerKey = KeyCode
+		end
 	})
 
-	AimbotTab:Checkbox({
-		Label = "Toggle Activation",
-		Value = true,
-		Callback = function(self, Value)
-			Aimbot_S.Toggle = Value
+	for _, setting in ipairs({
+		{ "Toggle Activation", "ToggleTrigger", nil },
+		{ "Team Check", "TeamCheck", true },
+		{ "Alive Check", "AliveCheck", true }
+	}) do
+		AimbotTab:Checkbox({
+			Label = setting[1], Value = setting[3],
+			Callback = function(self, Value)
+				AimbotSettings[setting[2]] = Value
+			end
+		})
+	end
 
-			consPrint(LogStates.Info, self.Label, ":", Value)
+	AimbotTab:Combo({
+		Label = "Wall Check",
+		Selected = "Always On",
+		Items = {
+			"Off",
+			"Sticky",
+			"Always On"
+		},
+		Callback = function(self, Value)
+			local Index = table.find(self.Items, Value)
+			if Index then
+				AimbotSettings.WallCheck = Index
+			end
 		end
 	})
 
 	AimbotTab:Combo({
-		Selected = "Head",
-		Label = "Aiming Bone",
-		Items = {
-			"Head",
-			"Torso"
-		},
+		Selected = "Head", Label = "Aiming Bone", Items = {"Head", "Torso"},
 		Callback = function(self, Value)
-			Aimbot_S.LockPart = Value
-			
-			consPrint(LogStates.Info, self.Label, ":", Value)
-		end,
-	})
-
-	AimbotTab:Checkbox({
-		Label = "Team Check",
-		Value = true,
-		Callback = function(self, Value)
-			Aimbot_S.TeamCheck = Value
-
-			consPrint(LogStates.Info, self.Label, ":", Value)
-		end
-	})
-
-	AimbotTab:Checkbox({
-		Label = "Alive Check",
-		Value = true,
-		Callback = function(self, Value)
-			Aimbot_S.AliveCheck = Value
-
-			consPrint(LogStates.Info, self.Label, ":", Value)
-		end
-	})
-
-	AimbotTab:Checkbox({
-		Label = "Wall Check",
-		Value = true,
-		Callback = function(self, Value)
-			Aimbot_S.WallCheck = Value
-
-			consPrint(LogStates.Info, self.Label, ":", Value)
+			AimbotSettings.LockPart = Value
 		end
 	})
 
 	CamSmoother = AimbotTab:SliderFloat({
-		Label = "Smoothing (Camera)", 
-		Minimum = 0.0, 
-		Maximum = 1.0,
-		Value = 0.0,
+		Label = "Smoothing (Camera)", Minimum = 0.0, Maximum = 1.0, Value = 0.0,
 		Format = "Smoothing = %.3f",
 		Callback = function(self, Value)
-			Aimbot_S.Sensitivity = Value
-
-			consPrint(LogStates.Info, self.Label, ":", Value)
+			AimbotSettings.Sensitivity = Value
 		end
 	})
 
 	MouseSmoother = AimbotTab:SliderFloat({
-		Label = "Smoothing (Mouse)", 
-		Minimum = 1.0, 
-		Maximum = 20.0,
-		Value = 1.0,
+		Label = "Smoothing (Mouse)", Minimum = 1.0, Maximum = 20.0, Value = 1.0,
 		Format = "Smoothing = %.1f",
 		Callback = function(self, Value)
-			Aimbot_S.Sensitivity2 = Value
+			AimbotSettings.Sensitivity2 = Value
+		end
+	}); MouseSmoother:SetDisabled(true)
 
-			consPrint(LogStates.Info, self.Label, ":", Value)
+	-- Triggerbot Tab
+	local TriggerbotTab = AimingTabSelector:CreateTab({ Name = "Triggerbot" })
+
+	TriggerbotTab:Checkbox({
+		Label = "Enabled", Value = false,
+		Callback = function(self, Value)
+			TriggerbotSettings.Enabled = Value
 		end
 	})
-	MouseSmoother:SetDisabled(true)
 
-	AimbotTab:Separator({Text = "FOV Settings"})
+	local TargetLabel = TriggerbotTab:Label({ RichText = true, Text = 'Trigger Target: <font color="rgb(240, 40, 10)">none</font>' })
+	TriggerbotSettings.TargetChanged = function(Target: Player)
+		if not Target then
+			TargetLabel.Text = 'Trigger Target: <font color="rgb(240, 40, 10)">none</font>'
+		else
+			TargetLabel.Text = `Trigger Target: <font color="rgb(40, 240, 10)">{Target.Name}</font>`
+		end
+	end
+
+	for _, setting in ipairs({
+		{ "Team Check", "TeamCheck", true },
+		{ "Alive Check", "AliveCheck", true }
+	}) do
+		TriggerbotTab:Checkbox({
+			Label = setting[1], Value = setting[3],
+			Callback = function(self, Value)
+				TriggerbotSettings[setting[2]] = Value
+			end
+		})
+	end
+
+	TriggerbotTab:InputInt({
+		Label = "Trigger Delay (ms)", 
+		Value = 0, 
+		Minimum = 0, 
+		Increment = 25,
+		Callback = function(self, Value)
+			TriggerbotSettings.Delay = Value / 1000
+		end
+	})
 
 	-- FOV Settings
-	AimbotTab:Checkbox({
-		Label = "Enabled",
-		Value = true,
-		Callback = function(self, Value)
-			Aimbot_F.Enabled = Value
+	Tabs.Combat:Separator({Text = "FOV Settings"})
+	for _, setting in ipairs({
+		{ "Enabled", "Enabled", true },
+		{ "Visible", "Visible", true }
+	}) do
+		Tabs.Combat:Checkbox({
+			Label = setting[1], Value = setting[3],
+			Callback = function(self, Value)
+				FOVSettings[setting[2]] = Value
+			end
+		})
+	end
 
-			consPrint(LogStates.Info, self.Label, ":", Value)
-		end
-	})
+	for _, setting in ipairs({
+		{ "Radius", "Radius", 0, 500, 120, "%.0f" },
+		{ "Circle Sides", "NumSides", 3, 80, 25, "%.0f" },
+		{ "Transparency", "Transparency", 0.0, 1.0, 0, "%.3f" }
+	}) do
+		Tabs.Combat:SliderFloat({
+			Label = setting[1], Minimum = setting[3], Maximum = setting[4], Value = setting[5],
+			Format = setting[1] .. " = " .. setting[6],
+			Callback = function(self, Value)
+				FOVSettings[setting[2]] = Value
+			end
+		})
+	end
 
-	AimbotTab:Checkbox({
-		Label = "Visible",
-		Value = true,
-		Callback = function(self, Value)
-			Aimbot_F.Visible = Value
-
-			consPrint(LogStates.Info, self.Label, ":", Value)
-		end
-	})
-
-	AimbotTab:SliderFloat({
-		Label = "Radius", 
-		Minimum = 0, 
-		Maximum = 500,
-		Value = 120,
-		Format = "Radius = %.0f",
-		Callback = function(self, Value)
-			Aimbot_F.Radius = Value
-
-			consPrint(LogStates.Info, self.Label, ":", Value)
-		end
-	})
-
-	AimbotTab:SliderFloat({
-		Label = "Circle Sides", 
-		Minimum = 3, 
-		Maximum = 80,
-		Value = 25,
-		Format = "Sides = %.0f",
-		Callback = function(self, Value)
-			Aimbot_F.NumSides = Value
-
-			consPrint(LogStates.Info, self.Label, ":", Value)
-		end
-	})
-
-	AimbotTab:SliderFloat({
-		Label = "Transparency", 
-		Minimum = 0.0, 
-		Maximum = 1.0,
-		Value = 0,
-		Format = "Transparency = %.3f",
-		Callback = function(self, Value)
-			Aimbot_F.Transparency = Value
-
-			consPrint(LogStates.Info, self.Label, ":", Value)
-		end
-	})
-
-	AimbotTab:DragColor3({
-		Value = Color3.fromRGB(240, 40, 10),
-		Label = "Color",
-		Callback = function(self, Value)
-			Aimbot_F.Color = Value
-
-			consPrint(LogStates.Info, self.Label, ":", Value)
-		end
-	})
-
-	AimbotTab:DragColor3({
-		Value = Color3.fromRGB(40, 240, 10),
-		Label = "Color (Locked)",
-		Callback = function(self, Value)
-			Aimbot_F.LockedColor = Value
-
-			consPrint(LogStates.Info, self.Label, ":", Value)
-		end
-	})
+	for _, setting in ipairs({
+		{ "Color", "Color", Color3.fromRGB(240, 40, 10) },
+		{ "Color (Locked)", "LockedColor", Color3.fromRGB(40, 240, 10) }
+	}) do
+		Tabs.Combat:DragColor3({
+			Label = setting[1], Value = setting[3],
+			Callback = function(self, Value)
+				FOVSettings[setting[2]] = Value
+				
+			end
+		})
+	end
 
 	--[[ VISUALS ]]--
 	-- Shared Settings
@@ -309,8 +238,6 @@ function file.init(gameName)
 			if DistanceLimit then
 				DistanceLimit:SetDisabled(not Value)
 			end
-
-			consPrint(LogStates.Info, self.Label, ":", Value)
 		end
 	})
 
@@ -322,8 +249,6 @@ function file.init(gameName)
 		Format = "Distance Limit = %.0f",
 		Callback = function(self, Value)
 			ESP.shared.maxDistance = Value
-
-			consPrint(LogStates.Info, self.Label, ":", Value)
 		end
 	}); DistanceLimit:SetDisabled(not LimitDistance.Value)
 
@@ -338,8 +263,6 @@ function file.init(gameName)
 			Value = false,
 			Callback = function(self, Value)
 				ESPTarg.enabled = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		
@@ -351,8 +274,6 @@ function file.init(gameName)
 			Value = true,
 			Callback = function(self, Value)
 				ESPTarg.box = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:DragColor3({
@@ -360,8 +281,6 @@ function file.init(gameName)
 			Label = "Color",
 			Callback = function(self, Value)
 				ESPTarg.boxColor[1] = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:SliderFloat({
@@ -373,8 +292,34 @@ function file.init(gameName)
 			Callback = function(self, Value)
 				ESPTarg.boxColor[2] = 1-Value
 				ESPTarg.boxOutlineColor[2] = 1-Value
+			end
+		})
+
+		Header:Separator({Text = "3D Boxes"})
 		
-				consPrint(LogStates.Info, self.Label, ":", Value)
+		-- 3D Boxes
+		Header:Checkbox({
+			Label = "Enabled",
+			Value = true,
+			Callback = function(self, Value)
+				ESPTarg.box3d = Value
+			end
+		})
+		Header:DragColor3({
+			Value = Color3.fromRGB(155, 205, 255),
+			Label = "Color",
+			Callback = function(self, Value)
+				ESPTarg.box3dColor[1] = Value
+			end
+		})
+		Header:SliderFloat({
+			Label = "Transparency", 
+			Minimum = 0.0, 
+			Maximum = 1.0,
+			Value = 0,
+			Format = "Transparency = %.3f",
+			Callback = function(self, Value)
+				ESPTarg.box3dColor[2] = 1-Value
 			end
 		})
 		
@@ -386,8 +331,6 @@ function file.init(gameName)
 			Value = true,
 			Callback = function(self, Value)
 				ESPTarg.boxFill = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:DragColor3({
@@ -395,8 +338,6 @@ function file.init(gameName)
 			Label = "Color",
 			Callback = function(self, Value)
 				ESPTarg.boxFillColor[1] = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:SliderFloat({
@@ -407,8 +348,6 @@ function file.init(gameName)
 			Format = "Transparency = %.3f",
 			Callback = function(self, Value)
 				ESPTarg.boxFillColor[2] = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 
@@ -420,8 +359,6 @@ function file.init(gameName)
 			Value = true,
 			Callback = function(self, Value)
 				ESPTarg.chams = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:Checkbox({
@@ -429,8 +366,6 @@ function file.init(gameName)
 			Value = true,
 			Callback = function(self, Value)
 				ESPTarg.chamsVisibleOnly = not Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:DragColor3({
@@ -438,8 +373,6 @@ function file.init(gameName)
 			Label = "Color (Fill)",
 			Callback = function(self, Value)
 				ESPTarg.chamsFillColor[1] = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:SliderFloat({
@@ -450,8 +383,6 @@ function file.init(gameName)
 			Format = "Transparency = %.3f",
 			Callback = function(self, Value)
 				ESPTarg.chamsFillColor[2] = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:DragColor3({
@@ -459,8 +390,6 @@ function file.init(gameName)
 			Label = "Color (Outline)",
 			Callback = function(self, Value)
 				ESPTarg.chamsOutlineColor[1] = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:SliderFloat({
@@ -471,8 +400,6 @@ function file.init(gameName)
 			Format = "Transparency = %.3f",
 			Callback = function(self, Value)
 				ESPTarg.chamsOutlineColor[2] = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		
@@ -484,8 +411,6 @@ function file.init(gameName)
 			Value = true,
 			Callback = function(self, Value)
 				ESPTarg.tracer = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:DragColor3({
@@ -493,8 +418,6 @@ function file.init(gameName)
 			Label = "Color",
 			Callback = function(self, Value)
 				ESPTarg.tracerColor[1] = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:SliderFloat({
@@ -506,8 +429,6 @@ function file.init(gameName)
 			Callback = function(self, Value)
 				ESPTarg.tracerColor[2] = 1-Value
 				ESPTarg.tracerOutlineColor[2] = 1-Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:Combo({
@@ -521,8 +442,6 @@ function file.init(gameName)
 			},
 			Callback = function(self, Value)
 				ESPTarg.tracerOrigin = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end,
 		})
 		
@@ -534,8 +453,6 @@ function file.init(gameName)
 			Value = true,
 			Callback = function(self, Value)
 				ESPTarg.healthBar = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:DragColor3({
@@ -550,8 +467,6 @@ function file.init(gameName)
 			Label = "Dying Color",
 			Callback = function(self, Value)
 				ESPTarg.dyingColor = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		
@@ -563,8 +478,6 @@ function file.init(gameName)
 			Value = true,
 			Callback = function(self, Value)
 				ESPTarg.offScreenArrow = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:DragColor3({
@@ -572,8 +485,6 @@ function file.init(gameName)
 			Label = "Color",
 			Callback = function(self, Value)
 				ESPTarg.offScreenArrowColor[1] = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:SliderFloat({
@@ -585,8 +496,6 @@ function file.init(gameName)
 			Callback = function(self, Value)
 				ESPTarg.offScreenArrowColor[2] = 1-Value
 				ESPTarg.offScreenArrowOutlineColor[2] = 1-Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:SliderInt({
@@ -596,8 +505,6 @@ function file.init(gameName)
 			Maximum = 50,
 			Callback = function(self, Value)
 				ESPTarg.offScreenArrowSize = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:SliderInt({
@@ -607,8 +514,6 @@ function file.init(gameName)
 			Maximum = 800,
 			Callback = function(self, Value)
 				ESPTarg.offScreenArrowRadius = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 
@@ -620,8 +525,6 @@ function file.init(gameName)
 			Value = true,
 			Callback = function(self, Value)
 				ESPTarg.name = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:DragColor3({
@@ -629,8 +532,6 @@ function file.init(gameName)
 			Label = "Color",
 			Callback = function(self, Value)
 				ESPTarg.nameColor[1] = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:SliderFloat({
@@ -641,8 +542,6 @@ function file.init(gameName)
 			Format = "Transparency = %.3f",
 			Callback = function(self, Value)
 				ESPTarg.nameColor[2] = 1-Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		
@@ -654,8 +553,6 @@ function file.init(gameName)
 			Value = true,
 			Callback = function(self, Value)
 				ESPTarg.distance = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:DragColor3({
@@ -663,8 +560,6 @@ function file.init(gameName)
 			Label = "Color",
 			Callback = function(self, Value)
 				ESPTarg.distanceColor[1] = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:SliderFloat({
@@ -675,8 +570,6 @@ function file.init(gameName)
 			Format = "Transparency = %.3f",
 			Callback = function(self, Value)
 				ESPTarg.distanceColor[2] = 1-Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		
@@ -688,8 +581,6 @@ function file.init(gameName)
 			Value = true,
 			Callback = function(self, Value)
 				ESPTarg.weapon = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:DragColor3({
@@ -697,8 +588,6 @@ function file.init(gameName)
 			Label = "Color",
 			Callback = function(self, Value)
 				ESPTarg.weaponColor[1] = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:SliderFloat({
@@ -709,8 +598,6 @@ function file.init(gameName)
 			Format = "Transparency = %.3f",
 			Callback = function(self, Value)
 				ESPTarg.weaponColor[2] = 1-Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		
@@ -722,8 +609,6 @@ function file.init(gameName)
 			Value = true,
 			Callback = function(self, Value)
 				ESPTarg.healthText = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:DragColor3({
@@ -731,8 +616,6 @@ function file.init(gameName)
 			Label = "Color",
 			Callback = function(self, Value)
 				ESPTarg.healthTextColor[1] = Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 		Header:SliderFloat({
@@ -743,20 +626,18 @@ function file.init(gameName)
 			Format = "Transparency = %.3f",
 			Callback = function(self, Value)
 				ESPTarg.healthTextColor[2] = 1-Value
-		
-				consPrint(LogStates.Info, self.Label, ":", Value)
 			end
 		})
 	end
 
 	local Enemy = ESPTabs:CreateTab({
 		Name="Enemy",
-	}); insertSets(ESP_E, Enemy)
+	}); insertSets(ESPEnemy, Enemy)
 
 	local Friendly = ESPTabs:CreateTab({
 		Name="Friendly",
-	}); insertSets(ESP_F, Friendly)
-	
+	}); insertSets(ESPFriendly, Friendly)
+
 	--[[ SETTINGS ]]--
 	Tabs.Settings:Keybind({
 		Label = "Menu Keybind",
@@ -767,11 +648,12 @@ function file.init(gameName)
 		end,
 	})
 
-    --// Initialize
+	--// Initialize
 	ESP.Load()
-	Aimbot.Load()
-
-	consPrint(LogStates.Success, UIName .. " loaded successfully.")
+	--[[Aiming.Triggerbot.Bones = {
+		"Head", "HumanoidRootPart", -- Both
+		"Torso", "LeftArm", "RightArm", "LeftLeg", "RightLeg", -- R6
+		"UpperTorso", "LowerTorso", "RightUpperArm", "LeftUpperArm", "RightLowerArm", "LeftLowerArm", "RightHand", "LeftHand", "RightUpperLeg", "LeftUpperLeg", "RightLowerLeg", "LeftLowerLeg", "RightFoot", "LeftFoot" -- R15
+	}]]
+	Aiming.Load()
 end
-
-return file
