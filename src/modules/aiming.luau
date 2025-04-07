@@ -3,6 +3,7 @@
 --!nocheck
 
 local game, workspace = game, workspace
+
 local Vector2new, Vector3zero, CFramenew, Color3RGB, Drawingnew, TweenInfonew = Vector2.new, Vector3.zero, CFrame.new, Color3.fromRGB, Drawing.new, TweenInfo.new
 local mousemoverel, tablefind, tableremove, stringlower, stringsub, mathclamp = mousemoverel or (Input and Input.MouseMove), table.find, table.remove, string.lower, string.sub, math.clamp
 
@@ -85,12 +86,12 @@ local Aiming = {
 		NumSides = 60,
 
 		Thickness = 2,
-		Transparency = 1,
+		Transparency = 0,
 		Filled = false,
 
-		Color = Color3RGB(255, 255, 255),
+		Color = Color3RGB(255, 150, 150),
 		OutlineColor = Color3RGB(0, 0, 0),
-		LockedColor = Color3RGB(255, 150, 150)
+		LockedColor = Color3RGB(150, 255, 150)
 	},
 
 	Blacklisted = {},

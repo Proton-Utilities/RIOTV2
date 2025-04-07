@@ -7,9 +7,12 @@ local Files = {
         Load = require("games/linoriaBase/init.luau"),
     },
 
-    ["riotUiBase"] = {
-        Name = "riotUiBase",
-        Load = require("games/riotUiBase/init.luau"),
+    ["Arsenal"] = {
+        Name = "Arsenal",
+        Load = require("games/Arsenal/init.luau"),
+        Places = {
+            286090429
+        }
     },
 
     ["Universal"] = {
@@ -31,4 +34,4 @@ end
 
 --Files.newBase:Load()
 --Files.Universal:Load()
-Files.riotUiBase:Load()
+Files.Arsenal:Load()
