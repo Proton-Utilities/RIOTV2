@@ -326,7 +326,6 @@ function CreateSection(Parent, Settings, Flag)
 	name.LayoutOrder = 1
 	name.Position = UDim2.fromOffset(28, 0)
 	name.RichText = true
-	name.Text = "Aimbot"
 	name.TextColor3 = Color3.fromRGB(225, 225, 225)
 	name.TextSize = 20
 	name.TextWrapped = true
@@ -2986,7 +2985,6 @@ function library:Window(Settings)
 			name.LayoutOrder = 1
 			name.Position = UDim2.fromOffset(28, 0)
 			name.RichText = true
-			name.Text = "Aimbot"
 			name.TextColor3 = Color3.fromRGB(225, 225, 225)
 			name.TextSize = 20
 			name.TextWrapped = true
@@ -3211,16 +3209,23 @@ function library:Window(Settings)
 			visualPreview.Visible = Settings.Visible
 		end
 
-		if Settings.HealthBar and Settings.HealthBar.Visible ~= nil then
-			healthBar.Visible = Settings.HealthBar.Visible
+		if Settings.HealthBar then
+			if Settings.HealthBar.Visible ~= nil then
+				healthBar.Visible = Settings.HealthBar.Visible
+			end
+			if Settings.HealthBar.Color then
+				healthBar.BackgroundColor3 = Settings.HealthBar.Color[1] or healthBar.BackgroundColor3
+				healthBar.Transparency = Settings.HealthBar.Color[2] or healthBar.Transparency
+			end
 		end
 
 		if Settings.Distance then
 			if Settings.Distance.Visible ~= nil then
-				distance.Visible = Settings.Distance.Visible
+				distance.Visible = Settings.Health.Visible
 			end
 			if Settings.Distance.Color then
-				distance.TextColor3 = Settings.Distance.Color
+				distance.TextColor3 = Settings.Distance.Color[1] or distance.TextColor3
+				distance.TextTransparency = Settings.Distance.Color[2] or distance.TextTransparency
 			end
 		end
 
@@ -3229,7 +3234,8 @@ function library:Window(Settings)
 				health.Visible = Settings.Health.Visible
 			end
 			if Settings.Health.Color then
-				health.TextColor3 = Settings.Health.Color
+				health.TextColor3 = Settings.Health.Color[1] or health.TextColor3
+				health.TextTransparency = Settings.Health.Color[2] or health.TextTransparency
 			end
 		end
 
@@ -3238,7 +3244,8 @@ function library:Window(Settings)
 				weapon.Visible = Settings.Weapon.Visible
 			end
 			if Settings.Weapon.Color then
-				weapon.TextColor3 = Settings.Weapon.Color
+				weapon.TextColor3 = Settings.Weapon.Color[1] or weapon.TextColor3
+				weapon.TextTransparency = Settings.Weapon.Color[2] or weapon.TextTransparency
 			end
 		end
 
@@ -3247,7 +3254,8 @@ function library:Window(Settings)
 				name.Visible = Settings.Name.Visible
 			end
 			if Settings.Name.Color then
-				name.TextColor3 = Settings.Name.Color
+				name.TextColor3 = Settings.Name.Color[1] or name.TextColor3
+				name.TextTransparency = Settings.Name.Color[2] or name.TextTransparency
 			end
 		end
 

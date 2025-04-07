@@ -1,9 +1,11 @@
 --!nocheck
 --!nolint LocalUnused
+--!nolint UnknownGlobal
 
 return function(self)
 	--// Imports
-    local _ACBypass = require("games/Arsenal/ACBypass.luau")
+	local ACBypass = require("games/Arsenal/ACBypass.luau")
+
 	local Functions = require("core/functions.luau")
 	local Interface = require("core/riotUi.luau")
 
@@ -24,12 +26,12 @@ return function(self)
 	local TriggerbotSettings = Aiming.Triggerbot
 	local FOVSettings = Aiming.FOVSettings
 
-    --// Methods
+	--// Methods
 	local GetService = Functions.SecureService
 
-    --// Services
-    local Workspace: Workspace = GetService("Workspace")
-    local ReplicatedStorage: ReplicatedStorage = GetService("ReplicatedStorage")
+	--// Services
+	local Workspace: Workspace = GetService("Workspace")
+	local ReplicatedStorage: ReplicatedStorage = GetService("ReplicatedStorage")
 
 	--// UI Begin
 	local Window = Interface:Window({
@@ -45,428 +47,725 @@ return function(self)
 		Cfg = Window:Tab({ Name = "Cfg", Image = Assets.Archive }),
 	}
 
-    -- [[ Tabs.Legit ]] --
-    do
-        local Tab = Tabs.Legit
+	-- [[ Tabs.Legit ]] --
+	do
+		local Tab = Tabs.Legit
 
-        -- Aimbot
-        do
-            local AimbotSection = Tab:Section{ Name = "Aimbot" }
+		-- Aimbot
+		do
+			local AimbotSection = Tab:Section({ Name = "Aimbot" })
 
-            -- Settings
-            do
-                local AimbotSettingsSection = AimbotSection:Section{ Name = "Aimbot Settings" }
+			-- Settings
+			do
+				local AimbotSettingsSection = AimbotSection:Section({ Name = "Aimbot Settings" })
 
-                AimbotSettingsSection:Toggle({
-                    Name = "Enabled",
-                    Description = "enables aimbot",
-                    State = false,
-                    Callback = function(self, value)
-                        AimbotSettings.Enabled = value
-                    end
-                }, "Aimbot"):Continue()
-        
-                AimbotSettingsSection:Keybind({
-                    Bind = Enum.UserInputType.MouseButton2,
-                    Blacklist = {Enum.UserInputType.MouseButton1},
-                    onHeld = function(self, value, gameProcessedEvent)
-                        if gameProcessedEvent then return end
-                        AimbotSettings.SetState(value)
-                    end
-                }, "AimbotKeybind")
-        
-                AimbotSettingsSection:Slider({
-                    Name = "Smoothing",
-                    Description = "aimbot smoothness",
-                    Value = 1,
-                    Minimum = 1,
-                    Maximum = 20,
-                    Step = 0.1,
-                    Precision = 1,
-                    Callback = function(self, value)
-                        AimbotSettings.Sensitivity = (value - 1) / (self.Settings.Maximum - 1) * 0.15
-                        AimbotSettings.Sensitivity2 = value
-                    end
-                }, "AimbotSmoothing")
-        
-                AimbotSettingsSection:Dropdown({
-                    Name = "Bone",
-                    Description = "selects the bone to aim at",
-                    Options = {"Head", "Torso"},
-                    Value = {"Head"},
-                    Limit = 1,
-                    Minimum = 1,
-                    Callback = function(self, value)
-                        AimbotSettings.LockPart = value[1]
-                    end,
-                }, "Bone")
-        
-                AimbotSettingsSection:Slider({
-                    Name = "Max Distance",
-                    Description = "the distance aimbot stops locking onto players",
-                    Value = 500,
-                    Minimum = 1,
-                    Maximum = 2000,
-                    Step = 1,
-                    Precision = 0,
-                    Callback = function(self, value)
-                        AimbotSettings.MaxDistance = value
-                    end
-                }, "MaxDistance")
-        
-                AimbotSettingsSection:Dropdown({
-                    Name = "Lock Method",
-                    Description = "the input used to lock onto a player",
-                    Options = { "Camera", "Mouse" },
-                    Value = {"Camera"},
-                    Limit = 1,
-                    Minimum = 1,
-                    Callback = function(self, value)
-                        AimbotSettings.LockMode = ({ Camera = 1, Mouse = 2 })[value[1]]
-                    end
-                }, "AimbotLockMethod")
-        
-                AimbotSettingsSection:Dropdown({
-                    Name = "Wall Check",
-                    Description = "the method used by wall check",
-                    Options = { "Off", "Sticky", "Always On" },
-                    Value = {"Always On"},
-                    Limit = 1,
-                    Minimum = 1,
-                    Callback = function(self, value)
-                        AimbotSettings.WallCheck = ({ ["Off"] = 1, ["Sticky"] = 2, ["Always On"] = 3 })[value[1]]
-                    end
-                }, "AimbotWallCheckMode")
-        
-                AimbotSettingsSection:Toggle({
-                    Name = "Team Check", 
-                    Description = "whether to ignore friendlys", 
-                    State = true,
-                    Callback = function(self, Value)
-                        AimbotSettings.TeamCheck = Value
-                    end
-                })
-        
-                AimbotSettingsSection:Toggle({
-                    Name = "Alive Check", 
-                    Description = "whether to ignore corpses", 
-                    State = true,
-                    Callback = function(self, Value)
-                        AimbotSettings.AliveCheck = Value
-                    end
-                }):Continue()
-            end
+				AimbotSettingsSection:Toggle({
+					Name = "Enabled",
+					Description = "enables aimbot",
+					State = false,
+					Callback = function(self, value)
+						AimbotSettings.Enabled = value
+					end,
+				}, "Aimbot"):Continue()
 
-            -- FOV Settings
-            do
-                local FOVSettingsSection = AimbotSection:Section{ Name = "FOV Settings" }
+				AimbotSettingsSection:Keybind({
+					Bind = Enum.UserInputType.MouseButton2,
+					Blacklist = { Enum.UserInputType.MouseButton1 },
+					onHeld = function(self, value, gameProcessedEvent)
+						if gameProcessedEvent then
+							return
+						end
+						AimbotSettings.SetState(value)
+					end,
+				}, "AimbotKeybind")
 
-                FOVSettingsSection:Toggle({
-                    Name = "Enabled", 
-                    Description = "whether the aimbot radius limit is active", 
-                    State = true,
-                    Callback = function(self, Value)
-                        FOVSettings.Enabled = Value
-                    end
-                })
+				AimbotSettingsSection:Slider({
+					Name = "Smoothing",
+					Description = "aimbot smoothness",
+					Value = 1,
+					Minimum = 1,
+					Maximum = 20,
+					Step = 0.1,
+					Precision = 1,
+					Callback = function(self, value)
+						AimbotSettings.Sensitivity = (value - 1) / (self.Settings.Maximum - 1) * 0.15
+						AimbotSettings.Sensitivity2 = value
+					end,
+				}, "AimbotSmoothing")
 
-                FOVSettingsSection:Slider({
-                    Name = "Radius",
-                    Description = "aimbot FOV limit radius",
-                    Value = 120,
-                    Minimum = 1,
-                    Maximum = 500,
-                    Step = 1,
-                    Precision = 0,
-                    Callback = function(self, value)
-                        FOVSettings.Radius = value
-                    end
-                }, "AimbotFOVRadiusSlider")
+				AimbotSettingsSection:Dropdown({
+					Name = "Bone",
+					Description = "selects the bone to aim at",
+					Options = { "Head", "Torso" },
+					Value = { "Head" },
+					Limit = 1,
+					Minimum = 1,
+					Callback = function(self, value)
+						local Part = value[1] == "Torso" and "HumanoidRootPart" or value[1]
+						AimbotSettings.LockPart = Part
+					end,
+				}, "Bone")
 
-                FOVSettingsSection:Toggle({
-                    Name = "Visible", 
-                    Description = "draws a circle representing the aimbot FOV radius", 
-                    State = true,
-                    Callback = function(self, Value)
-                        FOVSettings.Visible = Value
-                    end
-                })
+				AimbotSettingsSection:Slider({
+					Name = "Max Distance",
+					Description = "the distance aimbot stops locking onto players",
+					Value = 500,
+					Minimum = 1,
+					Maximum = 2000,
+					Step = 1,
+					Precision = 0,
+					Callback = function(self, value)
+						AimbotSettings.MaxDistance = value
+					end,
+				}, "MaxDistance")
 
-                FOVSettingsSection:Slider({
-                    Name = "Circle Sides",
-                    Description = "the amount of points the drawn circle has",
-                    Value = 45,
-                    Minimum = 3,
-                    Maximum = 80,
-                    Step = 1,
-                    Precision = 0,
-                    Callback = function(self, value)
-                        FOVSettings.NumSides = value
-                    end
-                }, "AimbotFOVCircleSidesSlider")
-            end
-        end
+				AimbotSettingsSection:Dropdown({
+					Name = "Lock Method",
+					Description = "the input used to lock onto a player",
+					Options = { "Camera", "Mouse" },
+					Value = { "Camera" },
+					Limit = 1,
+					Minimum = 1,
+					Callback = function(self, value)
+						AimbotSettings.LockMode = ({ Camera = 1, Mouse = 2 })[value[1]]
+					end,
+				}, "AimbotLockMethod")
 
-        -- Triggerbot
-        do
-            local TriggerbotSection = Tab:Section{ Name = "Triggerbot" }
+				AimbotSettingsSection:Dropdown({
+					Name = "Wall Check",
+					Description = "the method used by wall check",
+					Options = { "Off", "Sticky", "Always On" },
+					Value = { "Always On" },
+					Limit = 1,
+					Minimum = 1,
+					Callback = function(self, value)
+						AimbotSettings.WallCheck = ({ ["Off"] = 1, ["Sticky"] = 2, ["Always On"] = 3 })[value[1]]
+					end,
+				}, "AimbotWallCheckMode")
 
-            TriggerbotSection:Toggle({
-                Name = "Enabled",
-                Description = "enables triggerbot",
-                State = false,
-                Callback = function(self, value)
-                    TriggerbotSettings.Enabled = value
-                end
-            }, "TriggerbotEnabled")
+				AimbotSettingsSection:Toggle({
+					Name = "Team Check",
+					Description = "whether to ignore friendlys",
+					State = true,
+					Callback = function(self, value)
+						AimbotSettings.TeamCheck = value
+					end,
+				})
 
-            TriggerbotSection:Slider({
-                Name = "Trigger Delay",
-                Description = "in miliseconds, the reaction time of triggerbot",
-                Value = 0,
-                Minimum = 1,
-                Maximum = 500,
-                Step = 1,
-                Precision = 0,
-                Callback = function(self, value)
-                    TriggerbotSettings.Delay = value / 1000
-                end
-            }, "TriggerbotDelay")
+				AimbotSettingsSection:Toggle({
+					Name = "Alive Check",
+					Description = "whether to ignore corpses",
+					State = true,
+					Callback = function(self, value)
+						AimbotSettings.AliveCheck = value
+					end,
+				}):Continue()
+			end
 
-            TriggerbotSection:Toggle({
-                Name = "Team Check", 
-                Description = "whether to ignore friendlys", 
-                State = true,
-                Callback = function(self, Value)
-                    TriggerbotSettings.TeamCheck = Value
-                end
-            })
-    
-            TriggerbotSection:Toggle({
-                Name = "Alive Check", 
-                Description = "whether to ignore corpses", 
-                State = true,
-                Callback = function(self, Value)
-                    AimbotSettings.AliveChecl = Value
-                end
-            }):Continue()
-        end
-    end
+			-- FOV Settings
+			do
+				local FOVSettingsSection = AimbotSection:Section({ Name = "FOV Settings" })
 
-    -- [[ Tabs.Rage ]] --
-    do
-        local Tab = Tabs.Rage
-    end
+				FOVSettingsSection:Toggle({
+					Name = "Enabled",
+					Description = "whether the aimbot radius limit is active",
+					State = true,
+					Callback = function(self, value)
+						FOVSettings.Enabled = value
+					end,
+				})
 
-    -- [[ Tabs.Visuals ]] --
-    do
-        local Tab = Tabs.Visuals
-    end
+				FOVSettingsSection:Slider({
+					Name = "Radius",
+					Description = "aimbot FOV limit radius",
+					Value = 120,
+					Minimum = 1,
+					Maximum = 500,
+					Step = 1,
+					Precision = 0,
+					Callback = function(self, value)
+						FOVSettings.Radius = value
+					end,
+				}, "AimbotFOVRadiusSlider")
 
-    -- [[ Tabs.Misc ]] --
-    do
-        local Tab = Tabs.Misc
+				FOVSettingsSection:Toggle({
+					Name = "Visible",
+					Description = "draws a circle representing the aimbot FOV radius",
+					State = true,
+					Callback = function(self, value)
+						FOVSettings.Visible = value
+					end,
+				})
 
-        -- Gun Modifications
-        do
-            local GunModificationsSection = Tab:Section{ Name = "Gun Modifications" }
+				FOVSettingsSection:Slider({
+					Name = "Circle Sides",
+					Description = "the amount of points the drawn circle has",
+					Value = 45,
+					Minimum = 3,
+					Maximum = 80,
+					Step = 1,
+					Precision = 0,
+					Callback = function(self, value)
+						FOVSettings.NumSides = value
+					end,
+				}, "AimbotFOVCircleSidesSlider"):Continue()
+			end
+		end
 
-            local OriginalValues = {}
+		-- Triggerbot
+		do
+			local TriggerbotSection = Tab:Section({ Name = "Triggerbot" })
 
-            local function UpdateModification(Name, NewValue)
-                local Weapons = ReplicatedStorage:FindFirstChild("Weapons")
+			TriggerbotSection:Toggle({
+				Name = "Enabled",
+				Description = "enables triggerbot",
+				State = false,
+				Callback = function(self, value)
+					TriggerbotSettings.Enabled = value
+				end,
+			}, "TriggerbotEnabled")
+
+			TriggerbotSection:Slider({
+				Name = "Trigger Delay",
+				Description = "in miliseconds, the reaction time of triggerbot",
+				Value = 0,
+				Minimum = 1,
+				Maximum = 500,
+				Step = 1,
+				Precision = 0,
+				Callback = function(self, value)
+					TriggerbotSettings.Delay = value / 1000
+				end,
+			}, "TriggerbotDelay")
+
+			TriggerbotSection:Toggle({
+				Name = "Team Check",
+				Description = "whether to ignore friendlys",
+				State = true,
+				Callback = function(self, value)
+					TriggerbotSettings.TeamCheck = value
+				end,
+			})
+
+			TriggerbotSection:Toggle({
+				Name = "Alive Check",
+				Description = "whether to ignore corpses",
+				State = true,
+				Callback = function(self, value)
+					AimbotSettings.AliveCheck = value
+				end,
+			}):Continue()
+		end
+	end
+
+	-- [[ Tabs.Rage ]] --
+	do
+		local Tab = Tabs.Rage
+
+		-- Silent Aim
+		do
+			local SilentAimSection = Tab:Section({ Name = "Silent Aim" })
+		end
+
+		-- Hitbox Expander
+		do
+			local HitboxExpanderSection = Tab:Section({ Name = "Hitbox Expander" })
+		end
+
+		-- Kill Aura
+		do
+			local KillAuraSection = Tab:Section({ Name = "Kill Aura" })
+		end
+
+		-- Gun Modifications
+		do
+			local GunModificationsSection = Tab:Section({ Name = "Gun Modifications" })
+
+			local OriginalValues = {}
+
+			local function UpdateWeaponValue(Name, NewValue)
+				local Weapons: Folder = ReplicatedStorage:FindFirstChild("Weapons")
+
+				if Weapons then
+					for _, Modifier in pairs(Weapons:GetDescendants()) do
+						if Modifier.Name == Name and Modifier.Parent.Parent == Weapons then
+							if OriginalValues[Modifier] == nil then
+								OriginalValues[Modifier] = Modifier.Value
+							end
+
+							Modifier.Value = NewValue
+						end
+					end
+				end
+			end
+
+			local function RestoreWeaponValue(Name)
+				local Weapons: Folder = ReplicatedStorage:FindFirstChild("Weapons")
+
+				if Weapons then
+					for _, Modifier in pairs(Weapons:GetDescendants()) do
+						if Modifier.Name == Name and OriginalValues[Modifier] ~= nil then
+							Modifier.Value = OriginalValues[Modifier]
+							OriginalValues[Modifier] = nil
+						end
+					end
+				end
+			end
+
+			--[[GunModificationsSection:Toggle({
+				Name = "Wallbang",
+				Description = "lets your guns shoot behind walls",
+				State = false,
+			}, "WallbangToggle")]]
+
+			GunModificationsSection:Toggle({
+				Name = "Automatics",
+				Description = "makes all guns automatic",
+				State = false,
+				Callback = function(self, value)
+					if value then
+						UpdateWeaponValue("Auto", true)
+					else
+						RestoreWeaponValue("Auto")
+					end
+				end,
+			})
+
+			GunModificationsSection:Toggle({
+				Name = "Infinite Ammo",
+				Description = "enables infinite ammo",
+				State = false,
+				Callback = function(self, value)
+					local wkspc = ReplicatedStorage.wkspc
+					local CurrentCurse = wkspc and wkspc.CurrentCurse
+
+					if CurrentCurse and CurrentCurse.Value and value then
+						CurrentCurse.Value = "Infinite Ammo"
+					elseif not value then
+						CurrentCurse.Value = ""
+					end
+				end,
+			}, "InfAmmoToggle")
+
+			GunModificationsSection:Toggle({
+				Name = "Rapid Fire",
+				Description = "enables rapid fire rate",
+				State = false,
+				Callback = function(self, value)
+					if value then
+						UpdateWeaponValue("FireRate", 0.02)
+					else
+						RestoreWeaponValue("FireRate")
+					end
+				end,
+			})
+
+			GunModificationsSection:Toggle({
+				Name = "No Equip Timer",
+				Description = "removes the delay from equipping to shooting",
+				State = false,
+				Callback = function(self, value)
+					if value then
+						UpdateWeaponValue("EquipTime", 0)
+					else
+						RestoreWeaponValue("EquipTime")
+					end
+				end,
+			})
+
+			GunModificationsSection:Toggle({
+				Name = "Instant Reload",
+				Description = "instantly reloads your ammo",
+				State = false,
+				Callback = function(self, value)
+					if value then
+						UpdateWeaponValue("ReloadTime", 0)
+					else
+						RestoreWeaponValue("ReloadTime")
+					end
+				end,
+			})
+
+			GunModificationsSection:Toggle({
+				Name = "No Spread",
+				Description = "removes gun spread",
+				State = false,
+				Callback = function(self, value)
+					if value then
+						UpdateWeaponValue("MaxSpread", 0)
+						UpdateWeaponValue("Spread", 0)
+					else
+						RestoreWeaponValue("MaxSpread")
+						RestoreWeaponValue("Spread")
+					end
+				end,
+			})
+
+			GunModificationsSection:Toggle({
+				Name = "No Recoil",
+				Description = "removes gun recoil",
+				State = false,
+				Callback = function(self, value)
+					if value then
+						UpdateWeaponValue("RecoilControl", 0)
+					else
+						RestoreWeaponValue("RecoilControl")
+					end
+				end,
+			})
+
+			GunModificationsSection:Toggle({
+				Name = "No Projectile Charging",
+				Description = "removes charge timer for projectiles",
+				State = false,
+				Callback = function(self, value)
+					if value then
+						UpdateWeaponValue("ChargeTime", 0)
+					else
+						RestoreWeaponValue("ChargeTime")
+					end
+				end,
+			})
+
+			GunModificationsSection:Toggle({
+				Name = "Haste",
+				Description = "removes player slowdown and speeds you up",
+				State = false,
+				Callback = function(self, value)
+					if value then
+						UpdateWeaponValue("Speed%", -25)
+					else
+						RestoreWeaponValue("Speed%")
+					end
+				end,
+			}):Continue()
+		end
+	end
+
+	-- [[ Tabs.Visuals ]] --
+	do
+		local Tab = Tabs.Visuals
+
+		-- ESP
+		do
+			local ESPSection = Tab:Section({ Name = "ESP" })
+
+			ESPSection:Slider({
+				Name = "Max Distance",
+				Description = "the maximum distance that ESP will render at",
+				Value = 500,
+				Minimum = 1,
+				Maximum = 2000,
+				Step = 1,
+				Precision = 0,
+				Callback = function(self, value)
+					ESPShared.maxDistance = value
+				end,
+			}, "ESPMaxDistanceSlider")
+
+			local function UpdateVisualPreview(Team)
+				Window:VisualPreview({
+					HealthBar = {
+						Visible = Team.healthBar,
+						Color = { Team.healthyColor },
+					},
+
+					Name = {
+						Visible = Team.name,
+						Color = { Team.nameColor[1], Team.nameColor[2] },
+					},
+
+					Distance = {
+						Visible = Team.distance,
+						Color = { Team.distanceColor[1], Team.distanceColor[2] },
+					},
+
+					Health = {
+						Visible = Team.healthText,
+						Color = { Team.healthTextColor[1], Team.healthTextColor[2] },
+					},
+
+					Weapon = {
+						Visible = Team.weapon,
+						Color = { Team.weaponColor[1], Team.weaponColor[2] },
+					},
+
+					BoundingBox = {
+						Visible = Team.box,
+						Color = { Team.boxColor[1], Team.boxColor[2] },
+					},
+
+					FillBox = {
+						Visible = boxFill,
+						Color = { Team.boxFillColor[1], Team.boxFillColor[2] },
+					},
+				})
+			end
+
+			local function AddTeamSettings(ESPTarg, Header)
+				Header:Toggle({
+					Name = "Enabled",
+					Description = "enables ESP",
+					State = false,
+					Callback = function(self, value)
+						ESPTarg.enabled = value
+					end,
+				})
+
+				-- Bounding Box
+				Header:Toggle({
+					Name = "Bounding Box",
+					Description = "enables bounding box ESP",
+					State = false,
+					Callback = function(self, value)
+						ESPTarg.box = value
+
+						UpdateVisualPreview(ESPTarg)
+					end,
+				})
+
+				-- Box Fill
+				Header:Toggle({
+					Name = "Box Fill",
+					Description = "enables box fill ESP",
+					State = false,
+					Callback = function(self, value)
+						ESPTarg.boxFill = value
+
+						UpdateVisualPreview(ESPTarg)
+					end,
+				})
+
+				-- Chams
+				Header:Toggle({
+					Name = "Chams",
+					Description = "enables player chams ESP",
+					State = false,
+					Callback = function(self, value)
+						ESPTarg.chams = value
+					end,
+				})
+
+				-- Tracers
+				Header:Toggle({
+					Name = "Tracers",
+					Description = "enables tracers ESP",
+					State = false,
+					Callback = function(self, value)
+						ESPTarg.tracer = value
+					end,
+				})
+
+				Header:Dropdown({
+					Name = "Tracers Origin",
+					Description = "selects the starting port of tracers",
+					Options = { "Top", "Middle", "Bottom", "Mouse" },
+					Value = { "Top" },
+					Limit = 1,
+					Minimum = 1,
+					Callback = function(self, value)
+						ESPTarg.tracerOrigin = value[1]
+					end,
+				})
+
+				-- Health Bars
+				Header:Toggle({
+					Name = "Health Bar",
+					Description = "enables health bar ESP",
+					State = false,
+					Callback = function(self, value)
+						ESPTarg.healthBar = value
+
+						UpdateVisualPreview(ESPTarg)
+					end,
+				})
+
+				-- Off Screen Arrows
+				Header:Toggle({
+					Name = "Off Screen Arrows",
+					Description = "enables off screen arrow ESP",
+					State = false,
+					Callback = function(self, value)
+						ESPTarg.offScreenArrow = value
+					end,
+				})
+
+				Header:Slider({
+					Name = "Arrow Size",
+					Description = "changes the size of the individual off screen arrows",
+					Value = 15,
+					Minimum = 1,
+					Maximum = 50,
+					Step = 1,
+					Precision = 0,
+					Callback = function(self, value)
+						ESPShared.offScreenArrowSize = value
+					end,
+				})
+
+				Header:Slider({
+					Name = "Radius",
+					Description = "changes the radius limit of offscreen arrows",
+					Value = 150,
+					Minimum = 1,
+					Maximum = 500,
+					Step = 1,
+					Precision = 0,
+					Callback = function(self, value)
+						ESPShared.offScreenArrowRadius = value
+					end,
+				})
+
+				-- Name Text
+				Header:Toggle({
+					Name = "Name",
+					Description = "enables name text ESP",
+					State = false,
+					Callback = function(self, value)
+						ESPTarg.name = value
+
+						UpdateVisualPreview(ESPTarg)
+					end,
+				})
+
+				-- Distance Text
+				Header:Toggle({
+					Name = "Distance",
+					Description = "enables distance text ESP",
+					State = false,
+					Callback = function(self, value)
+						ESPTarg.distance = value
+
+						UpdateVisualPreview(ESPTarg)
+					end,
+				})
+
+				-- Weapon Text
+				Header:Toggle({
+					Name = "Weapon",
+					Description = "enables weapon text ESP",
+					State = false,
+					Callback = function(self, value)
+						ESPTarg.weapon = value
+
+						UpdateVisualPreview(ESPTarg)
+					end,
+				})
+
+				-- Health Text
+				Header:Toggle({
+					Name = "Health",
+					Description = "enables health text ESP",
+					State = false,
+					Callback = function(self, value)
+						ESPTarg.healthText = value
+
+						UpdateVisualPreview(ESPTarg)
+					end,
+				})           
+			end
+
+            local EnemiesSection = ESPSection:Section({ Name = "Enemies" })
+            AddTeamSettings(ESPEnemy, EnemiesSection)
             
-                if Weapons then
-                    for _, v in pairs(Weapons:GetDescendants()) do
-                        if v.Name == Name and v.Parent.Parent == Weapons then
-                            if OriginalValues[v] == nil then
-                                OriginalValues[v] = v.Value
-                            end
-            
-                            v.Value = NewValue
-                        end
-                    end
-                end
-            end
-            
-            local function RestoreModification(Name)
-                local Weapons = ReplicatedStorage:FindFirstChild("Weapons")
-            
-                if Weapons then
-                    for _, v in pairs(Weapons:GetDescendants()) do
-                        if v.Name == Name and OriginalValues[v] ~= nil then
-                            v.Value = OriginalValues[v]
-                            OriginalValues[v] = nil
-                        end
-                    end
-                end
-            end
+            local FriendliesSection = ESPSection:Section({ Name = "Friendlies" })
+            AddTeamSettings(ESPFriendly, FriendliesSection)     
+		end
+	end
 
-            GunModificationsSection:Toggle({
-                Name = "Automatics",
-                Description = "makes all guns automatic", 
-                State = false,
-                Callback = function(self, Value)
-                    if Value then
-                        UpdateModification("Auto", true)
-                    else
-                        RestoreModification("Auto")
-                    end
-                end
-            })
+	-- [[ Tabs.Misc ]] --
+	do
+		local Tab = Tabs.Misc
+	end
 
-            GunModificationsSection:Toggle({
-                Name = "Max Ammo",
-                Description = "stores maximum ammo", 
-                State = false,
-                Callback = function(self, Value)
-                    if Value then
-                        UpdateModification("Ammo", 300)
-                        UpdateModification("StoredAmmo", 300)
-                    else
-                        RestoreModification("Ammo")
-                        RestoreModification("StoredAmmo")
-                    end
-                end
-            }, "InfAmmoToggle")
+	-- [[ Tabs.Cfg ]] --
+	do
+		local Tab = Tabs.Cfg
 
-            GunModificationsSection:Toggle({
-                Name = "Fast Fire",
-                Description = "enables fast fire rate", 
-                State = false,
-                Callback = function(self, Value)
-                    if Value then
-                        UpdateModification("FireRate", 0.05)
-                    else
-                        RestoreModification("FireRate")
-                    end
-                end
-            })
+		Tab:Toggle({
+			Name = "Visual preview",
+			Description = "enables a visual preview of your esp",
+			State = false,
+			Callback = function(self, state)
+				Window:VisualPreview({
+					Visible = state,
+				})
+			end,
+		}):Continue()
 
-            GunModificationsSection:Toggle({
-                Name = "No Equip Timer", 
-                Description = "removes the delay from equipping to shooting", 
-                State = false,
-                Callback = function(self, Value)
-                    if Value then
-                        UpdateModification("EquipTime", 0)
-                    else
-                        RestoreModification("EquipTime")
-                    end
-                end
-            })
-            
-            GunModificationsSection:Toggle({
-                Name = "Instant Reload", 
-                Description = "instantly reloads your ammo", 
-                State = false,
-                Callback = function(self, Value)
-                    if Value then
-                        UpdateModification("ReloadTime", 0)
-                    else
-                        RestoreModification("ReloadTime")
-                    end
-                end
-            })
+		Tab:Keybind({
+			Bind = Window.Settings.Keybind,
+			Blacklist = { Enum.UserInputType.MouseButton1, Enum.UserInputType.MouseButton2 },
+			onChanged = function(self, key)
+				Window:UpdateSettings({
+					Keybind = key,
+				})
+			end,
+		}):Continue()
 
-            GunModificationsSection:Toggle({
-                Name = "No Spread", 
-                Description = "removes gun spread", 
-                State = false,
-                Callback = function(self, Value)
-                    if Value then
-                        UpdateModification("MaxSpread", 0)
-                        UpdateModification("Spread", 0)
-                    else
-                        RestoreModification("MaxSpread")
-                        RestoreModification("Spread")
-                    end
-                end
-            })
-
-            GunModificationsSection:Toggle({
-                Name = "No Recoil",
-                Description = "removes gun recoil", 
-                State = false,
-                Callback = function(self, Value)
-                    if Value then
-                        UpdateModification("RecoilControl", 0)
-                    else
-                        RestoreModification("RecoilControl")
-                    end
-                end
-            })
-
-            GunModificationsSection:Toggle({
-                Name = "No Projectile Charging",
-                Description = "removes charge timer for projectiles", 
-                State = false,
-                Callback = function(self, Value)
-                    if Value then
-                        UpdateModification("ChargeTime", 0)
-                    else
-                        RestoreModification("ChargeTime")
-                    end
-                end
-            })
-        end
-    end
-
-    -- [[ Tabs.Cfg ]] --
-    do
-        local Tab = Tabs.Cfg
-
-        Tab:Toggle({
-            Name = "Visual preview",
-            Description = "enables a visual preview of your esp",
-            State = false,
-            Callback = function(self, state)
-                Window:VisualPreview({
-                    Visible = state
-                })
-            end,
-        }):Continue()
-        
-        Tab:Keybind({
-            Bind = Window.Settings.Keybind,
-            Blacklist = {Enum.UserInputType.MouseButton1, Enum.UserInputType.MouseButton2},
-            onChanged = function(self, key)
-                Window:UpdateSettings({
-                    Keybind = key
-                })
-            end,
-        }):Continue()
-        
-        Tab:Button({
-            Color = Colors.SystemDarkRed,
-            Name = "Unload Menu",
-            Callback = function(self)
-                Interface:Unload()
-            end,
-        }):Continue()
-    end
+		Tab:Button({
+			Color = Colors.SystemDarkRed,
+			Name = "Unload Menu",
+			Callback = function(self)
+				Interface:Unload()
+			end,
+		}):Continue()
+	end
 
 	--// Initialize
-    -- ACBypass()
+	ACBypass()
 	Esp.Load()
+
+	Aiming.PlayerAlive = function(Player)
+		return Player.NRPBS and Player.NRPBS.Health and Player.NRPBS.Health.Value < 0
+	end
 	Aiming.Load()
 
-    Tabs.Legit:Select()
+	Tabs.Legit:Select()
 
-    do
-        local Map: Folder = Workspace:FindFirstChild("Map")
-        local IgnoreFolder: Folder = Map and Map:FindFirstChild("Ignore")
+	-- Wallbang (non functioning)
+	--[[local Old_Namecall
 
-        if IgnoreFolder then
-            for _, child in ipairs(IgnoreFolder:GetChildren()) do
-                Aiming.AddIgnoreInstance(child)
-                print(#Aiming.Ignored)
-            end
+	Old_Namecall = hookmetamethod(
+		game,
+		"__namecall",
+		newcclosure(function(self, ...)
+			local Method = getnamecallmethod()
+			local Arguments = table.pack(...)
 
-            IgnoreFolder.ChildAdded:Connect(function(child)
-                Aiming.AddIgnoreInstance(child)
-                print(#Aiming.Ignored)
-            end)
-        end
-    end
+			if Method == "FindPartOnRayWithIgnoreList" then
+				print("find part on ray with ignore list")
+			end
+
+			if
+				Method == "FindPartOnRayWithIgnoreList"
+				and Components["WallbangToggle"]
+				and Components["WallbangToggle"].Settings.Value
+				and Workspace:FindFirstChild("Map")
+			then
+				print("asd")
+				table.insert(Arguments[2], Workspace:FindFirstChild("Map"))
+			end
+
+			return Old_Namecall(self, ...)
+		end)
+	)]]
+
+	-- Add Ignore folder to aiming module
+	--[[do
+		local Map: Folder = Workspace:FindFirstChild("Map")
+		local IgnoreFolder: Folder = Map and Map:FindFirstChild("Ignore")
+
+		if IgnoreFolder then
+			for _, child in ipairs(IgnoreFolder:GetChildren()) do
+				Aiming.AddIgnoreInstance(child)
+				print(#Aiming.Ignored)
+			end
+
+			IgnoreFolder.ChildAdded:Connect(function(child)
+				Aiming.AddIgnoreInstance(child)
+				print(#Aiming.Ignored)
+			end)
+		end
+	end]]
 end

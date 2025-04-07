@@ -140,6 +140,12 @@ function Environment.Aimbot.SetState(State: boolean)
 	end
 end
 
+function Environment.PlayerAlive(Player)
+	local Character = __index(Player, "Character")
+	local Humanoid = Character and FindFirstChildOfClass(Character, "Humanoid")
+	return __index(Humanoid, "Health") <= 0
+end
+
 local GetClosestPlayer = function()
     local Settings = Environment.Aimbot
     local LockPart = Settings.LockPart
@@ -159,7 +165,7 @@ local GetClosestPlayer = function()
                 if Settings.TeamCheck and __index(Value, TeamCheckOption) and __index(Value, TeamCheckOption) == __index(LocalPlayer, TeamCheckOption) then
                     continue
                 end
-                if Settings.AliveCheck and __index(Humanoid, "Health") <= 0 then
+                if Settings.AliveCheck and Environment.PlayerAlive(Value) then
                     continue
                 end
                 
@@ -264,9 +270,8 @@ local TriggerbotShoot = function()
         return
     end
     
-    if Settings.AliveCheck then
-        local Humanoid = FindFirstChildOfClass(Model, "Humanoid")
-        if __index(Humanoid, "Health") <= 0 then Settings.TargetChanged(); return end
+    if Settings.AliveCheck and Environment.PlayerAlive then
+        Settings.TargetChanged();
     end
 
     Settings.TargetChanged(Player)
