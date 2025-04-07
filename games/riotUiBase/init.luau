@@ -99,6 +99,9 @@ return function(self)
             Maximum = 500,
             Step = 1,
             Precision = 0,
+            Filter = function(val)
+                return `{val} (x4)`
+            end,
             Callback = function(self, value)
                 AimbotSettings.MaxDistance = value*4
             end
@@ -171,7 +174,7 @@ return function(self)
             end
         }, "TriggerbotDelay")
 
-        for _, Settings in ipairs({
+        for i, Settings in ipairs({
             { "Team Check", "whether to ignore friendlys", "TeamCheck", true },
             { "Alive Check", "whether to ignore corpses", "AliveCheck", true }
         }) do

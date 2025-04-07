@@ -8,7 +8,7 @@
 
     @author biggaboy212
     @name RIOT V2
-    @version v1.0-alpha.1
+    @version v-ImNotUpdatingThisEveryFuckingBuild
 
     This file was automatically generated with darklua, it is not intended for manual editing.
 --]]
@@ -516,8 +516,60 @@ b[e[#e] ]and b[e[#e] ]>=b[g]do table.insert(d,table.remove(e))end table.insert(e
 end if f=='+'then table.insert(d,h+g)elseif f=='-'then table.insert(d,h-g)elseif
 f=='*'then table.insert(d,h*g)elseif f=='/'then table.insert(d,h/g)elseif f=='%'
 then table.insert(d,h%g)elseif f=='^'then table.insert(d,h^g)end end end return
-tostring(d[1]or ad)end return d(c(ae(ad)))end}}function CreateButton(ae,b,c)
-local d={Settings=b}assert(d.Settings.Name and type(d.Settings.Name)=='string',
+tostring(d[1]or ad)end return d(c(ae(ad)))end}}function CreateSection(ae,b,c)
+local d,e={Settings=b},Instance.new'Frame'e.Name='Section'e.AutomaticSize=Enum.
+AutomaticSize.Y e.BackgroundColor3=Color3.fromRGB(255,255,255)e.
+BackgroundTransparency=1 e.BorderColor3=Color3.fromRGB(0,0,0)e.BorderSizePixel=0
+e.Size=UDim2.fromScale(1,0)local f=Instance.new'TextButton'f.Name='Leading'f.
+AutoButtonColor=false f.AutomaticSize=Enum.AutomaticSize.Y f.BackgroundColor3=
+Color3.fromRGB(255,255,255)f.BackgroundTransparency=1 f.BorderColor3=Color3.
+fromRGB(0,0,0)f.BorderSizePixel=0 f.LayoutOrder=-1 f.Selectable=false f.Size=
+UDim2.fromScale(1,0)f.Text=''local g=Instance.new'TextLabel'g.Name='Name'g.
+AutomaticSize=Enum.AutomaticSize.XY g.BackgroundColor3=Color3.fromRGB(255,255,
+255)g.BackgroundTransparency=1 g.BorderColor3=Color3.fromRGB(0,0,0)g.
+BorderSizePixel=0 g.FontFace=Font.new('rbxassetid://16658237174',Enum.FontWeight
+.Bold,Enum.FontStyle.Normal)g.LayoutOrder=1 g.Position=UDim2.fromOffset(28,0)g.
+RichText=true g.Text='Aimbot'g.TextColor3=Color3.fromRGB(225,225,225)g.TextSize=
+20 g.TextWrapped=true g.TextXAlignment=Enum.TextXAlignment.Left g.Parent=f local
+h=Instance.new'ImageButton'h.Name='Chevron'h.AnchorPoint=Vector2.new(0,0.5)h.
+AutoButtonColor=false h.BackgroundColor3=Color3.fromRGB(30,34,47)h.
+BackgroundTransparency=1 h.BorderColor3=Color3.fromRGB(0,0,0)h.BorderSizePixel=0
+h.Image='rbxassetid://77136690433593'h.LayoutOrder=1 h.Position=UDim2.fromScale(
+0,0.5)h.Selectable=false h.Active=false h.Interactable=false h.Size=UDim2.
+fromOffset(18,18)h.Parent=f f.Parent=e local i=Instance.new'Frame'i.Name=
+'Trailing'i.BackgroundColor3=Color3.fromRGB(255,255,255)i.BackgroundTransparency
+=1 i.BorderColor3=Color3.fromRGB(0,0,0)i.BorderSizePixel=0 i.ClipsDescendants=
+true i.Size=UDim2.fromScale(1,0)local j=Instance.new'UIListLayout'j.Name=
+'UIListLayout'j.Padding=UDim.new(0,10)j.SortOrder=Enum.SortOrder.LayoutOrder j.
+Parent=i local k=Instance.new'UIPadding'k.Name='UIPadding'k.PaddingLeft=UDim.
+new(0,12)k.Parent=i local l=Instance.new'Folder'l.Name='Folder'local m=Instance.
+new'Frame'm.Name='Frame'm.AnchorPoint=Vector2.new(0,1)m.BackgroundColor3=Color3.
+fromRGB(30,30,30)m.BorderColor3=Color3.fromRGB(0,0,0)m.BorderSizePixel=0 m.
+Position=UDim2.new(0,-12,1,0)m.Size=UDim2.new(0,1,1,0)m.Parent=l l.Parent=i i.
+Parent=e local n=Instance.new'UIListLayout'n.Name='UIListLayout'n.Padding=UDim.
+new(0,10)n.SortOrder=Enum.SortOrder.LayoutOrder n.Parent=e local o=Instance.new
+'UIPadding'o.Name='UIPadding'o.PaddingBottom=UDim.new(0,8)o.PaddingTop=UDim.new(
+0,8)o.Parent=e e.Parent=ae local p=function(p)if p then local q,r={},0 for s,t
+in pairs(i:GetChildren())do if t:IsA'GuiObject'and t.Visible then table.insert(q
+,t)r+=t.AbsoluteSize.Y end end if#q>1 then r+=(#q-1)*j.Padding.Offset end ad.
+tween(i,TweenInfo.new(0.15,Enum.EasingStyle.Sine),{Size=UDim2.new(1,0,0,r)}):
+Play()ad.tween(h,TweenInfo.new(0.15,Enum.EasingStyle.Sine),{Rotation=-180}):
+Play()else ad.tween(i,TweenInfo.new(0.15,Enum.EasingStyle.Sine),{Size=UDim2.new(
+1,0,0,0)}):Play()ad.tween(h,TweenInfo.new(0.15,Enum.EasingStyle.Sine),{Rotation=
+0}):Play()end end f.MouseButton1Click:Connect(function()d.Settings.Opened=not d.
+Settings.Opened p(d.Settings.Opened)end)local q=function(q)if not q:IsA
+'GuiObject'then return end q:GetPropertyChangedSignal'Visible':Connect(function(
+)if d.Settings.Opened then p(true)end end)q:GetPropertyChangedSignal
+'AbsoluteSize':Connect(function()if d.Settings.Opened then p(true)end end)end
+for r,s in pairs(i:GetChildren())do q(s)end i.ChildAdded:Connect(function(r)q(r)
+if d.Settings.Opened then p(true)end end)i.ChildRemoved:Connect(function()if d.
+Settings.Opened then p(true)end end)function d:UpdateSettings(r)if r.Visible~=
+nil then d.Settings.Visible=r.Visible e.Visible=r.Visible end if r.Opened~=nil
+then d.Settings.Opened=r.Opened p(r.Opened)end if r.Name then d.Settings.Name=r.
+Name g.Text=r.Name end end if d.Settings.Closed==nil then d.Settings.Closed=true
+end d:UpdateSettings(d.Settings)if c then aa.Components[c]=d end d.Content=i
+injectComponents(d)return d end function CreateButton(ae,b,c)local d={Settings=b
+}assert(d.Settings.Name and type(d.Settings.Name)=='string',
 'Missing button name or wrong type')local e=Instance.new'Frame'e.AutomaticSize=
 Enum.AutomaticSize.Y e.BackgroundColor3=d.Settings.Color or Color3.fromRGB(30,30
 ,30)e.BorderColor3=Color3.fromRGB(0,0,0)e.BorderSizePixel=0 e.Size=UDim2.new(1,0
@@ -982,303 +1034,310 @@ BackgroundColor3=Color3.fromRGB(30,30,30)e.BorderColor3=Color3.fromRGB(0,0,0)e.
 BorderSizePixel=0 e.Size=UDim2.new(1,0,0,1)e.Parent=ae e.Visible=d.Settings and(
 d.Settings.Visible==nil and true or d.Settings.Visible)or true function d:
 UpdateSettings(h)if h.Visible~=nil then d.Settings.Visible=h.Visible e.Visible=h
-.Visible end end if c then aa.Components[c]=d end return d end local ae={Button=
-CreateButton,Toggle=CreateToggle,Keybind=CreateKeybind,Dropdown=CreateDropdown,
-Colorpicker=CreateColorpicker,MultiInput=CreateMultiInput,Input=CreateInput,
-Slider=CreateSlider,Divider=CreateDivider}local b=function(b)for c,d in pairs(ae
-)do b[c]=function(e,...)return d(e.Content,...)end end end function aa:Window(c)
-local d={Settings=c}assert(d.Settings.Title and type(d.Settings.Title)=='string'
-,'Missing window title or wrong type')d.Settings.Keybind=d.Settings.Keybind or
-Enum.KeyCode.RightControl local e=Instance.new'ImageLabel'e.BackgroundColor3=
-Color3.fromRGB(17,17,17)e.BorderColor3=Color3.fromRGB(0,0,0)e.BorderSizePixel=0
-e.ClipsDescendants=true e.Image='rbxassetid://17365187482'e.ImageTransparency=
-0.96 e.ScaleType=Enum.ScaleType.Tile e.Size=UDim2.fromOffset(400,672)e.TileSize=
-UDim2.fromOffset(500,325)local h=Instance.new'Frame'h.AutomaticSize=Enum.
-AutomaticSize.XY h.BackgroundColor3=Color3.fromRGB(255,255,255)h.
-BackgroundTransparency=1 h.BorderColor3=Color3.fromRGB(0,0,0)h.BorderSizePixel=0
-local k=Instance.new'TextLabel'k.AutomaticSize=Enum.AutomaticSize.XY k.
-BackgroundColor3=Color3.fromRGB(255,255,255)k.BackgroundTransparency=1 k.
-BorderColor3=Color3.fromRGB(0,0,0)k.BorderSizePixel=0 k.FontFace=Font.new(
-'rbxassetid://16658237174',Enum.FontWeight.ExtraBold,Enum.FontStyle.Normal)k.
-RichText=true k.Text=d.Settings.Title k.TextColor3=Color3.fromRGB(255,255,255)k.
-TextSize=35 k.TextWrapped=true k.TextXAlignment=Enum.TextXAlignment.Left k.
-Parent=h local l=Instance.new'UIPadding'l.PaddingLeft=UDim.new(0,25)l.
-PaddingRight=UDim.new(0,25)l.Parent=h local m=Instance.new'Frame'm.AnchorPoint=
-Vector2.new(0,1)m.BackgroundColor3=Color3.fromRGB(255,255,255)m.
-BackgroundTransparency=0.9 m.BorderColor3=Color3.fromRGB(0,0,0)m.BorderSizePixel
-=0 m.Position=UDim2.new(0,0,1,10)m.Size=UDim2.new(0.95,0,0,1)local n=Instance.
-new'Frame'n.BackgroundColor3=Color3.fromRGB(185,228,255)n.BorderColor3=Color3.
-fromRGB(0,0,0)n.BorderSizePixel=0 n.Size=UDim2.new(0.5,0,0,1)n.Parent=m m.Parent
-=h local o=Instance.new'UIListLayout'o.Padding=UDim.new(0,10)o.SortOrder=Enum.
-SortOrder.LayoutOrder o.VerticalAlignment=Enum.VerticalAlignment.Center o.Parent
-=h h.Parent=e local p=Instance.new'UICorner'p.CornerRadius=UDim.new(0,15)p.
-Parent=e local q=Instance.new'UIPadding'q.PaddingBottom=UDim.new(0,25)q.
-PaddingTop=UDim.new(0,25)q.Parent=e local r=Instance.new'Frame'r.AnchorPoint=
-Vector2.new(0,1)r.BackgroundColor3=Color3.fromRGB(255,255,255)r.
-BackgroundTransparency=1 r.BorderColor3=Color3.fromRGB(0,0,0)r.BorderSizePixel=0
-r.ClipsDescendants=true r.LayoutOrder=1 r.Position=UDim2.fromScale(0,1)r.Size=
-UDim2.new(1,0,1,-55)local s=Instance.new'ScrollingFrame's.Active=true s.
-AutomaticCanvasSize=Enum.AutomaticSize.X s.AutomaticSize=Enum.AutomaticSize.Y s.
-BackgroundColor3=Color3.fromRGB(255,255,255)s.BackgroundTransparency=1 s.
-BorderColor3=Color3.fromRGB(0,0,0)s.BorderSizePixel=0 s.CanvasSize=UDim2.new()s.
-ScrollBarImageTransparency=1 s.ScrollBarThickness=1 s.ScrollingDirection=Enum.
-ScrollingDirection.X s.Size=UDim2.fromScale(1,0)local t=Instance.new
-'UIListLayout't.FillDirection=Enum.FillDirection.Horizontal t.Padding=UDim.new(0
-,10)t.SortOrder=Enum.SortOrder.LayoutOrder t.Parent=s local u=Instance.new
-'UIPadding'u.PaddingBottom=UDim.new(0,10)u.PaddingLeft=UDim.new(0,26)u.
-PaddingRight=UDim.new(0,26)u.PaddingTop=UDim.new(0,1)u.Parent=s s.Parent=r local
-v=Instance.new'UIListLayout'v.Padding=UDim.new(0,25)v.SortOrder=Enum.SortOrder.
-LayoutOrder v.Parent=r local w=Instance.new'Frame'w.BackgroundColor3=Color3.
-fromRGB(255,255,255)w.BackgroundTransparency=1 w.BorderColor3=Color3.fromRGB(0,0
-,0)w.BorderSizePixel=0 w.Size=UDim2.new(1,0,1,-104)w.Parent=r r.Parent=e local x
-=Instance.new'UIListLayout'x.Padding=UDim.new(0,30)x.SortOrder=Enum.SortOrder.
-LayoutOrder x.Parent=e e.Parent=ab.overlay local y=Instance.new'UIPadding'y.
-PaddingBottom=UDim.new(0,15)y.PaddingLeft=UDim.new(0,15)y.PaddingRight=UDim.new(
-0,15)y.PaddingTop=UDim.new(0,15)y.Parent=ab.overlay local z=Instance.new
-'ImageLabel'z.BackgroundColor3=Color3.fromRGB(17,17,17)z.BorderColor3=Color3.
-fromRGB(0,0,0)z.BorderSizePixel=0 z.ClipsDescendants=true z.Image=
-'rbxassetid://17365187482'z.ImageTransparency=0.96 z.ScaleType=Enum.ScaleType.
-Tile z.Size=UDim2.fromOffset(400,570)z.TileSize=UDim2.fromOffset(500,325)z.
-Visible=false z.ZIndex=0 z.Position=UDim2.fromOffset(e.AbsoluteSize.X+15,0)local
-A=Instance.new'UICorner'A.CornerRadius=UDim.new(0,15)A.Parent=z local B=Instance
-.new'UIPadding'B.PaddingBottom=UDim.new(0,25)B.PaddingLeft=UDim.new(0,25)B.
-PaddingRight=UDim.new(0,15)B.PaddingTop=UDim.new(0,20)B.Parent=z local C=
-Instance.new'Frame'C.AutomaticSize=Enum.AutomaticSize.XY C.BackgroundColor3=
-Color3.fromRGB(255,255,255)C.BackgroundTransparency=1 C.BorderColor3=Color3.
-fromRGB(0,0,0)C.BorderSizePixel=0 local D=Instance.new'TextLabel'D.AutomaticSize
-=Enum.AutomaticSize.XY D.BackgroundColor3=Color3.fromRGB(255,255,255)D.
-BackgroundTransparency=1 D.BorderColor3=Color3.fromRGB(0,0,0)D.BorderSizePixel=0
-D.FontFace=Font.new('rbxassetid://16658237174',Enum.FontWeight.ExtraBold,Enum.
-FontStyle.Normal)D.Text='Visual Preview'D.TextColor3=Color3.fromRGB(255,255,255)
-D.TextSize=30 D.TextWrapped=true D.TextXAlignment=Enum.TextXAlignment.Left D.
-Parent=C local E=Instance.new'Frame'E.AnchorPoint=Vector2.new(0,1)E.
-BackgroundColor3=Color3.fromRGB(255,255,255)E.BackgroundTransparency=0.9 E.
-BorderColor3=Color3.fromRGB(0,0,0)E.BorderSizePixel=0 E.Position=UDim2.new(0,0,1
-,10)E.Size=UDim2.new(0.95,0,0,1)local F=Instance.new'Frame'F.BackgroundColor3=
-Color3.fromRGB(185,228,255)F.BorderColor3=Color3.fromRGB(0,0,0)F.BorderSizePixel
-=0 F.Size=UDim2.new(0.5,0,0,1)F.Parent=E E.Parent=C C.Parent=z local G=Instance.
-new'UIListLayout'G.Padding=UDim.new(0,40)G.SortOrder=Enum.SortOrder.LayoutOrder
-G.Parent=z local H=Instance.new'Frame'H.AnchorPoint=Vector2.new(0,1)H.
+.Visible end end if c then aa.Components[c]=d end return d end local ae={Section
+=CreateSection,Button=CreateButton,Toggle=CreateToggle,Keybind=CreateKeybind,
+Dropdown=CreateDropdown,Colorpicker=CreateColorpicker,MultiInput=
+CreateMultiInput,Input=CreateInput,Slider=CreateSlider,Divider=CreateDivider}
+function injectComponents(b)for c,d in pairs(ae)do b[c]=function(e,...)return d(
+e.Content,...)end end end function aa:Window(b)local c={Settings=b}assert(c.
+Settings.Title and type(c.Settings.Title)=='string',
+'Missing window title or wrong type')c.Settings.Keybind=c.Settings.Keybind or
+Enum.KeyCode.RightControl local d=Instance.new'ImageLabel'd.BackgroundColor3=
+Color3.fromRGB(17,17,17)d.BorderColor3=Color3.fromRGB(0,0,0)d.BorderSizePixel=0
+d.ClipsDescendants=true d.Image='rbxassetid://17365187482'd.ImageTransparency=
+0.96 d.ScaleType=Enum.ScaleType.Tile d.Size=UDim2.fromOffset(400,672)d.TileSize=
+UDim2.fromOffset(500,325)local e=Instance.new'Frame'e.AutomaticSize=Enum.
+AutomaticSize.XY e.BackgroundColor3=Color3.fromRGB(255,255,255)e.
+BackgroundTransparency=1 e.BorderColor3=Color3.fromRGB(0,0,0)e.BorderSizePixel=0
+local h=Instance.new'TextLabel'h.AutomaticSize=Enum.AutomaticSize.XY h.
+BackgroundColor3=Color3.fromRGB(255,255,255)h.BackgroundTransparency=1 h.
+BorderColor3=Color3.fromRGB(0,0,0)h.BorderSizePixel=0 h.FontFace=Font.new(
+'rbxassetid://16658237174',Enum.FontWeight.ExtraBold,Enum.FontStyle.Normal)h.
+RichText=true h.Text=c.Settings.Title h.TextColor3=Color3.fromRGB(255,255,255)h.
+TextSize=35 h.TextWrapped=true h.TextXAlignment=Enum.TextXAlignment.Left h.
+Parent=e local k=Instance.new'UIPadding'k.PaddingLeft=UDim.new(0,25)k.
+PaddingRight=UDim.new(0,25)k.Parent=e local l=Instance.new'Frame'l.AnchorPoint=
+Vector2.new(0,1)l.BackgroundColor3=Color3.fromRGB(255,255,255)l.
+BackgroundTransparency=0.9 l.BorderColor3=Color3.fromRGB(0,0,0)l.BorderSizePixel
+=0 l.Position=UDim2.new(0,0,1,10)l.Size=UDim2.new(0.95,0,0,1)local m=Instance.
+new'Frame'm.BackgroundColor3=Color3.fromRGB(185,228,255)m.BorderColor3=Color3.
+fromRGB(0,0,0)m.BorderSizePixel=0 m.Size=UDim2.new(0.5,0,0,1)m.Parent=l l.Parent
+=e local n=Instance.new'UIListLayout'n.Padding=UDim.new(0,10)n.SortOrder=Enum.
+SortOrder.LayoutOrder n.VerticalAlignment=Enum.VerticalAlignment.Center n.Parent
+=e e.Parent=d local o=Instance.new'UICorner'o.CornerRadius=UDim.new(0,15)o.
+Parent=d local p=Instance.new'UIPadding'p.PaddingBottom=UDim.new(0,25)p.
+PaddingTop=UDim.new(0,25)p.Parent=d local q=Instance.new'Frame'q.AnchorPoint=
+Vector2.new(0,1)q.BackgroundColor3=Color3.fromRGB(255,255,255)q.
+BackgroundTransparency=1 q.BorderColor3=Color3.fromRGB(0,0,0)q.BorderSizePixel=0
+q.ClipsDescendants=true q.LayoutOrder=1 q.Position=UDim2.fromScale(0,1)q.Size=
+UDim2.new(1,0,1,-55)local r=Instance.new'ScrollingFrame'r.Active=true r.
+AutomaticCanvasSize=Enum.AutomaticSize.X r.AutomaticSize=Enum.AutomaticSize.Y r.
+BackgroundColor3=Color3.fromRGB(255,255,255)r.BackgroundTransparency=1 r.
+BorderColor3=Color3.fromRGB(0,0,0)r.BorderSizePixel=0 r.CanvasSize=UDim2.new()r.
+ScrollBarImageTransparency=1 r.ScrollBarThickness=1 r.ScrollingDirection=Enum.
+ScrollingDirection.X r.Size=UDim2.fromScale(1,0)local s=Instance.new
+'UIListLayout's.FillDirection=Enum.FillDirection.Horizontal s.Padding=UDim.new(0
+,10)s.SortOrder=Enum.SortOrder.LayoutOrder s.Parent=r local t=Instance.new
+'UIPadding't.PaddingBottom=UDim.new(0,10)t.PaddingLeft=UDim.new(0,26)t.
+PaddingRight=UDim.new(0,26)t.PaddingTop=UDim.new(0,1)t.Parent=r r.Parent=q local
+u=Instance.new'UIListLayout'u.Padding=UDim.new(0,25)u.SortOrder=Enum.SortOrder.
+LayoutOrder u.Parent=q local v=Instance.new'Frame'v.BackgroundColor3=Color3.
+fromRGB(255,255,255)v.BackgroundTransparency=1 v.BorderColor3=Color3.fromRGB(0,0
+,0)v.BorderSizePixel=0 v.Size=UDim2.new(1,0,1,-104)v.Parent=q q.Parent=d local w
+=Instance.new'UIListLayout'w.Padding=UDim.new(0,30)w.SortOrder=Enum.SortOrder.
+LayoutOrder w.Parent=d d.Parent=ab.overlay local x=Instance.new'UIPadding'x.
+PaddingBottom=UDim.new(0,15)x.PaddingLeft=UDim.new(0,15)x.PaddingRight=UDim.new(
+0,15)x.PaddingTop=UDim.new(0,15)x.Parent=ab.overlay local y=Instance.new
+'ImageLabel'y.BackgroundColor3=Color3.fromRGB(17,17,17)y.BorderColor3=Color3.
+fromRGB(0,0,0)y.BorderSizePixel=0 y.ClipsDescendants=true y.Image=
+'rbxassetid://17365187482'y.ImageTransparency=0.96 y.ScaleType=Enum.ScaleType.
+Tile y.Size=UDim2.fromOffset(400,570)y.TileSize=UDim2.fromOffset(500,325)y.
+Visible=false y.ZIndex=0 y.Position=UDim2.fromOffset(d.AbsoluteSize.X+15,0)local
+z=Instance.new'UICorner'z.CornerRadius=UDim.new(0,15)z.Parent=y local A=Instance
+.new'UIPadding'A.PaddingBottom=UDim.new(0,25)A.PaddingLeft=UDim.new(0,25)A.
+PaddingRight=UDim.new(0,15)A.PaddingTop=UDim.new(0,20)A.Parent=y local B=
+Instance.new'Frame'B.AutomaticSize=Enum.AutomaticSize.XY B.BackgroundColor3=
+Color3.fromRGB(255,255,255)B.BackgroundTransparency=1 B.BorderColor3=Color3.
+fromRGB(0,0,0)B.BorderSizePixel=0 local C=Instance.new'TextLabel'C.AutomaticSize
+=Enum.AutomaticSize.XY C.BackgroundColor3=Color3.fromRGB(255,255,255)C.
+BackgroundTransparency=1 C.BorderColor3=Color3.fromRGB(0,0,0)C.BorderSizePixel=0
+C.FontFace=Font.new('rbxassetid://16658237174',Enum.FontWeight.ExtraBold,Enum.
+FontStyle.Normal)C.Text='Visual Preview'C.TextColor3=Color3.fromRGB(255,255,255)
+C.TextSize=30 C.TextWrapped=true C.TextXAlignment=Enum.TextXAlignment.Left C.
+Parent=B local D=Instance.new'Frame'D.AnchorPoint=Vector2.new(0,1)D.
+BackgroundColor3=Color3.fromRGB(255,255,255)D.BackgroundTransparency=0.9 D.
+BorderColor3=Color3.fromRGB(0,0,0)D.BorderSizePixel=0 D.Position=UDim2.new(0,0,1
+,10)D.Size=UDim2.new(0.95,0,0,1)local E=Instance.new'Frame'E.BackgroundColor3=
+Color3.fromRGB(185,228,255)E.BorderColor3=Color3.fromRGB(0,0,0)E.BorderSizePixel
+=0 E.Size=UDim2.new(0.5,0,0,1)E.Parent=D D.Parent=B B.Parent=y local F=Instance.
+new'UIListLayout'F.Padding=UDim.new(0,40)F.SortOrder=Enum.SortOrder.LayoutOrder
+F.Parent=y local G=Instance.new'Frame'G.AnchorPoint=Vector2.new(0,1)G.
+BackgroundColor3=Color3.fromRGB(255,255,255)G.BackgroundTransparency=1 G.
+BorderColor3=Color3.fromRGB(0,0,0)G.BorderSizePixel=0 G.LayoutOrder=1 G.Position
+=UDim2.fromScale(0,1)G.Size=UDim2.new(1,0,1,-70)local H=Instance.new'Frame'H.
 BackgroundColor3=Color3.fromRGB(255,255,255)H.BackgroundTransparency=1 H.
-BorderColor3=Color3.fromRGB(0,0,0)H.BorderSizePixel=0 H.LayoutOrder=1 H.Position
-=UDim2.fromScale(0,1)H.Size=UDim2.new(1,0,1,-70)local I=Instance.new'Frame'I.
-BackgroundColor3=Color3.fromRGB(255,255,255)I.BackgroundTransparency=1 I.
-BorderColor3=Color3.fromRGB(0,0,0)I.BorderSizePixel=0 I.LayoutOrder=1 I.Size=
-UDim2.new(1,0,1,-18)local J=Instance.new'Frame'J.AnchorPoint=Vector2.new(1,0)J.
-BackgroundColor3=Color3.fromRGB(58,161,47)J.BorderColor3=Color3.fromRGB(0,0,0)J.
-BorderSizePixel=0 J.Position=UDim2.fromOffset(-10,0)J.Size=UDim2.new(0,12,1,0)J.
-Visible=false J.Parent=I local K=Instance.new'Frame'K.AnchorPoint=Vector2.new(
-0.5,1)K.BackgroundColor3=Color3.fromRGB(15,15,15)K.BorderColor3=Color3.fromRGB(0
-,0,0)K.BorderSizePixel=0 K.LayoutOrder=1 K.Position=UDim2.fromScale(0.5,1)K.Size
-=UDim2.fromScale(1,1)local L=Instance.new'Frame'L.BackgroundColor3=Color3.
-fromRGB(255,255,255)L.BackgroundTransparency=1 L.BorderColor3=Color3.fromRGB(0,0
-,0)L.BorderSizePixel=0 L.Size=UDim2.fromScale(1,1)L.Visible=false L.ZIndex=2
-local M=Instance.new'Frame'M.BackgroundColor3=Color3.fromRGB(255,255,255)M.
-BorderColor3=Color3.fromRGB(0,0,0)M.BorderSizePixel=0 M.Size=UDim2.fromOffset(2,
-30)M.Parent=L local N=Instance.new'Frame'N.BackgroundColor3=Color3.fromRGB(255,
-255,255)N.BorderColor3=Color3.fromRGB(0,0,0)N.BorderSizePixel=0 N.Size=UDim2.
-fromOffset(30,2)N.Parent=L local O=Instance.new'Frame'O.AnchorPoint=Vector2.new(
+BorderColor3=Color3.fromRGB(0,0,0)H.BorderSizePixel=0 H.LayoutOrder=1 H.Size=
+UDim2.new(1,0,1,-18)local I=Instance.new'Frame'I.AnchorPoint=Vector2.new(1,0)I.
+BackgroundColor3=Color3.fromRGB(58,161,47)I.BorderColor3=Color3.fromRGB(0,0,0)I.
+BorderSizePixel=0 I.Position=UDim2.fromOffset(-10,0)I.Size=UDim2.new(0,12,1,0)I.
+Visible=false I.Parent=H local J=Instance.new'Frame'J.AnchorPoint=Vector2.new(
+0.5,1)J.BackgroundColor3=Color3.fromRGB(15,15,15)J.BorderColor3=Color3.fromRGB(0
+,0,0)J.BorderSizePixel=0 J.LayoutOrder=1 J.Position=UDim2.fromScale(0.5,1)J.Size
+=UDim2.fromScale(1,1)local K=Instance.new'Frame'K.BackgroundColor3=Color3.
+fromRGB(255,255,255)K.BackgroundTransparency=1 K.BorderColor3=Color3.fromRGB(0,0
+,0)K.BorderSizePixel=0 K.Size=UDim2.fromScale(1,1)K.Visible=false K.ZIndex=2
+local L=Instance.new'Frame'L.BackgroundColor3=Color3.fromRGB(255,255,255)L.
+BorderColor3=Color3.fromRGB(0,0,0)L.BorderSizePixel=0 L.Size=UDim2.fromOffset(2,
+30)L.Parent=K local M=Instance.new'Frame'M.BackgroundColor3=Color3.fromRGB(255,
+255,255)M.BorderColor3=Color3.fromRGB(0,0,0)M.BorderSizePixel=0 M.Size=UDim2.
+fromOffset(30,2)M.Parent=K local N=Instance.new'Frame'N.AnchorPoint=Vector2.new(
+0,1)N.BackgroundColor3=Color3.fromRGB(255,255,255)N.BorderColor3=Color3.fromRGB(
+0,0,0)N.BorderSizePixel=0 N.Position=UDim2.fromScale(0,1)N.Size=UDim2.
+fromOffset(30,2)N.Parent=K local O=Instance.new'Frame'O.AnchorPoint=Vector2.new(
 0,1)O.BackgroundColor3=Color3.fromRGB(255,255,255)O.BorderColor3=Color3.fromRGB(
 0,0,0)O.BorderSizePixel=0 O.Position=UDim2.fromScale(0,1)O.Size=UDim2.
-fromOffset(30,2)O.Parent=L local P=Instance.new'Frame'P.AnchorPoint=Vector2.new(
-0,1)P.BackgroundColor3=Color3.fromRGB(255,255,255)P.BorderColor3=Color3.fromRGB(
-0,0,0)P.BorderSizePixel=0 P.Position=UDim2.fromScale(0,1)P.Size=UDim2.
-fromOffset(2,30)P.Parent=L local Q=Instance.new'Frame'Q.AnchorPoint=Vector2.new(
+fromOffset(2,30)O.Parent=K local P=Instance.new'Frame'P.AnchorPoint=Vector2.new(
+1,1)P.BackgroundColor3=Color3.fromRGB(255,255,255)P.BorderColor3=Color3.fromRGB(
+0,0,0)P.BorderSizePixel=0 P.Position=UDim2.fromScale(1,1)P.Size=UDim2.
+fromOffset(2,30)P.Parent=K local Q=Instance.new'Frame'Q.AnchorPoint=Vector2.new(
 1,1)Q.BackgroundColor3=Color3.fromRGB(255,255,255)Q.BorderColor3=Color3.fromRGB(
 0,0,0)Q.BorderSizePixel=0 Q.Position=UDim2.fromScale(1,1)Q.Size=UDim2.
-fromOffset(2,30)Q.Parent=L local R=Instance.new'Frame'R.AnchorPoint=Vector2.new(
-1,1)R.BackgroundColor3=Color3.fromRGB(255,255,255)R.BorderColor3=Color3.fromRGB(
-0,0,0)R.BorderSizePixel=0 R.Position=UDim2.fromScale(1,1)R.Size=UDim2.
-fromOffset(30,2)R.Parent=L local S=Instance.new'Frame'S.AnchorPoint=Vector2.new(
+fromOffset(30,2)Q.Parent=K local R=Instance.new'Frame'R.AnchorPoint=Vector2.new(
+1,0)R.BackgroundColor3=Color3.fromRGB(255,255,255)R.BorderColor3=Color3.fromRGB(
+0,0,0)R.BorderSizePixel=0 R.Position=UDim2.fromScale(1,0)R.Size=UDim2.
+fromOffset(2,30)R.Parent=K local S=Instance.new'Frame'S.AnchorPoint=Vector2.new(
 1,0)S.BackgroundColor3=Color3.fromRGB(255,255,255)S.BorderColor3=Color3.fromRGB(
 0,0,0)S.BorderSizePixel=0 S.Position=UDim2.fromScale(1,0)S.Size=UDim2.
-fromOffset(2,30)S.Parent=L local T=Instance.new'Frame'T.AnchorPoint=Vector2.new(
-1,0)T.BackgroundColor3=Color3.fromRGB(255,255,255)T.BorderColor3=Color3.fromRGB(
-0,0,0)T.BorderSizePixel=0 T.Position=UDim2.fromScale(1,0)T.Size=UDim2.
-fromOffset(30,2)T.Parent=L L.Parent=K local U=Instance.new'ImageLabel'U.
-AnchorPoint=Vector2.new(0.5,0.5)U.BackgroundColor3=Color3.fromRGB(255,255,255)U.
-BackgroundTransparency=1 U.BorderColor3=Color3.fromRGB(0,0,0)U.BorderSizePixel=0
-U.Image='rbxassetid://109289851861610'U.Position=UDim2.fromScale(0.5,0.5)U.
-ScaleType=Enum.ScaleType.Fit U.Size=UDim2.new(1,-20,1,-20)local V=Instance.new
-'UIGradient'V.Color=ColorSequence.new{ColorSequenceKeypoint.new(0,Color3.
-fromRGB(101,143,175)),ColorSequenceKeypoint.new(1,Color3.fromRGB(197,173,128))}V
-.Offset=Vector2.new(0,0.15)V.Rotation=90 V.Parent=U U.Parent=K local W=Instance.
-new'TextLabel'W.AnchorPoint=Vector2.new(0,1)W.AutomaticSize=Enum.AutomaticSize.
-XY W.BackgroundColor3=Color3.fromRGB(255,255,255)W.BackgroundTransparency=1 W.
-BorderColor3=Color3.fromRGB(0,0,0)W.BorderSizePixel=0 W.FontFace=Font.new(
-'rbxassetid://12187362578',Enum.FontWeight.SemiBold,Enum.FontStyle.Normal)W.
-Position=UDim2.fromOffset(0,-5)W.Size=UDim2.fromScale(1,0)W.Text=
-'RIOTPLAYER987123'W.TextColor3=Color3.fromRGB(255,255,255)W.TextSize=13 W.
-TextWrapped=true W.TextYAlignment=Enum.TextYAlignment.Top W.Visible=false local
-X=Instance.new'UIPadding'X.PaddingLeft=UDim.new(0,20)X.Parent=W W.Parent=K local
-Y=Instance.new'Frame'Y.AnchorPoint=Vector2.new(0.5,0.5)Y.BackgroundColor3=Color3
-.fromRGB(255,255,255)Y.BackgroundTransparency=1 Y.BorderColor3=Color3.fromRGB(0,
-0,0)Y.BorderSizePixel=0 Y.Position=UDim2.fromScale(0.5,0.5)Y.Size=UDim2.new(1,-2
-,1,-2)Y.Visible=false local Z=Instance.new'UIStroke'Z.ApplyStrokeMode=Enum.
-ApplyStrokeMode.Border Z.Color=Color3.fromRGB(255,255,255)Z.Parent=Y Y.Parent=K
-local _=Instance.new'Frame'_.BackgroundColor3=Color3.fromRGB(0,0,0)_.
-BackgroundTransparency=1 _.BorderColor3=Color3.fromRGB(0,0,0)_.BorderSizePixel=0
-_.Size=UDim2.fromScale(1,1)_.Visible=false _.Parent=K K.Parent=I local af=
-Instance.new'Frame'af.AutomaticSize=Enum.AutomaticSize.XY af.BackgroundColor3=
-Color3.fromRGB(255,255,255)af.BackgroundTransparency=1 af.BorderColor3=Color3.
-fromRGB(0,0,0)af.BorderSizePixel=0 af.LayoutOrder=2 af.Position=UDim2.new(1,5,0,
-10)af.Size=UDim2.fromOffset(50,0)af.Visible=true local ag=Instance.new
-'TextLabel'ag.AnchorPoint=Vector2.new(0,1)ag.AutomaticSize=Enum.AutomaticSize.XY
-ag.BackgroundColor3=Color3.fromRGB(255,255,255)ag.BackgroundTransparency=1 ag.
-BorderColor3=Color3.fromRGB(0,0,0)ag.BorderSizePixel=0 ag.FontFace=Font.new(
-'rbxassetid://12187362578',Enum.FontWeight.SemiBold,Enum.FontStyle.Normal)ag.
-Position=UDim2.fromOffset(0,-5)ag.RichText=true ag.Text='100M'ag.TextColor3=
-Color3.fromRGB(255,255,255)ag.TextSize=13 ag.TextWrapped=true ag.TextXAlignment=
-Enum.TextXAlignment.Left ag.TextYAlignment=Enum.TextYAlignment.Top ag.Parent=af
-ag.Visible=false local ah=Instance.new'TextLabel'ah.AnchorPoint=Vector2.new(0,1)
-ah.AutomaticSize=Enum.AutomaticSize.XY ah.BackgroundColor3=Color3.fromRGB(255,
-255,255)ah.BackgroundTransparency=1 ah.BorderColor3=Color3.fromRGB(0,0,0)ah.
-BorderSizePixel=0 ah.FontFace=Font.new('rbxassetid://12187362578',Enum.
-FontWeight.SemiBold,Enum.FontStyle.Normal)ah.LayoutOrder=1 ah.Position=UDim2.
-fromOffset(0,-5)ah.RichText=true ah.Text='BF 30'ah.TextColor3=Color3.fromRGB(255
-,255,255)ah.TextSize=13 ah.TextWrapped=true ah.TextXAlignment=Enum.
-TextXAlignment.Left ah.TextYAlignment=Enum.TextYAlignment.Top ah.Parent=af ah.
-Visible=false local ai=Instance.new'TextLabel'ai.AnchorPoint=Vector2.new(0,1)ai.
-AutomaticSize=Enum.AutomaticSize.XY ai.BackgroundColor3=Color3.fromRGB(255,255,
-255)ai.BackgroundTransparency=1 ai.BorderColor3=Color3.fromRGB(0,0,0)ai.
-BorderSizePixel=0 ai.ClipsDescendants=true ai.FontFace=Font.new(
-'rbxassetid://12187362578',Enum.FontWeight.SemiBold,Enum.FontStyle.Normal)ai.
-LayoutOrder=2 ai.Position=UDim2.fromOffset(0,-5)ai.RichText=true ai.Text='140HP'
-ai.TextColor3=Color3.fromRGB(255,255,255)ai.TextSize=13 ai.TextWrapped=true ai.
-TextXAlignment=Enum.TextXAlignment.Left ai.TextYAlignment=Enum.TextYAlignment.
-Top ai.Parent=af ai.Visible=false local aj=Instance.new'UIListLayout'aj.
-SortOrder=Enum.SortOrder.LayoutOrder aj.Parent=af af.Parent=I local ak=Instance.
-new'UIListLayout'ak.FillDirection=Enum.FillDirection.Horizontal ak.
-HorizontalFlex=Enum.UIFlexAlignment.Fill ak.Padding=UDim.new(0,10)ak.SortOrder=
-Enum.SortOrder.LayoutOrder ak.Parent=I I.Parent=H H.Parent=z z.Parent=ab.overlay
-ad.makeDraggable(z)ad.makeDraggable(e)ac._userInputService.InputEnded:Connect(
-function(al,am)if am then return end if al.KeyCode==d.Settings.Keybind then ab.
-overlay.Visible=not ab.overlay.Visible end end)local al=function()local al=h.
-AbsoluteSize.Y+9 r.Size=UDim2.new(1,0,1,-al)r.Position=UDim2.new(0,0,0,al)end h:
-GetPropertyChangedSignal'AbsoluteSize':Connect(al)al()function d:UpdateSettings(
-am)if am.Title then d.Settings.Title=am.Title k.Text=am.Title end if am.Keybind
-then d.Settings.Keybind=am.Keybind end end function d:Tab(am)local an={Settings=
-am}assert(an.Settings.Name and type(an.Settings.Name)=='string',
-'Missing string or wrong type')if not an.Settings.Image or an.Settings.Image==''
-then an.Settings.Image=aa.Assets.DefaultImage end ab.tabSystem.tabIndex+=1 local
-ao=Instance.new'Frame'ao.AutomaticSize=Enum.AutomaticSize.Y ao.BackgroundColor3=
-Color3.fromRGB(30,34,47)ao.BackgroundTransparency=1 ao.BorderColor3=Color3.
-fromRGB(0,0,0)ao.BorderSizePixel=0 ao.Size=UDim2.fromOffset(50,50)ao.Parent=s ao
-.LayoutOrder=ab.tabSystem.tabIndex local ap=Instance.new'TextLabel'ap.
-AutomaticSize=Enum.AutomaticSize.Y ap.BackgroundColor3=Color3.fromRGB(255,255,
-255)ap.BackgroundTransparency=1 ap.BorderColor3=Color3.fromRGB(0,0,0)ap.
-BorderSizePixel=0 ap.FontFace=Font.new('rbxassetid://12187365364',Enum.
-FontWeight.Bold,Enum.FontStyle.Normal)ap.LayoutOrder=1 ap.Position=UDim2.new(0,0
-,1,10)ap.RichText=true ap.Size=UDim2.fromScale(1,0)ap.Text=an.Settings.Name:
-upper()ap.TextColor3=Color3.fromRGB(150,150,150)ap.TextSize=11 ap.TextWrapped=
-true ap.Parent=ao local aq=Instance.new'TextButton'aq.AutoButtonColor=false aq.
-BackgroundColor3=Color3.fromRGB(30,34,47)aq.BorderColor3=Color3.fromRGB(0,0,0)aq
-.BorderSizePixel=0 aq.FontFace=Font.new
-'rbxasset://fonts/families/SourceSansPro.json'aq.Size=UDim2.fromOffset(50,50)aq.
-Text=''aq.TextColor3=Color3.fromRGB(0,0,0)aq.TextSize=14 local ar=Instance.new
-'UICorner'ar.CornerRadius=UDim.new(0,13)ar.Parent=aq local as=Instance.new
-'UIStroke'as.ApplyStrokeMode=Enum.ApplyStrokeMode.Border as.Color=Color3.
-fromRGB(185,228,255)as.Transparency=1 as.Parent=aq local at=Instance.new
-'ImageLabel'at.AnchorPoint=Vector2.new(0.5,0.5)at.BackgroundColor3=Color3.
-fromRGB(255,255,255)at.BackgroundTransparency=1 at.BorderColor3=Color3.fromRGB(0
-,0,0)at.BorderSizePixel=0 at.Image=an.Settings.Image at.ImageColor3=Color3.
-fromRGB(150,150,150)at.Position=UDim2.fromScale(0.5,0.5)at.ScaleType=Enum.
-ScaleType.Crop at.Size=UDim2.fromOffset(28,28)at.Parent=aq aq.Parent=ao local au
-=Instance.new'UIListLayout'au.Padding=UDim.new(0,10)au.SortOrder=Enum.SortOrder.
-LayoutOrder au.Parent=ao local av=Instance.new'ScrollingFrame'av.Name=
-'TabContent'av.AutomaticCanvasSize=Enum.AutomaticSize.Y av.BackgroundColor3=
-Color3.fromRGB(255,255,255)av.BackgroundTransparency=1 av.BorderColor3=Color3.
-fromRGB(0,0,0)av.BorderSizePixel=0 av.CanvasSize=UDim2.new()av.
-ScrollBarImageTransparency=1 av.ScrollBarThickness=1 av.Size=UDim2.fromScale(1,1
-)local aw=Instance.new'UIListLayout'aw.Name='UIListLayout'aw.Padding=UDim.new(0,
-10)aw.SortOrder=Enum.SortOrder.LayoutOrder aw.Parent=av local ax=Instance.new
-'UIPadding'ax.Name='UIPadding'ax.PaddingBottom=UDim.new(0,20)ax.PaddingLeft=UDim
-.new(0,25)ax.PaddingRight=UDim.new(0,25)ax.Parent=av ab.tabSystem.tabInstances[
-ao]={Name=ap,Stroke=as,Icon=at,TabContent=av}function an:Select()if ab.tabSystem
-.tabInstances[ab.tabSystem.currentTab]then local ay=ab.tabSystem.tabInstances[ab
-.tabSystem.currentTab]ad.tween(ay.Name,TweenInfo.new(0.1,Enum.EasingStyle.Sine),
-{TextColor3=Color3.fromRGB(150,150,150)}):Play()ad.tween(ay.Icon,TweenInfo.new(
+fromOffset(30,2)S.Parent=K K.Parent=J local T=Instance.new'ImageLabel'T.
+AnchorPoint=Vector2.new(0.5,0.5)T.BackgroundColor3=Color3.fromRGB(255,255,255)T.
+BackgroundTransparency=1 T.BorderColor3=Color3.fromRGB(0,0,0)T.BorderSizePixel=0
+T.Image='rbxassetid://109289851861610'T.Position=UDim2.fromScale(0.5,0.5)T.
+ScaleType=Enum.ScaleType.Fit T.Size=UDim2.new(1,-20,1,-20)local U=Instance.new
+'UIGradient'U.Color=ColorSequence.new{ColorSequenceKeypoint.new(0,Color3.
+fromRGB(101,143,175)),ColorSequenceKeypoint.new(1,Color3.fromRGB(197,173,128))}U
+.Offset=Vector2.new(0,0.15)U.Rotation=90 U.Parent=T T.Parent=J local V=Instance.
+new'TextLabel'V.AnchorPoint=Vector2.new(0,1)V.AutomaticSize=Enum.AutomaticSize.
+XY V.BackgroundColor3=Color3.fromRGB(255,255,255)V.BackgroundTransparency=1 V.
+BorderColor3=Color3.fromRGB(0,0,0)V.BorderSizePixel=0 V.FontFace=Font.new(
+'rbxassetid://12187362578',Enum.FontWeight.SemiBold,Enum.FontStyle.Normal)V.
+Position=UDim2.fromOffset(0,-5)V.Size=UDim2.fromScale(1,0)V.Text=
+'RIOTPLAYER987123'V.TextColor3=Color3.fromRGB(255,255,255)V.TextSize=13 V.
+TextWrapped=true V.TextYAlignment=Enum.TextYAlignment.Top V.Visible=false local
+W=Instance.new'UIPadding'W.PaddingLeft=UDim.new(0,20)W.Parent=V V.Parent=J local
+X=Instance.new'Frame'X.AnchorPoint=Vector2.new(0.5,0.5)X.BackgroundColor3=Color3
+.fromRGB(255,255,255)X.BackgroundTransparency=1 X.BorderColor3=Color3.fromRGB(0,
+0,0)X.BorderSizePixel=0 X.Position=UDim2.fromScale(0.5,0.5)X.Size=UDim2.new(1,-2
+,1,-2)X.Visible=false local Y=Instance.new'UIStroke'Y.ApplyStrokeMode=Enum.
+ApplyStrokeMode.Border Y.Color=Color3.fromRGB(255,255,255)Y.Parent=X X.Parent=J
+local Z=Instance.new'Frame'Z.BackgroundColor3=Color3.fromRGB(0,0,0)Z.
+BackgroundTransparency=1 Z.BorderColor3=Color3.fromRGB(0,0,0)Z.BorderSizePixel=0
+Z.Size=UDim2.fromScale(1,1)Z.Visible=false Z.Parent=J J.Parent=H local _=
+Instance.new'Frame'_.AutomaticSize=Enum.AutomaticSize.XY _.BackgroundColor3=
+Color3.fromRGB(255,255,255)_.BackgroundTransparency=1 _.BorderColor3=Color3.
+fromRGB(0,0,0)_.BorderSizePixel=0 _.LayoutOrder=2 _.Position=UDim2.new(1,5,0,10)
+_.Size=UDim2.fromOffset(50,0)_.Visible=true local af=Instance.new'TextLabel'af.
+AnchorPoint=Vector2.new(0,1)af.AutomaticSize=Enum.AutomaticSize.XY af.
+BackgroundColor3=Color3.fromRGB(255,255,255)af.BackgroundTransparency=1 af.
+BorderColor3=Color3.fromRGB(0,0,0)af.BorderSizePixel=0 af.FontFace=Font.new(
+'rbxassetid://12187362578',Enum.FontWeight.SemiBold,Enum.FontStyle.Normal)af.
+Position=UDim2.fromOffset(0,-5)af.RichText=true af.Text='100M'af.TextColor3=
+Color3.fromRGB(255,255,255)af.TextSize=13 af.TextWrapped=true af.TextXAlignment=
+Enum.TextXAlignment.Left af.TextYAlignment=Enum.TextYAlignment.Top af.Parent=_
+af.Visible=false local ag=Instance.new'TextLabel'ag.AnchorPoint=Vector2.new(0,1)
+ag.AutomaticSize=Enum.AutomaticSize.XY ag.BackgroundColor3=Color3.fromRGB(255,
+255,255)ag.BackgroundTransparency=1 ag.BorderColor3=Color3.fromRGB(0,0,0)ag.
+BorderSizePixel=0 ag.FontFace=Font.new('rbxassetid://12187362578',Enum.
+FontWeight.SemiBold,Enum.FontStyle.Normal)ag.LayoutOrder=1 ag.Position=UDim2.
+fromOffset(0,-5)ag.RichText=true ag.Text='BF 30'ag.TextColor3=Color3.fromRGB(255
+,255,255)ag.TextSize=13 ag.TextWrapped=true ag.TextXAlignment=Enum.
+TextXAlignment.Left ag.TextYAlignment=Enum.TextYAlignment.Top ag.Parent=_ ag.
+Visible=false local ah=Instance.new'TextLabel'ah.AnchorPoint=Vector2.new(0,1)ah.
+AutomaticSize=Enum.AutomaticSize.XY ah.BackgroundColor3=Color3.fromRGB(255,255,
+255)ah.BackgroundTransparency=1 ah.BorderColor3=Color3.fromRGB(0,0,0)ah.
+BorderSizePixel=0 ah.ClipsDescendants=true ah.FontFace=Font.new(
+'rbxassetid://12187362578',Enum.FontWeight.SemiBold,Enum.FontStyle.Normal)ah.
+LayoutOrder=2 ah.Position=UDim2.fromOffset(0,-5)ah.RichText=true ah.Text='140HP'
+ah.TextColor3=Color3.fromRGB(255,255,255)ah.TextSize=13 ah.TextWrapped=true ah.
+TextXAlignment=Enum.TextXAlignment.Left ah.TextYAlignment=Enum.TextYAlignment.
+Top ah.Parent=_ ah.Visible=false local ai=Instance.new'UIListLayout'ai.SortOrder
+=Enum.SortOrder.LayoutOrder ai.Parent=_ _.Parent=H local aj=Instance.new
+'UIListLayout'aj.FillDirection=Enum.FillDirection.Horizontal aj.HorizontalFlex=
+Enum.UIFlexAlignment.Fill aj.Padding=UDim.new(0,10)aj.SortOrder=Enum.SortOrder.
+LayoutOrder aj.Parent=H H.Parent=G G.Parent=y y.Parent=ab.overlay ad.
+makeDraggable(y)ad.makeDraggable(d)ac._userInputService.InputEnded:Connect(
+function(ak,al)if al then return end if ak.KeyCode==c.Settings.Keybind then ab.
+overlay.Visible=not ab.overlay.Visible end end)local ak=function()local ak=e.
+AbsoluteSize.Y+9 q.Size=UDim2.new(1,0,1,-ak)q.Position=UDim2.new(0,0,0,ak)end e:
+GetPropertyChangedSignal'AbsoluteSize':Connect(ak)ak()function c:UpdateSettings(
+al)if al.Title then c.Settings.Title=al.Title h.Text=al.Title end if al.Keybind
+then c.Settings.Keybind=al.Keybind end end function c:Tab(al)local am={Settings=
+al}assert(am.Settings.Name and type(am.Settings.Name)=='string',
+'Missing string or wrong type')if not am.Settings.Image or am.Settings.Image==''
+then am.Settings.Image=aa.Assets.DefaultImage end ab.tabSystem.tabIndex+=1 local
+an=Instance.new'Frame'an.AutomaticSize=Enum.AutomaticSize.Y an.BackgroundColor3=
+Color3.fromRGB(30,34,47)an.BackgroundTransparency=1 an.BorderColor3=Color3.
+fromRGB(0,0,0)an.BorderSizePixel=0 an.Size=UDim2.fromOffset(50,50)an.Parent=r an
+.LayoutOrder=ab.tabSystem.tabIndex local ao=Instance.new'TextLabel'ao.
+AutomaticSize=Enum.AutomaticSize.Y ao.BackgroundColor3=Color3.fromRGB(255,255,
+255)ao.BackgroundTransparency=1 ao.BorderColor3=Color3.fromRGB(0,0,0)ao.
+BorderSizePixel=0 ao.FontFace=Font.new('rbxassetid://12187365364',Enum.
+FontWeight.Bold,Enum.FontStyle.Normal)ao.LayoutOrder=1 ao.Position=UDim2.new(0,0
+,1,10)ao.RichText=true ao.Size=UDim2.fromScale(1,0)ao.Text=am.Settings.Name:
+upper()ao.TextColor3=Color3.fromRGB(150,150,150)ao.TextSize=11 ao.TextWrapped=
+true ao.Parent=an local ap=Instance.new'TextButton'ap.AutoButtonColor=false ap.
+BackgroundColor3=Color3.fromRGB(30,34,47)ap.BorderColor3=Color3.fromRGB(0,0,0)ap
+.BorderSizePixel=0 ap.FontFace=Font.new
+'rbxasset://fonts/families/SourceSansPro.json'ap.Size=UDim2.fromOffset(50,50)ap.
+Text=''ap.TextColor3=Color3.fromRGB(0,0,0)ap.TextSize=14 local aq=Instance.new
+'UICorner'aq.CornerRadius=UDim.new(0,13)aq.Parent=ap local ar=Instance.new
+'UIStroke'ar.ApplyStrokeMode=Enum.ApplyStrokeMode.Border ar.Color=Color3.
+fromRGB(185,228,255)ar.Transparency=1 ar.Parent=ap local as=Instance.new
+'ImageLabel'as.AnchorPoint=Vector2.new(0.5,0.5)as.BackgroundColor3=Color3.
+fromRGB(255,255,255)as.BackgroundTransparency=1 as.BorderColor3=Color3.fromRGB(0
+,0,0)as.BorderSizePixel=0 as.Image=am.Settings.Image as.ImageColor3=Color3.
+fromRGB(150,150,150)as.Position=UDim2.fromScale(0.5,0.5)as.ScaleType=Enum.
+ScaleType.Crop as.Size=UDim2.fromOffset(28,28)as.Parent=ap ap.Parent=an local at
+=Instance.new'UIListLayout'at.Padding=UDim.new(0,10)at.SortOrder=Enum.SortOrder.
+LayoutOrder at.Parent=an local au=Instance.new'ScrollingFrame'au.Name=
+'TabContent'au.AutomaticCanvasSize=Enum.AutomaticSize.Y au.BackgroundColor3=
+Color3.fromRGB(255,255,255)au.BackgroundTransparency=1 au.BorderColor3=Color3.
+fromRGB(0,0,0)au.BorderSizePixel=0 au.CanvasSize=UDim2.new()au.
+ScrollBarImageTransparency=1 au.ScrollBarThickness=1 au.Size=UDim2.fromScale(1,1
+)local av=Instance.new'UIListLayout'av.Name='UIListLayout'av.Padding=UDim.new(0,
+10)av.SortOrder=Enum.SortOrder.LayoutOrder av.Parent=au local aw=Instance.new
+'UIPadding'aw.Name='UIPadding'aw.PaddingBottom=UDim.new(0,20)aw.PaddingLeft=UDim
+.new(0,25)aw.PaddingRight=UDim.new(0,25)aw.Parent=au ab.tabSystem.tabInstances[
+an]={Name=ao,Stroke=ar,Icon=as,TabContent=au}function am:Select()if ab.tabSystem
+.tabInstances[ab.tabSystem.currentTab]then local ax=ab.tabSystem.tabInstances[ab
+.tabSystem.currentTab]ad.tween(ax.Name,TweenInfo.new(0.1,Enum.EasingStyle.Sine),
+{TextColor3=Color3.fromRGB(150,150,150)}):Play()ad.tween(ax.Icon,TweenInfo.new(
 0.1,Enum.EasingStyle.Sine),{ImageColor3=Color3.fromRGB(150,150,150)}):Play()ad.
-tween(ay.Stroke,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{Transparency=1}):Play(
+tween(ax.Stroke,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{Transparency=1}):Play(
 )if ab.tabSystem.currentContent then ab.tabSystem.currentContent.Parent=nil end
-end if ab.tabSystem.tabInstances[ao]then local ay=ab.tabSystem.tabInstances[ao]
-ad.tween(ay.Name,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{TextColor3=Color3.
-fromRGB(168,193,225)}):Play()ad.tween(ay.Icon,TweenInfo.new(0.1,Enum.EasingStyle
-.Sine),{ImageColor3=Color3.fromRGB(133,192,228)}):Play()ad.tween(ay.Stroke,
+end if ab.tabSystem.tabInstances[an]then local ax=ab.tabSystem.tabInstances[an]
+ad.tween(ax.Name,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{TextColor3=Color3.
+fromRGB(168,193,225)}):Play()ad.tween(ax.Icon,TweenInfo.new(0.1,Enum.EasingStyle
+.Sine),{ImageColor3=Color3.fromRGB(133,192,228)}):Play()ad.tween(ax.Stroke,
 TweenInfo.new(0.1,Enum.EasingStyle.Sine),{Transparency=0}):Play()ab.tabSystem.
-currentTab=ao av.Parent=w ab.tabSystem.currentContent=av end end aq.
-MouseButton1Click:Connect(function()an:Select()end)function an:Section(ay,az)
-local aA,aB={Settings=ay},Instance.new'Frame'aB.Name='Section'aB.AutomaticSize=
-Enum.AutomaticSize.Y aB.BackgroundColor3=Color3.fromRGB(255,255,255)aB.
-BackgroundTransparency=1 aB.BorderColor3=Color3.fromRGB(0,0,0)aB.BorderSizePixel
-=0 aB.Size=UDim2.fromScale(1,0)local aC=Instance.new'TextButton'aC.Name=
-'Leading'aC.AutoButtonColor=false aC.AutomaticSize=Enum.AutomaticSize.Y aC.
+currentTab=an au.Parent=v ab.tabSystem.currentContent=au end end ap.
+MouseButton1Click:Connect(function()am:Select()end)function am:Section(ax,ay)
+local az,aA={Settings=ax},Instance.new'Frame'aA.Name='Section'aA.AutomaticSize=
+Enum.AutomaticSize.Y aA.BackgroundColor3=Color3.fromRGB(255,255,255)aA.
+BackgroundTransparency=1 aA.BorderColor3=Color3.fromRGB(0,0,0)aA.BorderSizePixel
+=0 aA.Size=UDim2.fromScale(1,0)local aB=Instance.new'TextButton'aB.Name=
+'Leading'aB.AutoButtonColor=false aB.AutomaticSize=Enum.AutomaticSize.Y aB.
+BackgroundColor3=Color3.fromRGB(255,255,255)aB.BackgroundTransparency=1 aB.
+BorderColor3=Color3.fromRGB(0,0,0)aB.BorderSizePixel=0 aB.LayoutOrder=-1 aB.
+Selectable=false aB.Size=UDim2.fromScale(1,0)aB.Text=''local aC=Instance.new
+'TextLabel'aC.Name='Name'aC.AutomaticSize=Enum.AutomaticSize.XY aC.
 BackgroundColor3=Color3.fromRGB(255,255,255)aC.BackgroundTransparency=1 aC.
-BorderColor3=Color3.fromRGB(0,0,0)aC.BorderSizePixel=0 aC.LayoutOrder=-1 aC.
-Selectable=false aC.Size=UDim2.fromScale(1,0)aC.Text=''local aD=Instance.new
-'TextLabel'aD.Name='Name'aD.AutomaticSize=Enum.AutomaticSize.XY aD.
-BackgroundColor3=Color3.fromRGB(255,255,255)aD.BackgroundTransparency=1 aD.
-BorderColor3=Color3.fromRGB(0,0,0)aD.BorderSizePixel=0 aD.FontFace=Font.new(
-'rbxassetid://16658237174',Enum.FontWeight.Bold,Enum.FontStyle.Normal)aD.
-LayoutOrder=1 aD.Position=UDim2.fromOffset(28,0)aD.RichText=true aD.Text=
-'Aimbot'aD.TextColor3=Color3.fromRGB(225,225,225)aD.TextSize=20 aD.TextWrapped=
-true aD.TextXAlignment=Enum.TextXAlignment.Left aD.Parent=aC local aE=Instance.
-new'ImageButton'aE.Name='Chevron'aE.AnchorPoint=Vector2.new(0,0.5)aE.
-AutoButtonColor=false aE.BackgroundColor3=Color3.fromRGB(30,34,47)aE.
+BorderColor3=Color3.fromRGB(0,0,0)aC.BorderSizePixel=0 aC.FontFace=Font.new(
+'rbxassetid://16658237174',Enum.FontWeight.Bold,Enum.FontStyle.Normal)aC.
+LayoutOrder=1 aC.Position=UDim2.fromOffset(28,0)aC.RichText=true aC.Text=
+'Aimbot'aC.TextColor3=Color3.fromRGB(225,225,225)aC.TextSize=20 aC.TextWrapped=
+true aC.TextXAlignment=Enum.TextXAlignment.Left aC.Parent=aB local aD=Instance.
+new'ImageButton'aD.Name='Chevron'aD.AnchorPoint=Vector2.new(0,0.5)aD.
+AutoButtonColor=false aD.BackgroundColor3=Color3.fromRGB(30,34,47)aD.
+BackgroundTransparency=1 aD.BorderColor3=Color3.fromRGB(0,0,0)aD.BorderSizePixel
+=0 aD.Image='rbxassetid://77136690433593'aD.LayoutOrder=1 aD.Position=UDim2.
+fromScale(0,0.5)aD.Selectable=false aD.Active=false aD.Interactable=false aD.
+Size=UDim2.fromOffset(18,18)aD.Parent=aB aB.Parent=aA local aE=Instance.new
+'Frame'aE.Name='Trailing'aE.BackgroundColor3=Color3.fromRGB(255,255,255)aE.
 BackgroundTransparency=1 aE.BorderColor3=Color3.fromRGB(0,0,0)aE.BorderSizePixel
-=0 aE.Image='rbxassetid://77136690433593'aE.LayoutOrder=1 aE.Position=UDim2.
-fromScale(0,0.5)aE.Rotation=180 aE.Selectable=false aE.Size=UDim2.fromOffset(18,
-18)aE.Parent=aC aC.Parent=aB local aF=Instance.new'Frame'aF.Name='Trailing'aF.
-BackgroundColor3=Color3.fromRGB(255,255,255)aF.BackgroundTransparency=1 aF.
-BorderColor3=Color3.fromRGB(0,0,0)aF.BorderSizePixel=0 aF.ClipsDescendants=true
-aF.Size=UDim2.fromScale(1,0)local aG=Instance.new'UIListLayout'aG.Name=
-'UIListLayout'aG.Padding=UDim.new(0,10)aG.SortOrder=Enum.SortOrder.LayoutOrder
-aG.Parent=aF local aH=Instance.new'UIPadding'aH.Name='UIPadding'aH.PaddingLeft=
-UDim.new(0,12)aH.Parent=aF local aI=Instance.new'Folder'aI.Name='Folder'local aJ
-=Instance.new'Frame'aJ.Name='Frame'aJ.AnchorPoint=Vector2.new(0,1)aJ.
-BackgroundColor3=Color3.fromRGB(30,30,30)aJ.BorderColor3=Color3.fromRGB(0,0,0)aJ
-.BorderSizePixel=0 aJ.Position=UDim2.new(0,-12,1,0)aJ.Size=UDim2.new(0,1,1,0)aJ.
-Parent=aI aI.Parent=aF aF.Parent=aB local aK=Instance.new'UIListLayout'aK.Name=
-'UIListLayout'aK.Padding=UDim.new(0,10)aK.SortOrder=Enum.SortOrder.LayoutOrder
-aK.Parent=aB local aL=Instance.new'UIPadding'aL.Name='UIPadding'aL.PaddingBottom
-=UDim.new(0,8)aL.PaddingTop=UDim.new(0,8)aL.Parent=aB aB.Parent=av local aM=
-function(aM)if aM then local aN,aO={},0 for aP,aQ in pairs(aF:GetChildren())do
-if aQ:IsA'GuiObject'then table.insert(aN,aQ)aO+=aQ.AbsoluteSize.Y end end if#aN>
-1 then aO+=(#aN-1)*aG.Padding.Offset end ad.tween(aF,TweenInfo.new(0.1,Enum.
-EasingStyle.Sine),{Size=UDim2.new(1,0,0,aO)}):Play()ad.tween(aE,TweenInfo.new(
-0.1,Enum.EasingStyle.Sine),{Rotation=-180}):Play()else ad.tween(aF,TweenInfo.
-new(0.1,Enum.EasingStyle.Sine),{Size=UDim2.new(1,0,0,0)}):Play()ad.tween(aE,
-TweenInfo.new(0.1,Enum.EasingStyle.Sine),{Rotation=0}):Play()end end aC.
-MouseButton1Click:Connect(function()aA.Settings.Opened=not aA.Settings.Opened
-aM(aA.Settings.Opened)end)function aA:UpdateSettings(aN)if aN.Visible~=nil then
-aA.Settings.Visible=aN.Visible aB.Visible=aN.Visible end if aN.Opened~=nil then
-aA.Settings.Opened=aN.Opened aM(aN.Opened)end if aN.Name then aA.Settings.Name=
-aN.Name aD.Text=aN.Name end end if aA.Settings.Closed==nil then aA.Settings.
-Closed=true end aA:UpdateSettings(aA.Settings)if az then aa.Components[az]=aA
-end aA.Content=aF b(aA)return aA end an.Content=av b(an)return an end function d
-:VisualPreview(am)local an={O,P,R,Q,T,S,N,M}if am.Enabled~=nil then local ao=am.
-Enabled J.Visible=ao ag.Visible=ao ai.Visible=ao ah.Visible=ao W.Visible=ao _.
-Visible=ao Y.Visible=ao L.Visible=ao for ap,aq in ipairs(an)do aq.Visible=ao end
-if not ao then return end end if am.Visible~=nil then z.Visible=am.Visible end
-if am.HealthBar and am.HealthBar.Visible~=nil then J.Visible=am.HealthBar.
-Visible end if am.Distance then if am.Distance.Visible~=nil then ag.Visible=am.
-Distance.Visible end if am.Distance.Color then ag.TextColor3=am.Distance.Color
-end end if am.Health then if am.Health.Visible~=nil then ai.Visible=am.Health.
-Visible end if am.Health.Color then ai.TextColor3=am.Health.Color end end if am.
-Weapon then if am.Weapon.Visible~=nil then ah.Visible=am.Weapon.Visible end if
-am.Weapon.Color then ah.TextColor3=am.Weapon.Color end end if am.Name then if am
-.Name.Visible~=nil then W.Visible=am.Name.Visible end if am.Name.Color then W.
-TextColor3=am.Name.Color end end if am.FillBox then if am.FillBox.Visible~=nil
-then _.Visible=am.FillBox.Visible end if am.FillBox.Color then _.
-BackgroundColor3=am.FillBox.Color[1]or _.BackgroundColor3 _.
-BackgroundTransparency=am.FillBox.Color[2]or _.BackgroundTransparency end end if
-am.BoundingBox then if am.BoundingBox.Visible~=nil then Y.Visible=am.BoundingBox
-.Visible end if am.BoundingBox.Color then Z.Color=am.BoundingBox.Color[1]or Z.
-Color Z.Transparency=am.BoundingBox.Color[2]or Z.Transparency end end if am.
-CornerBox then if am.CornerBox.Visible~=nil then L.Visible=am.CornerBox.Visible
-end if am.CornerBox.Color then for ao,ap in ipairs(an)do ap.BackgroundColor3=am.
-CornerBox.Color[1]or ap.BackgroundColor3 ap.BackgroundTransparency=am.CornerBox.
-Color[2]or ap.BackgroundTransparency end end end end return d end function aa:
+=0 aE.ClipsDescendants=true aE.Size=UDim2.fromScale(1,0)local aF=Instance.new
+'UIListLayout'aF.Name='UIListLayout'aF.Padding=UDim.new(0,10)aF.SortOrder=Enum.
+SortOrder.LayoutOrder aF.Parent=aE local aG=Instance.new'UIPadding'aG.Name=
+'UIPadding'aG.PaddingLeft=UDim.new(0,12)aG.Parent=aE local aH=Instance.new
+'Folder'aH.Name='Folder'local aI=Instance.new'Frame'aI.Name='Frame'aI.
+AnchorPoint=Vector2.new(0,1)aI.BackgroundColor3=Color3.fromRGB(30,30,30)aI.
+BorderColor3=Color3.fromRGB(0,0,0)aI.BorderSizePixel=0 aI.Position=UDim2.new(0,-
+12,1,0)aI.Size=UDim2.new(0,1,1,0)aI.Parent=aH aH.Parent=aE aE.Parent=aA local aJ
+=Instance.new'UIListLayout'aJ.Name='UIListLayout'aJ.Padding=UDim.new(0,10)aJ.
+SortOrder=Enum.SortOrder.LayoutOrder aJ.Parent=aA local aK=Instance.new
+'UIPadding'aK.Name='UIPadding'aK.PaddingBottom=UDim.new(0,8)aK.PaddingTop=UDim.
+new(0,8)aK.Parent=aA aA.Parent=au local aL=function(aL)if aL then local aM,aN={}
+,0 for aO,aP in pairs(aE:GetChildren())do if aP:IsA'GuiObject'and aP.Visible
+then table.insert(aM,aP)aN+=aP.AbsoluteSize.Y end end if#aM>1 then aN+=(#aM-1)*
+aF.Padding.Offset end ad.tween(aE,TweenInfo.new(0.15,Enum.EasingStyle.Sine),{
+Size=UDim2.new(1,0,0,aN)}):Play()ad.tween(aD,TweenInfo.new(0.15,Enum.EasingStyle
+.Sine),{Rotation=-180}):Play()else ad.tween(aE,TweenInfo.new(0.15,Enum.
+EasingStyle.Sine),{Size=UDim2.new(1,0,0,0)}):Play()ad.tween(aD,TweenInfo.new(
+0.15,Enum.EasingStyle.Sine),{Rotation=0}):Play()end end aB.MouseButton1Click:
+Connect(function()az.Settings.Opened=not az.Settings.Opened aL(az.Settings.
+Opened)end)local aM=function(aM)if not aM:IsA'GuiObject'then return end aM:
+GetPropertyChangedSignal'Visible':Connect(function()if az.Settings.Opened then
+aL(true)end end)end for aN,aO in pairs(aE:GetChildren())do aM(aO)end aE.
+ChildAdded:Connect(function(aN)aM(aN)if az.Settings.Opened then aL(true)end end)
+aE.ChildRemoved:Connect(function()if az.Settings.Opened then aL(true)end end)
+function az:UpdateSettings(aN)if aN.Visible~=nil then az.Settings.Visible=aN.
+Visible aA.Visible=aN.Visible end if aN.Opened~=nil then az.Settings.Opened=aN.
+Opened aL(aN.Opened)end if aN.Name then az.Settings.Name=aN.Name aC.Text=aN.Name
+end end if az.Settings.Closed==nil then az.Settings.Closed=true end az:
+UpdateSettings(az.Settings)if ay then aa.Components[ay]=az end az.Content=aE
+injectComponents(az)return az end am.Content=au injectComponents(am)return am
+end function c:VisualPreview(al)local am={N,O,Q,P,S,R,M,L}if al.Enabled~=nil
+then local an=al.Enabled I.Visible=an af.Visible=an ah.Visible=an ag.Visible=an
+V.Visible=an Z.Visible=an X.Visible=an K.Visible=an for ao,ap in ipairs(am)do ap
+.Visible=an end if not an then return end end if al.Visible~=nil then y.Visible=
+al.Visible end if al.HealthBar and al.HealthBar.Visible~=nil then I.Visible=al.
+HealthBar.Visible end if al.Distance then if al.Distance.Visible~=nil then af.
+Visible=al.Distance.Visible end if al.Distance.Color then af.TextColor3=al.
+Distance.Color end end if al.Health then if al.Health.Visible~=nil then ah.
+Visible=al.Health.Visible end if al.Health.Color then ah.TextColor3=al.Health.
+Color end end if al.Weapon then if al.Weapon.Visible~=nil then ag.Visible=al.
+Weapon.Visible end if al.Weapon.Color then ag.TextColor3=al.Weapon.Color end end
+if al.Name then if al.Name.Visible~=nil then V.Visible=al.Name.Visible end if al
+.Name.Color then V.TextColor3=al.Name.Color end end if al.FillBox then if al.
+FillBox.Visible~=nil then Z.Visible=al.FillBox.Visible end if al.FillBox.Color
+then Z.BackgroundColor3=al.FillBox.Color[1]or Z.BackgroundColor3 Z.
+BackgroundTransparency=al.FillBox.Color[2]or Z.BackgroundTransparency end end if
+al.BoundingBox then if al.BoundingBox.Visible~=nil then X.Visible=al.BoundingBox
+.Visible end if al.BoundingBox.Color then Y.Color=al.BoundingBox.Color[1]or Y.
+Color Y.Transparency=al.BoundingBox.Color[2]or Y.Transparency end end if al.
+CornerBox then if al.CornerBox.Visible~=nil then K.Visible=al.CornerBox.Visible
+end if al.CornerBox.Color then for an,ao in ipairs(am)do ao.BackgroundColor3=al.
+CornerBox.Color[1]or ao.BackgroundColor3 ao.BackgroundTransparency=al.CornerBox.
+Color[2]or ao.BackgroundTransparency end end end end return c end function aa:
 Notification(af)local ag={Settings=af}assert(ag.Settings.Title and type(ag.
 Settings.Title)=='string','Missing notification title or wrong type')local ah=
 Instance.new'ImageButton'ah.AnchorPoint=Vector2.new(1,1)ah.AutoButtonColor=false
@@ -1384,15 +1443,15 @@ Maximum-1)*0.15 am.Sensitivity2=av end},'AimbotSmoothing')at:Dropdown({Name=
 'Head'},Limit=1,Minimum=1,Callback=function(au,av)am.LockPart=av[1]end},'Bone')
 at:Slider({Name='Max Distance',Description=
 'the distance aimbot stops locking onto players',Value=100,Minimum=1,Maximum=500
-,Step=1,Precision=0,Callback=function(au,av)am.MaxDistance=av*4 end},
-'MaxDistance')at:Dropdown({Name='Lock Method',Description=
-'the input used to lock onto a player',Options={'Camera','Mouse'},Value={
-'Camera'},Limit=1,Minimum=1,Callback=function(au,av)am.LockMode=({Camera=1,Mouse
-=2})[av[1] ]end},'AimbotLockMethod')at:Dropdown({Name='Wall Check',Description=
-'the method used by wall check',Options={'Off','Sticky','Always On'},Value={
-'Always On'},Limit=1,Minimum=1,Callback=function(au,av)am.WallCheck=({Off=1,
-Sticky=2,['Always On']=3})[av[1] ]end},'AimbotWallCheckMode')at:Toggle{Name=
-'Team Check',Description='whether to ignore friendlys',State=true,Callback=
+,Step=1,Precision=0,Filter=function(au)return`{au} (x4)`end,Callback=function(au
+,av)am.MaxDistance=av*4 end},'MaxDistance')at:Dropdown({Name='Lock Method',
+Description='the input used to lock onto a player',Options={'Camera','Mouse'},
+Value={'Camera'},Limit=1,Minimum=1,Callback=function(au,av)am.LockMode=({Camera=
+1,Mouse=2})[av[1] ]end},'AimbotLockMethod')at:Dropdown({Name='Wall Check',
+Description='the method used by wall check',Options={'Off','Sticky','Always On'}
+,Value={'Always On'},Limit=1,Minimum=1,Callback=function(au,av)am.WallCheck=({
+Off=1,Sticky=2,['Always On']=3})[av[1] ]end},'AimbotWallCheckMode')at:Toggle{
+Name='Team Check',Description='whether to ignore friendlys',State=true,Callback=
 function(au,av)am.TeamCheck=av end}at:Toggle{Name='Alive Check',Description=
 'whether to ignore corpses',State=true,Callback=function(au,av)am.AliveChecl=av
 end}:Continue()local au=as:Section{Name='Triggerbot'}au:Toggle({Name='Enabled',
@@ -1987,27 +2046,27 @@ aA]='Checkbox'}return az,ay end})aa:DefineElement('Radiobox',{Base={IsRadio=true
 :DefineElement('PlotHistogram',{Base={ColorTag='Frame',Label='Histogram'},Create
 =function(ao,aq)local ar,at,au=aq.Label,aq.Points,aa:InsertPrefab('Histogram',aq
 )local av,aw=aa:MergeMetatables(aq,au),au.Canvas local ax=aw.PointTemplate ax.
-Visible=false local ay=(ao:Label{Text=ar,Parent=au,Position=UDim2.new(1,5)})aa:
-SetItemTooltip(au,function(az)ValueLabel=az:Label()end)Merge(aq,{_Plots={},
-_Cache={}})function aq:GetBaseValues()local az,aA=self.Minimum,self.Maximum if
-az and aA then return az,aA end local aB=self._Plots for aC,aD in aB do local aE
-=aD.Value if not az or aE<az then az=aE end if not aA or aE>aA then aA=aE end
-end return az,aA end function aq:UpdateGraph()local az,aA,aB=self._Plots,self:
-GetBaseValues()if not aA or not aB then return end local aC=aB-aA for aD,aE in
-az do local aF,aG=aE.Point,aE.Value local aH=(aG-aA)/aC aH=math.clamp(aH,0.05,1)
-aF.Size=UDim2.fromScale(1,aH)end return self end function aq:Plot(az)local aA,aB
-,aC=self._Plots,{},ax:Clone()local aD=aC.Bar aa:SetProperties(aC,{Parent=aw,
-Visible=true})local aE,aF=aa:DetectHover(aC,{MouseEnter=true,OnInput=function()
-aB:UpdateTooltip()end}),{Object=aC,Point=aD,Value=az}function aB:UpdateTooltip()
-local aG=aB:GetPointIndex()ValueLabel.Text=`{aG}:\t{aF.Value}`end function aB:
-SetValue(aG)aF.Value=aG aq:UpdateGraph()if aE.Hovering then self:UpdateTooltip()
-end end function aB:GetPointIndex()return table.find(aA,aF)end function aB:
-Remove(aG)table.remove(aA,self:GetPointIndex())aC:Remove()aq:UpdateGraph()end
-table.insert(aA,aF)self:UpdateGraph()aa:SetAnimation(aD,'Plots',aC)ao:
-TagElements{[aD]='Plot'}return aB end function aq:PlotGraph(az)local aA=self.
-_Cache local aB=#aA-#az if aB>=1 then for aC=1,aB do local aD=table.remove(aA,aC
-)if aD then aD:Remove()end end end for aC,aD in az do local aE=aA[aC]if aE then
-aE:SetValue(aD)continue end aA[aC]=self:Plot(aD)end return self end if at then
+Visible=false ao:Label{Text=ar,Parent=au,Position=UDim2.new(1,5)}aa:
+SetItemTooltip(au,function(ay)ValueLabel=ay:Label()end)Merge(aq,{_Plots={},
+_Cache={}})function aq:GetBaseValues()local ay,az=self.Minimum,self.Maximum if
+ay and az then return ay,az end local aA=self._Plots for aB,aC in aA do local aD
+=aC.Value if not ay or aD<ay then ay=aD end if not az or aD>az then az=aD end
+end return ay,az end function aq:UpdateGraph()local ay,az,aA=self._Plots,self:
+GetBaseValues()if not az or not aA then return end local aB=aA-az for aC,aD in
+ay do local aE,aF=aD.Point,aD.Value local aG=(aF-az)/aB aG=math.clamp(aG,0.05,1)
+aE.Size=UDim2.fromScale(1,aG)end return self end function aq:Plot(ay)local az,aA
+,aB=self._Plots,{},ax:Clone()local aC=aB.Bar aa:SetProperties(aB,{Parent=aw,
+Visible=true})local aD,aE=aa:DetectHover(aB,{MouseEnter=true,OnInput=function()
+aA:UpdateTooltip()end}),{Object=aB,Point=aC,Value=ay}function aA:UpdateTooltip()
+local aF=aA:GetPointIndex()ValueLabel.Text=`{aF}:\t{aE.Value}`end function aA:
+SetValue(aF)aE.Value=aF aq:UpdateGraph()if aD.Hovering then self:UpdateTooltip()
+end end function aA:GetPointIndex()return table.find(az,aE)end function aA:
+Remove(aF)table.remove(az,self:GetPointIndex())aB:Remove()aq:UpdateGraph()end
+table.insert(az,aE)self:UpdateGraph()aa:SetAnimation(aC,'Plots',aB)ao:
+TagElements{[aC]='Plot'}return aA end function aq:PlotGraph(ay)local az=self.
+_Cache local aA=#az-#ay if aA>=1 then for aB=1,aA do local aC=table.remove(az,aB
+)if aC then aC:Remove()end end end for aB,aC in ay do local aD=az[aB]if aD then
+aD:SetValue(aC)continue end az[aB]=self:Plot(aC)end return self end if at then
 aq:PlotGraph(at)end return av,au end})aa:DefineElement('Viewport',{Base={IsRadio
 =true},Create=function(ao,aq)local ar=aa:InsertPrefab('Viewport',aq)local at,au=
 aa:MergeMetatables(aq,ar),ar.Viewport local av,aw,ax=au.WorldModel,aq.Model,aq.
@@ -2165,19 +2224,19 @@ return{Size=UDim2.fromScale(1/aM,1),Position=UDim2.fromScale(aN,0.5)}end},
 function(...)local aJ=aq.Callback return aJ(aF,...)end function aq:SetDisabled(
 aL)self.Disabled=aL aA.Interactable=not aL ao:SetColorTags({[aI]=aL and
 'LabelDisabled'or'Label'},true)end function aq:SetValueText(aL)aD.Text=tostring(
-aL)end function aq:SetValue(aL,aM)local aN,aO,aP,aQ=ao:GetThemeKey
-'AnimationTweenInfo',aq.Minimum,aq.Maximum,aL local b=aP-aO if not aM then aQ=(
-aL-aO)/b else aL=aO+(b*aQ)end aQ=math.clamp(aQ,0,1)local c=aJ[ay](aQ,aL,aO,aP)al
-:Tween{Object=aC,Tweeninfo=aN,NoAnimation=av,EndProperties=c}self.Value=aL self:
+aL)end function aq:SetValue(aL,aM)local aN,aO,aP,b=ao:GetThemeKey
+'AnimationTweenInfo',aq.Minimum,aq.Maximum,aL local c=aP-aO if not aM then b=(aL
+-aO)/c else aL=aO+(c*b)end b=math.clamp(b,0,1)local d=aJ[ay](b,aL,aO,aP)al:Tween
+{Object=aC,Tweeninfo=aN,NoAnimation=av,EndProperties=d}self.Value=aL self:
 SetValueText(at:format(aL,aP))aK(aL)return self end local aL,aM=function(aL)ao:
 SetColorTags({[aA]=aL and'FrameActive'or'Frame'},true)ao:SetElementFocused(aA,{
 Focused=aL,Animation=aH})end,function()if aq.Disabled then return end if aq.
 ReadOnly then return end return true end local aN=function(aN)if not aM()then
-return end local aO,aP,aQ=aB.AbsolutePosition.X,aB.AbsoluteSize.X,aN.X local b=
-aQ-aO local c=math.clamp(b/aP,0,1)aq:SetValue(c,true)end local aO,aP=function(
-...)if not aM()then return end aL(true)if not ax then aN(...)end end,function()
-aL(false)end aC.Visible=not aw aq:SetValue(ar)aq:SetDisabled(az)ao:TagElements{[
-aD]='Label',[aC]='SliderGrab'}aa:ConnectDrag(aB,{DragStart=aO,DragMovement=aN,
+return end local aO,aP,b=aB.AbsolutePosition.X,aB.AbsoluteSize.X,aN.X local c=b-
+aO local d=math.clamp(c/aP,0,1)aq:SetValue(d,true)end local aO,aP=function(...)
+if not aM()then return end aL(true)if not ax then aN(...)end end,function()aL(
+false)end aC.Visible=not aw aq:SetValue(ar)aq:SetDisabled(az)ao:TagElements{[aD]
+='Label',[aC]='SliderGrab'}aa:ConnectDrag(aB,{DragStart=aO,DragMovement=aN,
 DragEnd=aP})return aF,aA end})aa:DefineElement('SliderEnum',{Base={Items={},
 Label='Slider Enum',Type='Snap',Minimum=1,Maximum=10,Value=1,Callback=ac,
 ColorTag='Frame'},Create=function(ao,aq)local ar,at=aq.Callback,aq.Value local
@@ -2395,22 +2454,22 @@ AutoSelectNewTabs,aw.OpenOnDoubleClick,aw.NoCollapse local aK={Scroll=not aD,
 Fill=not aF and true or nil,UiPadding=UDim.new(0,aC and 8 or 0),
 AutoSelectNewTabs=aH}if aF then Merge(aK,{AutomaticSize=aF,Size=UDim2.new(1,0)})
 end local aL=aa:InsertPrefab('Window',aw)local aM=aL.Content local aN,aO=aM.
-TitleBar,NewClass(au)local aP,aQ,b,c,d=aa:MakeResizable{MinimumSize=aA,Resize=aL
-,OnUpdate=function(aP)aO:SetSize(aP,true)end},(aa:MakeCanvas{Element=aM,
-WindowClass=aO,Class=aO})local e,h=aQ:Canvas(Copy(aK,{Parent=aM}))Merge(aO,aw)
-Merge(aO,{WindowFrame=aL,ContentFrame=aM,CanvasFrame=h,ResizeGrab=aP.Grab,
+TitleBar,NewClass(au)local aP,b,c,d,e=aa:MakeResizable{MinimumSize=aA,Resize=aL,
+OnUpdate=function(aP)aO:SetSize(aP,true)end},(aa:MakeCanvas{Element=aM,
+WindowClass=aO,Class=aO})local h,k=b:Canvas(Copy(aK,{Parent=aM}))Merge(aO,aw)
+Merge(aO,{WindowFrame=aL,ContentFrame=aM,CanvasFrame=k,ResizeGrab=aP.Grab,
 TitleBar=aN,Elements=am,TagsList={},ResizeConnection=aP,HoverConnection=aa:
 DetectHover(aM),DragConnection=aa:MakeDraggable{Move=aL,Grab=aM,
-OnDragStateChange=function(k)aO.IsDragging=k h.Interactable=not k if k then aa:
-SetFocusedWindow(d)end aa:SetWindowFocusesEnabled(not k)end}})if aC then b,c=e,h
-else b,c=e:TabSelector(aK)aO.WindowTabSelector=b end Merge(aO,{Body=c,
-ContentCanvas=b})aa:ConnectMouseEvent(aM,{DoubleClick=true,OnlyMouseHovering=aN,
+OnDragStateChange=function(l)aO.IsDragging=l k.Interactable=not l if l then aa:
+SetFocusedWindow(e)end aa:SetWindowFocusesEnabled(not l)end}})if aC then c,d=h,k
+else c,d=h:TabSelector(aK)aO.WindowTabSelector=c end Merge(aO,{Body=d,
+ContentCanvas=c})aa:ConnectMouseEvent(aM,{DoubleClick=true,OnlyMouseHovering=aN,
 Callback=function(...)if not aO.OpenOnDoubleClick then return end if aO.
 NoCollapse then return end aO:ToggleCollapsed()end})if not ay then aO:
 AddDefaultTitleButtons()end aO:SetTitle(aB)aO:SetCollapsed(az,true)aO:SetTheme(
-aE)aO:UpdateConfig(aw)aO:SetFocused()d=aa:MergeMetatables(aO,b)if not aG then
-table.insert(ax,d)end local k=aP.Grab aa:SetAnimation(k,'TextButtons')d:
-TagElements{[k]='ResizeGrab',[aN]='TitleBar',[h]='Window'}return d,aL end})aa:
+aE)aO:UpdateConfig(aw)aO:SetFocused()e=aa:MergeMetatables(aO,c)if not aG then
+table.insert(ax,e)end local l=aP.Grab aa:SetAnimation(l,'TextButtons')e:
+TagElements{[l]='ResizeGrab',[aN]='TitleBar',[k]='Window'}return e,aL end})aa:
 DefineElement('TabsWindow',{Export=true,Base={NoTabs=false,AutoSelectNewTabs=
 true},Create=function(av,aw)return av:Window(aw)end})aa:DefineElement(
 'PopupCanvas',{Base={Scroll=false,AutomaticSize=Enum.AutomaticSize.Y},Create=

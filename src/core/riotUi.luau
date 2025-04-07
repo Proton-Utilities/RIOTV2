@@ -290,6 +290,231 @@ local utilities = {
 	},
 }
 
+function CreateSection(Parent, Settings, Flag)
+	local _section = { Settings = Settings }
+
+	local section = Instance.new("Frame")
+	section.Name = "Section"
+	section.AutomaticSize = Enum.AutomaticSize.Y
+	section.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	section.BackgroundTransparency = 1
+	section.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	section.BorderSizePixel = 0
+	section.Size = UDim2.fromScale(1, 0)
+
+	local leading = Instance.new("TextButton")
+	leading.Name = "Leading"
+	leading.AutoButtonColor = false
+	leading.AutomaticSize = Enum.AutomaticSize.Y
+	leading.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	leading.BackgroundTransparency = 1
+	leading.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	leading.BorderSizePixel = 0
+	leading.LayoutOrder = -1
+	leading.Selectable = false
+	leading.Size = UDim2.fromScale(1, 0)
+	leading.Text = ""
+
+	local name = Instance.new("TextLabel")
+	name.Name = "Name"
+	name.AutomaticSize = Enum.AutomaticSize.XY
+	name.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	name.BackgroundTransparency = 1
+	name.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	name.BorderSizePixel = 0
+	name.FontFace = Font.new("rbxassetid://16658237174", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+	name.LayoutOrder = 1
+	name.Position = UDim2.fromOffset(28, 0)
+	name.RichText = true
+	name.Text = "Aimbot"
+	name.TextColor3 = Color3.fromRGB(225, 225, 225)
+	name.TextSize = 20
+	name.TextWrapped = true
+	name.TextXAlignment = Enum.TextXAlignment.Left
+	name.Parent = leading
+
+	local chevron = Instance.new("ImageButton")
+	chevron.Name = "Chevron"
+	chevron.AnchorPoint = Vector2.new(0, 0.5)
+	chevron.AutoButtonColor = false
+	chevron.BackgroundColor3 = Color3.fromRGB(30, 34, 47)
+	chevron.BackgroundTransparency = 1
+	chevron.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	chevron.BorderSizePixel = 0
+	chevron.Image = "rbxassetid://77136690433593"
+	chevron.LayoutOrder = 1
+	chevron.Position = UDim2.fromScale(0, 0.5)
+	chevron.Selectable = false
+	chevron.Active = false
+	chevron.Interactable = false
+	chevron.Size = UDim2.fromOffset(18, 18)
+	chevron.Parent = leading
+
+	leading.Parent = section
+
+	local trailing = Instance.new("Frame")
+	trailing.Name = "Trailing"
+	trailing.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	trailing.BackgroundTransparency = 1
+	trailing.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	trailing.BorderSizePixel = 0
+	trailing.ClipsDescendants = true
+	trailing.Size = UDim2.fromScale(1, 0)
+
+	local uIListLayout = Instance.new("UIListLayout")
+	uIListLayout.Name = "UIListLayout"
+	uIListLayout.Padding = UDim.new(0, 10)
+	uIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	uIListLayout.Parent = trailing
+
+	local uIPadding = Instance.new("UIPadding")
+	uIPadding.Name = "UIPadding"
+	uIPadding.PaddingLeft = UDim.new(0, 12)
+	uIPadding.Parent = trailing
+
+	local folder = Instance.new("Folder")
+	folder.Name = "Folder"
+
+	local frame = Instance.new("Frame")
+	frame.Name = "Frame"
+	frame.AnchorPoint = Vector2.new(0, 1)
+	frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	frame.BorderSizePixel = 0
+	frame.Position = UDim2.new(0, -12, 1, 0)
+	frame.Size = UDim2.new(0, 1, 1, 0)
+	frame.Parent = folder
+
+	folder.Parent = trailing
+
+	trailing.Parent = section
+
+	local uIListLayout1 = Instance.new("UIListLayout")
+	uIListLayout1.Name = "UIListLayout"
+	uIListLayout1.Padding = UDim.new(0, 10)
+	uIListLayout1.SortOrder = Enum.SortOrder.LayoutOrder
+	uIListLayout1.Parent = section
+
+	local uIPadding1 = Instance.new("UIPadding")
+	uIPadding1.Name = "UIPadding"
+	uIPadding1.PaddingBottom = UDim.new(0, 8)
+	uIPadding1.PaddingTop = UDim.new(0, 8)
+	uIPadding1.Parent = section
+
+	section.Parent = Parent
+
+
+	local function updateDisclosure(state)
+		if state then
+			local Components = {}
+			local NewSizeY = 0
+
+			for _, v in pairs(trailing:GetChildren()) do
+				if v:IsA("GuiObject") and v.Visible then
+					table.insert(Components, v)
+					NewSizeY += v.AbsoluteSize.Y
+				end
+			end
+
+			if #Components > 1 then
+				NewSizeY += (#Components - 1) * uIListLayout.Padding.Offset
+			end
+
+			utilities.tween(
+				trailing,
+				TweenInfo.new(0.15, Enum.EasingStyle.Sine),
+				{ Size = UDim2.new(1, 0, 0, NewSizeY) }
+			):Play()
+
+			utilities.tween(
+				chevron,
+				TweenInfo.new(0.15, Enum.EasingStyle.Sine),
+				{ Rotation = -180 }
+			):Play()
+		else
+			utilities.tween(
+				trailing,
+				TweenInfo.new(0.15, Enum.EasingStyle.Sine),
+				{ Size = UDim2.new(1, 0, 0, 0) }
+			):Play()
+
+			utilities.tween(
+				chevron,
+				TweenInfo.new(0.15, Enum.EasingStyle.Sine),
+				{ Rotation = 0 }
+			):Play()
+		end
+	end
+
+	leading.MouseButton1Click:Connect(function()
+		_section.Settings.Opened = not _section.Settings.Opened 
+		updateDisclosure(_section.Settings.Opened)
+	end)
+
+	local function trackChild(child)
+		if not child:IsA("GuiObject") then return end
+
+		child:GetPropertyChangedSignal("Visible"):Connect(function()
+			if _section.Settings.Opened then
+				updateDisclosure(true)
+			end
+		end)
+		child:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+			if _section.Settings.Opened then
+				updateDisclosure(true)
+			end
+		end)
+	end
+
+	for _, child in pairs(trailing:GetChildren()) do
+		trackChild(child)
+	end
+
+	trailing.ChildAdded:Connect(function(child)
+		trackChild(child)
+		if _section.Settings.Opened then
+			updateDisclosure(true)
+		end
+	end)
+
+	trailing.ChildRemoved:Connect(function()
+		if _section.Settings.Opened then
+			updateDisclosure(true)
+		end
+	end)
+
+	function _section:UpdateSettings(Settings)
+		if Settings.Visible ~= nil then
+			_section.Settings.Visible = Settings.Visible
+			section.Visible = Settings.Visible
+		end
+
+		if Settings.Opened ~= nil then
+			_section.Settings.Opened = Settings.Opened
+			updateDisclosure(Settings.Opened)
+		end
+
+		if Settings.Name then
+			_section.Settings.Name = Settings.Name
+			name.Text = Settings.Name
+		end
+	end
+
+	if _section.Settings.Closed == nil then
+		_section.Settings.Closed = true
+	end
+	_section:UpdateSettings(_section.Settings)
+
+	if Flag then
+		library.Components[Flag] = _section
+	end
+
+	_section.Content = trailing
+	injectComponents(_section)
+	return _section
+end
+
+
 function CreateButton(Parent, Settings, Flag)
 	local _button = { Settings = Settings }
 
@@ -2008,6 +2233,7 @@ function CreateDivider(Parent, Settings, Flag)
 end
 
 local SharedConstructors = {
+	Section = CreateSection,
 	Button = CreateButton,
 	Toggle = CreateToggle,
 	Keybind = CreateKeybind,
@@ -2019,7 +2245,7 @@ local SharedConstructors = {
 	Divider = CreateDivider,
 }
 
-local function injectComponents(class)
+function injectComponents(class)
 	for name, constructor in pairs(SharedConstructors) do
 		class[name] = function(self, ...)
 			return constructor(self.Content, ...)
@@ -2778,8 +3004,9 @@ function library:Window(Settings)
 			chevron.Image = "rbxassetid://77136690433593"
 			chevron.LayoutOrder = 1
 			chevron.Position = UDim2.fromScale(0, 0.5)
-			chevron.Rotation = 180
 			chevron.Selectable = false
+			chevron.Active = false
+			chevron.Interactable = false
 			chevron.Size = UDim2.fromOffset(18, 18)
 			chevron.Parent = leading
 
@@ -2836,13 +3063,15 @@ function library:Window(Settings)
 
 			section.Parent = tabContent
 
+			local Components = {}
+
 			local function updateDisclosure(state)
 				if state then
 					local Components = {}
 					local NewSizeY = 0
 
 					for _, v in pairs(trailing:GetChildren()) do
-						if v:IsA("GuiObject") then
+						if v:IsA("GuiObject") and v.Visible then
 							table.insert(Components, v)
 							NewSizeY += v.AbsoluteSize.Y
 						end
@@ -2854,25 +3083,25 @@ function library:Window(Settings)
 
 					utilities.tween(
 						trailing,
-						TweenInfo.new(0.1, Enum.EasingStyle.Sine),
+						TweenInfo.new(0.15, Enum.EasingStyle.Sine),
 						{ Size = UDim2.new(1, 0, 0, NewSizeY) }
 					):Play()
 
 					utilities.tween(
 						chevron,
-						TweenInfo.new(0.1, Enum.EasingStyle.Sine),
+						TweenInfo.new(0.15, Enum.EasingStyle.Sine),
 						{ Rotation = -180 }
 					):Play()
 				else
 					utilities.tween(
 						trailing,
-						TweenInfo.new(0.1, Enum.EasingStyle.Sine),
+						TweenInfo.new(0.15, Enum.EasingStyle.Sine),
 						{ Size = UDim2.new(1, 0, 0, 0) }
 					):Play()
 
 					utilities.tween(
 						chevron,
-						TweenInfo.new(0.1, Enum.EasingStyle.Sine),
+						TweenInfo.new(0.15, Enum.EasingStyle.Sine),
 						{ Rotation = 0 }
 					):Play()
 				end
@@ -2881,6 +3110,33 @@ function library:Window(Settings)
 			leading.MouseButton1Click:Connect(function()
 				_section.Settings.Opened = not _section.Settings.Opened 
 				updateDisclosure(_section.Settings.Opened)
+			end)
+
+			local function trackChild(child)
+				if not child:IsA("GuiObject") then return end
+
+				child:GetPropertyChangedSignal("Visible"):Connect(function()
+					if _section.Settings.Opened then
+						updateDisclosure(true)
+					end
+				end)
+			end
+
+			for _, child in pairs(trailing:GetChildren()) do
+				trackChild(child)
+			end
+
+			trailing.ChildAdded:Connect(function(child)
+				trackChild(child)
+				if _section.Settings.Opened then
+					updateDisclosure(true)
+				end
+			end)
+
+			trailing.ChildRemoved:Connect(function()
+				if _section.Settings.Opened then
+					updateDisclosure(true)
+				end
 			end)
 
 			function _section:UpdateSettings(Settings)
