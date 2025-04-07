@@ -63,6 +63,8 @@ local Aiming = {
 
 		LockMode = 2,
 		LockPart = "Head",
+
+		MaxDistance = 250,
 	
 		TeamCheck = true,
 		AliveCheck = true,
@@ -148,6 +150,11 @@ local GetClosestPlayer = function()
             local Humanoid = Character and FindFirstChildOfClass(Character, "Humanoid")
             if Value ~= LocalPlayer and not tablefind(Environment.Blacklisted, __index(Value, "Name")) and Character and FindFirstChild(Character, LockPart) and Humanoid then
                 local PartPosition, TeamCheckOption = __index(Character[LockPart], "Position"), Environment.DeveloperSettings.TeamCheckOption
+
+                if Settings.MaxDistance and (Camera.CFrame.Position - PartPosition).Magnitude > Settings.MaxDistance then
+                    continue
+                end
+
                 if Settings.TeamCheck and __index(Value, TeamCheckOption) and __index(Value, TeamCheckOption) == __index(LocalPlayer, TeamCheckOption) then
                     continue
                 end
@@ -184,6 +191,12 @@ local GetClosestPlayer = function()
             end
             
             local PartPosition = __index(LockedCharacter[LockPart], "Position")
+
+            if Settings.MaxDistance and (Camera.CFrame.Position - PartPosition).Magnitude > Settings.MaxDistance then
+                CancelLock()
+                return
+            end
+
             local Vector, OnScreen = WorldToViewportPoint(Camera, PartPosition)
             Vector = ConvertVector(Vector)
             local Distance = (GetMouseLocation(UserInputService) - Vector).Magnitude

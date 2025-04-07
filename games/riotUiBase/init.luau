@@ -40,13 +40,14 @@ return function(self)
 		Cfg = Window:Tab({ Name = "Cfg", Image = Assets.Archive }),
 	}
 
-	-- [[ Tabs.Legit ]] --
-	do
+    -- [[ Tabs.Legit ]] --
+    do
         local Tab = Tabs.Legit
 
-        Tab:Header{ Text = "Aimbot" }
+        -- Aimbot
+        local Aimbot = Tab:Section{ Name = "Aimbot" }
 
-        Tab:Toggle({
+        Aimbot:Toggle({
             Name = "Enabled",
             Description = "enables aimbot",
             State = false,
@@ -55,7 +56,7 @@ return function(self)
             end
         }, "Aimbot"):Continue()
 
-        Tab:Keybind({
+        Aimbot:Keybind({
             Bind = Enum.UserInputType.MouseButton2,
             Blacklist = {Enum.UserInputType.MouseButton1},
             onHeld = function(self, value, gameProcessedEvent)
@@ -64,19 +65,7 @@ return function(self)
             end
         }, "AimbotKeybind")
 
-        Tab:Dropdown({
-            Name = "Lock Method",
-            Description = "Camera: Orients your camera to face the player\nMouse: Moves your mouse to the player",
-            Options = { "Camera", "Mouse" },
-            Value = {"Camera"},
-            Limit = 1,
-            Minimum = 1,
-            Callback = function(self, value)
-                AimbotSettings.LockMode = ({ Camera = 1, Mouse = 2 })[value[1]]
-            end
-        }, "AimbotLockMethod")
-
-        Tab:Slider({
+        Aimbot:Slider({
             Name = "Smoothing",
             Description = "aimbot smoothness",
             Value = 1,
@@ -90,31 +79,7 @@ return function(self)
             end
         }, "AimbotSmoothing")
 
-        Tab:Dropdown({
-            Name = "Wall Check",
-            Description = "\nOff: Disabled\nSticky: Locks when target is in view and stays locked.\nAlways On: Only locked when target is in view.",
-            Options = { "Off", "Sticky", "Always On" },
-            Value = {"Always On"},
-            Limit = 1,
-            Minimum = 1,
-            Callback = function(self, value)
-                AimbotSettings.WallCheck = ({ ["Off"] = 1, ["Sticky"] = 2, ["Always On"] = 3 })[value[1]]
-            end
-        }, "AimbotWallCheckMode")
-
-        for _, Settings in ipairs({
-            { "Team Check", "whether to ignore friendlys", "TeamCheck", true },
-            { "Alive Check", "whether to ignore corpses", "AliveCheck", true }
-        }) do
-            Tab:Toggle({
-                Name = Settings[1], Description = Settings[2], State = Settings[4],
-                Callback = function(self, Value)
-                    AimbotSettings[Settings[3]] = Value
-                end
-            })
-        end
-
-        Tab:Dropdown({
+        Aimbot:Dropdown({
             Name = "Bone",
             Description = "selects the bone to aim at",
             Options = {"Head", "Torso"},
@@ -125,7 +90,99 @@ return function(self)
                 AimbotSettings.LockPart = value[1]
             end,
         }, "Bone")
-	end
+
+        Aimbot:Slider({
+            Name = "Max Distance",
+            Description = "the distance aimbot stops locking onto players",
+            Value = 100,
+            Minimum = 1,
+            Maximum = 500,
+            Step = 1,
+            Precision = 0,
+            Callback = function(self, value)
+                AimbotSettings.MaxDistance = value*4
+            end
+        }, "MaxDistance")
+
+        Aimbot:Dropdown({
+            Name = "Lock Method",
+            Description = "the input used to lock onto a player",
+            Options = { "Camera", "Mouse" },
+            Value = {"Camera"},
+            Limit = 1,
+            Minimum = 1,
+            Callback = function(self, value)
+                AimbotSettings.LockMode = ({ Camera = 1, Mouse = 2 })[value[1]]
+            end
+        }, "AimbotLockMethod")
+
+        Aimbot:Dropdown({
+            Name = "Wall Check",
+            Description = "the method used by wall check",
+            Options = { "Off", "Sticky", "Always On" },
+            Value = {"Always On"},
+            Limit = 1,
+            Minimum = 1,
+            Callback = function(self, value)
+                AimbotSettings.WallCheck = ({ ["Off"] = 1, ["Sticky"] = 2, ["Always On"] = 3 })[value[1]]
+            end
+        }, "AimbotWallCheckMode")
+
+        Aimbot:Toggle({
+            Name = "Team Check", 
+            Description = "whether to ignore friendlys", 
+            State = true,
+            Callback = function(self, Value)
+                AimbotSettings.TeamCheck = Value
+            end
+        })
+
+        Aimbot:Toggle({
+            Name = "Alive Check", 
+            Description = "whether to ignore corpses", 
+            State = true,
+            Callback = function(self, Value)
+                AimbotSettings.AliveChecl = Value
+            end
+        }):Continue()
+
+        -- Triggerbot
+        local Triggerbot = Tab:Section{ Name = "Triggerbot" }
+
+        Triggerbot:Toggle({
+            Name = "Enabled",
+            Description = "enables triggerbot",
+            State = false,
+            Callback = function(self, value)
+                TriggerbotSettings.Enabled = value
+            end
+        }, "TriggerbotEnabled")
+
+        Triggerbot:Slider({
+            Name = "Trigger Delay",
+            Description = "in miliseconds, the reaction time of triggerbot",
+            Value = 0,
+            Minimum = 1,
+            Maximum = 500,
+            Step = 1,
+            Precision = 0,
+            Callback = function(self, value)
+                TriggerbotSettings.Delay = value / 1000
+            end
+        }, "TriggerbotDelay")
+
+        for _, Settings in ipairs({
+            { "Team Check", "whether to ignore friendlys", "TeamCheck", true },
+            { "Alive Check", "whether to ignore corpses", "AliveCheck", true }
+        }) do
+            Triggerbot:Toggle({
+                Name = Settings[1], Description = Settings[2], State = Settings[4],
+                Callback = function(self, Value)
+                    TriggerbotSettings[Settings[3]] = Value
+                end
+            })
+        end
+    end
 
 	--// Initialize
 	Esp.Load()

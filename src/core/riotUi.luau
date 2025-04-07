@@ -290,6 +290,1743 @@ local utilities = {
 	},
 }
 
+function CreateButton(Parent, Settings, Flag)
+	local _button = { Settings = Settings }
+
+	assert(_button.Settings.Name and type(_button.Settings.Name) == "string", "Missing button name or wrong type")
+
+	local button = Instance.new("Frame")
+	button.AutomaticSize = Enum.AutomaticSize.Y
+	button.BackgroundColor3 = _button.Settings.Color or Color3.fromRGB(30, 30, 30)
+	button.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	button.BorderSizePixel = 0
+	button.Size = UDim2.new(1, 0, 0, 40)
+	button.Visible = _button.Settings.Visible == nil and true or _button.Settings.Visible
+	button.Parent = Parent
+
+	local uICorner = Instance.new("UICorner")
+	uICorner.CornerRadius = UDim.new(0, 5)
+	uICorner.Parent = button
+
+	local button1 = Instance.new("TextButton")
+	button1.AutoButtonColor = false
+	button1.AutomaticSize = Enum.AutomaticSize.Y
+	button1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	button1.BackgroundTransparency = 1
+	button1.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	button1.BorderSizePixel = 0
+	button1.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+	button1.RichText = true
+	button1.Size = UDim2.new(1, 0, 0, 40)
+	button1.Text = _button.Settings.Name
+	button1.TextColor3 = Color3.fromRGB(156, 156, 156)
+	button1.TextSize = 15
+	button1.TextWrapped = true
+	button1.TextXAlignment = Enum.TextXAlignment.Center
+
+	local uIPadding = Instance.new("UIPadding")
+	uIPadding.PaddingBottom = UDim.new(0, 12)
+	uIPadding.PaddingLeft = UDim.new(0, 15)
+	uIPadding.PaddingRight = UDim.new(0, 15)
+	uIPadding.PaddingTop = UDim.new(0, 12)
+	uIPadding.Parent = button1
+
+	button1.Parent = button
+
+	function _button:UpdateSettings(Settings)
+		if Settings.Name then
+			_button.Settings.Name = Settings.Name
+			button1.Text = Settings.Name
+		end
+
+		if Settings.Color then
+			_button.Settings.Color = Settings.Color
+			button.BackgroundColor3 = Settings.Color
+		end
+
+		if Settings.Callback then
+			_button.Settings.Callback = Settings.Callback
+		end
+
+		if Settings.Visible ~= nil then
+			_button.Settings.Visible = Settings.Visible
+			button.Visible = Settings.Visible
+		end
+
+		return _button
+	end
+
+	local divider = Instance.new("Frame")
+	divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	divider.BorderSizePixel = 0
+	divider.Size = UDim2.new(1, 0, 0, 1)
+	divider.Parent = Parent
+
+	function _button:Continue()
+		divider.Visible = false
+		return _button
+	end
+	function _button:End()
+		divider.Visible = true
+		return _button
+	end
+
+	local cb = function()
+		if _button.Settings.Callback then
+			utilities.callback(_button.Settings.Callback)
+		end
+	end
+
+	button1.MouseButton1Click:Connect(cb)
+
+	if Flag then
+		library.Components[Flag] = _button
+	end
+
+	return _button:End()
+end
+
+function CreateToggle(Parent, Settings, Flag)
+	local _toggle = { Settings = Settings, Type = "Toggle" }
+
+	assert(_toggle.Settings.Name and type(_toggle.Settings.Name) == "string", "Missing name or wrong type")
+
+	local toggle = Instance.new("Frame")
+	toggle.AutomaticSize = Enum.AutomaticSize.Y
+	toggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	toggle.BackgroundTransparency = 1
+	toggle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	toggle.BorderSizePixel = 0
+	toggle.Size = UDim2.fromScale(1, 0)
+	toggle.Parent = Parent
+	toggle.Visible = _toggle.Settings.Visible == nil and true or _toggle.Settings.Visible
+
+	local info = Instance.new("Frame")
+	info.AutomaticSize = Enum.AutomaticSize.Y
+	info.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	info.BackgroundTransparency = 1
+	info.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	info.BorderSizePixel = 0
+	info.Size = UDim2.new(1, -50, 0, 33)
+
+	local name = Instance.new("TextLabel")
+	name.AutomaticSize = Enum.AutomaticSize.XY
+	name.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	name.BackgroundTransparency = 1
+	name.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	name.BorderSizePixel = 0
+	name.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+	name.RichText = true
+	name.TextColor3 = Color3.fromRGB(225, 225, 225)
+	name.TextSize = 16
+	name.TextWrapped = true
+	name.TextXAlignment = Enum.TextXAlignment.Left
+	name.Parent = info
+	name.Text = _toggle.Settings.Name
+
+	local uIListLayout = Instance.new("UIListLayout")
+	uIListLayout.Name = "UIListLayout"
+	uIListLayout.Padding = UDim.new(0, 5)
+	uIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	uIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+	uIListLayout.Parent = info
+
+	local description = Instance.new("TextLabel")
+	description.AutomaticSize = Enum.AutomaticSize.XY
+	description.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	description.BackgroundTransparency = 1
+	description.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	description.BorderSizePixel = 0
+	description.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+	description.LayoutOrder = 1
+	description.RichText = true
+	description.Text = _toggle.Settings.Description or ""
+	description.TextColor3 = Color3.fromRGB(80, 80, 80)
+	description.TextSize = 12
+	description.TextWrapped = true
+	description.TextXAlignment = Enum.TextXAlignment.Left
+	description.Parent = info
+	description.Visible = _toggle.Settings.Description and true or false
+
+	info.Parent = toggle
+
+	local toggle1 = Instance.new("ImageLabel")
+	toggle1.AnchorPoint = Vector2.new(1, 0.5)
+	toggle1.BackgroundColor3 = Color3.fromRGB(37, 37, 46)
+	toggle1.BackgroundTransparency = 1
+	toggle1.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	toggle1.BorderSizePixel = 0
+	toggle1.Image = "rbxassetid://86699956318312"
+	toggle1.ImageColor3 = Color3.fromRGB(33, 36, 45)
+	toggle1.Position = UDim2.fromScale(1, 0.5)
+	toggle1.Size = UDim2.fromOffset(35, 10)
+
+	local toggleUIPadding = Instance.new("UIPadding")
+	toggleUIPadding.Name = "ToggleUIPadding"
+	toggleUIPadding.PaddingBottom = UDim.new(0, 1)
+	toggleUIPadding.PaddingLeft = UDim.new(0, -8)
+	toggleUIPadding.PaddingTop = UDim.new(0, 1)
+	toggleUIPadding.Parent = toggle1
+
+	local head = Instance.new("ImageLabel")
+	head.AnchorPoint = Vector2.new(1, 0.5)
+	head.BackgroundColor3 = Color3.fromRGB(30, 34, 47)
+	head.BackgroundTransparency = 1
+	head.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	head.BorderSizePixel = 0
+	head.Image = "rbxassetid://83379579183005"
+	head.ImageColor3 = Color3.fromRGB(156, 156, 156)
+	head.Position = UDim2.fromScale(0.5, 0.5)
+	head.Size = UDim2.fromOffset(14, 14)
+	head.Parent = toggle1
+
+	toggle1.Parent = toggle
+
+	local uIPadding = Instance.new("UIPadding")
+	uIPadding.PaddingBottom = UDim.new(0, 8)
+	uIPadding.PaddingTop = UDim.new(0, 8)
+	uIPadding.Parent = toggle
+
+	local interact = Instance.new("TextButton")
+	interact.AutoButtonColor = false
+	interact.BackgroundTransparency = 1
+	interact.Size = UDim2.fromScale(1, 1)
+	interact.Text = ""
+	interact.Parent = toggle
+
+	_toggle.Settings.State = _toggle.Settings.State or false
+
+	local function toggleState()
+		utilities
+			.tween(head, TweenInfo.new(0.2, Enum.EasingStyle.Exponential), {
+				Position = UDim2.fromScale(_toggle.Settings.State and 1 or 0.5, 0.5),
+				ImageColor3 = _toggle.Settings.State and Color3.fromRGB(138, 193, 227) or Color3.fromRGB(156, 156, 156),
+			})
+			:Play()
+
+		if _toggle.Settings.Callback then
+			utilities.callback(_toggle.Settings.Callback, _toggle, _toggle.Settings.State)
+		end
+	end
+
+	interact.MouseButton1Click:Connect(function()
+		_toggle.Settings.State = not _toggle.Settings.State
+
+		toggleState()
+	end)
+
+	function _toggle:UpdateSettings(Settings)
+		if Settings.Name then
+			_toggle.Settings.Name = Settings.Name
+			name.Text = Settings.Name
+		end
+
+		if Settings.Description ~= nil then
+			_toggle.Settings.Description = Settings.Description
+			description.Text = Settings.Description or ""
+			description.Visible = Settings.Description and true or false
+		end
+
+		if Settings.State ~= nil then
+			_toggle.Settings.State = Settings.State
+			toggleState()
+		end
+
+		if Settings.Callback then
+			_toggle.Settings.Callback = Settings.Callback
+		end
+
+		if Settings.Visible ~= nil then
+			_toggle.Settings.Visible = Settings.Visible
+			toggle.Visible = Settings.Visible
+		end
+	end
+
+	local divider = Instance.new("Frame")
+	divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	divider.BorderSizePixel = 0
+	divider.Size = UDim2.new(1, 0, 0, 1)
+	divider.Parent = Parent
+
+	function _toggle:Continue()
+		divider.Visible = false
+		return _toggle
+	end
+	function _toggle:End()
+		divider.Visible = true
+		return _toggle
+	end
+
+	toggleState()
+
+	if Flag then
+		library.Components[Flag] = _toggle
+	end
+	return _toggle:End()
+end
+
+function CreateSlider(Parent, Settings, Flag)
+	local _slider = { Settings = Settings, Type = "Slider" }
+
+	assert(_slider.Settings.Name and type(_slider.Settings.Name) == "string", "Missing name or wrong type")
+	assert(_slider.Settings.Value and type(_slider.Settings.Value) == "number", "Missing value or wrong type")
+	assert(_slider.Settings.Minimum and type(_slider.Settings.Minimum) == "number", "Missing minimum or wrong type")
+	assert(_slider.Settings.Maximum and type(_slider.Settings.Maximum) == "number", "Missing maximum or wrong type")
+	assert(_slider.Settings.Minimum <= _slider.Settings.Maximum, "Minimum should be less than Maximum")
+	assert(_slider.Settings.Maximum >= _slider.Settings.Minimum, "Maximum should be greater than Minimum")
+
+	local slider = Instance.new("Frame")
+	slider.AutomaticSize = Enum.AutomaticSize.Y
+	slider.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	slider.BackgroundTransparency = 1
+	slider.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	slider.BorderSizePixel = 0
+	slider.Size = UDim2.fromScale(1, 0)
+	slider.Visible = _slider.Settings.Visible == nil and true or _slider.Settings.Visible
+	slider.Parent = Parent
+
+	local uIPadding = Instance.new("UIPadding")
+	uIPadding.PaddingBottom = UDim.new(0, 8)
+	uIPadding.PaddingTop = UDim.new(0, 8)
+	uIPadding.Parent = slider
+
+	local elementInfo = Instance.new("Frame")
+	elementInfo.AutomaticSize = Enum.AutomaticSize.Y
+	elementInfo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	elementInfo.BackgroundTransparency = 1
+	elementInfo.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	elementInfo.BorderSizePixel = 0
+	elementInfo.Size = UDim2.fromScale(1, 0)
+
+	local value = Instance.new("Frame")
+	value.AnchorPoint = Vector2.new(1, 0.5)
+	value.AutomaticSize = Enum.AutomaticSize.XY
+	value.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	value.BackgroundTransparency = 1
+	value.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	value.BorderSizePixel = 0
+	value.LayoutOrder = 1
+	value.Position = UDim2.fromScale(1, 0.5)
+
+	local icon = Instance.new("ImageLabel")
+	icon.AnchorPoint = Vector2.new(1, 0.5)
+	icon.BackgroundColor3 = Color3.fromRGB(30, 34, 47)
+	icon.BackgroundTransparency = 1
+	icon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	icon.BorderSizePixel = 0
+	icon.Image = "rbxassetid://82545477110166"
+	icon.ImageColor3 = Color3.fromRGB(150, 150, 150)
+	icon.Position = UDim2.fromScale(1, 0.5)
+	icon.Size = UDim2.fromOffset(20, 20)
+	icon.Parent = value
+
+	local uIListLayout = Instance.new("UIListLayout")
+	uIListLayout.FillDirection = Enum.FillDirection.Horizontal
+	uIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
+	uIListLayout.Padding = UDim.new(0, 6)
+	uIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	uIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+	uIListLayout.Parent = value
+
+	local amount = Instance.new("TextLabel")
+	amount.AnchorPoint = Vector2.new(0, 0.5)
+	amount.AutomaticSize = Enum.AutomaticSize.XY
+	amount.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	amount.BackgroundTransparency = 1
+	amount.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	amount.BorderSizePixel = 0
+	amount.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+	amount.LayoutOrder = 1
+	amount.Position = UDim2.fromScale(0, 0.5)
+	amount.RichText = true
+	amount.Text = "0"
+	amount.TextColor3 = Color3.fromRGB(150, 150, 150)
+	amount.TextSize = 16
+	amount.TextWrapped = true
+	amount.TextXAlignment = Enum.TextXAlignment.Left
+	amount.Parent = value
+
+	value.Parent = elementInfo
+
+	local info = Instance.new("Frame")
+	info.AutomaticSize = Enum.AutomaticSize.Y
+	info.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	info.BackgroundTransparency = 1
+	info.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	info.BorderSizePixel = 0
+	info.Size = UDim2.new(1, -80, 0, 0)
+
+	local name = Instance.new("TextLabel")
+	name.AutomaticSize = Enum.AutomaticSize.XY
+	name.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	name.BackgroundTransparency = 1
+	name.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	name.BorderSizePixel = 0
+	name.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+	name.RichText = true
+	name.Text = _slider.Settings.Name
+	name.TextColor3 = Color3.fromRGB(225, 225, 225)
+	name.TextSize = 16
+	name.TextWrapped = true
+	name.TextXAlignment = Enum.TextXAlignment.Left
+	name.Parent = info
+
+	local uIListLayout1 = Instance.new("UIListLayout")
+	uIListLayout1.Name = "UIListLayout"
+	uIListLayout1.Padding = UDim.new(0, 5)
+	uIListLayout1.SortOrder = Enum.SortOrder.LayoutOrder
+	uIListLayout1.VerticalAlignment = Enum.VerticalAlignment.Center
+	uIListLayout1.Parent = info
+
+	local description = Instance.new("TextLabel")
+	description.AutomaticSize = Enum.AutomaticSize.XY
+	description.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	description.BackgroundTransparency = 1
+	description.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	description.BorderSizePixel = 0
+	description.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+	description.LayoutOrder = 1
+	description.RichText = true
+	description.Text = _slider.Settings.Description or ""
+	description.TextColor3 = Color3.fromRGB(80, 80, 80)
+	description.TextSize = 12
+	description.TextWrapped = true
+	description.TextXAlignment = Enum.TextXAlignment.Left
+	description.Parent = info
+	description.Visible = _slider.Settings.Description and true or false
+
+	info.Parent = elementInfo
+
+	local uIListLayout2 = Instance.new("UIListLayout")
+	uIListLayout2.Name = "UIListLayout"
+	uIListLayout2.FillDirection = Enum.FillDirection.Horizontal
+	uIListLayout2.HorizontalAlignment = Enum.HorizontalAlignment.Center
+	uIListLayout2.HorizontalFlex = Enum.UIFlexAlignment.Fill
+	uIListLayout2.Padding = UDim.new(0, 5)
+	uIListLayout2.SortOrder = Enum.SortOrder.LayoutOrder
+	uIListLayout2.VerticalAlignment = Enum.VerticalAlignment.Center
+	uIListLayout2.Parent = elementInfo
+
+	elementInfo.Parent = slider
+
+	local uIListLayout3 = Instance.new("UIListLayout")
+	uIListLayout3.Name = "UIListLayout"
+	uIListLayout3.Padding = UDim.new(0, 15)
+	uIListLayout3.SortOrder = Enum.SortOrder.LayoutOrder
+	uIListLayout3.Parent = slider
+
+	local slider1 = Instance.new("TextButton")
+	slider1.BackgroundColor3 = Color3.fromRGB(37, 37, 46)
+	slider1.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	slider1.BorderSizePixel = 0
+	slider1.Size = UDim2.new(1, 0, 0, 10)
+	slider1.Text = ""
+	slider1.AutoButtonColor = false
+
+	local uICorner = Instance.new("UICorner")
+	uICorner.Name = "UICorner"
+	uICorner.CornerRadius = UDim.new(0, 15)
+	uICorner.Parent = slider1
+
+	local bar = Instance.new("Frame")
+	bar.BackgroundColor3 = Color3.fromRGB(138, 193, 227)
+	bar.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	bar.BorderSizePixel = 0
+	bar.Size = UDim2.new(0, 0, 0, 10)
+
+	local uICorner1 = Instance.new("UICorner")
+	uICorner1.Name = "UICorner"
+	uICorner1.CornerRadius = UDim.new(0, 15)
+	uICorner1.Parent = bar
+
+	local clipcircle = Instance.new("ImageLabel")
+	clipcircle.AnchorPoint = Vector2.new(0.5, 0.5)
+	clipcircle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	clipcircle.BackgroundTransparency = 1
+	clipcircle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	clipcircle.BorderSizePixel = 0
+	clipcircle.Image = "rbxassetid://127947626656649"
+	clipcircle.ImageColor3 = Color3.fromRGB(20, 20, 20)
+	clipcircle.Position = UDim2.fromScale(1, 0.5)
+	clipcircle.Size = UDim2.fromOffset(26, 20)
+	clipcircle.ZIndex = 2
+
+	local circle = Instance.new("ImageLabel")
+	circle.AnchorPoint = Vector2.new(0.5, 0.5)
+	circle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	circle.BackgroundTransparency = 1
+	circle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	circle.BorderSizePixel = 0
+	circle.Image = "rbxassetid://98639906538385"
+	circle.ImageColor3 = Color3.fromRGB(225, 225, 225)
+	circle.Position = UDim2.fromScale(0.5, 0.5)
+	circle.Size = UDim2.fromOffset(18, 18)
+	circle.Parent = clipcircle
+
+	clipcircle.Parent = slider1
+
+	bar.Parent = slider1
+
+	slider1.Parent = slider
+
+	local function updateDisplay()
+		local paddingLeft = 10
+		local paddingRight = 10
+		local sliderWidth = slider1.AbsoluteSize.X
+		local usableWidth = sliderWidth - (paddingLeft + paddingRight)
+
+		local alpha = (_slider.Settings.Value - _slider.Settings.Minimum)
+			/ (_slider.Settings.Maximum - _slider.Settings.Minimum)
+
+		local circleRadius = clipcircle.AbsoluteSize.X / 2
+
+		bar.Size = UDim2.new(0, usableWidth * alpha + circleRadius, 0, 10)
+
+		clipcircle.Position = UDim2.new(0, paddingLeft + (usableWidth * alpha), 0.5, 0)
+
+		local precise =
+			tonumber(string.format("%." .. (_slider.Settings.Precision or 0) .. "f", _slider.Settings.Value))
+		local filtered = _slider.Settings.Filter
+			and _slider.Settings.Filter(precise, _slider.Settings.Minimum, _slider.Settings.Maximum)
+		amount.Text = filtered or precise
+	end
+
+	local function updateSlider(input)
+		local paddingLeft = 10
+		local paddingRight = 10
+		local mousePosition = input.Position.X
+		local halfWidth = circle.AbsoluteSize.X / 2
+		local adjustedMousePosition = mousePosition - (halfWidth * 0.5)
+
+		local barPositionX = slider1.AbsolutePosition.X + paddingLeft
+		local barSizeX = slider1.AbsoluteSize.X - (paddingLeft + paddingRight)
+
+		adjustedMousePosition = math.clamp(adjustedMousePosition - barPositionX, 0, barSizeX)
+
+		local newValue = adjustedMousePosition / barSizeX
+		newValue = _slider.Settings.Minimum + newValue * (_slider.Settings.Maximum - _slider.Settings.Minimum)
+
+		local step = _slider.Settings.Step or 0
+		if step > 0 then
+			_slider.Settings.Value = math.round(newValue / step) * step
+		else
+			_slider.Settings.Value = newValue
+		end
+
+		updateDisplay()
+
+		if _slider.Settings.Callback then
+			utilities.callback(_slider.Settings.Callback, _slider, _slider.Settings.Value)
+		end
+	end
+
+	local dragging = false
+
+	local inputBegan = function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			dragging = true
+			updateSlider(input)
+			if _slider.Settings.inputChanged then
+				utilities.callback(_slider.Settings.inputChanged, _slider, _slider.Settings.Value, dragging)
+			end
+		end
+	end
+
+	slider1.InputBegan:Connect(inputBegan)
+
+	slider1.InputEnded:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			dragging = false
+			if _slider.Settings.inputChanged then
+				utilities.callback(_slider.Settings.inputChanged, _slider, _slider.Settings.Value, dragging)
+			end
+		end
+	end)
+
+	services._userInputService.InputChanged:Connect(function(input)
+		if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+			updateSlider(input)
+		end
+	end)
+
+	function _slider:UpdateSettings(Settings)
+		if Settings.Visible ~= nil then
+			_slider.Settings.Visible = Settings.Visible
+			slider.Visible = Settings.Visible
+		end
+
+		if Settings.Name then
+			_slider.Settings.Name = Settings.Name
+			name.Text = Settings.Name
+		end
+
+		if Settings.Description ~= nil then
+			_slider.Settings.Description = Settings.Description
+			description.Text = Settings.Description or ""
+			description.Visible = Settings.Description and true or false
+		end
+
+		if Settings.Minimum then
+			_slider.Settings.Minimum = Settings.Minimum
+		end
+
+		if Settings.Maximum then
+			_slider.Settings.Maximum = Settings.Maximum
+		end
+
+		if Settings.Step ~= nil then
+			_slider.Settings.Step = Settings.Step
+		end
+
+		if Settings.Precision ~= nil then
+			_slider.Settings.Precision = Settings.Precision
+		end
+
+		if Settings.Filter then
+			_slider.Settings.Filter = Settings.Filter
+		end
+
+		if Settings.Callback then
+			_slider.Settings.Callback = Settings.Callback
+		end
+
+		if Settings.inputChanged then
+			_slider.Settings.inputChanged = Settings.inputChanged
+		end
+
+		if Settings.Value then
+			local min = _slider.Settings.Minimum
+			local max = _slider.Settings.Maximum
+			local value = math.clamp(Settings.Value, min, max)
+			local step = _slider.Settings.Step or 0
+			if step > 0 then
+				value = math.round(value / step) * step
+			end
+			_slider.Settings.Value = value
+
+			task.defer(function()
+				if slider1.AbsoluteSize.X == 0 then
+					slider1:GetPropertyChangedSignal("AbsoluteSize"):Wait()
+				end
+
+				updateDisplay()
+
+				if _slider.Settings.Callback then
+					utilities.callback(_slider.Settings.Callback, _slider, _slider.Settings.Value)
+				end
+			end)
+		end
+	end
+
+	local divider = Instance.new("Frame")
+	divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	divider.BorderSizePixel = 0
+	divider.Size = UDim2.new(1, 0, 0, 1)
+	divider.Parent = Parent
+
+	function _slider:Continue()
+		divider.Visible = false
+		return _slider
+	end
+	function _slider:End()
+		divider.Visible = true
+		return _slider
+	end
+
+	_slider:UpdateSettings(_slider.Settings)
+
+	if Flag then
+		library.Components[Flag] = _slider
+	end
+
+	return _slider:End()
+end
+
+function CreateInput(Parent, Settings, Flag)
+	local _input = { Settings = Settings, Type = "Input" }
+
+	local input = Instance.new("Frame")
+	input.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	input.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	input.BorderSizePixel = 0
+	input.Size = UDim2.new(1, 0, 0, 40)
+	input.Visible = _input.Settings.Visible == nil and true or _input.Settings.Visible
+	input.Parent = Parent
+
+	local uICorner = Instance.new("UICorner")
+	uICorner.CornerRadius = UDim.new(0, 5)
+	uICorner.Parent = input
+
+	local uIListLayout = Instance.new("UIListLayout")
+	uIListLayout.FillDirection = Enum.FillDirection.Horizontal
+	uIListLayout.Padding = UDim.new(0, 15)
+	uIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	uIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+	uIListLayout.Parent = input
+
+	local uIPadding = Instance.new("UIPadding")
+	uIPadding.PaddingLeft = UDim.new(0, 15)
+	uIPadding.Parent = input
+
+	local inputBox = Instance.new("TextBox")
+	inputBox.AnchorPoint = Vector2.new(0, 0.5)
+	inputBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	inputBox.BackgroundTransparency = 1
+	inputBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	inputBox.BorderSizePixel = 0
+	inputBox.ClearTextOnFocus = false
+	inputBox.ClipsDescendants = true
+	inputBox.CursorPosition = -1
+	inputBox.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+	inputBox.LayoutOrder = 1
+	inputBox.PlaceholderColor3 = Color3.fromRGB(120, 120, 120)
+	inputBox.PlaceholderText = _input.Settings.Placeholder or "..."
+	inputBox.Size = UDim2.new(1, -50, 1, 0)
+	inputBox.Text = _input.Settings.Text or ""
+	inputBox.TextColor3 = Color3.fromRGB(156, 156, 156)
+	inputBox.TextSize = 15
+	inputBox.TextXAlignment = Enum.TextXAlignment.Left
+	inputBox.Parent = input
+
+	local icon = Instance.new("ImageLabel")
+	icon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	icon.BackgroundTransparency = 1
+	icon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	icon.BorderSizePixel = 0
+	icon.Image = "rbxassetid://98129527229953"
+	icon.ImageColor3 = Color3.fromRGB(156, 156, 156)
+	icon.Size = UDim2.fromOffset(20, 20)
+	icon.Parent = input
+
+	inputBox.FocusLost:Connect(function()
+		if _input.Settings.CharacterSub == "Mathematic" then
+			inputBox.Text = utilities.subParser[_input.Settings.CharacterSub](inputBox.Text)
+		end
+
+		if _input.Settings.Callback then
+			utilities.callback(_input.Settings.Callback, _input, inputBox.Text)
+		end
+	end)
+
+	inputBox:GetPropertyChangedSignal("Text"):Connect(function()
+		if
+			_input.Settings.CharacterSub
+			and _input.Settings.CharacterSub ~= "Mathematic"
+			and utilities.subParser[_input.Settings.CharacterSub]
+		then
+			inputBox.Text = utilities.subParser[_input.Settings.CharacterSub](inputBox.Text)
+		elseif type(_input.Settings.CharacterSub) == "function" then
+			inputBox.Text = _input.Settings.CharacterSub(inputBox.Text)
+		end
+
+		if _input.Settings.CharacterLimit then
+			if string.len(inputBox.Text) > _input.Settings.CharacterLimit then
+				inputBox.Text = string.sub(inputBox.Text, 1, _input.Settings.CharacterLimit)
+			end
+		end
+
+		_input.Settings.Text = inputBox.Text
+		if _input.Settings.onTextChanged then
+			utilities.callback(_input.Settings.onTextChanged, _input, inputBox.Text)
+		end
+	end)
+
+	function _input:UpdateSettings(Settings)
+		if Settings.Text then
+			_input.Settings.Text = Settings.Text
+			inputBox.Text = Settings.Text
+
+			if _input.Settings.Callback then
+				utilities.callback(_input.Settings.Callback, _input, inputBox.Text)
+			end
+		end
+
+		if Settings.Placeholder then
+			_input.Settings.Placeholder = Settings.Placeholder
+			inputBox.PlaceholderText = Settings.Placeholder
+		end
+
+		if Settings.Callback then
+			_input.Settings.Callback = Settings.Callback
+		end
+
+		if Settings.onTextChanged then
+			_input.Settings.onTextChanged = Settings.onTextChanged
+		end
+
+		if Settings.Visible ~= nil then
+			_input.Settings.Visible = Settings.Visible
+			input.Visible = Settings.Visible
+		end
+	end
+
+	local divider = Instance.new("Frame")
+	divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	divider.BorderSizePixel = 0
+	divider.Size = UDim2.new(1, 0, 0, 1)
+	divider.Parent = Parent
+
+	function _input:Continue()
+		divider.Visible = false
+		return _input
+	end
+	function _input:End()
+		divider.Visible = true
+		return _input
+	end
+
+	_input:UpdateSettings(_input.Settings)
+
+	if Flag then
+		library.Components[Flag] = _input
+	end
+	return _input:End()
+end
+
+function CreateMultiInput(Parent, Settings, Flag)
+	local _multiInput = { Settings = Settings, Type = "MultiInput" }
+
+	local multiInput = Instance.new("Frame")
+	multiInput.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	multiInput.BackgroundTransparency = 1
+	multiInput.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	multiInput.BorderSizePixel = 0
+	multiInput.Size = UDim2.new(1, 0, 0, 40)
+	multiInput.Parent = Parent
+
+	local uIListLayout = Instance.new("UIListLayout")
+	uIListLayout.FillDirection = Enum.FillDirection.Horizontal
+	uIListLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+	uIListLayout.Padding = UDim.new(0, 5)
+	uIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	uIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+	uIListLayout.Parent = multiInput
+
+	local data = {}
+
+	for i, v in ipairs(_multiInput.Settings.Inputs) do
+		local inputBox = Instance.new("TextBox")
+		inputBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+		inputBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		inputBox.BorderSizePixel = 0
+		inputBox.ClearTextOnFocus = false
+		inputBox.ClipsDescendants = true
+		inputBox.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+		inputBox.LayoutOrder = 1
+		inputBox.PlaceholderColor3 = Color3.fromRGB(120, 120, 120)
+		inputBox.PlaceholderText = v.Placeholder or "..."
+		inputBox.Size = UDim2.fromScale(1, 1)
+		inputBox.Text = v.Text or ""
+		inputBox.TextColor3 = Color3.fromRGB(156, 156, 156)
+		inputBox.TextSize = 15
+		inputBox.TextXAlignment = Enum.TextXAlignment.Left
+		inputBox.Parent = multiInput
+		data[i] = {
+			inputBox = inputBox,
+		}
+
+		local uIPadding = Instance.new("UIPadding")
+		uIPadding.PaddingLeft = UDim.new(0, 10)
+		uIPadding.PaddingRight = UDim.new(0, 10)
+		uIPadding.Parent = inputBox
+
+		local uICorner = Instance.new("UICorner")
+		uICorner.CornerRadius = UDim.new(0, 5)
+		uICorner.Parent = inputBox
+
+		local parseMethod = v.CharacterSub or "None"
+
+		inputBox.FocusLost:Connect(function()
+			if _multiInput.Settings.Callback then
+				utilities.callback(_multiInput.Settings.Callback, _multiInput, i, inputBox.Text)
+			end
+		end)
+
+		inputBox:GetPropertyChangedSignal("Text"):Connect(function()
+			if parseMethod and type(parseMethod) == "string" and utilities.subParser[parseMethod] then
+				inputBox.Text = utilities.subParser[parseMethod](inputBox.Text)
+			elseif parseMethod and type(parseMethod) == "function" then
+				inputBox.Text = v.CharacterSub(inputBox.Text)
+			end
+
+			if v.CharacterLimit then
+				if string.len(inputBox.Text) > v.CharacterLimit then
+					inputBox.Text = string.sub(inputBox.Text, 1, v.CharacterLimit)
+				end
+			end
+
+			v.Text = inputBox.Text
+
+			if _multiInput.Settings.onTextChanged then
+				utilities.callback(_multiInput.Settings.onTextChanged, _multiInput, i, inputBox.Text)
+			end
+		end)
+	end
+
+	function _multiInput:UpdateSettings(index, Settings)
+		local input = _multiInput.Settings.Inputs[index]
+		local entry = data[index]
+
+		if input and entry then
+			if Settings.Text ~= nil then
+				input.Text = Settings.Text
+				entry.inputBox.Text = Settings.Text
+
+				if _multiInput.Settings.Callback then
+					utilities.callback(_multiInput.Settings.Callback, _multiInput, index, Settings.Text)
+				end
+			end
+
+			if Settings.Placeholder ~= nil then
+				input.Placeholder = Settings.Placeholder
+				entry.inputBox.PlaceholderText = Settings.Placeholder
+			end
+		end
+
+		if Settings.Callback ~= nil then
+			_multiInput.Settings.Callback = Settings.Callback
+		end
+
+		if Settings.onTextChanged ~= nil then
+			_multiInput.Settings.onTextChanged = Settings.onTextChanged
+		end
+
+		if Settings.Visible ~= nil then
+			_multiInput.Settings.Visible = Settings.Visible
+			multiInput.Visible = Settings.Visible
+		end
+	end
+
+	local divider = Instance.new("Frame")
+	divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	divider.BorderSizePixel = 0
+	divider.Size = UDim2.new(1, 0, 0, 1)
+	divider.Parent = Parent
+
+	function _multiInput:Continue()
+		divider.Visible = false
+		return _multiInput
+	end
+	function _multiInput:End()
+		divider.Visible = true
+		return _multiInput
+	end
+
+	for i, input in pairs(_multiInput.Settings.Inputs) do
+		_multiInput:UpdateSettings(i, input)
+	end
+
+	if Flag then
+		library.Components[Flag] = _multiInput
+	end
+	return _multiInput:End()
+end
+
+function CreateDropdown(Parent, Settings, Flag)
+	local _dropdown = { Settings = Settings, Type = "Dropdown" }
+
+	assert(_dropdown.Settings.Name and type(_dropdown.Settings.Name) == "string", "Missing name or wrong type")
+
+	local dropdown = Instance.new("Frame")
+	dropdown.AutomaticSize = Enum.AutomaticSize.Y
+	dropdown.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	dropdown.BackgroundTransparency = 1
+	dropdown.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	dropdown.BorderSizePixel = 0
+	dropdown.Size = UDim2.fromScale(1, 0)
+	dropdown.Parent = Parent
+
+	local uIPadding = Instance.new("UIPadding")
+	uIPadding.PaddingBottom = UDim.new(0, 8)
+	uIPadding.PaddingTop = UDim.new(0, 8)
+	uIPadding.Parent = dropdown
+
+	local uIListLayout = Instance.new("UIListLayout")
+	uIListLayout.Padding = UDim.new(0, 15)
+	uIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	uIListLayout.Parent = dropdown
+
+	local dropdown1 = Instance.new("TextButton")
+	dropdown1.AutoButtonColor = false
+	dropdown1.AutomaticSize = Enum.AutomaticSize.Y
+	dropdown1.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	dropdown1.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	dropdown1.BorderSizePixel = 0
+	dropdown1.ClipsDescendants = true
+	dropdown1.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+	dropdown1.LayoutOrder = 1
+	dropdown1.Position = UDim2.fromScale(0, 0.16)
+	dropdown1.Size = UDim2.new(1, 0, 0, 40)
+	dropdown1.Text = ""
+	dropdown1.TextColor3 = Color3.fromRGB(156, 156, 156)
+	dropdown1.TextSize = 15
+	dropdown1.TextXAlignment = Enum.TextXAlignment.Left
+	dropdown1.TextYAlignment = Enum.TextYAlignment.Top
+
+	local uIPadding1 = Instance.new("UIPadding")
+	uIPadding1.PaddingBottom = UDim.new(0, 10)
+	uIPadding1.PaddingLeft = UDim.new(0, 15)
+	uIPadding1.PaddingRight = UDim.new(0, 15)
+	uIPadding1.PaddingTop = UDim.new(0, 10)
+	uIPadding1.Parent = dropdown1
+
+	local uICorner = Instance.new("UICorner")
+	uICorner.CornerRadius = UDim.new(0, 5)
+	uICorner.Parent = dropdown1
+
+	local info = Instance.new("Frame")
+	info.AutomaticSize = Enum.AutomaticSize.Y
+	info.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	info.BackgroundTransparency = 1
+	info.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	info.BorderSizePixel = 0
+	info.Size = UDim2.fromScale(1, 0)
+
+	local chevron = Instance.new("ImageLabel")
+	chevron.AnchorPoint = Vector2.new(1, 0.5)
+	chevron.BackgroundColor3 = Color3.fromRGB(30, 34, 47)
+	chevron.BackgroundTransparency = 1
+	chevron.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	chevron.BorderSizePixel = 0
+	chevron.Image = "rbxassetid://77136690433593"
+	chevron.ImageColor3 = Color3.fromRGB(150, 150, 150)
+	chevron.LayoutOrder = 1
+	chevron.Position = UDim2.fromScale(1, 0.5)
+	chevron.Size = UDim2.fromOffset(18, 18)
+	chevron.Parent = info
+
+	local name = Instance.new("TextLabel")
+	name.AutomaticSize = Enum.AutomaticSize.Y
+	name.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	name.BackgroundTransparency = 1
+	name.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	name.BorderSizePixel = 0
+	name.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+	name.RichText = true
+	name.Size = UDim2.new(1, -35, 0, 20)
+	name.Text = "..."
+	name.TextColor3 = Color3.fromRGB(156, 156, 156)
+	name.TextSize = 15
+	name.TextWrapped = true
+	name.TextXAlignment = Enum.TextXAlignment.Left
+	name.Parent = info
+
+	info.Parent = dropdown1
+
+	dropdown1.Parent = dropdown
+
+	local info1 = Instance.new("Frame")
+	info1.AutomaticSize = Enum.AutomaticSize.Y
+	info1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	info1.BackgroundTransparency = 1
+	info1.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	info1.BorderSizePixel = 0
+	info1.Size = UDim2.new(1, 0, 0, 33)
+
+	local name1 = Instance.new("TextLabel")
+	name1.AutomaticSize = Enum.AutomaticSize.XY
+	name1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	name1.BackgroundTransparency = 1
+	name1.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	name1.BorderSizePixel = 0
+	name1.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+	name1.RichText = true
+	name1.Text = "Name"
+	name1.TextColor3 = Color3.fromRGB(225, 225, 225)
+	name1.TextSize = 16
+	name1.TextWrapped = true
+	name1.TextXAlignment = Enum.TextXAlignment.Left
+	name1.Parent = info1
+
+	local uIListLayout1 = Instance.new("UIListLayout")
+	uIListLayout1.Padding = UDim.new(0, 5)
+	uIListLayout1.SortOrder = Enum.SortOrder.LayoutOrder
+	uIListLayout1.VerticalAlignment = Enum.VerticalAlignment.Center
+	uIListLayout1.Parent = info1
+
+	local description = Instance.new("TextLabel")
+	description.AutomaticSize = Enum.AutomaticSize.XY
+	description.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	description.BackgroundTransparency = 1
+	description.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	description.BorderSizePixel = 0
+	description.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+	description.LayoutOrder = 1
+	description.RichText = true
+	description.Text = "description"
+	description.TextColor3 = Color3.fromRGB(80, 80, 80)
+	description.TextSize = 12
+	description.TextWrapped = true
+	description.TextXAlignment = Enum.TextXAlignment.Left
+	description.Parent = info1
+	description.Visible = _dropdown.Settings.Description and true or false
+
+	info1.Parent = dropdown
+
+	local dropdownFrame = Instance.new("Frame")
+	dropdownFrame.Name = "dropdownFrame"
+	dropdownFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	dropdownFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	dropdownFrame.BorderSizePixel = 0
+	dropdownFrame.Size = UDim2.fromOffset(350, 150)
+
+	local dropdownContent = Instance.new("ScrollingFrame")
+	dropdownContent.Name = "dropdownContent"
+	dropdownContent.Active = true
+	dropdownContent.AutomaticCanvasSize = Enum.AutomaticSize.Y
+	dropdownContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	dropdownContent.BackgroundTransparency = 1
+	dropdownContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	dropdownContent.BorderSizePixel = 0
+	dropdownContent.CanvasSize = UDim2.new()
+	dropdownContent.ScrollBarImageTransparency = 0.7
+	dropdownContent.ScrollBarThickness = 3
+	dropdownContent.Size = UDim2.fromScale(1, 1)
+
+	local uIListLayout = Instance.new("UIListLayout")
+	uIListLayout.Name = "UIListLayout"
+	uIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	uIListLayout.Parent = dropdownContent
+
+	local uIPadding = Instance.new("UIPadding")
+	uIPadding.Name = "UIPadding"
+	uIPadding.PaddingRight = UDim.new(0, 15)
+	uIPadding.Parent = dropdownContent
+
+	dropdownContent.Parent = dropdownFrame
+
+	local uIPadding1 = Instance.new("UIPadding")
+	uIPadding1.Name = "UIPadding"
+	uIPadding1.PaddingBottom = UDim.new(0, 10)
+	uIPadding1.PaddingLeft = UDim.new(0, 15)
+	uIPadding1.PaddingTop = UDim.new(0, 3)
+	uIPadding1.Parent = dropdownFrame
+
+	local uICorner = Instance.new("UICorner")
+	uICorner.Name = "UICorner"
+	uICorner.CornerRadius = UDim.new(0, 5)
+	uICorner.Parent = dropdownFrame
+
+	local hovering = false
+	local dropped = false
+	local animating = false
+	local selected = {}
+	local options = {}
+	local tweens = {
+		Selected = Color3.fromRGB(225, 225, 225),
+		Unselected = Color3.fromRGB(156, 156, 156),
+	}
+	table.insert(libData.dropdownFrames, dropdownFrame)
+
+	local function parseSelection(sendCB)
+		local selectedString = "..."
+
+		local selectedNames = {}
+		for _, idx in ipairs(selected) do
+			local optionName = options[idx].Text
+			table.insert(selectedNames, optionName)
+		end
+
+		if #selectedNames == 1 then
+			selectedString = selectedNames[1]
+		elseif #selectedNames > 1 then
+			selectedString = table.concat(selectedNames, ", ")
+		end
+
+		name.Text = selectedString
+		_dropdown.Settings.Value = selectedNames
+
+		if sendCB and _dropdown.Settings.Callback then
+			utilities.callback(_dropdown.Settings.Callback, _dropdown, selectedNames)
+		end
+	end
+
+	local function updateSelection(index)
+		local limit = _dropdown.Settings.Limit
+		local minimum = _dropdown.Settings.Minimum or 0
+
+		if table.find(selected, index) then
+			if #selected - 1 < minimum then
+				return
+			end
+			table.remove(selected, table.find(selected, index))
+			utilities
+				.tween(options[index], TweenInfo.new(0.1, Enum.EasingStyle.Sine), { TextColor3 = tweens.Unselected })
+				:Play()
+		else
+			if limit and #selected >= limit then
+				local removedIndex = table.remove(selected, 1)
+				utilities
+					.tween(
+						options[removedIndex],
+						TweenInfo.new(0.1, Enum.EasingStyle.Sine),
+						{ TextColor3 = tweens.Unselected }
+					)
+					:Play()
+			end
+
+			table.insert(selected, index)
+			utilities
+				.tween(options[index], TweenInfo.new(0.1, Enum.EasingStyle.Sine), { TextColor3 = tweens.Selected })
+				:Play()
+		end
+
+		parseSelection(true)
+	end
+
+	local function parseOptions(ops)
+		for i, v in ipairs(ops) do
+			local button = Instance.new("TextButton")
+			button.Name = "Button"
+			button.AutoButtonColor = false
+			button.AutomaticSize = Enum.AutomaticSize.Y
+			button.BackgroundTransparency = 1
+			button.BorderSizePixel = 0
+			button.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+			button.RichText = true
+			button.Size = UDim2.fromScale(1, 0)
+			button.Text = v
+			button.TextColor3 = Color3.fromRGB(156, 156, 156)
+			button.TextSize = 15
+			button.TextWrapped = true
+			button.TextXAlignment = Enum.TextXAlignment.Left
+			button.Parent = dropdownContent
+			button.LayoutOrder = i
+
+			local uIPadding = Instance.new("UIPadding")
+			uIPadding.Name = "UIPadding"
+			uIPadding.PaddingBottom = UDim.new(0, 15)
+			uIPadding.PaddingTop = UDim.new(0, 15)
+			uIPadding.Parent = button
+
+			button.MouseButton1Click:Connect(function()
+				updateSelection(v)
+			end)
+
+			options[v] = button
+		end
+	end
+
+	local function updateDropdownPosition()
+		dropdownFrame.Position = UDim2.new(
+			0,
+			dropdown1.AbsolutePosition.X,
+			0,
+			dropdown1.AbsolutePosition.Y + (dropdown1.AbsoluteSize.Y * 2) + 25
+		)
+	end
+
+	local function toggleDropdown()
+		if animating then
+			return
+		end
+		animating = true
+
+		if dropped then
+			utilities.tween(chevron, TweenInfo.new(0.1, Enum.EasingStyle.Sine), { Rotation = 0 }):Play()
+			local t = utilities.tween(
+				dropdownFrame,
+				TweenInfo.new(0.1, Enum.EasingStyle.Sine),
+				{ Size = UDim2.fromOffset(dropdown1.AbsoluteSize.X, 0) }
+			)
+			t:Play()
+			t.Completed:Wait()
+			dropdownFrame.Parent = nil
+			dropped = false
+		else
+			utilities.tween(chevron, TweenInfo.new(0.1, Enum.EasingStyle.Sine), { Rotation = 180 }):Play()
+			for _, frame in pairs(libData.dropdownFrames) do
+				if frame == dropdownFrame then
+					frame.Size = UDim2.fromOffset(dropdown1.AbsoluteSize.X, 0)
+					frame.Parent = libData.gui
+					utilities
+						.tween(
+							frame,
+							TweenInfo.new(0.1, Enum.EasingStyle.Sine),
+							{ Size = UDim2.fromOffset(dropdown1.AbsoluteSize.X, 150) }
+						)
+						:Play()
+					updateDropdownPosition()
+				else
+					local t = utilities.tween(
+						frame,
+						TweenInfo.new(0.1, Enum.EasingStyle.Sine),
+						{ Size = UDim2.fromOffset(dropdown1.AbsoluteSize.X, 0) }
+					)
+					t.Completed:Connect(function()
+						frame.Parent = nil
+					end)
+					t:Play()
+				end
+			end
+			dropped = true
+		end
+		animating = false
+	end
+
+	dropdown1.MouseButton1Click:Connect(toggleDropdown)
+
+	dropdown1:GetPropertyChangedSignal("AbsolutePosition"):Connect(updateDropdownPosition)
+	dropdown1:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateDropdownPosition)
+
+	dropdownFrame.MouseEnter:Connect(function()
+		hovering = true
+	end)
+
+	dropdownFrame.MouseLeave:Connect(function()
+		hovering = false
+	end)
+
+	services._userInputService.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 and not hovering and dropdownFrame.Parent then
+			toggleDropdown()
+		end
+	end)
+
+	function _dropdown:Insert(newOptions)
+		parseOptions(newOptions)
+	end
+
+	function _dropdown:Remove(toRemove)
+		for _, v in ipairs(toRemove) do
+			for i = #_dropdown.Settings.Options, 1, -1 do
+				if _dropdown.Settings.Options[i] == v then
+					table.remove(_dropdown.Settings.Options, i)
+				end
+			end
+
+			if options[v] then
+				options[v]:Destroy()
+				options[v] = nil
+			end
+
+			for i = #selected, 1, -1 do
+				if selected[i] == v then
+					table.remove(selected, i)
+				end
+			end
+			parseSelection()
+		end
+	end
+
+	function _dropdown:UpdateSettings(Settings)
+		if Settings.Visible ~= nil then
+			dropdown = Settings.Visible
+		end
+
+		if Settings.Name then
+			_dropdown.Settings.Name = Settings.Name
+			name1.Text = Settings.Name
+		end
+
+		if Settings.Description ~= nil then
+			_dropdown.Settings.Description = Settings.Description
+			description.Text = Settings.Description or ""
+			description.Visible = Settings.Description and true or false
+		end
+
+		if Settings.Limit ~= nil then
+			_dropdown.Settings.Limit = Settings.Limit
+		end
+
+		if Settings.Minimum then
+			_dropdown.Settings.Minimum = Settings.Minimum
+		end
+
+		if Settings.Callback then
+			_dropdown.Settings.Callback = Settings.Callback
+		end
+
+		if Settings.Options then
+			_dropdown.Settings.Options = Settings.Options
+			for _, v in pairs(options) do
+				v:Destroy()
+			end
+			options = {}
+			parseOptions(Settings.Options)
+		end
+
+		if Settings.Value ~= nil then
+			if type(Settings.Value) == "string" then
+				updateSelection(Settings.Value)
+			elseif type(Settings.Value) == "table" then
+				for _, v in pairs(Settings.Value) do
+					updateSelection(v)
+				end
+			end
+		end
+	end
+
+	local divider = Instance.new("Frame")
+	divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	divider.BorderSizePixel = 0
+	divider.Size = UDim2.new(1, 0, 0, 1)
+	divider.Parent = Parent
+
+	function _dropdown:Continue()
+		divider.Visible = false
+		return _dropdown
+	end
+	function _dropdown:End()
+		divider.Visible = true
+		return _dropdown
+	end
+
+	_dropdown:UpdateSettings(_dropdown.Settings)
+
+	if Flag then
+		library.Components[Flag] = _dropdown
+	end
+	return _dropdown:End()
+end
+
+function CreateColorpicker(Parent, Settings, Flag)
+	local _colorpicker = { Settings = Settings, Type = "Colorpicker" }
+
+	function _colorpicker:UpdateSettings(Settings) end
+
+	local divider = Instance.new("Frame")
+	divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	divider.BorderSizePixel = 0
+	divider.Size = UDim2.new(1, 0, 0, 1)
+	divider.Parent = Parent
+
+	function _colorpicker:Continue()
+		divider.Visible = false
+		return _colorpicker
+	end
+	function _colorpicker:End()
+		divider.Visible = true
+		return _colorpicker
+	end
+
+	if Flag then
+		library.Components[Flag] = _colorpicker
+	end
+	return _colorpicker:End()
+end
+
+function CreateKeybind(Parent, Settings, Flag)
+	local _keybind = { Settings = Settings, Type = "Keybind" }
+
+	local keybind = Instance.new("Frame")
+	keybind.AutomaticSize = Enum.AutomaticSize.Y
+	keybind.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	keybind.BackgroundTransparency = 1
+	keybind.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	keybind.BorderSizePixel = 0
+	keybind.Size = UDim2.fromScale(1, 0)
+	keybind.Visible = _keybind.Settings.Visible == nil and true or _keybind.Settings.Visible
+	keybind.Parent = Parent
+
+	local keybind1 = Instance.new("TextButton")
+	keybind1.AutoButtonColor = false
+	keybind1.AutomaticSize = Enum.AutomaticSize.Y
+	keybind1.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	keybind1.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	keybind1.BorderSizePixel = 0
+	keybind1.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json")
+	keybind1.Size = UDim2.new(1, 0, 0, 40)
+	keybind1.Text = ""
+	keybind1.TextColor3 = Color3.fromRGB(0, 0, 0)
+	keybind1.TextSize = 14
+
+	local name = Instance.new("TextLabel")
+	name.AnchorPoint = Vector2.new(0, 0.5)
+	name.AutomaticSize = Enum.AutomaticSize.XY
+	name.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	name.BackgroundTransparency = 1
+	name.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	name.BorderSizePixel = 0
+	name.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+	name.LayoutOrder = 1
+	name.Position = UDim2.fromScale(0, 0.5)
+	name.TextColor3 = Color3.fromRGB(156, 156, 156)
+	name.TextSize = 15
+	name.TextWrapped = true
+	name.TextXAlignment = Enum.TextXAlignment.Left
+	name.Text = "Unbinded"
+
+	local uIPadding = Instance.new("UIPadding")
+	uIPadding.PaddingBottom = UDim.new(0, 10)
+	uIPadding.PaddingRight = UDim.new(0, 50)
+	uIPadding.PaddingTop = UDim.new(0, 10)
+	uIPadding.Parent = name
+
+	name.Parent = keybind1
+
+	local uIPadding1 = Instance.new("UIPadding")
+	uIPadding1.PaddingLeft = UDim.new(0, 15)
+	uIPadding1.Parent = keybind1
+
+	local uIListLayout = Instance.new("UIListLayout")
+	uIListLayout.FillDirection = Enum.FillDirection.Horizontal
+	uIListLayout.Padding = UDim.new(0, 15)
+	uIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	uIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+	uIListLayout.Parent = keybind1
+
+	local icon = Instance.new("ImageLabel")
+	icon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	icon.BackgroundTransparency = 1
+	icon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	icon.BorderSizePixel = 0
+	icon.Image = "rbxassetid://94052787260057"
+	icon.ImageColor3 = Color3.fromRGB(156, 156, 156)
+	icon.Size = UDim2.fromOffset(20, 20)
+	icon.Parent = keybind1
+
+	local uICorner = Instance.new("UICorner")
+	uICorner.CornerRadius = UDim.new(0, 5)
+	uICorner.Parent = keybind1
+
+	keybind1.Parent = keybind
+
+	local tweens = {
+		Selected = Color3.fromRGB(225, 225, 225),
+		Unselected = Color3.fromRGB(156, 156, 156),
+	}
+
+	local isBinding = false
+
+	local function changeBindState(binding)
+		if binding then
+			icon.Visible = false
+			name.Text = "Press a key"
+			name.Size = UDim2.fromScale(1, 0)
+			name.TextXAlignment = Enum.TextXAlignment.Center
+			uIPadding.PaddingRight = UDim.new(0, 15)
+			keybind1.Active = false
+			keybind1.Interactable = false
+		elseif binding == false then
+			icon.Visible = true
+			name.Size = UDim2.fromScale(0, 0)
+			name.TextXAlignment = Enum.TextXAlignment.Left
+			uIPadding.PaddingRight = UDim.new(0, 50)
+			keybind1.Active = true
+			keybind1.Interactable = true
+		else
+			icon.Visible = true
+			name.Text = "Unbinded"
+			name.Size = UDim2.fromScale(0, 0)
+			name.TextXAlignment = Enum.TextXAlignment.Left
+			uIPadding.PaddingRight = UDim.new(0, 50)
+			keybind1.Active = true
+			keybind1.Interactable = true
+		end
+	end
+
+	if _keybind.Settings.Bind then
+		changeBindState(false)
+		if _keybind.Settings.Bind.EnumType == Enum.KeyCode then
+			name.Text = utilities.parseKeyCode(_keybind.Settings.Bind)
+		elseif
+			_keybind.Settings.Bind == Enum.UserInputType.MouseButton1
+			or _keybind.Settings.Bind == Enum.UserInputType.MouseButton2
+		then
+			name.Text = utilities.parseKeyCode(_keybind.Settings.Bind)
+		end
+	else
+		changeBindState(nil)
+	end
+
+	keybind.MouseEnter:Connect(function()
+		utilities.tween(icon, TweenInfo.new(0.1, Enum.EasingStyle.Sine), { ImageColor3 = tweens.Selected }):Play()
+
+		utilities.tween(name, TweenInfo.new(0.1, Enum.EasingStyle.Sine), { TextColor3 = tweens.Selected }):Play()
+	end)
+
+	keybind.MouseLeave:Connect(function()
+		utilities.tween(icon, TweenInfo.new(0.1, Enum.EasingStyle.Sine), { ImageColor3 = tweens.Unselected }):Play()
+
+		utilities.tween(name, TweenInfo.new(0.1, Enum.EasingStyle.Sine), { TextColor3 = tweens.Unselected }):Play()
+	end)
+
+	keybind1.InputEnded:Connect(function(input)
+		if
+			input.UserInputType == Enum.UserInputType.MouseButton1
+			or input.UserInputType == Enum.UserInputType.Touch
+		then
+			isBinding = true
+			changeBindState(true)
+		end
+	end)
+
+	services._userInputService.InputBegan:Connect(function(input, gameProcessed)
+		if
+			isBinding
+			and not gameProcessed
+			and not (
+				_keybind.Settings.Blacklist
+				and (
+					table.find(_keybind.Settings.Blacklist, input.KeyCode)
+					or table.find(_keybind.Settings.Blacklist, input.UserInputType)
+				)
+			)
+		then
+			if input.UserInputType == Enum.UserInputType.Keyboard then
+				_keybind.Settings.Bind = input.KeyCode
+				name.Text = utilities.parseKeyCode(input.KeyCode)
+				changeBindState(false)
+
+				if _keybind.Settings.onChanged then
+					utilities.callback(_keybind.Settings.onChanged, _keybind, _keybind.Settings.Bind)
+				end
+				isBinding = false
+			elseif
+				input.UserInputType == Enum.UserInputType.MouseButton1
+				or input.UserInputType == Enum.UserInputType.MouseButton2
+			then
+				_keybind.Settings.Bind = input.UserInputType
+				name.Text = utilities.parseKeyCode(input.UserInputType)
+				changeBindState(false)
+
+				if _keybind.Settings.onChanged then
+					utilities.callback(_keybind.Settings.onChanged, _keybind, _keybind.Settings.Bind)
+				end
+				isBinding = false
+			end
+		end
+	end)
+
+	services._userInputService.InputBegan:Connect(function(input, gameProcessed)
+		if not isBinding then
+			if input.KeyCode == _keybind.Settings.Bind or input.UserInputType == _keybind.Settings.Bind then
+				if _keybind.Settings.Callback then
+					utilities.callback(_keybind.Settings.Callback, _keybind, gameProcessed)
+				end
+				if _keybind.Settings.onHeld then
+					utilities.callback(_keybind.Settings.onHeld, _keybind, true, gameProcessed)
+				end
+			end
+		end
+	end)
+
+	services._userInputService.InputEnded:Connect(function(input, gameProcessed)
+		if
+			not isBinding
+			and (input.KeyCode == _keybind.Settings.Bind or input.UserInputType == _keybind.Settings.Bind)
+		then
+			if _keybind.Settings.onHeld then
+				utilities.callback(_keybind.Settings.onHeld, _keybind, false, gameProcessed)
+			end
+		end
+	end)
+
+	function _keybind:UpdateSettings(Settings)
+		if Settings.Visible ~= nil then
+			_keybind.Settings.Visible = Settings.Visible
+			keybind.Visible = Settings.Visible
+		end
+
+		if Settings.Bind then
+			_keybind.Settings.Bind = Settings.Bind
+
+			changeBindState(false)
+			if _keybind.Settings.Bind.EnumType == Enum.KeyCode then
+				name.Text = utilities.parseKeyCode(_keybind.Settings.Bind)
+			elseif
+				_keybind.Settings.Bind == Enum.UserInputType.MouseButton1
+				or _keybind.Settings.Bind == Enum.UserInputType.MouseButton2
+			then
+				name.Text = utilities.parseKeyCode(_keybind.Settings.Bind)
+			end
+
+			if Settings.Callback then
+				utilities.callback(_keybind.Settings.Callback, _keybind, false)
+			end
+		end
+
+		if Settings.Callback then
+			_keybind.Settings.Callback = Settings.Callback
+		end
+
+		if Settings.onHeld then
+			_keybind.Settings.onHeld = Settings.onHeld
+		end
+
+		if Settings.onChanged then
+			_keybind.Settings.onChanged = Settings.onChanged
+		end
+	end
+
+	local divider = Instance.new("Frame")
+	divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	divider.BorderSizePixel = 0
+	divider.Size = UDim2.new(1, 0, 0, 1)
+	divider.Parent = Parent
+
+	function _keybind:Continue()
+		divider.Visible = false
+		return _keybind
+	end
+	function _keybind:End()
+		divider.Visible = true
+		return _keybind
+	end
+
+	_keybind:UpdateSettings(_keybind.Settings)
+
+	if Flag then
+		library.Components[Flag] = _keybind
+	end
+	return _keybind:End()
+end
+
+function CreateDivider(Parent, Settings, Flag)
+	local _divider = { Settings = Settings }
+
+	local divider = Instance.new("Frame")
+	divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	divider.BorderSizePixel = 0
+	divider.Size = UDim2.new(1, 0, 0, 1)
+	divider.Parent = Parent
+	divider.Visible = _divider.Settings and (_divider.Settings.Visible == nil and true or _divider.Settings.Visible)
+		or true
+
+	function _divider:UpdateSettings(Settings)
+		if Settings.Visible ~= nil then
+			_divider.Settings.Visible = Settings.Visible
+			divider.Visible = Settings.Visible
+		end
+	end
+
+	if Flag then
+		library.Components[Flag] = _divider
+	end
+
+	return _divider
+end
+
+local SharedConstructors = {
+	Button = CreateButton,
+	Toggle = CreateToggle,
+	Keybind = CreateKeybind,
+	Dropdown = CreateDropdown,
+	Colorpicker = CreateColorpicker,
+	MultiInput = CreateMultiInput,
+	Input = CreateInput,
+	Slider = CreateSlider,
+	Divider = CreateDivider,
+}
+
+local function injectComponents(class)
+	for name, constructor in pairs(SharedConstructors) do
+		class[name] = function(self, ...)
+			return constructor(self.Content, ...)
+		end
+	end
+end
+
 function library:Window(Settings)
 	local _window = { Settings = Settings }
 
@@ -827,7 +2564,7 @@ function library:Window(Settings)
 
 		assert(_tab.Settings.Name and type(_tab.Settings.Name) == "string", "Missing string or wrong type")
 		if not _tab.Settings.Image or _tab.Settings.Image == "" then
-			_tab.Settings.Image = library:GetAsset("DefaultImage")
+			_tab.Settings.Image = library.Assets.DefaultImage
 		end
 
 		libData.tabSystem.tabIndex += 1
@@ -987,1767 +2724,198 @@ function library:Window(Settings)
 			_tab:Select()
 		end)
 
-		function _tab:Button(Settings, Flag)
-			local _button = { Settings = Settings }
+		function _tab:Section(Settings, Flag)
+			local _section = { Settings = Settings }
 
-			assert(
-				_button.Settings.Name and type(_button.Settings.Name) == "string",
-				"Missing button name or wrong type"
-			)
+			local section = Instance.new("Frame")
+			section.Name = "Section"
+			section.AutomaticSize = Enum.AutomaticSize.Y
+			section.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			section.BackgroundTransparency = 1
+			section.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			section.BorderSizePixel = 0
+			section.Size = UDim2.fromScale(1, 0)
 
-			local button = Instance.new("Frame")
-			button.AutomaticSize = Enum.AutomaticSize.Y
-			button.BackgroundColor3 = _button.Settings.Color or Color3.fromRGB(30, 30, 30)
-			button.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			button.BorderSizePixel = 0
-			button.Size = UDim2.new(1, 0, 0, 40)
-			button.Visible = _button.Settings.Visible == nil and true or _button.Settings.Visible
-			button.Parent = tabContent
-
-			local uICorner = Instance.new("UICorner")
-			uICorner.CornerRadius = UDim.new(0, 5)
-			uICorner.Parent = button
-
-			local button1 = Instance.new("TextButton")
-			button1.AutoButtonColor = false
-			button1.AutomaticSize = Enum.AutomaticSize.Y
-			button1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			button1.BackgroundTransparency = 1
-			button1.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			button1.BorderSizePixel = 0
-			button1.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
-			button1.RichText = true
-			button1.Size = UDim2.new(1, 0, 0, 40)
-			button1.Text = _button.Settings.Name
-			button1.TextColor3 = Color3.fromRGB(156, 156, 156)
-			button1.TextSize = 15
-			button1.TextWrapped = true
-			button1.TextXAlignment = Enum.TextXAlignment.Center
-
-			local uIPadding = Instance.new("UIPadding")
-			uIPadding.PaddingBottom = UDim.new(0, 12)
-			uIPadding.PaddingLeft = UDim.new(0, 15)
-			uIPadding.PaddingRight = UDim.new(0, 15)
-			uIPadding.PaddingTop = UDim.new(0, 12)
-			uIPadding.Parent = button1
-
-			button1.Parent = button
-
-			function _button:UpdateSettings(Settings)
-				if Settings.Name then
-					_button.Settings.Name = Settings.Name
-					button1.Text = Settings.Name
-				end
-
-				if Settings.Color then
-					_button.Settings.Color = Settings.Color
-					button.BackgroundColor3 = Settings.Color
-				end
-
-				if Settings.Callback then
-					_button.Settings.Callback = Settings.Callback
-				end
-
-				if Settings.Visible ~= nil then
-					_button.Settings.Visible = Settings.Visible
-					button.Visible = Settings.Visible
-				end
-
-				return _button
-			end
-
-			local divider = Instance.new("Frame")
-			divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-			divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			divider.BorderSizePixel = 0
-			divider.Size = UDim2.new(1, 0, 0, 1)
-			divider.Parent = tabContent
-
-			function _button:Continue()
-				divider.Visible = false
-				return _button
-			end
-			function _button:End()
-				divider.Visible = true
-				return _button
-			end
-
-			local cb = function()
-				if _button.Settings.Callback then
-					utilities.callback(_button.Settings.Callback)
-				end
-			end
-
-			button1.MouseButton1Click:Connect(cb)
-
-			if Flag then
-				library.Components[Flag] = _button
-			end
-
-			return _button:End()
-		end
-
-		function _tab:Toggle(Settings, Flag)
-			local _toggle = { Settings = Settings, Type = "Toggle" }
-
-			assert(_toggle.Settings.Name and type(_toggle.Settings.Name) == "string", "Missing name or wrong type")
-
-			local toggle = Instance.new("Frame")
-			toggle.AutomaticSize = Enum.AutomaticSize.Y
-			toggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			toggle.BackgroundTransparency = 1
-			toggle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			toggle.BorderSizePixel = 0
-			toggle.Size = UDim2.fromScale(1, 0)
-			toggle.Parent = tabContent
-			toggle.Visible = _toggle.Settings.Visible == nil and true or _toggle.Settings.Visible
-
-			local info = Instance.new("Frame")
-			info.AutomaticSize = Enum.AutomaticSize.Y
-			info.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			info.BackgroundTransparency = 1
-			info.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			info.BorderSizePixel = 0
-			info.Size = UDim2.new(1, -50, 0, 33)
+			local leading = Instance.new("TextButton")
+			leading.Name = "Leading"
+			leading.AutoButtonColor = false
+			leading.AutomaticSize = Enum.AutomaticSize.Y
+			leading.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			leading.BackgroundTransparency = 1
+			leading.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			leading.BorderSizePixel = 0
+			leading.LayoutOrder = -1
+			leading.Selectable = false
+			leading.Size = UDim2.fromScale(1, 0)
+			leading.Text = ""
 
 			local name = Instance.new("TextLabel")
+			name.Name = "Name"
 			name.AutomaticSize = Enum.AutomaticSize.XY
 			name.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			name.BackgroundTransparency = 1
 			name.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			name.BorderSizePixel = 0
-			name.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+			name.FontFace = Font.new("rbxassetid://16658237174", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+			name.LayoutOrder = 1
+			name.Position = UDim2.fromOffset(28, 0)
 			name.RichText = true
+			name.Text = "Aimbot"
 			name.TextColor3 = Color3.fromRGB(225, 225, 225)
-			name.TextSize = 16
+			name.TextSize = 20
 			name.TextWrapped = true
 			name.TextXAlignment = Enum.TextXAlignment.Left
-			name.Parent = info
-			name.Text = _toggle.Settings.Name
-
-			local uIListLayout = Instance.new("UIListLayout")
-			uIListLayout.Name = "UIListLayout"
-			uIListLayout.Padding = UDim.new(0, 5)
-			uIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-			uIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-			uIListLayout.Parent = info
-
-			local description = Instance.new("TextLabel")
-			description.AutomaticSize = Enum.AutomaticSize.XY
-			description.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			description.BackgroundTransparency = 1
-			description.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			description.BorderSizePixel = 0
-			description.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
-			description.LayoutOrder = 1
-			description.RichText = true
-			description.Text = _toggle.Settings.Description or ""
-			description.TextColor3 = Color3.fromRGB(80, 80, 80)
-			description.TextSize = 12
-			description.TextWrapped = true
-			description.TextXAlignment = Enum.TextXAlignment.Left
-			description.Parent = info
-			description.Visible = _toggle.Settings.Description and true or false
-
-			info.Parent = toggle
-
-			local toggle1 = Instance.new("ImageLabel")
-			toggle1.AnchorPoint = Vector2.new(1, 0.5)
-			toggle1.BackgroundColor3 = Color3.fromRGB(37, 37, 46)
-			toggle1.BackgroundTransparency = 1
-			toggle1.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			toggle1.BorderSizePixel = 0
-			toggle1.Image = "rbxassetid://86699956318312"
-			toggle1.ImageColor3 = Color3.fromRGB(33, 36, 45)
-			toggle1.Position = UDim2.fromScale(1, 0.5)
-			toggle1.Size = UDim2.fromOffset(35, 10)
-
-			local toggleUIPadding = Instance.new("UIPadding")
-			toggleUIPadding.Name = "ToggleUIPadding"
-			toggleUIPadding.PaddingBottom = UDim.new(0, 1)
-			toggleUIPadding.PaddingLeft = UDim.new(0, -8)
-			toggleUIPadding.PaddingTop = UDim.new(0, 1)
-			toggleUIPadding.Parent = toggle1
-
-			local head = Instance.new("ImageLabel")
-			head.AnchorPoint = Vector2.new(1, 0.5)
-			head.BackgroundColor3 = Color3.fromRGB(30, 34, 47)
-			head.BackgroundTransparency = 1
-			head.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			head.BorderSizePixel = 0
-			head.Image = "rbxassetid://83379579183005"
-			head.ImageColor3 = Color3.fromRGB(156, 156, 156)
-			head.Position = UDim2.fromScale(0.5, 0.5)
-			head.Size = UDim2.fromOffset(14, 14)
-			head.Parent = toggle1
-
-			toggle1.Parent = toggle
-
-			local uIPadding = Instance.new("UIPadding")
-			uIPadding.PaddingBottom = UDim.new(0, 8)
-			uIPadding.PaddingTop = UDim.new(0, 8)
-			uIPadding.Parent = toggle
-
-			local interact = Instance.new("TextButton")
-			interact.AutoButtonColor = false
-			interact.BackgroundTransparency = 1
-			interact.Size = UDim2.fromScale(1, 1)
-			interact.Text = ""
-			interact.Parent = toggle
-
-			_toggle.Settings.State = _toggle.Settings.State or false
-
-			local function toggle()
-				utilities
-					.tween(head, TweenInfo.new(0.2, Enum.EasingStyle.Exponential), {
-						Position = UDim2.fromScale(_toggle.Settings.State and 1 or 0.5, 0.5),
-						ImageColor3 = _toggle.Settings.State and Color3.fromRGB(138, 193, 227)
-							or Color3.fromRGB(156, 156, 156),
-					})
-					:Play()
-
-				if _toggle.Settings.Callback then
-					utilities.callback(_toggle.Settings.Callback, _toggle, _toggle.Settings.State)
-				end
-			end
-
-			interact.MouseButton1Click:Connect(function()
-				_toggle.Settings.State = not _toggle.Settings.State
-
-				toggle()
-			end)
-
-			function _toggle:UpdateSettings(Settings)
-				if Settings.Name then
-					_toggle.Settings.Name = Settings.Name
-					name.Text = Settings.Name
-				end
-
-				if Settings.Description ~= nil then
-					_toggle.Settings.Description = Settings.Description
-					description.Text = Settings.Description or ""
-					description.Visible = Settings.Description and true or false
-				end
-
-				if Settings.State ~= nil then
-					_toggle.Settings.State = Settings.State
-					toggle()
-				end
-
-				if Settings.Callback then
-					_toggle.Settings.Callback = Settings.Callback
-				end
-
-				if Settings.Visible ~= nil then
-					_toggle.Settings.Visible = Settings.Visible
-					toggle.Visible = Settings.Visible
-				end
-			end
-
-			local divider = Instance.new("Frame")
-			divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-			divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			divider.BorderSizePixel = 0
-			divider.Size = UDim2.new(1, 0, 0, 1)
-			divider.Parent = tabContent
-
-			function _toggle:Continue()
-				divider.Visible = false
-				return _toggle
-			end
-			function _toggle:End()
-				divider.Visible = true
-				return _toggle
-			end
-
-			toggle()
-
-			if Flag then
-				library.Components[Flag] = _toggle
-			end
-			return _toggle:End()
-		end
-
-		function _tab:Slider(Settings, Flag)
-			local _slider = { Settings = Settings, Type = "Slider" }
-
-			assert(_slider.Settings.Name and type(_slider.Settings.Name) == "string", "Missing name or wrong type")
-			assert(_slider.Settings.Value and type(_slider.Settings.Value) == "number", "Missing value or wrong type")
-			assert(
-				_slider.Settings.Minimum and type(_slider.Settings.Minimum) == "number",
-				"Missing minimum or wrong type"
-			)
-			assert(
-				_slider.Settings.Maximum and type(_slider.Settings.Maximum) == "number",
-				"Missing maximum or wrong type"
-			)
-			assert(_slider.Settings.Minimum <= _slider.Settings.Maximum, "Minimum should be less than Maximum")
-			assert(_slider.Settings.Maximum >= _slider.Settings.Minimum, "Maximum should be greater than Minimum")
-
-			local slider = Instance.new("Frame")
-			slider.AutomaticSize = Enum.AutomaticSize.Y
-			slider.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			slider.BackgroundTransparency = 1
-			slider.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			slider.BorderSizePixel = 0
-			slider.Size = UDim2.fromScale(1, 0)
-			slider.Visible = _slider.Settings.Visible == nil and true or _slider.Settings.Visible
-			slider.Parent = tabContent
-
-			local uIPadding = Instance.new("UIPadding")
-			uIPadding.PaddingBottom = UDim.new(0, 8)
-			uIPadding.PaddingTop = UDim.new(0, 8)
-			uIPadding.Parent = slider
-
-			local elementInfo = Instance.new("Frame")
-			elementInfo.AutomaticSize = Enum.AutomaticSize.Y
-			elementInfo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			elementInfo.BackgroundTransparency = 1
-			elementInfo.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			elementInfo.BorderSizePixel = 0
-			elementInfo.Size = UDim2.fromScale(1, 0)
-
-			local value = Instance.new("Frame")
-			value.AnchorPoint = Vector2.new(1, 0.5)
-			value.AutomaticSize = Enum.AutomaticSize.XY
-			value.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			value.BackgroundTransparency = 1
-			value.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			value.BorderSizePixel = 0
-			value.LayoutOrder = 1
-			value.Position = UDim2.fromScale(1, 0.5)
-
-			local icon = Instance.new("ImageLabel")
-			icon.AnchorPoint = Vector2.new(1, 0.5)
-			icon.BackgroundColor3 = Color3.fromRGB(30, 34, 47)
-			icon.BackgroundTransparency = 1
-			icon.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			icon.BorderSizePixel = 0
-			icon.Image = "rbxassetid://82545477110166"
-			icon.ImageColor3 = Color3.fromRGB(150, 150, 150)
-			icon.Position = UDim2.fromScale(1, 0.5)
-			icon.Size = UDim2.fromOffset(20, 20)
-			icon.Parent = value
-
-			local uIListLayout = Instance.new("UIListLayout")
-			uIListLayout.FillDirection = Enum.FillDirection.Horizontal
-			uIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
-			uIListLayout.Padding = UDim.new(0, 6)
-			uIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-			uIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-			uIListLayout.Parent = value
-
-			local amount = Instance.new("TextLabel")
-			amount.AnchorPoint = Vector2.new(0, 0.5)
-			amount.AutomaticSize = Enum.AutomaticSize.XY
-			amount.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			amount.BackgroundTransparency = 1
-			amount.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			amount.BorderSizePixel = 0
-			amount.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
-			amount.LayoutOrder = 1
-			amount.Position = UDim2.fromScale(0, 0.5)
-			amount.RichText = true
-			amount.Text = "0"
-			amount.TextColor3 = Color3.fromRGB(150, 150, 150)
-			amount.TextSize = 16
-			amount.TextWrapped = true
-			amount.TextXAlignment = Enum.TextXAlignment.Left
-			amount.Parent = value
-
-			value.Parent = elementInfo
-
-			local info = Instance.new("Frame")
-			info.AutomaticSize = Enum.AutomaticSize.Y
-			info.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			info.BackgroundTransparency = 1
-			info.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			info.BorderSizePixel = 0
-			info.Size = UDim2.new(1, -80, 0, 0)
-
-			local name = Instance.new("TextLabel")
-			name.AutomaticSize = Enum.AutomaticSize.XY
-			name.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			name.BackgroundTransparency = 1
-			name.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			name.BorderSizePixel = 0
-			name.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
-			name.RichText = true
-			name.Text = _slider.Settings.Name
-			name.TextColor3 = Color3.fromRGB(225, 225, 225)
-			name.TextSize = 16
-			name.TextWrapped = true
-			name.TextXAlignment = Enum.TextXAlignment.Left
-			name.Parent = info
-
-			local uIListLayout1 = Instance.new("UIListLayout")
-			uIListLayout1.Name = "UIListLayout"
-			uIListLayout1.Padding = UDim.new(0, 5)
-			uIListLayout1.SortOrder = Enum.SortOrder.LayoutOrder
-			uIListLayout1.VerticalAlignment = Enum.VerticalAlignment.Center
-			uIListLayout1.Parent = info
-
-			local description = Instance.new("TextLabel")
-			description.AutomaticSize = Enum.AutomaticSize.XY
-			description.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			description.BackgroundTransparency = 1
-			description.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			description.BorderSizePixel = 0
-			description.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
-			description.LayoutOrder = 1
-			description.RichText = true
-			description.Text = _slider.Settings.Description or ""
-			description.TextColor3 = Color3.fromRGB(80, 80, 80)
-			description.TextSize = 12
-			description.TextWrapped = true
-			description.TextXAlignment = Enum.TextXAlignment.Left
-			description.Parent = info
-			description.Visible = _slider.Settings.Description and true or false
-
-			info.Parent = elementInfo
-
-			local uIListLayout2 = Instance.new("UIListLayout")
-			uIListLayout2.Name = "UIListLayout"
-			uIListLayout2.FillDirection = Enum.FillDirection.Horizontal
-			uIListLayout2.HorizontalAlignment = Enum.HorizontalAlignment.Center
-			uIListLayout2.HorizontalFlex = Enum.UIFlexAlignment.Fill
-			uIListLayout2.Padding = UDim.new(0, 5)
-			uIListLayout2.SortOrder = Enum.SortOrder.LayoutOrder
-			uIListLayout2.VerticalAlignment = Enum.VerticalAlignment.Center
-			uIListLayout2.Parent = elementInfo
-
-			elementInfo.Parent = slider
-
-			local uIListLayout3 = Instance.new("UIListLayout")
-			uIListLayout3.Name = "UIListLayout"
-			uIListLayout3.Padding = UDim.new(0, 15)
-			uIListLayout3.SortOrder = Enum.SortOrder.LayoutOrder
-			uIListLayout3.Parent = slider
-
-			local slider1 = Instance.new("TextButton")
-			slider1.BackgroundColor3 = Color3.fromRGB(37, 37, 46)
-			slider1.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			slider1.BorderSizePixel = 0
-			slider1.Size = UDim2.new(1, 0, 0, 10)
-			slider1.Text = ""
-			slider1.AutoButtonColor = false
-
-			local uICorner = Instance.new("UICorner")
-			uICorner.Name = "UICorner"
-			uICorner.CornerRadius = UDim.new(0, 15)
-			uICorner.Parent = slider1
-
-			local bar = Instance.new("Frame")
-			bar.BackgroundColor3 = Color3.fromRGB(138, 193, 227)
-			bar.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			bar.BorderSizePixel = 0
-			bar.Size = UDim2.new(0, 0, 0, 10)
-
-			local uICorner1 = Instance.new("UICorner")
-			uICorner1.Name = "UICorner"
-			uICorner1.CornerRadius = UDim.new(0, 15)
-			uICorner1.Parent = bar
-
-			local clipcircle = Instance.new("ImageLabel")
-			clipcircle.AnchorPoint = Vector2.new(0.5, 0.5)
-			clipcircle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			clipcircle.BackgroundTransparency = 1
-			clipcircle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			clipcircle.BorderSizePixel = 0
-			clipcircle.Image = "rbxassetid://127947626656649"
-			clipcircle.ImageColor3 = Color3.fromRGB(20, 20, 20)
-			clipcircle.Position = UDim2.fromScale(1, 0.5)
-			clipcircle.Size = UDim2.fromOffset(26, 20)
-			clipcircle.ZIndex = 2
-
-			local circle = Instance.new("ImageLabel")
-			circle.AnchorPoint = Vector2.new(0.5, 0.5)
-			circle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			circle.BackgroundTransparency = 1
-			circle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			circle.BorderSizePixel = 0
-			circle.Image = "rbxassetid://98639906538385"
-			circle.ImageColor3 = Color3.fromRGB(225, 225, 225)
-			circle.Position = UDim2.fromScale(0.5, 0.5)
-			circle.Size = UDim2.fromOffset(18, 18)
-			circle.Parent = clipcircle
-
-			clipcircle.Parent = slider1
-
-			bar.Parent = slider1
-
-			slider1.Parent = slider
-
-			local dragging = false
-
-			local function updateDisplay()
-				bar.Size = UDim2.new(
-					(_slider.Settings.Value - _slider.Settings.Minimum)
-						/ (_slider.Settings.Maximum - _slider.Settings.Minimum),
-					0,
-					0,
-					10
-				)
-				clipcircle.Position = UDim2.new(
-					(_slider.Settings.Value - _slider.Settings.Minimum)
-						/ (_slider.Settings.Maximum - _slider.Settings.Minimum),
-					0,
-					0.5,
-					0
-				)
-
-				local precise =
-					tonumber(string.format("%." .. (_slider.Settings.Precision or 0) .. "f", _slider.Settings.Value))
-				local filtered = _slider.Settings.Filter
-					and _slider.Settings.Filter(precise, _slider.Settings.Minimum, _slider.Settings.Maximum)
-				amount.Text = filtered or precise
-			end
-
-			local function updateSlider(input)
-				local mousePosition = input.Position.X
-
-				local halfWidth = circle.AbsoluteSize.X / 2
-
-				local adjustedMousePosition = mousePosition - (halfWidth * 0.5)
-
-				local barPositionX = slider1.AbsolutePosition.X
-				local barSizeX = slider1.AbsoluteSize.X
-
-				adjustedMousePosition = math.clamp(adjustedMousePosition - barPositionX, 0, barSizeX)
-
-				local newValue = adjustedMousePosition / barSizeX
-				newValue = _slider.Settings.Minimum + newValue * (_slider.Settings.Maximum - _slider.Settings.Minimum)
-
-				local step = _slider.Settings.Step or 0
-				if step > 0 then
-					_slider.Settings.Value = math.round(newValue / step) * step
-				else
-					_slider.Settings.Value = newValue
-				end
-
-				updateDisplay()
-
-				if _slider.Settings.Callback then
-					utilities.callback(_slider.Settings.Callback, _slider, _slider.Settings.Value)
-				end
-			end
-
-			local dragging = false
-
-			slider1.InputBegan:Connect(function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 then
-					dragging = true
-					updateSlider(input)
-					if _slider.Settings.inputChanged then
-						utilities.callback(_slider.Settings.inputChanged, _slider, _slider.Settings.Value, dragging)
-					end
-				end
-			end)
-
-			slider1.InputEnded:Connect(function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 then
-					dragging = false
-					if _slider.Settings.inputChanged then
-						utilities.callback(_slider.Settings.inputChanged, _slider, _slider.Settings.Value, dragging)
-					end
-				end
-			end)
-
-			services._userInputService.InputChanged:Connect(function(input)
-				if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-					updateSlider(input)
-				end
-			end)
-
-			function _slider:UpdateSettings(Settings)
-				if Settings.Visible ~= nil then
-					_slider.Settings.Visible = Settings.Visible
-					slider.Visible = Settings.Visible
-				end
-
-				if Settings.Name then
-					_slider.Settings.Name = Settings.Name
-					name.Text = Settings.Name
-				end
-
-				if Settings.Description ~= nil then
-					_slider.Settings.Description = Settings.Description
-					description.Text = Settings.Description or ""
-					description.Visible = Settings.Description and true or false
-				end
-
-				if Settings.Value then
-					_slider.Settings.Value = Settings.Value
-
-					updateDisplay()
-
-					if _slider.Settings.Callback then
-						utilities.callback(_slider.Settings.Callback, _slider, _slider.Settings.Value)
-					end
-				end
-
-				if Settings.Minimum then
-					_slider.Settings.Minimum = Settings.Minimum
-				end
-
-				if Settings.Maximum then
-					_slider.Settings.Maximum = Settings.Maximum
-				end
-
-				if Settings.Step ~= nil then
-					_slider.Settings.Step = Settings.Step
-				end
-
-				if Settings.Precision ~= nil then
-					_slider.Settings.Precision = Settings.Precision
-				end
-
-				if Settings.Filter then
-					_slider.Settings.Filter = Settings.Filter
-				end
-
-				if Settings.Callback then
-					_slider.Settings.Callback = Settings.Callback
-				end
-
-				if Settings.inputChanged then
-					_slider.Settings.inputChanged = Settings.inputChanged
-				end
-			end
-
-			local divider = Instance.new("Frame")
-			divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-			divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			divider.BorderSizePixel = 0
-			divider.Size = UDim2.new(1, 0, 0, 1)
-			divider.Parent = tabContent
-
-			function _slider:Continue()
-				divider.Visible = false
-				return _slider
-			end
-			function _slider:End()
-				divider.Visible = true
-				return _slider
-			end
-
-			_slider:UpdateSettings(_slider.Settings)
-
-			if Flag then
-				library.Components[Flag] = _slider
-			end
-
-			return _slider:End()
-		end
-
-		function _tab:Input(Settings, Flag)
-			local _input = { Settings = Settings, Type = "Input" }
-
-			local input = Instance.new("Frame")
-			input.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-			input.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			input.BorderSizePixel = 0
-			input.Size = UDim2.new(1, 0, 0, 40)
-			input.Visible = _input.Settings.Visible == nil and true or _input.Settings.Visible
-			input.Parent = tabContent
-
-			local uICorner = Instance.new("UICorner")
-			uICorner.CornerRadius = UDim.new(0, 5)
-			uICorner.Parent = input
-
-			local uIListLayout = Instance.new("UIListLayout")
-			uIListLayout.FillDirection = Enum.FillDirection.Horizontal
-			uIListLayout.Padding = UDim.new(0, 15)
-			uIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-			uIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-			uIListLayout.Parent = input
-
-			local uIPadding = Instance.new("UIPadding")
-			uIPadding.PaddingLeft = UDim.new(0, 15)
-			uIPadding.Parent = input
-
-			local inputBox = Instance.new("TextBox")
-			inputBox.AnchorPoint = Vector2.new(0, 0.5)
-			inputBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			inputBox.BackgroundTransparency = 1
-			inputBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			inputBox.BorderSizePixel = 0
-			inputBox.ClearTextOnFocus = false
-			inputBox.ClipsDescendants = true
-			inputBox.CursorPosition = -1
-			inputBox.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
-			inputBox.LayoutOrder = 1
-			inputBox.PlaceholderColor3 = Color3.fromRGB(120, 120, 120)
-			inputBox.PlaceholderText = _input.Settings.Placeholder or "..."
-			inputBox.Size = UDim2.new(1, -50, 1, 0)
-			inputBox.Text = _input.Settings.Text or ""
-			inputBox.TextColor3 = Color3.fromRGB(156, 156, 156)
-			inputBox.TextSize = 15
-			inputBox.TextXAlignment = Enum.TextXAlignment.Left
-			inputBox.Parent = input
-
-			local icon = Instance.new("ImageLabel")
-			icon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			icon.BackgroundTransparency = 1
-			icon.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			icon.BorderSizePixel = 0
-			icon.Image = "rbxassetid://98129527229953"
-			icon.ImageColor3 = Color3.fromRGB(156, 156, 156)
-			icon.Size = UDim2.fromOffset(20, 20)
-			icon.Parent = input
-
-			local parseMethod = _input.Settings.CharacterSub
-
-			inputBox.FocusLost:Connect(function()
-				if _input.Settings.CharacterSub == "Mathematic" then
-					inputBox.Text = utilities.subParser[_input.Settings.CharacterSub](inputBox.Text)
-				end
-
-				if _input.Settings.Callback then
-					utilities.callback(_input.Settings.Callback, _input, inputBox.Text)
-				end
-			end)
-
-			inputBox:GetPropertyChangedSignal("Text"):Connect(function()
-				if
-					_input.Settings.CharacterSub
-					and _input.Settings.CharacterSub ~= "Mathematic"
-					and utilities.subParser[_input.Settings.CharacterSub]
-				then
-					inputBox.Text = utilities.subParser[_input.Settings.CharacterSub](inputBox.Text)
-				elseif type(_input.Settings.CharacterSub) == "function" then
-					inputBox.Text = _input.Settings.CharacterSub(inputBox.Text)
-				end
-
-				if _input.Settings.CharacterLimit then
-					if string.len(inputBox.Text) > _input.Settings.CharacterLimit then
-						inputBox.Text = string.sub(inputBox.Text, 1, _input.Settings.CharacterLimit)
-					end
-				end
-
-				_input.Settings.Text = inputBox.Text
-				if _input.Settings.onTextChanged then
-					utilities.callback(_input.Settings.onTextChanged, _input, inputBox.Text)
-				end
-			end)
-
-			function _input:UpdateSettings(Settings)
-				if Settings.Text then
-					_input.Settings.Text = Settings.Text
-					inputBox.Text = Settings.Text
-
-					if _input.Settings.Callback then
-						utilities.callback(_input.Settings.Callback, _input, inputBox.Text)
-					end
-				end
-
-				if Settings.Placeholder then
-					_input.Settings.Placeholder = Settings.Placeholder
-					inputBox.PlaceholderText = Settings.Placeholder
-				end
-
-				if Settings.Callback then
-					_input.Settings.Callback = Settings.Callback
-				end
-
-				if Settings.onTextChanged then
-					_input.Settings.onTextChanged = Settings.onTextChanged
-				end
-
-				if Settings.Visible ~= nil then
-					_input.Settings.Visible = Settings.Visible
-					input.Visible = Settings.Visible
-				end
-			end
-
-			local divider = Instance.new("Frame")
-			divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-			divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			divider.BorderSizePixel = 0
-			divider.Size = UDim2.new(1, 0, 0, 1)
-			divider.Parent = tabContent
-
-			function _input:Continue()
-				divider.Visible = false
-				return _input
-			end
-			function _input:End()
-				divider.Visible = true
-				return _input
-			end
-
-			_input:UpdateSettings(_input.Settings)
-
-			if Flag then
-				library.Components[Flag] = _input
-			end
-			return _input:End()
-		end
-
-		function _tab:MultiInput(Settings, Flag)
-			local _multiInput = { Settings = Settings, Type = "MultiInput" }
-
-			local multiInput = Instance.new("Frame")
-			multiInput.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-			multiInput.BackgroundTransparency = 1
-			multiInput.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			multiInput.BorderSizePixel = 0
-			multiInput.Size = UDim2.new(1, 0, 0, 40)
-			multiInput.Parent = tabContent
-
-			local uIListLayout = Instance.new("UIListLayout")
-			uIListLayout.FillDirection = Enum.FillDirection.Horizontal
-			uIListLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
-			uIListLayout.Padding = UDim.new(0, 5)
-			uIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-			uIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-			uIListLayout.Parent = multiInput
-
-			local data = {}
-
-			for i, v in ipairs(_multiInput.Settings.Inputs) do
-				local inputBox = Instance.new("TextBox")
-				inputBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-				inputBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				inputBox.BorderSizePixel = 0
-				inputBox.ClearTextOnFocus = false
-				inputBox.ClipsDescendants = true
-				inputBox.FontFace =
-					Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
-				inputBox.LayoutOrder = 1
-				inputBox.PlaceholderColor3 = Color3.fromRGB(120, 120, 120)
-				inputBox.PlaceholderText = v.Placeholder or "..."
-				inputBox.Size = UDim2.fromScale(1, 1)
-				inputBox.Text = v.Text or ""
-				inputBox.TextColor3 = Color3.fromRGB(156, 156, 156)
-				inputBox.TextSize = 15
-				inputBox.TextXAlignment = Enum.TextXAlignment.Left
-				inputBox.Parent = multiInput
-				data[i] = {
-					inputBox = inputBox,
-				}
-
-				local uIPadding = Instance.new("UIPadding")
-				uIPadding.PaddingLeft = UDim.new(0, 10)
-				uIPadding.PaddingRight = UDim.new(0, 10)
-				uIPadding.Parent = inputBox
-
-				local uICorner = Instance.new("UICorner")
-				uICorner.CornerRadius = UDim.new(0, 5)
-				uICorner.Parent = inputBox
-
-				local parseMethod = v.CharacterSub or "None"
-
-				inputBox.FocusLost:Connect(function()
-					if _multiInput.Settings.Callback then
-						utilities.callback(_multiInput.Settings.Callback, _multiInput, i, inputBox.Text)
-					end
-				end)
-
-				inputBox:GetPropertyChangedSignal("Text"):Connect(function()
-					if parseMethod and type(parseMethod) == "string" and utilities.subParser[parseMethod] then
-						inputBox.Text = utilities.subParser[parseMethod](inputBox.Text)
-					elseif parseMethod and type(parseMethod) == "function" then
-						inputBox.Text = v.CharacterSub(inputBox.Text)
-					end
-
-					if v.CharacterLimit then
-						if string.len(inputBox.Text) > v.CharacterLimit then
-							inputBox.Text = string.sub(inputBox.Text, 1, v.CharacterLimit)
-						end
-					end
-
-					v.Text = inputBox.Text
-
-					if _multiInput.Settings.onTextChanged then
-						utilities.callback(_multiInput.Settings.onTextChanged, _multiInput, i, inputBox.Text)
-					end
-				end)
-			end
-
-			function _multiInput:UpdateSettings(index, Settings)
-				local input = _multiInput.Settings.Inputs[index]
-				local entry = data[index]
-
-				if input and entry then
-					if Settings.Text ~= nil then
-						input.Text = Settings.Text
-						entry.inputBox.Text = Settings.Text
-
-						if _multiInput.Settings.Callback then
-							utilities.callback(_multiInput.Settings.Callback, _multiInput, index, Settings.Text)
-						end
-					end
-
-					if Settings.Placeholder ~= nil then
-						input.Placeholder = Settings.Placeholder
-						entry.inputBox.PlaceholderText = Settings.Placeholder
-					end
-				end
-
-				if Settings.Callback ~= nil then
-					_multiInput.Settings.Callback = Settings.Callback
-				end
-
-				if Settings.onTextChanged ~= nil then
-					_multiInput.Settings.onTextChanged = Settings.onTextChanged
-				end
-
-				if Settings.Visible ~= nil then
-					_multiInput.Settings.Visible = Settings.Visible
-					multiInput.Visible = Settings.Visible
-				end
-			end
-
-			local divider = Instance.new("Frame")
-			divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-			divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			divider.BorderSizePixel = 0
-			divider.Size = UDim2.new(1, 0, 0, 1)
-			divider.Parent = tabContent
-
-			function _multiInput:Continue()
-				divider.Visible = false
-				return _multiInput
-			end
-			function _multiInput:End()
-				divider.Visible = true
-				return _multiInput
-			end
-
-			for i, input in pairs(_multiInput.Settings.Inputs) do
-				_multiInput:UpdateSettings(i, input)
-			end
-
-			if Flag then
-				library.Components[Flag] = _multiInput
-			end
-			return _multiInput:End()
-		end
-
-		function _tab:Dropdown(Settings, Flag)
-			local _dropdown = { Settings = Settings, Type = "Dropdown" }
-
-			assert(_dropdown.Settings.Name and type(_dropdown.Settings.Name) == "string", "Missing name or wrong type")
-
-			local dropdown = Instance.new("Frame")
-			dropdown.AutomaticSize = Enum.AutomaticSize.Y
-			dropdown.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			dropdown.BackgroundTransparency = 1
-			dropdown.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			dropdown.BorderSizePixel = 0
-			dropdown.Size = UDim2.fromScale(1, 0)
-			dropdown.Parent = tabContent
-
-			local uIPadding = Instance.new("UIPadding")
-			uIPadding.PaddingBottom = UDim.new(0, 8)
-			uIPadding.PaddingTop = UDim.new(0, 8)
-			uIPadding.Parent = dropdown
-
-			local uIListLayout = Instance.new("UIListLayout")
-			uIListLayout.Padding = UDim.new(0, 15)
-			uIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-			uIListLayout.Parent = dropdown
-
-			local dropdown1 = Instance.new("TextButton")
-			dropdown1.AutoButtonColor = false
-			dropdown1.AutomaticSize = Enum.AutomaticSize.Y
-			dropdown1.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-			dropdown1.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			dropdown1.BorderSizePixel = 0
-			dropdown1.ClipsDescendants = true
-			dropdown1.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
-			dropdown1.LayoutOrder = 1
-			dropdown1.Position = UDim2.fromScale(0, 0.16)
-			dropdown1.Size = UDim2.new(1, 0, 0, 40)
-			dropdown1.Text = ""
-			dropdown1.TextColor3 = Color3.fromRGB(156, 156, 156)
-			dropdown1.TextSize = 15
-			dropdown1.TextXAlignment = Enum.TextXAlignment.Left
-			dropdown1.TextYAlignment = Enum.TextYAlignment.Top
-
-			local uIPadding1 = Instance.new("UIPadding")
-			uIPadding1.PaddingBottom = UDim.new(0, 10)
-			uIPadding1.PaddingLeft = UDim.new(0, 15)
-			uIPadding1.PaddingRight = UDim.new(0, 15)
-			uIPadding1.PaddingTop = UDim.new(0, 10)
-			uIPadding1.Parent = dropdown1
-
-			local uICorner = Instance.new("UICorner")
-			uICorner.CornerRadius = UDim.new(0, 5)
-			uICorner.Parent = dropdown1
-
-			local info = Instance.new("Frame")
-			info.AutomaticSize = Enum.AutomaticSize.Y
-			info.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			info.BackgroundTransparency = 1
-			info.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			info.BorderSizePixel = 0
-			info.Size = UDim2.fromScale(1, 0)
-
-			local chevron = Instance.new("ImageLabel")
-			chevron.AnchorPoint = Vector2.new(1, 0.5)
+			name.Parent = leading
+
+			local chevron = Instance.new("ImageButton")
+			chevron.Name = "Chevron"
+			chevron.AnchorPoint = Vector2.new(0, 0.5)
+			chevron.AutoButtonColor = false
 			chevron.BackgroundColor3 = Color3.fromRGB(30, 34, 47)
 			chevron.BackgroundTransparency = 1
 			chevron.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			chevron.BorderSizePixel = 0
 			chevron.Image = "rbxassetid://77136690433593"
-			chevron.ImageColor3 = Color3.fromRGB(150, 150, 150)
 			chevron.LayoutOrder = 1
-			chevron.Position = UDim2.fromScale(1, 0.5)
+			chevron.Position = UDim2.fromScale(0, 0.5)
+			chevron.Rotation = 180
+			chevron.Selectable = false
 			chevron.Size = UDim2.fromOffset(18, 18)
-			chevron.Parent = info
+			chevron.Parent = leading
 
-			local name = Instance.new("TextLabel")
-			name.AutomaticSize = Enum.AutomaticSize.Y
-			name.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			name.BackgroundTransparency = 1
-			name.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			name.BorderSizePixel = 0
-			name.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
-			name.RichText = true
-			name.Size = UDim2.new(1, -35, 0, 20)
-			name.Text = "..."
-			name.TextColor3 = Color3.fromRGB(156, 156, 156)
-			name.TextSize = 15
-			name.TextWrapped = true
-			name.TextXAlignment = Enum.TextXAlignment.Left
-			name.Parent = info
+			leading.Parent = section
 
-			info.Parent = dropdown1
-
-			dropdown1.Parent = dropdown
-
-			local info1 = Instance.new("Frame")
-			info1.AutomaticSize = Enum.AutomaticSize.Y
-			info1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			info1.BackgroundTransparency = 1
-			info1.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			info1.BorderSizePixel = 0
-			info1.Size = UDim2.new(1, 0, 0, 33)
-
-			local name1 = Instance.new("TextLabel")
-			name1.AutomaticSize = Enum.AutomaticSize.XY
-			name1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			name1.BackgroundTransparency = 1
-			name1.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			name1.BorderSizePixel = 0
-			name1.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
-			name1.RichText = true
-			name1.Text = "Name"
-			name1.TextColor3 = Color3.fromRGB(225, 225, 225)
-			name1.TextSize = 16
-			name1.TextWrapped = true
-			name1.TextXAlignment = Enum.TextXAlignment.Left
-			name1.Parent = info1
-
-			local uIListLayout1 = Instance.new("UIListLayout")
-			uIListLayout1.Padding = UDim.new(0, 5)
-			uIListLayout1.SortOrder = Enum.SortOrder.LayoutOrder
-			uIListLayout1.VerticalAlignment = Enum.VerticalAlignment.Center
-			uIListLayout1.Parent = info1
-
-			local description = Instance.new("TextLabel")
-			description.AutomaticSize = Enum.AutomaticSize.XY
-			description.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			description.BackgroundTransparency = 1
-			description.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			description.BorderSizePixel = 0
-			description.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
-			description.LayoutOrder = 1
-			description.RichText = true
-			description.Text = "description"
-			description.TextColor3 = Color3.fromRGB(80, 80, 80)
-			description.TextSize = 12
-			description.TextWrapped = true
-			description.TextXAlignment = Enum.TextXAlignment.Left
-			description.Parent = info1
-			description.Visible = _dropdown.Settings.Description and true or false
-
-			info1.Parent = dropdown
-
-			local dropdownFrame = Instance.new("Frame")
-			dropdownFrame.Name = "dropdownFrame"
-			dropdownFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-			dropdownFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			dropdownFrame.BorderSizePixel = 0
-			dropdownFrame.Size = UDim2.fromOffset(350, 150)
-
-			local dropdownContent = Instance.new("ScrollingFrame")
-			dropdownContent.Name = "dropdownContent"
-			dropdownContent.Active = true
-			dropdownContent.AutomaticCanvasSize = Enum.AutomaticSize.Y
-			dropdownContent.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-			dropdownContent.BackgroundTransparency = 1
-			dropdownContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			dropdownContent.BorderSizePixel = 0
-			dropdownContent.CanvasSize = UDim2.new()
-			dropdownContent.ScrollBarImageTransparency = 0.7
-			dropdownContent.ScrollBarThickness = 3
-			dropdownContent.Size = UDim2.fromScale(1, 1)
+			local trailing = Instance.new("Frame")
+			trailing.Name = "Trailing"
+			trailing.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			trailing.BackgroundTransparency = 1
+			trailing.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			trailing.BorderSizePixel = 0
+			trailing.ClipsDescendants = true
+			trailing.Size = UDim2.fromScale(1, 0)
 
 			local uIListLayout = Instance.new("UIListLayout")
 			uIListLayout.Name = "UIListLayout"
+			uIListLayout.Padding = UDim.new(0, 10)
 			uIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-			uIListLayout.Parent = dropdownContent
+			uIListLayout.Parent = trailing
 
 			local uIPadding = Instance.new("UIPadding")
 			uIPadding.Name = "UIPadding"
-			uIPadding.PaddingRight = UDim.new(0, 15)
-			uIPadding.Parent = dropdownContent
+			uIPadding.PaddingLeft = UDim.new(0, 12)
+			uIPadding.Parent = trailing
 
-			dropdownContent.Parent = dropdownFrame
+			local folder = Instance.new("Folder")
+			folder.Name = "Folder"
+
+			local frame = Instance.new("Frame")
+			frame.Name = "Frame"
+			frame.AnchorPoint = Vector2.new(0, 1)
+			frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+			frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			frame.BorderSizePixel = 0
+			frame.Position = UDim2.new(0, -12, 1, 0)
+			frame.Size = UDim2.new(0, 1, 1, 0)
+			frame.Parent = folder
+
+			folder.Parent = trailing
+
+			trailing.Parent = section
+
+			local uIListLayout1 = Instance.new("UIListLayout")
+			uIListLayout1.Name = "UIListLayout"
+			uIListLayout1.Padding = UDim.new(0, 10)
+			uIListLayout1.SortOrder = Enum.SortOrder.LayoutOrder
+			uIListLayout1.Parent = section
 
 			local uIPadding1 = Instance.new("UIPadding")
 			uIPadding1.Name = "UIPadding"
-			uIPadding1.PaddingBottom = UDim.new(0, 10)
-			uIPadding1.PaddingLeft = UDim.new(0, 15)
-			uIPadding1.PaddingTop = UDim.new(0, 3)
-			uIPadding1.Parent = dropdownFrame
+			uIPadding1.PaddingBottom = UDim.new(0, 8)
+			uIPadding1.PaddingTop = UDim.new(0, 8)
+			uIPadding1.Parent = section
 
-			local uICorner = Instance.new("UICorner")
-			uICorner.Name = "UICorner"
-			uICorner.CornerRadius = UDim.new(0, 5)
-			uICorner.Parent = dropdownFrame
+			section.Parent = tabContent
 
-			local hovering = false
-			local dropped = false
-			local animating = false
-			local selected = {}
-			local options = {}
-			local tweens = {
-				Selected = Color3.fromRGB(225, 225, 225),
-				Unselected = Color3.fromRGB(156, 156, 156),
-			}
-			table.insert(libData.dropdownFrames, dropdownFrame)
+			local function updateDisclosure(state)
+				if state then
+					local Components = {}
+					local NewSizeY = 0
 
-			local function parseSelection(sendCB)
-				local selectedString = "..."
-
-				local selectedNames = {}
-				for _, idx in ipairs(selected) do
-					local optionName = options[idx].Text
-					table.insert(selectedNames, optionName)
-				end
-
-				if #selectedNames == 1 then
-					selectedString = selectedNames[1]
-				elseif #selectedNames > 1 then
-					selectedString = table.concat(selectedNames, ", ")
-				end
-
-				name.Text = selectedString
-				_dropdown.Settings.Value = selectedNames
-
-				if sendCB and _dropdown.Settings.Callback then
-					utilities.callback(_dropdown.Settings.Callback, _dropdown, selectedNames)
-				end
-			end
-
-			local function updateSelection(index)
-				local limit = _dropdown.Settings.Limit
-				local minimum = _dropdown.Settings.Minimum or 0
-
-				if table.find(selected, index) then
-					if #selected - 1 < minimum then
-						return
-					end
-					table.remove(selected, table.find(selected, index))
-					utilities
-						.tween(options[index], TweenInfo.new(0.1, Enum.EasingStyle.Sine), { TextColor3 = tweens.Unselected })
-						:Play()
-				else
-					if limit and #selected >= limit then
-						local removedIndex = table.remove(selected, 1)
-						utilities
-							.tween(
-								options[removedIndex],
-								TweenInfo.new(0.1, Enum.EasingStyle.Sine),
-								{ TextColor3 = tweens.Unselected }
-							)
-							:Play()
+					for _, v in pairs(trailing:GetChildren()) do
+						if v:IsA("GuiObject") then
+							table.insert(Components, v)
+							NewSizeY += v.AbsoluteSize.Y
+						end
 					end
 
-					table.insert(selected, index)
-					utilities
-						.tween(options[index], TweenInfo.new(0.1, Enum.EasingStyle.Sine), { TextColor3 = tweens.Selected })
-						:Play()
-				end
+					if #Components > 1 then
+						NewSizeY += (#Components - 1) * uIListLayout.Padding.Offset
+					end
 
-				parseSelection(true)
-			end
-
-			local function parseOptions(ops)
-				for i, v in ipairs(ops) do
-					local button = Instance.new("TextButton")
-					button.Name = "Button"
-					button.AutoButtonColor = false
-					button.AutomaticSize = Enum.AutomaticSize.Y
-					button.BackgroundTransparency = 1
-					button.BorderSizePixel = 0
-					button.FontFace =
-						Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
-					button.RichText = true
-					button.Size = UDim2.fromScale(1, 0)
-					button.Text = v
-					button.TextColor3 = Color3.fromRGB(156, 156, 156)
-					button.TextSize = 15
-					button.TextWrapped = true
-					button.TextXAlignment = Enum.TextXAlignment.Left
-					button.Parent = dropdownContent
-					button.LayoutOrder = i
-
-					local uIPadding = Instance.new("UIPadding")
-					uIPadding.Name = "UIPadding"
-					uIPadding.PaddingBottom = UDim.new(0, 15)
-					uIPadding.PaddingTop = UDim.new(0, 15)
-					uIPadding.Parent = button
-
-					button.MouseButton1Click:Connect(function()
-						updateSelection(v)
-					end)
-
-					options[v] = button
-				end
-			end
-
-			local function updateDropdownPosition()
-				local dropdownPos = dropdown1.AbsolutePosition
-				local dropdownSize = dropdown1.AbsoluteSize
-				local newPosY = dropdownPos.Y + (dropdownSize.Y * 2) + 5
-				local newPosX = dropdownPos.X
-
-				dropdownFrame.Position = UDim2.new(0, newPosX, 0, newPosY)
-			end
-
-			local function toggleDropdown()
-				if animating then
-					return
-				end
-				animating = true
-
-				if dropped then
-					utilities.tween(chevron, TweenInfo.new(0.1, Enum.EasingStyle.Sine), { Rotation = 0 }):Play()
-					local t = utilities.tween(
-						dropdownFrame,
+					utilities.tween(
+						trailing,
 						TweenInfo.new(0.1, Enum.EasingStyle.Sine),
-						{ Size = UDim2.fromOffset(dropdown1.AbsoluteSize.X, 0) }
-					)
-					t:Play()
-					t.Completed:Wait()
-					dropdownFrame.Parent = nil
-					dropped = false
+						{ Size = UDim2.new(1, 0, 0, NewSizeY) }
+					):Play()
+
+					utilities.tween(
+						chevron,
+						TweenInfo.new(0.1, Enum.EasingStyle.Sine),
+						{ Rotation = -180 }
+					):Play()
 				else
-					utilities.tween(chevron, TweenInfo.new(0.1, Enum.EasingStyle.Sine), { Rotation = 180 }):Play()
-					for _, frame in pairs(libData.dropdownFrames) do
-						if frame == dropdownFrame then
-							frame.Size = UDim2.fromOffset(dropdown1.AbsoluteSize.X, 0)
-							frame.Parent = libData.gui
-							utilities
-								.tween(
-									frame,
-									TweenInfo.new(0.1, Enum.EasingStyle.Sine),
-									{ Size = UDim2.fromOffset(dropdown1.AbsoluteSize.X, 150) }
-								)
-								:Play()
-							updateDropdownPosition()
-						else
-							local t = utilities.tween(
-								frame,
-								TweenInfo.new(0.1, Enum.EasingStyle.Sine),
-								{ Size = UDim2.fromOffset(dropdown1.AbsoluteSize.X, 0) }
-							)
-							t:Play()
-							t.Completed:Wait()
-							frame.Parent = nil
-						end
-					end
-					dropped = true
-				end
-				animating = false
-			end
+					utilities.tween(
+						trailing,
+						TweenInfo.new(0.1, Enum.EasingStyle.Sine),
+						{ Size = UDim2.new(1, 0, 0, 0) }
+					):Play()
 
-			dropdown1.MouseButton1Click:Connect(toggleDropdown)
-
-			dropdown1:GetPropertyChangedSignal("AbsolutePosition"):Connect(updateDropdownPosition)
-			dropdown1:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateDropdownPosition)
-
-			dropdownFrame.MouseEnter:Connect(function()
-				hovering = true
-			end)
-
-			dropdownFrame.MouseLeave:Connect(function()
-				hovering = false
-			end)
-
-			services._userInputService.InputBegan:Connect(function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 and not hovering and dropdownFrame.Parent then
-					toggleDropdown()
-				end
-			end)
-
-			function _dropdown:Insert(newOptions)
-				parseOptions(newOptions)
-			end
-
-			function _dropdown:Remove(toRemove)
-				for _, v in ipairs(toRemove) do
-					for i = #_dropdown.Settings.Options, 1, -1 do
-						if _dropdown.Settings.Options[i] == v then
-							table.remove(_dropdown.Settings.Options, i)
-						end
-					end
-
-					if options[v] then
-						options[v]:Destroy()
-						options[v] = nil
-					end
-
-					for i = #selected, 1, -1 do
-						if selected[i] == v then
-							table.remove(selected, i)
-						end
-					end
-					parseSelection()
+					utilities.tween(
+						chevron,
+						TweenInfo.new(0.1, Enum.EasingStyle.Sine),
+						{ Rotation = 0 }
+					):Play()
 				end
 			end
 
-			function _dropdown:UpdateSettings(Settings)
+			leading.MouseButton1Click:Connect(function()
+				_section.Settings.Opened = not _section.Settings.Opened 
+				updateDisclosure(_section.Settings.Opened)
+			end)
+
+			function _section:UpdateSettings(Settings)
 				if Settings.Visible ~= nil then
-					dropdown = Settings.Visible
+					_section.Settings.Visible = Settings.Visible
+					section.Visible = Settings.Visible
+				end
+
+				if Settings.Opened ~= nil then
+					_section.Settings.Opened = Settings.Opened
+					updateDisclosure(Settings.Opened)
 				end
 
 				if Settings.Name then
-					_dropdown.Settings.Name = Settings.Name
-					name1.Text = Settings.Name
-				end
-
-				if Settings.Description ~= nil then
-					_dropdown.Settings.Description = Settings.Description
-					description.Text = Settings.Description or ""
-					description.Visible = Settings.Description and true or false
-				end
-
-				if Settings.Limit ~= nil then
-					_dropdown.Settings.Limit = Settings.Limit
-				end
-
-				if Settings.Minimum then
-					_dropdown.Settings.Minimum = Settings.Minimum
-				end
-
-				if Settings.Callback then
-					_dropdown.Settings.Callback = Settings.Callback
-				end
-
-				if Settings.Options then
-					_dropdown.Settings.Options = Settings.Options
-					for _, v in pairs(options) do
-						v:Destroy()
-					end
-					options = {}
-					parseOptions(Settings.Options)
-				end
-
-				if Settings.Value ~= nil then
-					if type(Settings.Value) == "string" then
-						updateSelection(Settings.Value)
-					elseif type(Settings.Value) == "table" then
-						for _, v in pairs(Settings.Value) do
-							updateSelection(v)
-						end
-					end
+					_section.Settings.Name = Settings.Name
+					name.Text = Settings.Name
 				end
 			end
 
-			local divider = Instance.new("Frame")
-			divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-			divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			divider.BorderSizePixel = 0
-			divider.Size = UDim2.new(1, 0, 0, 1)
-			divider.Parent = tabContent
-
-			function _dropdown:Continue()
-				divider.Visible = false
-				return _dropdown
+			if _section.Settings.Closed == nil then
+				_section.Settings.Closed = true
 			end
-			function _dropdown:End()
-				divider.Visible = true
-				return _dropdown
-			end
-
-			_dropdown:UpdateSettings(_dropdown.Settings)
+			_section:UpdateSettings(_section.Settings)
 
 			if Flag then
-				library.Components[Flag] = _dropdown
+				library.Components[Flag] = _section
 			end
-			return _dropdown:End()
+
+			_section.Content = trailing
+			injectComponents(_section)
+			return _section
 		end
 
-		function _tab:Colorpicker(Settings, Flag)
-			local _colorpicker = { Settings = Settings, Type = "Colorpicker" }
-
-			function _colorpicker:UpdateSettings(Settings) end
-
-			local divider = Instance.new("Frame")
-			divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-			divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			divider.BorderSizePixel = 0
-			divider.Size = UDim2.new(1, 0, 0, 1)
-			divider.Parent = tabContent
-
-			function _colorpicker:Continue()
-				divider.Visible = false
-				return _colorpicker
-			end
-			function _colorpicker:End()
-				divider.Visible = true
-				return _colorpicker
-			end
-
-			if Flag then
-				library.Components[Flag] = _colorpicker
-			end
-			return _colorpicker:End()
-		end
-
-		function _tab:Keybind(Settings, Flag)
-			local _keybind = { Settings = Settings, Type = "Keybind" }
-
-			local keybind = Instance.new("Frame")
-			keybind.AutomaticSize = Enum.AutomaticSize.Y
-			keybind.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-			keybind.BackgroundTransparency = 1
-			keybind.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			keybind.BorderSizePixel = 0
-			keybind.Size = UDim2.fromScale(1, 0)
-			keybind.Visible = _keybind.Settings.Visible == nil and true or _keybind.Settings.Visible
-			keybind.Parent = tabContent
-
-			local keybind1 = Instance.new("TextButton")
-			keybind1.AutoButtonColor = false
-			keybind1.AutomaticSize = Enum.AutomaticSize.Y
-			keybind1.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-			keybind1.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			keybind1.BorderSizePixel = 0
-			keybind1.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json")
-			keybind1.Size = UDim2.new(1, 0, 0, 40)
-			keybind1.Text = ""
-			keybind1.TextColor3 = Color3.fromRGB(0, 0, 0)
-			keybind1.TextSize = 14
-
-			local name = Instance.new("TextLabel")
-			name.AnchorPoint = Vector2.new(0, 0.5)
-			name.AutomaticSize = Enum.AutomaticSize.XY
-			name.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			name.BackgroundTransparency = 1
-			name.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			name.BorderSizePixel = 0
-			name.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
-			name.LayoutOrder = 1
-			name.Position = UDim2.fromScale(0, 0.5)
-			name.TextColor3 = Color3.fromRGB(156, 156, 156)
-			name.TextSize = 15
-			name.TextWrapped = true
-			name.TextXAlignment = Enum.TextXAlignment.Left
-			name.Text = "Unbinded"
-
-			local uIPadding = Instance.new("UIPadding")
-			uIPadding.PaddingBottom = UDim.new(0, 10)
-			uIPadding.PaddingRight = UDim.new(0, 50)
-			uIPadding.PaddingTop = UDim.new(0, 10)
-			uIPadding.Parent = name
-
-			name.Parent = keybind1
-
-			local uIPadding1 = Instance.new("UIPadding")
-			uIPadding1.PaddingLeft = UDim.new(0, 15)
-			uIPadding1.Parent = keybind1
-
-			local uIListLayout = Instance.new("UIListLayout")
-			uIListLayout.FillDirection = Enum.FillDirection.Horizontal
-			uIListLayout.Padding = UDim.new(0, 15)
-			uIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-			uIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-			uIListLayout.Parent = keybind1
-
-			local icon = Instance.new("ImageLabel")
-			icon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			icon.BackgroundTransparency = 1
-			icon.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			icon.BorderSizePixel = 0
-			icon.Image = "rbxassetid://94052787260057"
-			icon.ImageColor3 = Color3.fromRGB(156, 156, 156)
-			icon.Size = UDim2.fromOffset(20, 20)
-			icon.Parent = keybind1
-
-			local uICorner = Instance.new("UICorner")
-			uICorner.CornerRadius = UDim.new(0, 5)
-			uICorner.Parent = keybind1
-
-			keybind1.Parent = keybind
-
-			local isBinding = false
-
-			local function changeBindState(binding)
-				if binding then
-					icon.Visible = false
-					name.Text = "Press a key"
-					name.Size = UDim2.fromScale(1, 0)
-					name.TextXAlignment = Enum.TextXAlignment.Center
-					uIPadding.PaddingRight = UDim.new(0, 15)
-					keybind1.Active = false
-					keybind1.Interactable = false
-				elseif binding == false then
-					icon.Visible = true
-					name.Size = UDim2.fromScale(0, 0)
-					name.TextXAlignment = Enum.TextXAlignment.Left
-					uIPadding.PaddingRight = UDim.new(0, 50)
-					keybind1.Active = true
-					keybind1.Interactable = true
-				else
-					icon.Visible = true
-					name.Text = "Unbinded"
-					name.Size = UDim2.fromScale(0, 0)
-					name.TextXAlignment = Enum.TextXAlignment.Left
-					uIPadding.PaddingRight = UDim.new(0, 50)
-					keybind1.Active = true
-					keybind1.Interactable = true
-				end
-			end
-
-			if _keybind.Settings.Bind then
-				changeBindState(false)
-				if _keybind.Settings.Bind.EnumType == Enum.KeyCode then
-					name.Text = utilities.parseKeyCode(_keybind.Settings.Bind)
-				elseif
-					_keybind.Settings.Bind == Enum.UserInputType.MouseButton1
-					or _keybind.Settings.Bind == Enum.UserInputType.MouseButton2
-				then
-					name.Text = utilities.parseKeyCode(_keybind.Settings.Bind)
-				end
-			else
-				changeBindState(nil)
-			end
-
-			keybind1.InputEnded:Connect(function(input)
-				if
-					input.UserInputType == Enum.UserInputType.MouseButton1
-					or input.UserInputType == Enum.UserInputType.Touch
-				then
-					isBinding = true
-					changeBindState(true)
-				end
-			end)
-
-			services._userInputService.InputBegan:Connect(function(input, gameProcessed)
-				if
-					isBinding
-					and not gameProcessed
-					and not (
-						_keybind.Settings.Blacklist
-						and (
-							table.find(_keybind.Settings.Blacklist, input.KeyCode)
-							or table.find(_keybind.Settings.Blacklist, input.UserInputType)
-						)
-					)
-				then
-					if input.UserInputType == Enum.UserInputType.Keyboard then
-						_keybind.Settings.Bind = input.KeyCode
-						name.Text = utilities.parseKeyCode(input.KeyCode)
-						changeBindState(false)
-
-						if _keybind.Settings.onChanged then
-							utilities.callback(_keybind.Settings.onChanged, _keybind, _keybind.Settings.Bind)
-						end
-						isBinding = false
-					elseif
-						input.UserInputType == Enum.UserInputType.MouseButton1
-						or input.UserInputType == Enum.UserInputType.MouseButton2
-					then
-						_keybind.Settings.Bind = input.UserInputType
-						name.Text = utilities.parseKeyCode(input.UserInputType)
-						changeBindState(false)
-
-						if _keybind.Settings.onChanged then
-							utilities.callback(_keybind.Settings.onChanged, _keybind, _keybind.Settings.Bind)
-						end
-						isBinding = false
-					end
-				end
-			end)
-
-			services._userInputService.InputBegan:Connect(function(input, gameProcessed)
-				if not isBinding then
-					if input.KeyCode == _keybind.Settings.Bind or input.UserInputType == _keybind.Settings.Bind then
-						if _keybind.Settings.Callback then
-							utilities.callback(_keybind.Settings.Callback, _keybind, gameProcessed)
-						end
-						if _keybind.Settings.onHeld then
-							utilities.callback(_keybind.Settings.onHeld, _keybind, true, gameProcessed)
-						end
-					end
-				end
-			end)
-
-			services._userInputService.InputEnded:Connect(function(input, gameProcessed)
-				if
-					not isBinding
-					and (input.KeyCode == _keybind.Settings.Bind or input.UserInputType == _keybind.Settings.Bind)
-				then
-					if _keybind.Settings.onHeld then
-						utilities.callback(_keybind.Settings.onHeld, _keybind, false, gameProcessed)
-					end
-				end
-			end)
-
-			function _keybind:UpdateSettings(Settings)
-				if Settings.Visible ~= nil then
-					_keybind.Settings.Visible = Settings.Visible
-					keybind.Visible = Settings.Visible
-				end
-
-				if Settings.Bind then
-					_keybind.Settings.Bind = Settings.Bind
-
-					changeBindState(false)
-					if _keybind.Settings.Bind.EnumType == Enum.KeyCode then
-						name.Text = utilities.parseKeyCode(_keybind.Settings.Bind)
-					elseif
-						_keybind.Settings.Bind == Enum.UserInputType.MouseButton1
-						or _keybind.Settings.Bind == Enum.UserInputType.MouseButton2
-					then
-						name.Text = utilities.parseKeyCode(_keybind.Settings.Bind)
-					end
-
-					if Settings.Callback then
-						utilities.callback(_keybind.Settings.Callback, _keybind, false)
-					end
-				end
-
-				if Settings.Callback then
-					_keybind.Settings.Callback = Settings.Callback
-				end
-
-				if Settings.onHeld then
-					_keybind.Settings.onHeld = Settings.onHeld
-				end
-
-				if Settings.onChanged then
-					_keybind.Settings.onChanged = Settings.onChanged
-				end
-			end
-
-			local divider = Instance.new("Frame")
-			divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-			divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			divider.BorderSizePixel = 0
-			divider.Size = UDim2.new(1, 0, 0, 1)
-			divider.Parent = tabContent
-
-			function _keybind:Continue()
-				divider.Visible = false
-				return _keybind
-			end
-			function _keybind:End()
-				divider.Visible = true
-				return _keybind
-			end
-
-			_keybind:UpdateSettings(_keybind.Settings)
-
-			if Flag then
-				library.Components[Flag] = _keybind
-			end
-			return _keybind:End()
-		end
-
-		function _tab:Header(Settings, Flag)
-			local _header = { Settings = Settings }
-
-			local header = Instance.new("Frame")
-			header.AutomaticSize = Enum.AutomaticSize.Y
-			header.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			header.BackgroundTransparency = 1
-			header.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			header.BorderSizePixel = 0
-			header.Size = UDim2.fromScale(1, 0)
-			header.Parent = tabContent
-
-			local uIPadding = Instance.new("UIPadding")
-			uIPadding.PaddingBottom = UDim.new(0, 0)
-			uIPadding.PaddingTop = UDim.new(0, 8)
-			uIPadding.Parent = header
-
-			local uIListLayout = Instance.new("UIListLayout")
-			uIListLayout.Padding = UDim.new(0, 5)
-			uIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-			uIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-			uIListLayout.Parent = header
-
-			local name = Instance.new("TextLabel")
-			name.AutomaticSize = Enum.AutomaticSize.XY
-			name.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			name.BackgroundTransparency = 1
-			name.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			name.BorderSizePixel = 0
-			name.FontFace = Font.new(
-				"rbxassetid://16658237174",
-				Enum.FontWeight.Bold,
-				Enum.FontStyle.Normal
-			)
-			name.RichText = true
-			name.TextColor3 = Color3.fromRGB(225, 225, 225)
-			name.TextSize = 22
-			name.TextWrapped = true
-			name.TextXAlignment = Enum.TextXAlignment.Left
-			name.Parent = header
-
-			function _header:UpdateSettings(Settings)
-				if Settings.Text then
-					_header.Settings.Text = Settings.Text
-					name.Text = Settings.Text
-				end
-				if Settings.Visible ~= nil then
-					_header.Settings.Visible = Settings.Visible
-					header.Visible = Settings.Visible
-				end
-			end
-			
-			_header:UpdateSettings(_header.Settings)
-
-			if Flag then
-				library.Components[Flag] = _header
-			end
-			return _header
-		end
-
-		function _tab:Divider(Settings, Flag)
-			local _divider = { Settings = Settings }
-
-			local divider = Instance.new("Frame")
-			divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-			divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
-			divider.BorderSizePixel = 0
-			divider.Size = UDim2.new(1, 0, 0, 1)
-			divider.Parent = tabContent
-			divider.Visible = _divider.Settings
-					and (_divider.Settings.Visible == nil and true or _divider.Settings.Visible)
-				or true
-
-			function _divider:UpdateSettings(Settings)
-				if Settings.Visible ~= nil then
-					_divider.Settings.Visible = Settings.Visible
-					divider.Visible = Settings.Visible
-				end
-			end
-
-			if Flag then
-				library.Components[Flag] = _divider
-			end
-			return _divider
-		end
-
+		_tab.Content = tabContent
+		injectComponents(_tab)
 		return _tab
 	end
 
@@ -3089,6 +3257,7 @@ getCC()
 services._workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(getCC)
 
 libData.gui = utilities.secureGui({
+	OnTopOfCoreBlur = true,
 	ScreenInsets = Enum.ScreenInsets.None,
 	ResetOnSpawn = false,
 	ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
@@ -3123,14 +3292,10 @@ local notifListener = function(instance)
 		for i, v in pairs(libData.notifSystem.notifInstances) do
 			if i ~= newNotif then
 				utilities
-					.tween(
-						v,
-						TweenInfo.new(0.25, Enum.EasingStyle.Exponential),
-						{
-							Position = v.Position
-								- UDim2.new(0, 0, 0, libData.notifSystem.notifInstances[newNotif].AbsoluteSize.Y + 10),
-						}
-					)
+					.tween(v, TweenInfo.new(0.25, Enum.EasingStyle.Exponential), {
+						Position = v.Position
+							- UDim2.new(0, 0, 0, libData.notifSystem.notifInstances[newNotif].AbsoluteSize.Y + 10),
+					})
 					:Play()
 			end
 		end
