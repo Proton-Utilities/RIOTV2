@@ -6,9 +6,8 @@
 --[[
     @repository https://github.com/Proton-Utilities/RIOTV2
 
-    @author biggaboy212
     @name RIOT V2
-    @version v-ImNotUpdatingThisEveryFuckingBuild
+    @author Proton Utilities
 
     This file was automatically generated with darklua, it is not intended for manual editing.
 --]]

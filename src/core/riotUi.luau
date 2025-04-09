@@ -402,7 +402,6 @@ function CreateSection(Parent, Settings, Flag)
 
 	section.Parent = Parent
 
-
 	local function updateDisclosure(state)
 		if state then
 			local Components = {}
@@ -419,39 +418,29 @@ function CreateSection(Parent, Settings, Flag)
 				NewSizeY += (#Components - 1) * uIListLayout.Padding.Offset
 			end
 
-			utilities.tween(
-				trailing,
-				TweenInfo.new(0.15, Enum.EasingStyle.Sine),
-				{ Size = UDim2.new(1, 0, 0, NewSizeY) }
-			):Play()
+			utilities
+				.tween(trailing, TweenInfo.new(0.15, Enum.EasingStyle.Sine), { Size = UDim2.new(1, 0, 0, NewSizeY) })
+				:Play()
 
-			utilities.tween(
-				chevron,
-				TweenInfo.new(0.15, Enum.EasingStyle.Sine),
-				{ Rotation = -180 }
-			):Play()
+			utilities.tween(chevron, TweenInfo.new(0.15, Enum.EasingStyle.Sine), { Rotation = -180 }):Play()
 		else
-			utilities.tween(
-				trailing,
-				TweenInfo.new(0.15, Enum.EasingStyle.Sine),
-				{ Size = UDim2.new(1, 0, 0, 0) }
-			):Play()
+			utilities
+				.tween(trailing, TweenInfo.new(0.15, Enum.EasingStyle.Sine), { Size = UDim2.new(1, 0, 0, 0) })
+				:Play()
 
-			utilities.tween(
-				chevron,
-				TweenInfo.new(0.15, Enum.EasingStyle.Sine),
-				{ Rotation = 0 }
-			):Play()
+			utilities.tween(chevron, TweenInfo.new(0.15, Enum.EasingStyle.Sine), { Rotation = 0 }):Play()
 		end
 	end
 
 	leading.MouseButton1Click:Connect(function()
-		_section.Settings.Opened = not _section.Settings.Opened 
+		_section.Settings.Opened = not _section.Settings.Opened
 		updateDisclosure(_section.Settings.Opened)
 	end)
 
 	local function trackChild(child)
-		if not child:IsA("GuiObject") then return end
+		if not child:IsA("GuiObject") then
+			return
+		end
 
 		child:GetPropertyChangedSignal("Visible"):Connect(function()
 			if _section.Settings.Opened then
@@ -512,7 +501,6 @@ function CreateSection(Parent, Settings, Flag)
 	injectComponents(_section)
 	return _section
 end
-
 
 function CreateButton(Parent, Settings, Flag)
 	local _button = { Settings = Settings }
@@ -788,6 +776,9 @@ function CreateToggle(Parent, Settings, Flag)
 	if Flag then
 		library.Components[Flag] = _toggle
 	end
+
+	_toggle.Content = Parent
+	injectComponents(_toggle, "Colorpicker")
 	return _toggle:End()
 end
 
@@ -948,6 +939,7 @@ function CreateSlider(Parent, Settings, Flag)
 	slider1.Size = UDim2.new(1, 0, 0, 10)
 	slider1.Text = ""
 	slider1.AutoButtonColor = false
+	slider1.LayoutOrder = 1
 
 	local uICorner = Instance.new("UICorner")
 	uICorner.Name = "UICorner"
@@ -1913,7 +1905,439 @@ end
 function CreateColorpicker(Parent, Settings, Flag)
 	local _colorpicker = { Settings = Settings, Type = "Colorpicker" }
 
-	function _colorpicker:UpdateSettings(Settings) end
+	local colorpicker = Instance.new("Frame")
+	colorpicker.Name = "Colorpicker"
+	colorpicker.AutomaticSize = Enum.AutomaticSize.Y
+	colorpicker.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	colorpicker.BackgroundTransparency = 1
+	colorpicker.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	colorpicker.BorderSizePixel = 0
+	colorpicker.Size = UDim2.fromScale(1, 0)
+
+	local uIPadding = Instance.new("UIPadding")
+	uIPadding.Name = "UIPadding"
+	uIPadding.PaddingBottom = UDim.new(0, 8)
+	uIPadding.PaddingTop = UDim.new(0, 8)
+	uIPadding.Parent = colorpicker
+
+	local elementInfo = Instance.new("Frame")
+	elementInfo.Name = "ElementInfo"
+	elementInfo.AutomaticSize = Enum.AutomaticSize.Y
+	elementInfo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	elementInfo.BackgroundTransparency = 1
+	elementInfo.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	elementInfo.BorderSizePixel = 0
+	elementInfo.Size = UDim2.fromScale(1, 0)
+
+	local info = Instance.new("Frame")
+	info.Name = "Info"
+	info.AutomaticSize = Enum.AutomaticSize.Y
+	info.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	info.BackgroundTransparency = 1
+	info.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	info.BorderSizePixel = 0
+	info.Size = UDim2.new(1, -80, 0, 0)
+
+	local name = Instance.new("TextLabel")
+	name.Name = "Name"
+	name.AutomaticSize = Enum.AutomaticSize.XY
+	name.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	name.BackgroundTransparency = 1
+	name.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	name.BorderSizePixel = 0
+	name.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+	name.RichText = true
+	name.Text = "Name"
+	name.TextColor3 = Color3.fromRGB(225, 225, 225)
+	name.TextSize = 16
+	name.TextWrapped = true
+	name.TextXAlignment = Enum.TextXAlignment.Left
+	name.Parent = info
+	name.Visible = false
+
+	local uIListLayout = Instance.new("UIListLayout")
+	uIListLayout.Name = "UIListLayout"
+	uIListLayout.Padding = UDim.new(0, 5)
+	uIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	uIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+	uIListLayout.Parent = info
+
+	local description = Instance.new("TextLabel")
+	description.Name = "Description"
+	description.AutomaticSize = Enum.AutomaticSize.XY
+	description.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	description.BackgroundTransparency = 1
+	description.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	description.BorderSizePixel = 0
+	description.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+	description.LayoutOrder = 1
+	description.RichText = true
+	description.Text = "Description"
+	description.TextColor3 = Color3.fromRGB(80, 80, 80)
+	description.TextSize = 12
+	description.TextWrapped = true
+	description.TextXAlignment = Enum.TextXAlignment.Left
+	description.Parent = info
+	description.Visible = false
+
+	info.Parent = elementInfo
+
+	elementInfo.Parent = colorpicker
+
+	local uIListLayout1 = Instance.new("UIListLayout")
+	uIListLayout1.Name = "UIListLayout"
+	uIListLayout1.Padding = UDim.new(0, 15)
+	uIListLayout1.SortOrder = Enum.SortOrder.LayoutOrder
+	uIListLayout1.Parent = colorpicker
+
+	local pickerColors = Instance.new("Frame")
+	pickerColors.Name = "PickerColors"
+	pickerColors.AutomaticSize = Enum.AutomaticSize.Y
+	pickerColors.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	pickerColors.BackgroundTransparency = 1
+	pickerColors.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	pickerColors.BorderSizePixel = 0
+	pickerColors.LayoutOrder = 1
+	pickerColors.Size = UDim2.fromScale(1, 0)
+
+	local suggestedColors = Instance.new("Frame")
+	suggestedColors.Name = "SuggestedColors"
+	suggestedColors.AutomaticSize = Enum.AutomaticSize.Y
+	suggestedColors.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	suggestedColors.BackgroundTransparency = 1
+	suggestedColors.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	suggestedColors.BorderSizePixel = 0
+	suggestedColors.Size = UDim2.fromScale(0.7, 0)
+
+	local uIListLayout2 = Instance.new("UIListLayout")
+	uIListLayout2.Name = "UIListLayout"
+	uIListLayout2.FillDirection = Enum.FillDirection.Horizontal
+	uIListLayout2.Padding = UDim.new(0, 8)
+	uIListLayout2.SortOrder = Enum.SortOrder.LayoutOrder
+	uIListLayout2.Parent = suggestedColors
+
+	suggestedColors.Parent = pickerColors
+
+	local customColor = Instance.new("Frame")
+	customColor.Name = "CustomColor"
+	customColor.AnchorPoint = Vector2.new(1, 0)
+	customColor.AutomaticSize = Enum.AutomaticSize.Y
+	customColor.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	customColor.BackgroundTransparency = 1
+	customColor.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	customColor.BorderSizePixel = 0
+	customColor.Position = UDim2.fromScale(1, 0)
+	customColor.Size = UDim2.fromScale(0.3, 0)
+
+	local uIListLayout3 = Instance.new("UIListLayout")
+	uIListLayout3.Name = "UIListLayout"
+	uIListLayout3.FillDirection = Enum.FillDirection.Horizontal
+	uIListLayout3.HorizontalAlignment = Enum.HorizontalAlignment.Right
+	uIListLayout3.Padding = UDim.new(0, 8)
+	uIListLayout3.SortOrder = Enum.SortOrder.LayoutOrder
+	uIListLayout3.VerticalAlignment = Enum.VerticalAlignment.Center
+	uIListLayout3.Parent = customColor
+
+	local name1 = Instance.new("TextLabel")
+	name1.Name = "Name"
+	name1.AutomaticSize = Enum.AutomaticSize.XY
+	name1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	name1.BackgroundTransparency = 1
+	name1.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	name1.BorderSizePixel = 0
+	name1.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+	name1.Text = "Custom"
+	name1.TextColor3 = Color3.fromRGB(200, 200, 200)
+	name1.TextSize = 13
+	name1.TextWrapped = true
+	name1.TextXAlignment = Enum.TextXAlignment.Left
+	name1.Parent = customColor
+
+	local customColor_Color = Instance.new("ImageButton")
+	customColor_Color.Name = "SuggestionColor"
+	customColor_Color.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	customColor_Color.BackgroundTransparency = 1
+	customColor_Color.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	customColor_Color.BorderSizePixel = 0
+	customColor_Color.Image = "rbxassetid://79776444663640"
+	customColor_Color.ImageColor3 = Color3.fromRGB(33, 182, 244)
+	customColor_Color.LayoutOrder = 1
+	customColor_Color.Size = UDim2.fromOffset(15, 15)
+
+	local customColor_Transparency = Instance.new("ImageLabel")
+	customColor_Transparency.Name = "Transparency"
+	customColor_Transparency.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	customColor_Transparency.BackgroundTransparency = 1
+	customColor_Transparency.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	customColor_Transparency.BorderSizePixel = 0
+	customColor_Transparency.Image = "rbxassetid://101467502072089"
+	customColor_Transparency.ImageTransparency = 1
+	customColor_Transparency.Size = UDim2.fromScale(1, 1)
+	customColor_Transparency.Parent = customColor_Color
+
+	customColor_Color.Parent = customColor
+
+	customColor.Parent = pickerColors
+
+	pickerColors.Parent = colorpicker
+
+	colorpicker.Parent = Parent
+
+	local colorpickerInput = Instance.new("Frame")
+	colorpickerInput.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	colorpickerInput.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	colorpickerInput.BorderSizePixel = 0
+	colorpickerInput.Size = UDim2.fromOffset(185, 40)
+	colorpickerInput.Visible = false
+	colorpickerInput.Parent = libData.gui
+
+	local uICorner = Instance.new("UICorner")
+	uICorner.Name = "UICorner"
+	uICorner.CornerRadius = UDim.new(0, 5)
+	uICorner.Parent = colorpickerInput
+
+	local uIListLayoutCPInput = Instance.new("UIListLayout")
+	uIListLayoutCPInput.Name = "UIListLayout"
+	uIListLayoutCPInput.FillDirection = Enum.FillDirection.Horizontal
+	uIListLayoutCPInput.Padding = UDim.new(0, 15)
+	uIListLayoutCPInput.SortOrder = Enum.SortOrder.LayoutOrder
+	uIListLayoutCPInput.VerticalAlignment = Enum.VerticalAlignment.Center
+	uIListLayoutCPInput.Parent = colorpickerInput
+
+	local uIPaddingCPInput = Instance.new("UIPadding")
+	uIPaddingCPInput.Name = "UIPadding"
+	uIPaddingCPInput.PaddingLeft = UDim.new(0, 15)
+	uIPaddingCPInput.Parent = colorpickerInput
+
+	local inputBox = Instance.new("TextBox")
+	inputBox.AnchorPoint = Vector2.new(0, 0.5)
+	inputBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	inputBox.BackgroundTransparency = 1
+	inputBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	inputBox.BorderSizePixel = 0
+	inputBox.ClearTextOnFocus = false
+	inputBox.ClipsDescendants = true
+	inputBox.FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+	inputBox.LayoutOrder = 1
+	inputBox.PlaceholderColor3 = Color3.fromRGB(120, 120, 120)
+	inputBox.PlaceholderText = "R, G, B..."
+	inputBox.Size = UDim2.new(1, -50, 1, 0)
+	inputBox.Text = ""
+	inputBox.TextColor3 = Color3.fromRGB(156, 156, 156)
+	inputBox.TextSize = 15
+	inputBox.TextXAlignment = Enum.TextXAlignment.Left
+	inputBox.Parent = colorpickerInput
+
+	local icon = Instance.new("ImageLabel")
+	icon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	icon.BackgroundTransparency = 1
+	icon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	icon.BorderSizePixel = 0
+	icon.Image = "rbxassetid://88238578565569"
+	icon.ImageColor3 = Color3.fromRGB(156, 156, 156)
+	icon.Size = UDim2.fromOffset(20, 20)
+	icon.Parent = colorpickerInput
+
+	inputBox.AnchorPoint = Vector2.new(0, 0.5)
+	inputBox.Position = UDim2.new(0, 0, 0.5, 0)
+
+	icon.AnchorPoint = Vector2.new(0, 0.5)
+	icon.Position = UDim2.new(0, 0, 0.5, 0)
+
+	function _colorpicker:SetColor(color: Color3, alpha: number)
+		alpha = 1 - alpha or 0
+	
+		_colorpicker.Settings.Color = color
+		_colorpicker.Settings.Transparency = alpha
+	
+		local r = math.round(color.R * 255)
+		local g = math.round(color.G * 255)
+		local b = math.round(color.B * 255)
+		local a = math.round((1 - alpha) * 255)
+	
+		if _colorpicker.Settings.AlphaEnabled == false then
+			inputBox.Text = string.format("%d, %d, %d", r, g, b)
+		else
+			inputBox.Text = string.format("%d, %d, %d, %d", r, g, b, a)
+		end
+	
+		customColor_Color.ImageColor3 = color
+		customColor_Transparency.ImageTransparency = 1 - alpha
+	
+		if _colorpicker.Settings.Callback then
+			utilities.callback(_colorpicker.Settings.Callback, color, alpha)
+		end
+	
+		return _colorpicker
+	end	
+
+	inputBox.FocusLost:Connect(function(enterPressed)
+		if not enterPressed then
+			return
+		end
+	
+		local text = inputBox.Text
+		local r, g, b, a
+	
+		if _colorpicker.Settings.AlphaEnabled == false then
+			r, g, b = text:match("^(%d+)[,%s]+(%d+)[,%s]+(%d+)$")
+			if r and g and b then
+				local rNum = math.clamp(tonumber(r), 0, 255)
+				local gNum = math.clamp(tonumber(g), 0, 255)
+				local bNum = math.clamp(tonumber(b), 0, 255)
+	
+				local color = Color3.fromRGB(rNum, gNum, bNum)
+				_colorpicker:SetColor(color, _colorpicker.Settings.Transparency)
+			else
+				_colorpicker:SetColor(_colorpicker.Settings.Color, _colorpicker.Settings.Transparency)
+			end
+		else
+			r, g, b, a = text:match("^(%d+)[,%s]+(%d+)[,%s]+(%d+)[,%s]+(%d+)$")
+			if r and g and b and a then
+				local rNum = math.clamp(tonumber(r), 0, 255)
+				local gNum = math.clamp(tonumber(g), 0, 255)
+				local bNum = math.clamp(tonumber(b), 0, 255)
+				local aNum = math.clamp(tonumber(a), 0, 255)
+	
+				local color = Color3.fromRGB(rNum, gNum, bNum)
+				local transparency = aNum / 255
+	
+				_colorpicker:SetColor(color, transparency)
+			else
+				_colorpicker:SetColor(_colorpicker.Settings.Color, _colorpicker.Settings.Transparency)
+			end
+		end
+	end)	
+
+	local function updatePos()
+		local buttonAbsPos = customColor_Color.AbsolutePosition
+		local buttonSize = customColor_Color.AbsoluteSize
+
+		local posX = buttonAbsPos.X + buttonSize.X
+		local posY = buttonAbsPos.Y + (buttonSize.Y * 2) + colorpickerInput.AbsoluteSize.Y
+
+		colorpickerInput.Position = UDim2.fromOffset(posX, posY)
+	end
+	updatePos()
+	customColor_Color:GetPropertyChangedSignal("AbsolutePosition"):Connect(updatePos)
+
+	customColor_Color.MouseButton1Click:Connect(function()
+		colorpickerInput.Visible = not colorpickerInput.Visible
+	end)
+
+	inputBox.FocusLost:Connect(function(enterPressed)
+		if not enterPressed then return end
+	
+		local text = inputBox.Text
+		local r, g, b, a
+	
+		if _colorpicker.Settings.AlphaEnabled == false then
+			r, g, b = text:match("^(%d+)[,%s]+(%d+)[,%s]+(%d+)$")
+	
+			if r and g and b then
+				local rNum = math.clamp(tonumber(r), 0, 255)
+				local gNum = math.clamp(tonumber(g), 0, 255)
+				local bNum = math.clamp(tonumber(b), 0, 255)
+	
+				local color = Color3.fromRGB(rNum, gNum, bNum)
+				_colorpicker:SetColor(color, _colorpicker.Settings.Transparency)
+			end
+	
+		else
+			r, g, b, a = text:match("^(%d+)[,%s]+(%d+)[,%s]+(%d+)[,%s]+(%d+)$")
+	
+			if r and g and b and a then
+				local rNum = math.clamp(tonumber(r), 0, 255)
+				local gNum = math.clamp(tonumber(g), 0, 255)
+				local bNum = math.clamp(tonumber(b), 0, 255)
+				local aNum = math.clamp(tonumber(a), 0, 255)
+	
+				local color = Color3.fromRGB(rNum, gNum, bNum)
+				local transparency = aNum / 255
+	
+				_colorpicker:SetColor(color, transparency)
+			end
+		end
+	end)	
+
+	function _colorpicker:UpdateSettings(Settings)
+		Settings = Settings or {}
+		if Settings.Visible ~= nil then
+			_colorpicker.Settings.Visible = Settings.Visible
+			colorpicker.Visible = Settings.Visible
+		end
+
+		if Settings.Name then
+			_colorpicker.Settings.Name = Settings.Name
+			name.Text = Settings.Name
+			name.Visible = Settings.Name and true or false
+		end
+
+		if Settings.Description then
+			_colorpicker.Settings.Description = Settings.Description
+			description.Text = Settings.Description or ""
+			description.Visible = Settings.Description and true or false
+		end
+
+		if Settings.AlphaEnabled ~= nil then
+			_colorpicker.Settings.AlphaEnabled = Settings.AlphaEnabled
+		end
+
+		if Settings.Color then
+			_colorpicker:SetColor(Settings.Color[1], 1-(Settings.Color[2] or 0))
+		end
+
+		if Settings.SuggestionColors then
+			_colorpicker.Settings.SuggestionColors = Settings.SuggestionColors
+
+			for _, child in ipairs(suggestedColors:GetChildren()) do
+				if child:IsA("GuiObject") then
+					child:Destroy()
+				end
+			end
+
+			for i, v in ipairs(Settings.SuggestionColors) do
+				local color = v[1]
+				local alpha = v[2] or 0
+
+				local suggestionColor = Instance.new("ImageButton")
+				suggestionColor.Name = "SuggestionColor"
+				suggestionColor.BackgroundTransparency = 1
+				suggestionColor.BorderSizePixel = 0
+				suggestionColor.Image = "rbxassetid://79776444663640"
+				suggestionColor.ImageColor3 = color
+				suggestionColor.Size = UDim2.fromOffset(15, 15)
+				suggestionColor.LayoutOrder = i
+
+				local transparency = Instance.new("ImageLabel")
+				transparency.Name = "Transparency"
+				transparency.BackgroundTransparency = 1
+				transparency.BorderSizePixel = 0
+				transparency.Image = "rbxassetid://101467502072089"
+				transparency.ImageTransparency = 1 - alpha
+				transparency.Size = UDim2.fromScale(1, 1)
+				transparency.Parent = suggestionColor
+
+				suggestionColor.MouseButton1Click:Connect(function()
+					_colorpicker:SetColor(color, 1-alpha)
+				end)
+
+				suggestionColor.Parent = suggestedColors
+			end
+		end
+
+		if not Settings.Name and not Settings.Description then
+			elementInfo.Visible = false
+			uIPaddingCPInput.PaddingTop = UDim.new(0, 0)
+			uIPaddingCPInput.PaddingBottom = UDim.new(0, 8)
+		else
+			elementInfo.Visible = true
+			uIPaddingCPInput.PaddingTop = UDim.new(0, 8)
+			uIPaddingCPInput.PaddingBottom = UDim.new(0, 8)
+		end
+	end
+
+	_colorpicker:UpdateSettings(_colorpicker.Settings)
 
 	local divider = Instance.new("Frame")
 	divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
@@ -1934,6 +2358,10 @@ function CreateColorpicker(Parent, Settings, Flag)
 	if Flag then
 		library.Components[Flag] = _colorpicker
 	end
+
+	_colorpicker.Content = Parent
+	injectComponents(_colorpicker, "Colorpicker")
+
 	return _colorpicker:End()
 end
 
@@ -2244,10 +2672,17 @@ local SharedConstructors = {
 	Divider = CreateDivider,
 }
 
-function injectComponents(class)
+function injectComponents(class, SpecConstructor)
 	for name, constructor in pairs(SharedConstructors) do
-		class[name] = function(self, ...)
-			return constructor(self.Content, ...)
+		if SpecConstructor and name == SpecConstructor then
+			class[name] = function(self, ...)
+				return constructor(self.Content, ...)
+			end
+			break
+		else
+			class[name] = function(self, ...)
+				return constructor(self.Content, ...)
+			end
 		end
 	end
 end
@@ -3079,39 +3514,29 @@ function library:Window(Settings)
 						NewSizeY += (#Components - 1) * uIListLayout.Padding.Offset
 					end
 
-					utilities.tween(
-						trailing,
-						TweenInfo.new(0.15, Enum.EasingStyle.Sine),
-						{ Size = UDim2.new(1, 0, 0, NewSizeY) }
-					):Play()
+					utilities
+						.tween(trailing, TweenInfo.new(0.15, Enum.EasingStyle.Sine), { Size = UDim2.new(1, 0, 0, NewSizeY) })
+						:Play()
 
-					utilities.tween(
-						chevron,
-						TweenInfo.new(0.15, Enum.EasingStyle.Sine),
-						{ Rotation = -180 }
-					):Play()
+					utilities.tween(chevron, TweenInfo.new(0.15, Enum.EasingStyle.Sine), { Rotation = -180 }):Play()
 				else
-					utilities.tween(
-						trailing,
-						TweenInfo.new(0.15, Enum.EasingStyle.Sine),
-						{ Size = UDim2.new(1, 0, 0, 0) }
-					):Play()
+					utilities
+						.tween(trailing, TweenInfo.new(0.15, Enum.EasingStyle.Sine), { Size = UDim2.new(1, 0, 0, 0) })
+						:Play()
 
-					utilities.tween(
-						chevron,
-						TweenInfo.new(0.15, Enum.EasingStyle.Sine),
-						{ Rotation = 0 }
-					):Play()
+					utilities.tween(chevron, TweenInfo.new(0.15, Enum.EasingStyle.Sine), { Rotation = 0 }):Play()
 				end
 			end
 
 			leading.MouseButton1Click:Connect(function()
-				_section.Settings.Opened = not _section.Settings.Opened 
+				_section.Settings.Opened = not _section.Settings.Opened
 				updateDisclosure(_section.Settings.Opened)
 			end)
 
 			local function trackChild(child)
-				if not child:IsA("GuiObject") then return end
+				if not child:IsA("GuiObject") then
+					return
+				end
 
 				child:GetPropertyChangedSignal("Visible"):Connect(function()
 					if _section.Settings.Opened then
@@ -3215,70 +3640,84 @@ function library:Window(Settings)
 			end
 			if Settings.HealthBar.Color then
 				healthBar.BackgroundColor3 = Settings.HealthBar.Color[1] or healthBar.BackgroundColor3
-				healthBar.Transparency = Settings.HealthBar.Color[2] or healthBar.Transparency
+				if Settings.HealthBar.Color[2] ~= nil then
+					healthBar.Transparency = 1 - Settings.HealthBar.Color[2]
+				end
 			end
 		end
-
+		
 		if Settings.Distance then
 			if Settings.Distance.Visible ~= nil then
-				distance.Visible = Settings.Health.Visible
+				distance.Visible = Settings.Distance.Visible
 			end
 			if Settings.Distance.Color then
 				distance.TextColor3 = Settings.Distance.Color[1] or distance.TextColor3
-				distance.TextTransparency = Settings.Distance.Color[2] or distance.TextTransparency
+				if Settings.Distance.Color[2] ~= nil then
+					distance.TextTransparency = 1 - Settings.Distance.Color[2]
+				end
 			end
 		end
-
+		
 		if Settings.Health then
 			if Settings.Health.Visible ~= nil then
 				health.Visible = Settings.Health.Visible
 			end
 			if Settings.Health.Color then
 				health.TextColor3 = Settings.Health.Color[1] or health.TextColor3
-				health.TextTransparency = Settings.Health.Color[2] or health.TextTransparency
+				if Settings.Health.Color[2] ~= nil then
+					health.TextTransparency = 1 - Settings.Health.Color[2]
+				end
 			end
 		end
-
+		
 		if Settings.Weapon then
 			if Settings.Weapon.Visible ~= nil then
 				weapon.Visible = Settings.Weapon.Visible
 			end
 			if Settings.Weapon.Color then
 				weapon.TextColor3 = Settings.Weapon.Color[1] or weapon.TextColor3
-				weapon.TextTransparency = Settings.Weapon.Color[2] or weapon.TextTransparency
+				if Settings.Weapon.Color[2] ~= nil then
+					weapon.TextTransparency = 1 - Settings.Weapon.Color[2]
+				end
 			end
 		end
-
+		
 		if Settings.Name then
 			if Settings.Name.Visible ~= nil then
 				name.Visible = Settings.Name.Visible
 			end
 			if Settings.Name.Color then
 				name.TextColor3 = Settings.Name.Color[1] or name.TextColor3
-				name.TextTransparency = Settings.Name.Color[2] or name.TextTransparency
+				if Settings.Name.Color[2] ~= nil then
+					name.TextTransparency = 1 - Settings.Name.Color[2]
+				end
 			end
 		end
-
+		
 		if Settings.FillBox then
 			if Settings.FillBox.Visible ~= nil then
 				fillbox.Visible = Settings.FillBox.Visible
 			end
 			if Settings.FillBox.Color then
 				fillbox.BackgroundColor3 = Settings.FillBox.Color[1] or fillbox.BackgroundColor3
-				fillbox.BackgroundTransparency = Settings.FillBox.Color[2] or fillbox.BackgroundTransparency
+				if Settings.FillBox.Color[2] ~= nil then
+					fillbox.BackgroundTransparency = 1 - Settings.FillBox.Color[2]
+				end
 			end
 		end
-
+		
 		if Settings.BoundingBox then
 			if Settings.BoundingBox.Visible ~= nil then
 				boundingbox.Visible = Settings.BoundingBox.Visible
 			end
 			if Settings.BoundingBox.Color then
 				uIStroke.Color = Settings.BoundingBox.Color[1] or uIStroke.Color
-				uIStroke.Transparency = Settings.BoundingBox.Color[2] or uIStroke.Transparency
+				if Settings.BoundingBox.Color[2] ~= nil then
+					uIStroke.Transparency = 1 - Settings.BoundingBox.Color[2]
+				end
 			end
 		end
-
+		
 		if Settings.CornerBox then
 			if Settings.CornerBox.Visible ~= nil then
 				cornerbox.Visible = Settings.CornerBox.Visible
@@ -3286,10 +3725,12 @@ function library:Window(Settings)
 			if Settings.CornerBox.Color then
 				for _, corner in ipairs(corners) do
 					corner.BackgroundColor3 = Settings.CornerBox.Color[1] or corner.BackgroundColor3
-					corner.BackgroundTransparency = Settings.CornerBox.Color[2] or corner.BackgroundTransparency
+					if Settings.CornerBox.Color[2] ~= nil then
+						corner.BackgroundTransparency = 1 - Settings.CornerBox.Color[2]
+					end
 				end
 			end
-		end
+		end		
 	end
 
 	return _window

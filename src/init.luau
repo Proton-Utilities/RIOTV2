@@ -2,11 +2,6 @@
 --!nolint
 
 local Files = {
-    ["linoriaBase"] = {
-        Name = "linoriaBase",
-        Load = require("games/linoriaBase/init.luau"),
-    },
-
     ["Arsenal"] = {
         Name = "Arsenal",
         Load = require("games/Arsenal/init.luau"),
@@ -14,11 +9,6 @@ local Files = {
             286090429
         }
     },
-
-    ["Universal"] = {
-        Name = "Universal",
-        Load = require("games/Universal/init.luau"),
-    }
 }
 
 for _, Game in pairs(Files) do
@@ -31,7 +21,3 @@ for _, Game in pairs(Files) do
         end
     end
 end
-
---Files.newBase:Load()
---Files.Universal:Load()
-Files.Arsenal:Load()

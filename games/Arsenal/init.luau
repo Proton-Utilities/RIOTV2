@@ -26,11 +26,16 @@ return function(self)
 	local TriggerbotSettings = Aiming.Triggerbot
 	local FOVSettings = Aiming.FOVSettings
 
+	--// References
+	local LocalPlayer = Functions.GetPlayer()
+
 	--// Methods
 	local GetService = Functions.SecureService
 
 	--// Services
+	local RunService: RunService = GetService("RunService")
 	local Workspace: Workspace = GetService("Workspace")
+	local Players: Players = GetService("Players")
 	local ReplicatedStorage: ReplicatedStorage = GetService("ReplicatedStorage")
 
 	--// UI Begin
@@ -175,6 +180,45 @@ return function(self)
 					end,
 				})
 
+				FOVSettingsSection:Toggle({
+					Name = "Visible",
+					Description = "draws a circle representing the aimbot FOV radius",
+					State = true,
+					Callback = function(self, value)
+						FOVSettings.Visible = value
+					end,
+				})
+					:Continue()
+					:Colorpicker({
+						AlphaEnabled = false,
+						Color = { Color3.fromRGB(255, 150, 150), 0 },
+						SuggestionColors = {
+							{ Color3.fromRGB(171, 81, 83) },
+							{ Color3.fromRGB(123, 124, 243) },
+							{ Color3.fromRGB(208, 246, 111) },
+							{ Color3.fromRGB(255, 197, 100) },
+							{ Color3.fromRGB(49, 220, 195) },
+						},
+						Callback = function(color, transparency)
+							FOVSettings.Color = color
+						end,
+					})
+					:Continue()
+					:Colorpicker({
+						AlphaEnabled = false,
+						Color = { Color3.fromRGB(150, 255, 150), 0 },
+						SuggestionColors = {
+							{ Color3.fromRGB(171, 81, 83) },
+							{ Color3.fromRGB(123, 124, 243) },
+							{ Color3.fromRGB(208, 246, 111) },
+							{ Color3.fromRGB(255, 197, 100) },
+							{ Color3.fromRGB(49, 220, 195) },
+						},
+						Callback = function(color, transparency)
+							FOVSettings.LockedColor = color
+						end,
+					})
+
 				FOVSettingsSection:Slider({
 					Name = "Radius",
 					Description = "aimbot FOV limit radius",
@@ -187,15 +231,6 @@ return function(self)
 						FOVSettings.Radius = value
 					end,
 				}, "AimbotFOVRadiusSlider")
-
-				FOVSettingsSection:Toggle({
-					Name = "Visible",
-					Description = "draws a circle representing the aimbot FOV radius",
-					State = true,
-					Callback = function(self, value)
-						FOVSettings.Visible = value
-					end,
-				})
 
 				FOVSettingsSection:Slider({
 					Name = "Circle Sides",
@@ -272,11 +307,6 @@ return function(self)
 			local HitboxExpanderSection = Tab:Section({ Name = "Hitbox Expander" })
 		end
 
-		-- Kill Aura
-		do
-			local KillAuraSection = Tab:Section({ Name = "Kill Aura" })
-		end
-
 		-- Gun Modifications
 		do
 			local GunModificationsSection = Tab:Section({ Name = "Gun Modifications" })
@@ -311,12 +341,6 @@ return function(self)
 					end
 				end
 			end
-
-			--[[GunModificationsSection:Toggle({
-				Name = "Wallbang",
-				Description = "lets your guns shoot behind walls",
-				State = false,
-			}, "WallbangToggle")]]
 
 			GunModificationsSection:Toggle({
 				Name = "Automatics",
@@ -375,7 +399,7 @@ return function(self)
 
 			GunModificationsSection:Toggle({
 				Name = "Instant Reload",
-				Description = "instantly reloads your ammo",
+				Description = "removes reload timer",
 				State = false,
 				Callback = function(self, value)
 					if value then
@@ -429,11 +453,11 @@ return function(self)
 
 			GunModificationsSection:Toggle({
 				Name = "Haste",
-				Description = "removes player slowdown and speeds you up",
+				Description = "removes player slowdown",
 				State = false,
 				Callback = function(self, value)
 					if value then
-						UpdateWeaponValue("Speed%", -25)
+						UpdateWeaponValue("Speed%", -150)
 					else
 						RestoreWeaponValue("Speed%")
 					end
@@ -450,6 +474,23 @@ return function(self)
 		do
 			local ESPSection = Tab:Section({ Name = "ESP" })
 
+			ESPSection:Toggle({
+				Name = "Use Team Color",
+				Description = "enables ESP team color",
+				State = false,
+				Callback = function(self, value)
+					ESPShared.useTeamColor = value
+				end,
+			})
+
+			ESPSection:Toggle({
+				Name = "Limit Enabled",
+				Description = "enables distance limit",
+				State = false,
+				Callback = function(self, value)
+					ESPShared.limitDistance = value
+				end,
+			}):Continue()
 			ESPSection:Slider({
 				Name = "Max Distance",
 				Description = "the maximum distance that ESP will render at",
@@ -495,8 +536,13 @@ return function(self)
 						Color = { Team.boxColor[1], Team.boxColor[2] },
 					},
 
+					CornerBox = {
+						Visible = Team.cornerBox,
+						Color = { Team.cornerBoxColor[1], Team.cornerBoxColor[2] },
+					},
+
 					FillBox = {
-						Visible = boxFill,
+						Visible = Team.boxFill,
 						Color = { Team.boxFillColor[1], Team.boxFillColor[2] },
 					},
 				})
@@ -523,6 +569,23 @@ return function(self)
 						UpdateVisualPreview(ESPTarg)
 					end,
 				})
+					:Continue()
+					:Colorpicker({
+						Color = { Color3.fromRGB(77, 92, 143), 0.5 },
+						SuggestionColors = {
+							{ Color3.fromRGB(171, 81, 83) },
+							{ Color3.fromRGB(123, 124, 243) },
+							{ Color3.fromRGB(208, 246, 111) },
+							{ Color3.fromRGB(255, 197, 100) },
+							{ Color3.fromRGB(49, 220, 195) },
+						},
+						Callback = function(color, transparency)
+							ESPTarg.boxColor[1], ESPTarg.boxColor[2] = color, 1 - transparency
+							ESPTarg.boxOutlineColor[2] = 1 - transparency
+
+							UpdateVisualPreview(ESPTarg)
+						end,
+					})
 
 				-- Box Fill
 				Header:Toggle({
@@ -535,6 +598,50 @@ return function(self)
 						UpdateVisualPreview(ESPTarg)
 					end,
 				})
+					:Continue()
+					:Colorpicker({
+						Color = { Color3.fromRGB(0, 0, 0), 0.8 },
+						SuggestionColors = {
+							{ Color3.fromRGB(171, 81, 83) },
+							{ Color3.fromRGB(123, 124, 243) },
+							{ Color3.fromRGB(208, 246, 111) },
+							{ Color3.fromRGB(255, 197, 100) },
+							{ Color3.fromRGB(49, 220, 195) },
+						},
+						Callback = function(color, transparency)
+							ESPTarg.boxFillColor[1], ESPTarg.boxFillColor[2] = color, 1 - transparency
+
+							UpdateVisualPreview(ESPTarg)
+						end,
+					})
+
+				-- Corner Box
+				Header:Toggle({
+					Name = "Corner Box",
+					Description = "enables corner box ESP",
+					State = false,
+					Callback = function(self, value)
+						ESPTarg.cornerBox = value
+
+						UpdateVisualPreview(ESPTarg)
+					end,
+				})
+					:Continue()
+					:Colorpicker({
+						Color = { Color3.fromRGB(123, 124, 2433), 0 },
+						SuggestionColors = {
+							{ Color3.fromRGB(171, 81, 83) },
+							{ Color3.fromRGB(123, 124, 243) },
+							{ Color3.fromRGB(208, 246, 111) },
+							{ Color3.fromRGB(255, 197, 100) },
+							{ Color3.fromRGB(49, 220, 195) },
+						},
+						Callback = function(color, transparency)
+							ESPTarg.cornerBoxColor[1], ESPTarg.cornerBoxColor[2] = color, 1 - transparency
+
+							UpdateVisualPreview(ESPTarg)
+						end,
+					})
 
 				-- Chams
 				Header:Toggle({
@@ -545,6 +652,38 @@ return function(self)
 						ESPTarg.chams = value
 					end,
 				})
+					:Continue()
+					:Colorpicker({
+						Color = { Color3.fromRGB(100, 120, 250), 0.8 },
+						SuggestionColors = {
+							{ Color3.fromRGB(171, 81, 83) },
+							{ Color3.fromRGB(123, 124, 243) },
+							{ Color3.fromRGB(208, 246, 111) },
+							{ Color3.fromRGB(255, 197, 100) },
+							{ Color3.fromRGB(49, 220, 195) },
+						},
+						Callback = function(color, transparency)
+							ESPTarg.chamsFillColor[1], ESPTarg.chamsFillColor[2] = color, transparency
+
+							UpdateVisualPreview(ESPTarg)
+						end,
+					})
+					:Continue()
+					:Colorpicker({
+						Color = { Color3.fromRGB(25, 85, 255), 0.5 },
+						SuggestionColors = {
+							{ Color3.fromRGB(171, 81, 83) },
+							{ Color3.fromRGB(123, 124, 243) },
+							{ Color3.fromRGB(208, 246, 111) },
+							{ Color3.fromRGB(255, 197, 100) },
+							{ Color3.fromRGB(49, 220, 195) },
+						},
+						Callback = function(color, transparency)
+							ESPTarg.chamsOutlineColor[1], ESPTarg.chamsOutlineColor[2] = color, transparency
+
+							UpdateVisualPreview(ESPTarg)
+						end,
+					})
 
 				-- Tracers
 				Header:Toggle({
@@ -555,6 +694,23 @@ return function(self)
 						ESPTarg.tracer = value
 					end,
 				})
+					:Continue()
+					:Colorpicker({
+						Color = { Color3.fromRGB(123, 124, 243), 0 },
+						SuggestionColors = {
+							{ Color3.fromRGB(171, 81, 83) },
+							{ Color3.fromRGB(123, 124, 243) },
+							{ Color3.fromRGB(208, 246, 111) },
+							{ Color3.fromRGB(255, 197, 100) },
+							{ Color3.fromRGB(49, 220, 195) },
+						},
+						Callback = function(color, transparency)
+							ESPTarg.tracerColor[1], ESPTarg.tracerColor[2] = color, 1 - transparency
+							ESPTarg.tracerOutlineColor[2] = 1 - transparency
+
+							UpdateVisualPreview(ESPTarg)
+						end,
+					})
 
 				Header:Dropdown({
 					Name = "Tracers Origin",
@@ -579,6 +735,40 @@ return function(self)
 						UpdateVisualPreview(ESPTarg)
 					end,
 				})
+					:Continue()
+					:Colorpicker({
+						AlphaEnabled = false,
+						Color = { Color3.fromRGB(58, 161, 47), 0 },
+						SuggestionColors = {
+							{ Color3.fromRGB(171, 81, 83) },
+							{ Color3.fromRGB(123, 124, 243) },
+							{ Color3.fromRGB(208, 246, 111) },
+							{ Color3.fromRGB(255, 197, 100) },
+							{ Color3.fromRGB(49, 220, 195) },
+						},
+						Callback = function(color)
+							ESPTarg.healthyColor = color
+
+							UpdateVisualPreview(ESPTarg)
+						end,
+					})
+					:Continue()
+					:Colorpicker({
+						AlphaEnabled = false,
+						Color = { Color3.fromRGB(161, 47, 47), 0 },
+						SuggestionColors = {
+							{ Color3.fromRGB(171, 81, 83) },
+							{ Color3.fromRGB(123, 124, 243) },
+							{ Color3.fromRGB(208, 246, 111) },
+							{ Color3.fromRGB(255, 197, 100) },
+							{ Color3.fromRGB(49, 220, 195) },
+						},
+						Callback = function(color)
+							ESPTarg.dyingColor = color
+
+							UpdateVisualPreview(ESPTarg)
+						end,
+					})
 
 				-- Off Screen Arrows
 				Header:Toggle({
@@ -589,6 +779,24 @@ return function(self)
 						ESPTarg.offScreenArrow = value
 					end,
 				})
+					:Continue()
+					:Colorpicker({
+						Color = { Color3.fromRGB(255, 255, 255), 0 },
+						SuggestionColors = {
+							{ Color3.fromRGB(171, 81, 83) },
+							{ Color3.fromRGB(123, 124, 243) },
+							{ Color3.fromRGB(208, 246, 111) },
+							{ Color3.fromRGB(255, 197, 100) },
+							{ Color3.fromRGB(49, 220, 195) },
+						},
+						Callback = function(color, transparency)
+							ESPTarg.offScreenArrowColor[1], ESPTarg.offScreenArrowColor[2] = color, 1 - transparency
+							ESPTarg.offScreenArrowOutlineColor[2] = 1 - transparency
+
+							UpdateVisualPreview(ESPTarg)
+						end,
+					})
+					:Continue()
 
 				Header:Slider({
 					Name = "Arrow Size",
@@ -601,7 +809,7 @@ return function(self)
 					Callback = function(self, value)
 						ESPShared.offScreenArrowSize = value
 					end,
-				})
+				}):Continue()
 
 				Header:Slider({
 					Name = "Radius",
@@ -627,6 +835,22 @@ return function(self)
 						UpdateVisualPreview(ESPTarg)
 					end,
 				})
+					:Continue()
+					:Colorpicker({
+						Color = { Color3.fromRGB(221, 215, 148), 0 },
+						SuggestionColors = {
+							{ Color3.fromRGB(171, 81, 83) },
+							{ Color3.fromRGB(123, 124, 243) },
+							{ Color3.fromRGB(208, 246, 111) },
+							{ Color3.fromRGB(255, 197, 100) },
+							{ Color3.fromRGB(49, 220, 195) },
+						},
+						Callback = function(color, transparency)
+							ESPTarg.nameColor[1], ESPTarg.nameColor[2] = color, 1 - transparency
+
+							UpdateVisualPreview(ESPTarg)
+						end,
+					})
 
 				-- Distance Text
 				Header:Toggle({
@@ -639,6 +863,22 @@ return function(self)
 						UpdateVisualPreview(ESPTarg)
 					end,
 				})
+					:Continue()
+					:Colorpicker({
+						Color = { Color3.fromRGB(221, 215, 148), 0 },
+						SuggestionColors = {
+							{ Color3.fromRGB(171, 81, 83) },
+							{ Color3.fromRGB(123, 124, 243) },
+							{ Color3.fromRGB(208, 246, 111) },
+							{ Color3.fromRGB(255, 197, 100) },
+							{ Color3.fromRGB(49, 220, 195) },
+						},
+						Callback = function(color, transparency)
+							ESPTarg.distanceColor[1], ESPTarg.distanceColor[2] = color, 1 - transparency
+
+							UpdateVisualPreview(ESPTarg)
+						end,
+					})
 
 				-- Weapon Text
 				Header:Toggle({
@@ -651,6 +891,22 @@ return function(self)
 						UpdateVisualPreview(ESPTarg)
 					end,
 				})
+					:Continue()
+					:Colorpicker({
+						Color = { Color3.fromRGB(200, 173, 182), 0 },
+						SuggestionColors = {
+							{ Color3.fromRGB(171, 81, 83) },
+							{ Color3.fromRGB(123, 124, 243) },
+							{ Color3.fromRGB(208, 246, 111) },
+							{ Color3.fromRGB(255, 197, 100) },
+							{ Color3.fromRGB(49, 220, 195) },
+						},
+						Callback = function(color, transparency)
+							ESPTarg.weaponColor[1], ESPTarg.weaponColor[2] = color, 1 - transparency
+
+							UpdateVisualPreview(ESPTarg)
+						end,
+					})
 
 				-- Health Text
 				Header:Toggle({
@@ -662,20 +918,57 @@ return function(self)
 
 						UpdateVisualPreview(ESPTarg)
 					end,
-				})           
+				})
+					:Continue()
+					:Colorpicker({
+						Color = { Color3.fromRGB(200, 173, 182), 0 },
+						SuggestionColors = {
+							{ Color3.fromRGB(171, 81, 83) },
+							{ Color3.fromRGB(123, 124, 243) },
+							{ Color3.fromRGB(208, 246, 111) },
+							{ Color3.fromRGB(255, 197, 100) },
+							{ Color3.fromRGB(49, 220, 195) },
+						},
+						Callback = function(color, transparency)
+							ESPTarg.healthTextColor[1], ESPTarg.healthTextColor[2] = color, 1 - transparency
+
+							UpdateVisualPreview(ESPTarg)
+						end,
+					})
 			end
 
-            local EnemiesSection = ESPSection:Section({ Name = "Enemies" })
-            AddTeamSettings(ESPEnemy, EnemiesSection)
-            
-            local FriendliesSection = ESPSection:Section({ Name = "Friendlies" })
-            AddTeamSettings(ESPFriendly, FriendliesSection)     
+			local EnemiesSection = ESPSection:Section({ Name = "Enemies" })
+			AddTeamSettings(ESPEnemy, EnemiesSection)
+
+			local FriendliesSection = ESPSection:Section({ Name = "Friendlies" })
+			AddTeamSettings(ESPFriendly, FriendliesSection)
 		end
 	end
 
 	-- [[ Tabs.Misc ]] --
 	do
 		local Tab = Tabs.Misc
+
+		--[[
+		-- Viewmodel
+		do
+			local ViewmodelSection = Tab:Section({ Name = "Viewmodel" })
+
+			Header:Dropdown({
+				Name = "Arms Material",
+				Description = "selects the material for viewmodel arms",
+				Options = Enum.Material:GetEnumItems(),
+				Value = { "Plastic" },
+				Limit = 1,
+				Minimum = 1,
+				Callback = function(self, value)
+					ESPTarg.tracerOrigin = value[1]
+				end,
+			})
+			ViewmodelSection:Dropdown({
+				Name = "Arms Material"
+			})
+		end]]
 	end
 
 	-- [[ Tabs.Cfg ]] --
@@ -685,7 +978,7 @@ return function(self)
 		Tab:Toggle({
 			Name = "Visual preview",
 			Description = "enables a visual preview of your esp",
-			State = false,
+			State = true,
 			Callback = function(self, state)
 				Window:VisualPreview({
 					Visible = state,
@@ -714,58 +1007,64 @@ return function(self)
 
 	--// Initialize
 	ACBypass()
-	Esp.Load()
-
-	Aiming.PlayerAlive = function(Player)
-		return Player.NRPBS and Player.NRPBS.Health and Player.NRPBS.Health.Value < 0
-	end
-	Aiming.Load()
-
 	Tabs.Legit:Select()
 
-	-- Wallbang (non functioning)
-	--[[local Old_Namecall
+	Interface:Notification({
+		Title = `RIOT V2 - {self.Name} | getriot.cc`,
+		Description = `RIOT V2 Loaded!`,
+		Lifetime = 5,
+	})
 
-	Old_Namecall = hookmetamethod(
-		game,
-		"__namecall",
-		newcclosure(function(self, ...)
-			local Method = getnamecallmethod()
-			local Arguments = table.pack(...)
+	-- ESP Init
+	do
+		Esp.Load()
 
-			if Method == "FindPartOnRayWithIgnoreList" then
-				print("find part on ray with ignore list")
+		Esp.getWeapon = function(Player)
+			local weapon = "None"
+
+			if Player then
+				local tool = Player.NRPBS and Player.NRPBS.EquippedTool
+				if tool and tool.Value then
+					weapon = tool.Value
+				end
 			end
 
-			if
-				Method == "FindPartOnRayWithIgnoreList"
-				and Components["WallbangToggle"]
-				and Components["WallbangToggle"].Settings.Value
-				and Workspace:FindFirstChild("Map")
-			then
-				print("asd")
-				table.insert(Arguments[2], Workspace:FindFirstChild("Map"))
-			end
-
-			return Old_Namecall(self, ...)
-		end)
-	)]]
-
-	-- Add Ignore folder to aiming module
-	--[[do
-		local Map: Folder = Workspace:FindFirstChild("Map")
-		local IgnoreFolder: Folder = Map and Map:FindFirstChild("Ignore")
-
-		if IgnoreFolder then
-			for _, child in ipairs(IgnoreFolder:GetChildren()) do
-				Aiming.AddIgnoreInstance(child)
-				print(#Aiming.Ignored)
-			end
-
-			IgnoreFolder.ChildAdded:Connect(function(child)
-				Aiming.AddIgnoreInstance(child)
-				print(#Aiming.Ignored)
-			end)
+			return string.upper(weapon)
 		end
-	end]]
+
+		Esp.getHealth = function(Player)
+			local Nrbps = Player.NRPBS
+			local Health = Nrbps and Nrbps.Health
+			local MaxHealth = Nrbps and Nrbps.MaxHealth
+			if Health and MaxHealth then
+				return Health.Value, MaxHealth.Value
+			end
+			return 100, 100
+		end
+	end
+
+	-- Aiming Init
+	do
+		Aiming.Load()
+		Aiming.PlayerAlive = function(Player)
+			return Player.NRPBS and Player.NRPBS.Health and Player.NRPBS.Health.Value < 0
+		end
+
+		--[[
+			local Map: Folder = Workspace:FindFirstChild("Map")
+			local IgnoreFolder: Folder = Map and Map:FindFirstChild("Ignore")
+
+			if IgnoreFolder then
+				for _, child in ipairs(IgnoreFolder:GetChildren()) do
+					Aiming.AddIgnoreInstance(child)
+					print(#Aiming.Ignored)
+				end
+
+				IgnoreFolder.ChildAdded:Connect(function(child)
+					Aiming.AddIgnoreInstance(child)
+					print(#Aiming.Ignored)
+				end)
+			end
+		]]
+	end
 end

@@ -158,6 +158,8 @@ function EspObject:Construct()
 			boxFill = self:_create("Square", { Filled = true, Visible = false }),
 			boxOutline = self:_create("Square", { Thickness = 2, Visible = false }),
 			box = self:_create("Square", { Thickness = 1, Visible = false }),
+			cornerBox = {},
+			cornerBoxOutline = {},
 			healthBarOutline = self:_create("Line", { Thickness = 6, Visible = false }),
 			healthBar = self:_create("Line", { Thickness = 4, Visible = false }),
 			healthText = self:_create("Text", { Center = true, Visible = false }),
@@ -170,6 +172,11 @@ function EspObject:Construct()
 			arrow = self:_create("Triangle", { Filled = true, Visible = false })
 		}
 	};
+	
+	for _ = 1, 8 do
+		table.insert(self.drawings.visible.cornerBoxOutline, self:_create("Line", { Thickness = 4, Visible = false}))
+		table.insert(self.drawings.visible.cornerBox, self:_create("Line", { Thickness = 2, Visible = false }))
+	end	
 
 	self.renderConnection = runService.RenderStepped:Connect(function(deltaTime)
 		self:Update(deltaTime);
@@ -260,6 +267,64 @@ function EspObject:Render()
 		boxOutline.Size = box.Size;
 		boxOutline.Color = parseColor(self, options.boxOutlineColor[1], true);
 		boxOutline.Transparency = options.boxOutlineColor[2];
+	end
+
+	local cornerBoxEnabled = enabled and onScreen and options.cornerBox
+	local cornerBoxOutlineEnabled = cornerBoxEnabled and options.cornerBoxOutline
+
+	for i = 1, 8 do
+		local cornerLine = visible.cornerBox[i]
+		local outlineLine = visible.cornerBoxOutline[i]
+
+		cornerLine.Visible = cornerBoxEnabled
+		outlineLine.Visible = cornerBoxOutlineEnabled
+	end
+
+	if cornerBoxEnabled then
+		local cornerWidth = (corners.topRight.X - corners.topLeft.X) * 0.2
+		local cornerHeight = (corners.bottomLeft.Y - corners.topLeft.Y) * 0.2
+
+		cornerWidth = math.clamp(cornerWidth, 2, 30)
+		cornerHeight = math.clamp(cornerHeight, 2, 30)
+
+		local function drawCorner(index, origin, horizOffset, vertOffset)
+			local line1 = visible.cornerBox[index]
+			local line2 = visible.cornerBox[index + 1]
+		
+			local extend = 1
+		
+			local extendedHoriz = horizOffset.Unit * (horizOffset.Magnitude + extend)
+			line1.From = origin
+			line1.To = origin + extendedHoriz
+			line1.Color = parseColor(self, options.cornerBoxColor[1])
+			line1.Transparency = options.cornerBoxColor[2]
+		
+			local extendedVert = vertOffset.Unit * (vertOffset.Magnitude + extend)
+			line2.From = origin
+			line2.To = origin + extendedVert
+			line2.Color = parseColor(self, options.cornerBoxColor[1])
+			line2.Transparency = options.cornerBoxColor[2]
+		
+			if cornerBoxOutlineEnabled then
+				local o1 = visible.cornerBoxOutline[index]
+				local o2 = visible.cornerBoxOutline[index + 1]
+		
+				o1.From = line1.From
+				o1.To = line1.To
+				o1.Color = parseColor(self, options.cornerBoxOutlineColor[1])
+				o1.Transparency = options.cornerBoxOutlineColor[2]
+		
+				o2.From = line2.From
+				o2.To = line2.To
+				o2.Color = parseColor(self, options.cornerBoxOutlineColor[1])
+				o2.Transparency = options.cornerBoxOutlineColor[2]
+			end
+		end		
+
+		drawCorner(1, corners.topLeft, Vector2.new(cornerWidth, 0), Vector2.new(0, cornerHeight))
+		drawCorner(3, corners.topRight, Vector2.new(-cornerWidth, 0), Vector2.new(0, cornerHeight))
+		drawCorner(5, corners.bottomRight, Vector2.new(-cornerWidth, 0), Vector2.new(0, -cornerHeight))
+		drawCorner(7, corners.bottomLeft, Vector2.new(cornerWidth, 0), Vector2.new(0, -cornerHeight))
 	end
 
 	visible.boxFill.Visible = enabled and onScreen and options.boxFill;
@@ -547,7 +612,7 @@ local EspInterface = {
 	whitelist = {},
 	shared = {
 		textSize = 13,
-		textFont = 4,
+		textFont = 3,
 		limitDistance = false,
 		maxDistance = 150,
 		useTeamColor = false,
@@ -562,6 +627,10 @@ local EspInterface = {
 			boxOutlineColor = { Color3.new(), 1 },
 			boxFill = false,
 			boxFillColor = { Color3.new(1,0,0), 0.5 },
+			cornerBox = false,
+			cornerBoxColor = { Color3.new(1, 1, 1), 1 },
+			cornerBoxOutline = false,
+			cornerBoxOutlineColor = { Color3.new(0, 0, 0), 1 },
 			healthBar = false,
 			healthyColor = Color3.fromRGB(58, 161, 47),
 			dyingColor = Color3.fromRGB(161, 47, 47),
@@ -609,6 +678,10 @@ local EspInterface = {
 			boxOutlineColor = { Color3.new(), 1 },
 			boxFill = false,
 			boxFillColor = { Color3.new(0,1,0), 0.5 },
+			cornerBox = false,
+			cornerBoxColor = { Color3.new(1, 1, 1), 1 },
+			cornerBoxOutline = false,
+			cornerBoxOutlineColor = { Color3.new(0, 0, 0), 1 },
 			healthBar = false,
 			healthyColor = Color3.new(0,1,0),
 			dyingColor = Color3.new(1,0,0),
