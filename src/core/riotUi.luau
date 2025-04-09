@@ -992,54 +992,49 @@ function CreateSlider(Parent, Settings, Flag)
 		local paddingRight = 10
 		local sliderWidth = slider1.AbsoluteSize.X
 		local usableWidth = sliderWidth - (paddingLeft + paddingRight)
-
-		local alpha = (_slider.Settings.Value - _slider.Settings.Minimum)
-			/ (_slider.Settings.Maximum - _slider.Settings.Minimum)
-
+	
+		local min = _slider.Settings.Minimum
+		local max = _slider.Settings.Maximum
+		local value = _slider.Settings.Value or (min + max) / 2
+	
+		local alpha = (value - min) / (max - min)
+	
 		local circleRadius = clipcircle.AbsoluteSize.X / 2
-
-		bar.Size = UDim2.new(0, usableWidth * alpha + circleRadius, 0, 10)
-
+		bar.Size = UDim2.new(0, usableWidth * alpha, 0, 10)
 		clipcircle.Position = UDim2.new(0, paddingLeft + (usableWidth * alpha), 0.5, 0)
-
-		local precise =
-			tonumber(string.format("%." .. (_slider.Settings.Precision or 0) .. "f", _slider.Settings.Value))
-		local filtered = _slider.Settings.Filter
-			and _slider.Settings.Filter(precise, _slider.Settings.Minimum, _slider.Settings.Maximum)
+	
+		local precise = tonumber(string.format("%." .. (_slider.Settings.Precision or 0) .. "f", value))
+		local filtered = _slider.Settings.Filter and _slider.Settings.Filter(precise, min, max)
 		amount.Text = filtered or precise
 	end
-
+	
 	local function updateSlider(input)
 		local paddingLeft = 10
 		local paddingRight = 10
 		local mousePosition = input.Position.X
 		local halfWidth = circle.AbsoluteSize.X / 2
 		local adjustedMousePosition = mousePosition - (halfWidth * 0.5)
-
+	
 		local barPositionX = slider1.AbsolutePosition.X + paddingLeft
 		local barSizeX = slider1.AbsoluteSize.X - (paddingLeft + paddingRight)
-
+	
 		adjustedMousePosition = math.clamp(adjustedMousePosition - barPositionX, 0, barSizeX)
-
+	
 		local newValue = adjustedMousePosition / barSizeX
 		newValue = _slider.Settings.Minimum + newValue * (_slider.Settings.Maximum - _slider.Settings.Minimum)
-
+	
 		local step = _slider.Settings.Step or 0
-		if step > 0 then
-			_slider.Settings.Value = math.round(newValue / step) * step
-		else
-			_slider.Settings.Value = newValue
-		end
-
+		_slider.Settings.Value = step > 0 and math.round(newValue / step) * step or newValue
+	
 		updateDisplay()
-
+	
 		if _slider.Settings.Callback then
 			utilities.callback(_slider.Settings.Callback, _slider, _slider.Settings.Value)
 		end
 	end
-
+	
 	local dragging = false
-
+	
 	local inputBegan = function(input)
 		if input.UserInputType == Enum.UserInputType.MouseButton1 then
 			dragging = true
@@ -1049,9 +1044,8 @@ function CreateSlider(Parent, Settings, Flag)
 			end
 		end
 	end
-
+	
 	slider1.InputBegan:Connect(inputBegan)
-
 	slider1.InputEnded:Connect(function(input)
 		if input.UserInputType == Enum.UserInputType.MouseButton1 then
 			dragging = false
@@ -1060,58 +1054,61 @@ function CreateSlider(Parent, Settings, Flag)
 			end
 		end
 	end)
-
+	
+	slider1:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateDisplay)
+	updateDisplay()
+	
 	services._userInputService.InputChanged:Connect(function(input)
 		if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
 			updateSlider(input)
 		end
 	end)
-
+	
 	function _slider:UpdateSettings(Settings)
 		if Settings.Visible ~= nil then
 			_slider.Settings.Visible = Settings.Visible
 			slider.Visible = Settings.Visible
 		end
-
+	
 		if Settings.Name then
 			_slider.Settings.Name = Settings.Name
 			name.Text = Settings.Name
 		end
-
+	
 		if Settings.Description ~= nil then
 			_slider.Settings.Description = Settings.Description
 			description.Text = Settings.Description or ""
 			description.Visible = Settings.Description and true or false
 		end
-
+	
 		if Settings.Minimum then
 			_slider.Settings.Minimum = Settings.Minimum
 		end
-
+	
 		if Settings.Maximum then
 			_slider.Settings.Maximum = Settings.Maximum
 		end
-
+	
 		if Settings.Step ~= nil then
 			_slider.Settings.Step = Settings.Step
 		end
-
+	
 		if Settings.Precision ~= nil then
 			_slider.Settings.Precision = Settings.Precision
 		end
-
+	
 		if Settings.Filter then
 			_slider.Settings.Filter = Settings.Filter
 		end
-
+	
 		if Settings.Callback then
 			_slider.Settings.Callback = Settings.Callback
 		end
-
+	
 		if Settings.inputChanged then
 			_slider.Settings.inputChanged = Settings.inputChanged
 		end
-
+	
 		if Settings.Value then
 			local min = _slider.Settings.Minimum
 			local max = _slider.Settings.Maximum
@@ -1121,44 +1118,44 @@ function CreateSlider(Parent, Settings, Flag)
 				value = math.round(value / step) * step
 			end
 			_slider.Settings.Value = value
-
+	
 			task.defer(function()
 				if slider1.AbsoluteSize.X == 0 then
 					slider1:GetPropertyChangedSignal("AbsoluteSize"):Wait()
 				end
-
 				updateDisplay()
-
+	
 				if _slider.Settings.Callback then
 					utilities.callback(_slider.Settings.Callback, _slider, _slider.Settings.Value)
 				end
 			end)
 		end
 	end
-
+	
 	local divider = Instance.new("Frame")
 	divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 	divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	divider.BorderSizePixel = 0
 	divider.Size = UDim2.new(1, 0, 0, 1)
 	divider.Parent = Parent
-
+	
 	function _slider:Continue()
 		divider.Visible = false
 		return _slider
 	end
+	
 	function _slider:End()
 		divider.Visible = true
 		return _slider
 	end
-
+	
 	_slider:UpdateSettings(_slider.Settings)
-
+	
 	if Flag then
 		library.Components[Flag] = _slider
 	end
-
-	return _slider:End()
+	
+	return _slider:End()	
 end
 
 function CreateInput(Parent, Settings, Flag)

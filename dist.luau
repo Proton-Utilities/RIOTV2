@@ -304,22 +304,22 @@ BorderColor3=Color3.fromRGB(0,0,0)B.BorderSizePixel=0 B.Image=
 'rbxassetid://98639906538385'B.ImageColor3=Color3.fromRGB(225,225,225)B.Position
 =UDim2.fromScale(0.5,0.5)B.Size=UDim2.fromOffset(18,18)B.Parent=A A.Parent=w y.
 Parent=w w.Parent=j local C=function()local C,D,E=10,10,w.AbsoluteSize.X local F
-,G,H=E-(C+D),(i.Settings.Value-i.Settings.Minimum)/(i.Settings.Maximum-i.
-Settings.Minimum),A.AbsoluteSize.X/2 y.Size=UDim2.new(0,F*G+H,0,10)A.Position=
-UDim2.new(0,C+(F*G),0.5,0)local I=tonumber(string.format('%.'..(i.Settings.
-Precision or 0)..'f',i.Settings.Value))local J=i.Settings.Filter and i.Settings.
-Filter(I,i.Settings.Minimum,i.Settings.Maximum)p.Text=J or I end local D,E=
-function(D)local E,F,G,H=10,10,D.Position.X,B.AbsoluteSize.X/2 local I,J,K=G-(H*
-0.5),w.AbsolutePosition.X+E,w.AbsoluteSize.X-(E+F)I=math.clamp(I-J,0,K)local L=I
-/K L=i.Settings.Minimum+L*(i.Settings.Maximum-i.Settings.Minimum)local M=i.
-Settings.Step or 0 if M>0 then i.Settings.Value=math.round(L/M)*M else i.
-Settings.Value=L end C()if i.Settings.Callback then e.callback(i.Settings.
-Callback,i,i.Settings.Value)end end,false local F=function(F)if F.UserInputType
-==Enum.UserInputType.MouseButton1 then E=true D(F)if i.Settings.inputChanged
-then e.callback(i.Settings.inputChanged,i,i.Settings.Value,E)end end end w.
-InputBegan:Connect(F)w.InputEnded:Connect(function(G)if G.UserInputType==Enum.
-UserInputType.MouseButton1 then E=false if i.Settings.inputChanged then e.
-callback(i.Settings.inputChanged,i,i.Settings.Value,E)end end end)d.
+,G,H=E-(C+D),i.Settings.Minimum,i.Settings.Maximum local I=i.Settings.Value or(G
++H)/2 local J,K=(I-G)/(H-G),A.AbsoluteSize.X/2 y.Size=UDim2.new(0,F*J,0,10)A.
+Position=UDim2.new(0,C+(F*J),0.5,0)local L=tonumber(string.format('%.'..(i.
+Settings.Precision or 0)..'f',I))local M=i.Settings.Filter and i.Settings.
+Filter(L,G,H)p.Text=M or L end local D,E=function(D)local E,F,G,H=10,10,D.
+Position.X,B.AbsoluteSize.X/2 local I,J,K=G-(H*0.5),w.AbsolutePosition.X+E,w.
+AbsoluteSize.X-(E+F)I=math.clamp(I-J,0,K)local L=I/K L=i.Settings.Minimum+L*(i.
+Settings.Maximum-i.Settings.Minimum)local M=i.Settings.Step or 0 i.Settings.
+Value=M>0 and math.round(L/M)*M or L C()if i.Settings.Callback then e.callback(i
+.Settings.Callback,i,i.Settings.Value)end end,false local F=function(F)if F.
+UserInputType==Enum.UserInputType.MouseButton1 then E=true D(F)if i.Settings.
+inputChanged then e.callback(i.Settings.inputChanged,i,i.Settings.Value,E)end
+end end w.InputBegan:Connect(F)w.InputEnded:Connect(function(G)if G.
+UserInputType==Enum.UserInputType.MouseButton1 then E=false if i.Settings.
+inputChanged then e.callback(i.Settings.inputChanged,i,i.Settings.Value,E)end
+end end)w:GetPropertyChangedSignal'AbsoluteSize':Connect(C)C()d.
 _userInputService.InputChanged:Connect(function(G)if E and G.UserInputType==Enum
 .UserInputType.MouseMovement then D(G)end end)function i:UpdateSettings(G)if G.
 Visible~=nil then i.Settings.Visible=G.Visible j.Visible=G.Visible end if G.Name
@@ -1177,105 +1177,100 @@ self:_create('Line',{Thickness=1,Visible=false})}},visible={tracerOutline=self:
 _create('Line',{Thickness=2,Visible=false}),tracer=self:_create('Line',{
 Thickness=1,Visible=false}),boxFill=self:_create('Square',{Filled=true,Visible=
 false}),boxOutline=self:_create('Square',{Thickness=2,Visible=false}),box=self:
-_create('Square',{Thickness=1,Visible=false}),cornerBox={},cornerBoxOutline={},
-healthBarOutline=self:_create('Line',{Thickness=6,Visible=false}),healthBar=self
-:_create('Line',{Thickness=4,Visible=false}),healthText=self:_create('Text',{
-Center=true,Visible=false}),name=self:_create('Text',{Text=string.upper(self.
-player.DisplayName),Center=true,Visible=false}),distance=self:_create('Text',{
-Center=true,Visible=false}),weapon=self:_create('Text',{Center=true,Visible=
-false})},hidden={arrowOutline=self:_create('Triangle',{Thickness=3,Visible=false
-}),arrow=self:_create('Triangle',{Filled=true,Visible=false})}}for b=1,8 do
-table.insert(self.drawings.visible.cornerBoxOutline,self:_create('Line',{
-Thickness=4,Visible=false}))table.insert(self.drawings.visible.cornerBox,self:
-_create('Line',{Thickness=2,Visible=false}))end self.renderConnection=ab.
-RenderStepped:Connect(function(b)self:Update(b)self:Render(b)end)end function aP
-:Destruct()self.renderConnection:Disconnect()for b=1,#self.bin do self.bin[b]:
-Remove()end an(self)end function aP:Update()local b=self.interface self.options=
-b.team[b.isFriendly(self.player)and'friendly'or'enemy']self.character=b.
-getCharacter(self.player)self.health,self.maxHealth=b.getHealth(self.player)self
-.weapon=b.getWeapon(self.player)self.enabled=self.options.enabled and self.
-character and not(#b.whitelist>0 and not ap(b.whitelist,self.player.UserId))
-local c=self.enabled and av(self.character,'Head')if not c then self.charCache={
-}self.onScreen=false return end local d,e,f=aL(c.Position)self.onScreen=e self.
-distance=f if b.shared.limitDistance and f>b.shared.maxDistance then self.
-onScreen=false end if self.onScreen then local g,h=self.charCache,ax(self.
-character)if not g[1]or self.childCount~=#h then an(g)for i=1,#h do local j=h[i]
-if at(j,'BasePart')and b.isBodyPart(j.Name)then g[#g+1]=j end end self.
-childCount=#h end self.corners=aM(aK(g))elseif self.options.offScreenArrow then
-local g=ah.CFrame local h=ar(g.Position,g.RightVector,Vector3.yAxis)local i=ay(h
-,c.Position)self.direction=Vector2.new(i.X,i.Z).Unit end end function aP:Render(
-)local b,c,d,e,f,g,h,i=self.onScreen or false,self.enabled or false,self.
-drawings.visible,self.drawings.hidden,self.drawings.box3d,self.interface,self.
-options,self.corners d.box.Visible=c and b and h.box d.boxOutline.Visible=d.box.
-Visible and h.boxOutline if d.box.Visible then local j=d.box j.Position=i.
-topLeft j.Size=i.bottomRight-i.topLeft j.Color=aO(self,h.boxColor[1])j.
-Transparency=h.boxColor[2]local m=d.boxOutline m.Position=j.Position m.Size=j.
-Size m.Color=aO(self,h.boxOutlineColor[1],true)m.Transparency=h.boxOutlineColor[
-2]end local j=c and b and h.cornerBox local m=j and h.cornerBoxOutline for p=1,8
-do local q,r=d.cornerBox[p],d.cornerBoxOutline[p]q.Visible=j r.Visible=m end if
-j then local p,q=(i.topRight.X-i.topLeft.X)*0.2,(i.bottomLeft.Y-i.topLeft.Y)*0.2
-p=math.clamp(p,2,30)q=math.clamp(q,2,30)local r=function(r,s,t,u)local v,w,x=d.
-cornerBox[r],d.cornerBox[r+1],1 local y=t.Unit*(t.Magnitude+x)v.From=s v.To=s+y
-v.Color=aO(self,h.cornerBoxColor[1])v.Transparency=h.cornerBoxColor[2]local z=u.
-Unit*(u.Magnitude+x)w.From=s w.To=s+z w.Color=aO(self,h.cornerBoxColor[1])w.
-Transparency=h.cornerBoxColor[2]if m then local A,B=d.cornerBoxOutline[r],d.
-cornerBoxOutline[r+1]A.From=v.From A.To=v.To A.Color=aO(self,h.
-cornerBoxOutlineColor[1])A.Transparency=h.cornerBoxOutlineColor[2]B.From=w.From
-B.To=w.To B.Color=aO(self,h.cornerBoxOutlineColor[1])B.Transparency=h.
-cornerBoxOutlineColor[2]end end r(1,i.topLeft,Vector2.new(p,0),Vector2.new(0,q))
-r(3,i.topRight,Vector2.new(-p,0),Vector2.new(0,q))r(5,i.bottomRight,Vector2.new(
--p,0),Vector2.new(0,-q))r(7,i.bottomLeft,Vector2.new(p,0),Vector2.new(0,-q))end
-d.boxFill.Visible=c and b and h.boxFill if d.boxFill.Visible then local p=d.
-boxFill p.Position=i.topLeft p.Size=i.bottomRight-i.topLeft p.Color=aO(self,h.
-boxFillColor[1])p.Transparency=h.boxFillColor[2]end d.healthBar.Visible=c and b
-and h.healthBar d.healthBarOutline.Visible=d.healthBar.Visible and h.
-healthBarOutline if d.healthBar.Visible then local p,q,r=i.topLeft-aF,i.
-bottomLeft-aF,d.healthBar r.To=q r.From=aC(q,p,self.health/self.maxHealth)r.
-Color=az(h.dyingColor,h.healthyColor,self.health/self.maxHealth)local s=d.
-healthBarOutline s.To=q+aG s.From=p-aG s.Color=aO(self,h.healthBarOutlineColor[1
-],true)s.Transparency=h.healthBarOutlineColor[2]end d.name.Visible=c and b and h
-.name if d.name.Visible then local p=d.name p.Size=g.shared.textSize p.Font=g.
-shared.textFont p.Color=aO(self,h.nameColor[1])p.Transparency=h.nameColor[2]p.
-Outline=h.nameOutline p.OutlineColor=aO(self,h.nameOutlineColor,true)p.Position=
-(i.topLeft+i.topRight)*0.5-Vector2.yAxis*p.TextBounds.Y-aH end local p=i and i.
-topRight.Y or 0 d.distance.Visible=c and b and self.distance and h.distance if d
-.distance.Visible then local q=d.distance q.Text=ak(self.distance*0.28)..'M'q.
-Size=g.shared.textSize q.Font=g.shared.textFont q.Color=aO(self,h.distanceColor[
-1])q.Transparency=h.distanceColor[2]q.Outline=h.distanceOutline q.OutlineColor=
-aO(self,h.distanceOutlineColor,true)q.Position=Vector2.new(i.topRight.X+aI.X+q.
-TextBounds.X*0.5,p-q.TextBounds.Y*0.5-aI.Y)p=p+q.TextBounds.Y+aI.Y end d.weapon.
-Visible=c and b and h.weapon if d.weapon.Visible then local q=d.weapon q.Text=
-self.weapon q.Size=g.shared.textSize q.Font=g.shared.textFont q.Color=aO(self,h.
-weaponColor[1])q.Transparency=h.weaponColor[2]q.Outline=h.weaponOutline q.
-OutlineColor=aO(self,h.weaponOutlineColor,true)q.Position=Vector2.new(i.topRight
-.X+aI.X+q.TextBounds.X*0.5,p-q.TextBounds.Y*0.5)p=p+q.TextBounds.Y+aI.Y end d.
-healthText.Visible=c and b and h.healthText if d.healthText.Visible then local q
-=d.healthText q.Text=ak(self.health)..'HP'q.Size=g.shared.textSize q.Font=g.
-shared.textFont q.Color=aO(self,h.healthTextColor[1])q.Transparency=h.
-healthTextColor[2]q.Outline=h.healthTextOutline q.OutlineColor=aO(self,h.
-healthTextOutlineColor,true)q.Position=Vector2.new(i.topRight.X+aI.X+q.
-TextBounds.X*0.5,p-q.TextBounds.Y*0.5)end d.tracer.Visible=c and b and h.tracer
+_create('Square',{Thickness=1,Visible=false}),cornerBox={},healthBarOutline=self
+:_create('Line',{Thickness=6,Visible=false}),healthBar=self:_create('Line',{
+Thickness=4,Visible=false}),healthText=self:_create('Text',{Center=true,Visible=
+false}),name=self:_create('Text',{Text=string.upper(self.player.DisplayName),
+Center=true,Visible=false}),distance=self:_create('Text',{Center=true,Visible=
+false}),weapon=self:_create('Text',{Center=true,Visible=false})},hidden={
+arrowOutline=self:_create('Triangle',{Thickness=3,Visible=false}),arrow=self:
+_create('Triangle',{Filled=true,Visible=false})}}for b=1,8 do table.insert(self.
+drawings.visible.cornerBox,self:_create('Line',{Thickness=2,Visible=false}))end
+self.renderConnection=ab.RenderStepped:Connect(function(b)self:Update(b)self:
+Render(b)end)end function aP:Destruct()self.renderConnection:Disconnect()for b=1
+,#self.bin do self.bin[b]:Remove()end an(self)end function aP:Update()local b=
+self.interface self.options=b.team[b.isFriendly(self.player)and'friendly'or
+'enemy']self.character=b.getCharacter(self.player)self.health,self.maxHealth=b.
+getHealth(self.player)self.weapon=b.getWeapon(self.player)self.enabled=self.
+options.enabled and self.character and not(#b.whitelist>0 and not ap(b.whitelist
+,self.player.UserId))local c=self.enabled and av(self.character,'Head')if not c
+then self.charCache={}self.onScreen=false return end local d,e,f=aL(c.Position)
+self.onScreen=e self.distance=f if b.shared.limitDistance and f>b.shared.
+maxDistance then self.onScreen=false end if self.onScreen then local g,h=self.
+charCache,ax(self.character)if not g[1]or self.childCount~=#h then an(g)for i=1,
+#h do local j=h[i]if at(j,'BasePart')and b.isBodyPart(j.Name)then g[#g+1]=j end
+end self.childCount=#h end self.corners=aM(aK(g))elseif self.options.
+offScreenArrow then local g=ah.CFrame local h=ar(g.Position,g.RightVector,
+Vector3.yAxis)local i=ay(h,c.Position)self.direction=Vector2.new(i.X,i.Z).Unit
+end end function aP:Render()local b,c,d,e,f,g,h,i=self.onScreen or false,self.
+enabled or false,self.drawings.visible,self.drawings.hidden,self.drawings.box3d,
+self.interface,self.options,self.corners d.box.Visible=c and b and h.box d.
+boxOutline.Visible=d.box.Visible and h.boxOutline if d.box.Visible then local j=
+d.box j.Position=i.topLeft j.Size=i.bottomRight-i.topLeft j.Color=aO(self,h.
+boxColor[1])j.Transparency=h.boxColor[2]local m=d.boxOutline m.Position=j.
+Position m.Size=j.Size m.Color=aO(self,h.boxOutlineColor[1],true)m.Transparency=
+h.boxOutlineColor[2]end local j=c and b and h.cornerBox for m=1,8 do local p=d.
+cornerBox[m]p.Visible=j end if j then local m,p=(i.topRight.X-i.topLeft.X)*0.2,(
+i.bottomLeft.Y-i.topLeft.Y)*0.2 m=math.clamp(m,2,30)p=math.clamp(p,2,30)local q=
+function(q,r,s,t)local u,v=d.cornerBox[q],d.cornerBox[q+1]local w=u.Thickness or
+1 local x=(w-1)local y,z=x/2,s.Unit*(s.Magnitude+x)u.From=r-s.Unit*y u.To=r+z-s.
+Unit*y u.Color=aO(self,h.cornerBoxColor[1])u.Transparency=h.cornerBoxColor[2]
+local A=t.Unit*(t.Magnitude+x)v.From=r-t.Unit*y v.To=r+A-t.Unit*y v.Color=aO(
+self,h.cornerBoxColor[1])v.Transparency=h.cornerBoxColor[2]end q(1,i.topLeft,
+Vector2.new(m,0),Vector2.new(0,p))q(3,i.topRight,Vector2.new(-m,0),Vector2.new(0
+,p))q(5,i.bottomRight,Vector2.new(-m,0),Vector2.new(0,-p))q(7,i.bottomLeft,
+Vector2.new(m,0),Vector2.new(0,-p))end d.boxFill.Visible=c and b and h.boxFill
+if d.boxFill.Visible then local m=d.boxFill m.Position=i.topLeft m.Size=i.
+bottomRight-i.topLeft m.Color=aO(self,h.boxFillColor[1])m.Transparency=h.
+boxFillColor[2]end d.healthBar.Visible=c and b and h.healthBar d.
+healthBarOutline.Visible=d.healthBar.Visible and h.healthBarOutline if d.
+healthBar.Visible then local m,p,q=i.topLeft-aF,i.bottomLeft-aF,d.healthBar q.To
+=p q.From=aC(p,m,self.health/self.maxHealth)q.Color=az(h.dyingColor,h.
+healthyColor,self.health/self.maxHealth)local r=d.healthBarOutline r.To=p+aG r.
+From=m-aG r.Color=aO(self,h.healthBarOutlineColor[1],true)r.Transparency=h.
+healthBarOutlineColor[2]end d.name.Visible=c and b and h.name if d.name.Visible
+then local m=d.name m.Size=g.shared.textSize m.Font=g.shared.textFont m.Color=
+aO(self,h.nameColor[1])m.Transparency=h.nameColor[2]m.Outline=h.nameOutline m.
+OutlineColor=aO(self,h.nameOutlineColor,true)m.Position=(i.topLeft+i.topRight)*
+0.5-Vector2.yAxis*m.TextBounds.Y-aH end local m=i and i.topRight.Y or 0 d.
+distance.Visible=c and b and self.distance and h.distance if d.distance.Visible
+then local p=d.distance p.Text=ak(self.distance*0.28)..'M'p.Size=g.shared.
+textSize p.Font=g.shared.textFont p.Color=aO(self,h.distanceColor[1])p.
+Transparency=h.distanceColor[2]p.Outline=h.distanceOutline p.OutlineColor=aO(
+self,h.distanceOutlineColor,true)p.Position=Vector2.new(i.topRight.X+aI.X+p.
+TextBounds.X*0.5,m-p.TextBounds.Y*0.5-aI.Y)m=m+p.TextBounds.Y+aI.Y end d.weapon.
+Visible=c and b and h.weapon if d.weapon.Visible then local p=d.weapon p.Text=
+self.weapon p.Size=g.shared.textSize p.Font=g.shared.textFont p.Color=aO(self,h.
+weaponColor[1])p.Transparency=h.weaponColor[2]p.Outline=h.weaponOutline p.
+OutlineColor=aO(self,h.weaponOutlineColor,true)p.Position=Vector2.new(i.topRight
+.X+aI.X+p.TextBounds.X*0.5,m-p.TextBounds.Y*0.5)m=m+p.TextBounds.Y+aI.Y end d.
+healthText.Visible=c and b and h.healthText if d.healthText.Visible then local p
+=d.healthText p.Text=ak(self.health)..'HP'p.Size=g.shared.textSize p.Font=g.
+shared.textFont p.Color=aO(self,h.healthTextColor[1])p.Transparency=h.
+healthTextColor[2]p.Outline=h.healthTextOutline p.OutlineColor=aO(self,h.
+healthTextOutlineColor,true)p.Position=Vector2.new(i.topRight.X+aI.X+p.
+TextBounds.X*0.5,m-p.TextBounds.Y*0.5)end d.tracer.Visible=c and b and h.tracer
 d.tracerOutline.Visible=d.tracer.Visible and h.tracerOutline if d.tracer.Visible
-then local q=d.tracer q.Color=aO(self,h.tracerColor[1])q.Transparency=h.
-tracerColor[2]q.To=(i.bottomLeft+i.bottomRight)*0.5 q.From=h.tracerOrigin==
+then local p=d.tracer p.Color=aO(self,h.tracerColor[1])p.Transparency=h.
+tracerColor[2]p.To=(i.bottomLeft+i.bottomRight)*0.5 p.From=h.tracerOrigin==
 'Middle'and ai*0.5 or h.tracerOrigin=='Top'and ai*Vector2.new(0.5,0)or h.
 tracerOrigin=='Bottom'and ai*Vector2.new(0.5,1)or h.tracerOrigin=='Mouse'and ae:
-GetMouseLocation()local r=d.tracerOutline r.Color=aO(self,h.tracerOutlineColor[1
-],true)r.Transparency=h.tracerOutlineColor[2]r.To=q.To r.From=q.From end e.arrow
+GetMouseLocation()local q=d.tracerOutline q.Color=aO(self,h.tracerOutlineColor[1
+],true)q.Transparency=h.tracerOutlineColor[2]q.To=p.To q.From=p.From end e.arrow
 .Visible=c and(not b)and h.offScreenArrow e.arrowOutline.Visible=e.arrow.Visible
-and h.offScreenArrowOutline if e.arrow.Visible and self.direction then local q=e
-.arrow q.PointA=aA(aB(ai*0.5+self.direction*h.offScreenArrowRadius,Vector2.one*
-25),ai-Vector2.one*25)q.PointB=q.PointA-aN(self.direction,0.45)*h.
-offScreenArrowSize q.PointC=q.PointA-aN(self.direction,-0.45)*h.
-offScreenArrowSize q.Color=aO(self,h.offScreenArrowColor[1])q.Transparency=h.
-offScreenArrowColor[2]local r=e.arrowOutline r.PointA=q.PointA r.PointB=q.PointB
-r.PointC=q.PointC r.Color=aO(self,h.offScreenArrowOutlineColor[1],true)r.
-Transparency=h.offScreenArrowOutlineColor[2]end local q=c and b and h.box3d for
-r=1,#f do local s=f[r]for t=1,#s do local u=s[t]u.Visible=q u.Color=aO(self,h.
-box3dColor[1])u.Transparency=h.box3dColor[2]end if q then local t=s[1]t.From=i.
-corners[r]t.To=i.corners[r==4 and 1 or r+1]local u=s[2]u.From=i.corners[r==4 and
-1 or r+1]u.To=i.corners[r==4 and 5 or r+5]local v=s[3]v.From=i.corners[r==4 and
-5 or r+5]v.To=i.corners[r==4 and 8 or r+4]end end end local b={}b.__index=b
+and h.offScreenArrowOutline if e.arrow.Visible and self.direction then local p=e
+.arrow p.PointA=aA(aB(ai*0.5+self.direction*h.offScreenArrowRadius,Vector2.one*
+25),ai-Vector2.one*25)p.PointB=p.PointA-aN(self.direction,0.45)*h.
+offScreenArrowSize p.PointC=p.PointA-aN(self.direction,-0.45)*h.
+offScreenArrowSize p.Color=aO(self,h.offScreenArrowColor[1])p.Transparency=h.
+offScreenArrowColor[2]local q=e.arrowOutline q.PointA=p.PointA q.PointB=p.PointB
+q.PointC=p.PointC q.Color=aO(self,h.offScreenArrowOutlineColor[1],true)q.
+Transparency=h.offScreenArrowOutlineColor[2]end local p=c and b and h.box3d for
+q=1,#f do local r=f[q]for s=1,#r do local t=r[s]t.Visible=p t.Color=aO(self,h.
+box3dColor[1])t.Transparency=h.box3dColor[2]end if p then local s=r[1]s.From=i.
+corners[q]s.To=i.corners[q==4 and 1 or q+1]local t=r[2]t.From=i.corners[q==4 and
+1 or q+1]t.To=i.corners[q==4 and 5 or q+5]local u=r[3]u.From=i.corners[q==4 and
+5 or q+5]u.To=i.corners[q==4 and 8 or q+4]end end end local b={}b.__index=b
 function b.new(c,d)local e=setmetatable({},b)e.player=assert(c,
 'Missing argument #1 (Player expected)')e.interface=assert(d,
 'Missing argument #2 (table expected)')e:Construct()return e end function b:
@@ -1308,139 +1303,137 @@ Color=f.textColor[1]e.Transparency=f.textColor[2]e.Outline=f.textOutline e.
 OutlineColor=f.textOutlineColor e.Size=f.textSize e.Font=f.textFont e.Text=f.
 text:gsub('{name}',string.upper(d.Name)):gsub('{distance}',ak(j*0.28)..'M'):
 gsub('{position}',string.upper(tostring(g)))end return nil end local d={
-_hasLoaded=false,_objectCache={},whitelist={},shared={textSize=13,textFont=3,
+_hasLoaded=false,_objectCache={},whitelist={},shared={textSize=13,textFont=2,
 limitDistance=false,maxDistance=150,useTeamColor=false,includeLocalPlayer=false}
 ,team={enemy={enabled=false,box=false,boxColor={Color3.new(1,0,0),1},boxOutline=
 true,boxOutlineColor={Color3.new(),1},boxFill=false,boxFillColor={Color3.new(1,0
-,0),0.5},cornerBox=false,cornerBoxColor={Color3.new(1,1,1),1},cornerBoxOutline=
-false,cornerBoxOutlineColor={Color3.new(0,0,0),1},healthBar=false,healthyColor=
-Color3.fromRGB(58,161,47),dyingColor=Color3.fromRGB(161,47,47),healthBarOutline=
-true,healthBarOutlineColor={Color3.new(),0.5},healthText=false,healthTextColor={
-Color3.new(1,1,1),1},healthTextOutline=true,healthTextOutlineColor=Color3.new(),
-box3d=false,box3dColor={Color3.new(1,0,0),1},name=false,nameColor={Color3.new(1,
-1,1),1},nameOutline=true,nameOutlineColor=Color3.new(),weapon=false,weaponColor=
-{Color3.new(1,1,1),1},weaponOutline=true,weaponOutlineColor=Color3.new(),
-distance=false,distanceColor={Color3.new(1,1,1),1},distanceOutline=true,
-distanceOutlineColor=Color3.new(),tracer=false,tracerOrigin='Bottom',tracerColor
-={Color3.new(1,0,0),1},tracerOutline=true,tracerOutlineColor={Color3.new(),1},
-offScreenArrow=false,offScreenArrowColor={Color3.new(1,1,1),1},
-offScreenArrowSize=15,offScreenArrowRadius=150,offScreenArrowOutline=true,
-offScreenArrowOutlineColor={Color3.new(),1},chams=false,chamsVisibleOnly=false,
-chamsFillColor={Color3.new(0.2,0.2,0.2),0.5},chamsOutlineColor={Color3.new(1,0,0
-),0}},friendly={enabled=false,box=false,boxColor={Color3.new(0,1,0),1},
-boxOutline=true,boxOutlineColor={Color3.new(),1},boxFill=false,boxFillColor={
-Color3.new(0,1,0),0.5},cornerBox=false,cornerBoxColor={Color3.new(1,1,1),1},
-cornerBoxOutline=false,cornerBoxOutlineColor={Color3.new(0,0,0),1},healthBar=
-false,healthyColor=Color3.new(0,1,0),dyingColor=Color3.new(1,0,0),
+,0),0.5},cornerBox=false,cornerBoxColor={Color3.new(1,1,1),1},healthBar=false,
+healthyColor=Color3.fromRGB(58,161,47),dyingColor=Color3.fromRGB(161,47,47),
 healthBarOutline=true,healthBarOutlineColor={Color3.new(),0.5},healthText=false,
 healthTextColor={Color3.new(1,1,1),1},healthTextOutline=true,
-healthTextOutlineColor=Color3.new(),box3d=false,box3dColor={Color3.new(0,1,0),1}
+healthTextOutlineColor=Color3.new(),box3d=false,box3dColor={Color3.new(1,0,0),1}
 ,name=false,nameColor={Color3.new(1,1,1),1},nameOutline=true,nameOutlineColor=
 Color3.new(),weapon=false,weaponColor={Color3.new(1,1,1),1},weaponOutline=true,
 weaponOutlineColor=Color3.new(),distance=false,distanceColor={Color3.new(1,1,1),
 1},distanceOutline=true,distanceOutlineColor=Color3.new(),tracer=false,
-tracerOrigin='Bottom',tracerColor={Color3.new(0,1,0),1},tracerOutline=true,
+tracerOrigin='Bottom',tracerColor={Color3.new(1,0,0),1},tracerOutline=true,
 tracerOutlineColor={Color3.new(),1},offScreenArrow=false,offScreenArrowColor={
 Color3.new(1,1,1),1},offScreenArrowSize=15,offScreenArrowRadius=150,
 offScreenArrowOutline=true,offScreenArrowOutlineColor={Color3.new(),1},chams=
 false,chamsVisibleOnly=false,chamsFillColor={Color3.new(0.2,0.2,0.2),0.5},
-chamsOutlineColor={Color3.new(0,1,0),0}}}}function d.AddInstance(e,f)local g=d.
-_objectCache if g[e]then warn'Instance handler already exists.'else g[e]={c.new(
-e,f)}end return g[e][1]end function d.Load()assert(not d._hasLoaded,
-'Esp has already been loaded.')local e,f,g=function(e)d._objectCache[e]={aP.new(
-e,d),b.new(e,d)}end,function(e)local f=d._objectCache[e]if f then for g=1,#f do
-f[g]:Destruct()end d._objectCache[e]=nil end end,ac:GetPlayers()for h=d.shared.
-includeLocalPlayer and 1 or 2,#g do e(g[h])end d.playerAdded=ac.PlayerAdded:
-Connect(e)d.playerRemoving=ac.PlayerRemoving:Connect(f)d._hasLoaded=true end
-function d.Unload()assert(d._hasLoaded,'Esp has not been loaded yet.')for e,f in
-next,d._objectCache do for g=1,#f do f[g]:Destruct()end d._objectCache[e]=nil
-end d.playerAdded:Disconnect()d.playerRemoving:Disconnect()d._hasLoaded=false
-end function d.getWeapon(e)local f='None'if e and e.Character then local g=e.
-Character:FindFirstChildOfClass'Tool'if g then f=g.Name end end return string.
-upper(f)end function d.isFriendly(e)return e.Team and e.Team==ag.Team end
-function d.getTeamColor(e)return e.Team and e.Team.TeamColor and e.Team.
-TeamColor.Color end function d.getCharacter(e)return e.Character end function d.
-isBodyPart(e)return e=='Head'or e:find'Torso'or e:find'Leg'or e:find'Arm'end
-function d.getHealth(e)local f=e and d.getCharacter(e)local g=f and aw(f,
-'Humanoid')if g then return g.Health,g.MaxHealth end return 100,100 end return d
-end function a.e()local aa,ab,ac,ad,ae,af,ag,ah,ai,aj,ak,al,am,an=game,workspace
-,Vector2.new,Vector3.zero,CFrame.new,Color3.fromRGB,Drawing.new,TweenInfo.new,
-mousemoverel or(Input and Input.MouseMove),table.find,table.remove,string.lower,
-string.sub,math.clamp local ao=getrawmetatable and getrawmetatable(aa)or{__index
-=function(ao,ap)return ao[ap]end,__newindex=function(ao,ap,aq)ao[ap]=aq end}
-local ap,aq=ao.__index,ao.__newindex local ar=ap(aa,'GetService')local as,at,au,
-av=ar(aa,'RunService'),ar(aa,'UserInputService'),ar(aa,'TweenService'),ar(aa,
-'Players')local aw,ax,ay,az,aA=ap(av,'LocalPlayer'),ap(ab,'CurrentCamera'),ap(aa
-,'FindFirstChild'),ap(aa,'FindFirstChildOfClass'),ap(aa,'GetDescendants')local
-aB,aC,aD,aE,aF,aG,aH,aI,aJ,aK,aL,aM=ap(ax,'WorldToViewportPoint'),ap(ax,
-'GetPartsObscuringTarget'),ap(at,'GetMouseLocation'),ap(av,'GetPlayers'),2000,
-false,{},ap(aa,'DescendantAdded').Connect,{DeveloperSettings={UpdateMode=
-'RenderStepped',TeamCheckOption='Team'},Triggerbot={Enabled=false,TeamCheck=true
-,AliveCheck=true,WeaponCheck=true,Delay=0,TargetChanged=function(aB)return end},
-Aimbot={Enabled=false,LockMode=2,LockPart='Head',MaxDistance=250,TeamCheck=true,
-AliveCheck=true,WallCheck=1,Sensitivity=0,Sensitivity2=1,OffsetToMoveDirection=
-false,OffsetIncrement=15},FOVSettings={Enabled=false,Visible=true,Radius=90,
-NumSides=60,Thickness=2,Transparency=0,Filled=false,Color=af(255,150,150),
-OutlineColor=af(0,0,0),LockedColor=af(150,255,150)},Blacklisted={},
-FOVCircleOutline=ag'Circle',FOVCircle=ag'Circle'}local aN,aO,aP=aJ,function(aN)
-local aO for aP,b in next,aE(av)do local c=ap(b,'Name')if am(al(c),1,#aN)==al(aN
-)then aO=c end end return aO end,function(aN)return ac(aN.X,aN.Y)end local b=
-function()aN.Locked=nil local b=aN.FOVCircle b.Color=aN.FOVSettings.Color aq(at,
-'MouseDeltaSensitivity',aL)if aK then aK:Cancel()end end function aN.Aimbot.
-SetState(c)aG=c if not c then b()end end function aN.PlayerAlive(c)local d=ap(c,
-'Character')local e=d and az(d,'Humanoid')return ap(e,'Health')<=0 end local c,d
-=function()local c=aN.Aimbot local d=c.LockPart if not aN.Locked then aF=aN.
-FOVSettings.Enabled and aN.FOVSettings.Radius or 2000 for e,f in next,aE(av)do
-local g=ap(f,'Character')local h=g and az(g,'Humanoid')if f~=aw and not aj(aN.
-Blacklisted,ap(f,'Name'))and g and ay(g,d)and h then local i,j=ap(g[d],
-'Position'),aN.DeveloperSettings.TeamCheckOption if c.MaxDistance and(ax.CFrame.
-Position-i).Magnitude>c.MaxDistance then continue end if c.TeamCheck and ap(f,j)
-and ap(f,j)==ap(aw,j)then continue end if c.AliveCheck and aN.PlayerAlive(f)then
-continue end if c.WallCheck==2 or c.WallCheck==3 then local m=aA(ap(aw,
-'Character'))for p,q in next,aA(g)do m[#m+1]=q end if#aC(ax,{i},m)>0 then
-continue end end local m,p,q=aB(ax,i)m=aP(m)q=(aD(at)-m).Magnitude if q<aF and p
-then aF,aN.Locked=q,f end end end else local e=ap(aN.Locked,'Character')if e
-then local f=ay(e,d)if not f then b()return end local g=ap(e[d],'Position')if c.
-MaxDistance and(ax.CFrame.Position-g).Magnitude>c.MaxDistance then b()return end
-local h,i=aB(ax,g)h=aP(h)local j=(aD(at)-h).Magnitude if c.WallCheck==3 then
-local m=aA(ap(aw,'Character'))for p,q in next,aA(e)do m[#m+1]=q end if#aC(ax,{g}
-,m)>0 then b()return end end if(j>aF or not i)then b()end else b()end end end,
-function()local c=aN.Triggerbot if not c.Enabled then c.TargetChanged()return
-end local d=ap(aw,'GetMouse')and aw:GetMouse()if not d then c.TargetChanged()
-return end local e=ab.CurrentCamera local f,g,h=Ray.new(e.CFrame.Position,(d.Hit
-.Position-e.CFrame.Position).Unit*1000),{aw.Character,e},RaycastParams.new()h.
-FilterDescendantsInstances=g h.FilterType=Enum.RaycastFilterType.Blacklist local
-i=ab:Raycast(f.Origin,f.Direction,h)if not i then c.TargetChanged()return end
-local j=i.Instance local m=j:FindFirstAncestorOfClass'Model'if not m then c.
-TargetChanged()return end local p,q={},false for r,s in pairs(m:GetChildren())do
-if s.Name=='Head'or s.Name:find'Torso'or s.Name:find'Leg'or s.Name:find'Arm'then
-table.insert(p,s)end end q=table.find(p,j)or j:IsDescendantOf(table.find(p,j))if
-not q then c.TargetChanged()return end local r=av:GetPlayerFromCharacter(m)if
-not r or r==aw then c.TargetChanged()return end local s=aN.DeveloperSettings.
-TeamCheckOption if c.TeamCheck and ap(r,s)and ap(r,s)==ap(aw,s)then c.
-TargetChanged()return end if c.AliveCheck and aN.PlayerAlive then c.
-TargetChanged()end c.TargetChanged(r)task.wait(c.Delay)mouse1press()task.wait()
-mouse1release()end local e=function()aL=ap(at,'MouseDeltaSensitivity')local e,f,
-g,h,i,j=aN.Aimbot,aN.Triggerbot,aN.FOVCircle,aN.FOVCircleOutline,(aN.FOVSettings
-)aH.RenderSteppedConnection=aI(ap(as,aN.DeveloperSettings.UpdateMode),function()
-local m,p=e.OffsetToMoveDirection,e.LockPart if i.Enabled and e.Enabled then g.
-Color=(aN.Locked and i.LockedColor)or i.Color h.Color=i.OutlineColor g.Thickness
-=i.Thickness h.Thickness=i.Thickness+1 g.Position=aD(at)h.Position=aD(at)g.
-NumSides=i.NumSides h.NumSides=i.NumSides g.Radius=i.Radius h.Radius=i.Radius g.
-Transparency=1-i.Transparency h.Transparency=1-i.Transparency g.Visible=i.
-Visible h.Visible=i.Visible else g.Visible=false h.Visible=false end if f.
-Enabled then d()end if aG and e.Enabled then c()j=m and ap(az(ap(aN.Locked,
-'Character'),'Humanoid'),'MoveDirection')*(an(e.OffsetIncrement,1,30)/10)or ad
-if aN.Locked then local q=ap(ap(aN.Locked,'Character')[p],'Position')local r=aB(
-ax,q+j)local s,t=(r.X-aD(at).X)/e.Sensitivity2,(r.Y-aD(at).Y)/e.Sensitivity2 if
-aN.Aimbot.LockMode==2 then ai(s,t)else if e.Sensitivity>0 then aK=au:Create(ax,
-ah(aN.Aimbot.Sensitivity,Enum.EasingStyle.Sine,Enum.EasingDirection.Out),{CFrame
-=ae(ax.CFrame.Position,q+j)})aK:Play()else aq(ax,'CFrame',ae(ax.CFrame.Position,
-q+j))end end end end end)end function aN.Exit(f)assert(f,
-'Aimbot.Exit: Missing parameter #1 "self" <table>.')for g,h in next,aH do aM(aH[
-g])end e=nil aP=nil b=nil c=nil aO=nil f.FOVCircle:Remove()f.FOVCircleOutline:
-Remove()end function aN.Restart()for f,g in next,aH do aM(aH[f])end e()end
-function aN.Blacklist(f,g)assert(f,
+chamsOutlineColor={Color3.new(1,0,0),0}},friendly={enabled=false,box=false,
+boxColor={Color3.new(0,1,0),1},boxOutline=true,boxOutlineColor={Color3.new(),1},
+boxFill=false,boxFillColor={Color3.new(0,1,0),0.5},cornerBox=false,
+cornerBoxColor={Color3.new(1,1,1),1},healthBar=false,healthyColor=Color3.new(0,1
+,0),dyingColor=Color3.new(1,0,0),healthBarOutline=true,healthBarOutlineColor={
+Color3.new(),0.5},healthText=false,healthTextColor={Color3.new(1,1,1),1},
+healthTextOutline=true,healthTextOutlineColor=Color3.new(),box3d=false,
+box3dColor={Color3.new(0,1,0),1},name=false,nameColor={Color3.new(1,1,1),1},
+nameOutline=true,nameOutlineColor=Color3.new(),weapon=false,weaponColor={Color3.
+new(1,1,1),1},weaponOutline=true,weaponOutlineColor=Color3.new(),distance=false,
+distanceColor={Color3.new(1,1,1),1},distanceOutline=true,distanceOutlineColor=
+Color3.new(),tracer=false,tracerOrigin='Bottom',tracerColor={Color3.new(0,1,0),1
+},tracerOutline=true,tracerOutlineColor={Color3.new(),1},offScreenArrow=false,
+offScreenArrowColor={Color3.new(1,1,1),1},offScreenArrowSize=15,
+offScreenArrowRadius=150,offScreenArrowOutline=true,offScreenArrowOutlineColor={
+Color3.new(),1},chams=false,chamsVisibleOnly=false,chamsFillColor={Color3.new(
+0.2,0.2,0.2),0.5},chamsOutlineColor={Color3.new(0,1,0),0}}}}function d.
+AddInstance(e,f)local g=d._objectCache if g[e]then warn
+'Instance handler already exists.'else g[e]={c.new(e,f)}end return g[e][1]end
+function d.Load()assert(not d._hasLoaded,'Esp has already been loaded.')local e,
+f,g=function(e)d._objectCache[e]={aP.new(e,d),b.new(e,d)}end,function(e)local f=
+d._objectCache[e]if f then for g=1,#f do f[g]:Destruct()end d._objectCache[e]=
+nil end end,ac:GetPlayers()for h=d.shared.includeLocalPlayer and 1 or 2,#g do e(
+g[h])end d.playerAdded=ac.PlayerAdded:Connect(e)d.playerRemoving=ac.
+PlayerRemoving:Connect(f)d._hasLoaded=true end function d.Unload()assert(d.
+_hasLoaded,'Esp has not been loaded yet.')for e,f in next,d._objectCache do for
+g=1,#f do f[g]:Destruct()end d._objectCache[e]=nil end d.playerAdded:Disconnect(
+)d.playerRemoving:Disconnect()d._hasLoaded=false end function d.getWeapon(e)
+local f='None'if e and e.Character then local g=e.Character:
+FindFirstChildOfClass'Tool'if g then f=g.Name end end return string.upper(f)end
+function d.isFriendly(e)return e.Team and e.Team==ag.Team end function d.
+getTeamColor(e)return e.Team and e.Team.TeamColor and e.Team.TeamColor.Color end
+function d.getCharacter(e)return e.Character end function d.isBodyPart(e)return
+e=='Head'or e:find'Torso'or e:find'Leg'or e:find'Arm'end function d.getHealth(e)
+local f=e and d.getCharacter(e)local g=f and aw(f,'Humanoid')if g then return g.
+Health,g.MaxHealth end return 100,100 end return d end function a.e()local aa,ab
+,ac,ad,ae,af,ag,ah,ai,aj,ak,al,am,an=game,workspace,Vector2.new,Vector3.zero,
+CFrame.new,Color3.fromRGB,Drawing.new,TweenInfo.new,mousemoverel or(Input and
+Input.MouseMove),table.find,table.remove,string.lower,string.sub,math.clamp
+local ao=getrawmetatable and getrawmetatable(aa)or{__index=function(ao,ap)return
+ao[ap]end,__newindex=function(ao,ap,aq)ao[ap]=aq end}local ap,aq=ao.__index,ao.
+__newindex local ar=ap(aa,'GetService')local as,at,au,av=ar(aa,'RunService'),ar(
+aa,'UserInputService'),ar(aa,'TweenService'),ar(aa,'Players')local aw,ax,ay,az,
+aA=ap(av,'LocalPlayer'),ap(ab,'CurrentCamera'),ap(aa,'FindFirstChild'),ap(aa,
+'FindFirstChildOfClass'),ap(aa,'GetDescendants')local aB,aC,aD,aE,aF,aG,aH,aI,aJ
+,aK,aL,aM=ap(ax,'WorldToViewportPoint'),ap(ax,'GetPartsObscuringTarget'),ap(at,
+'GetMouseLocation'),ap(av,'GetPlayers'),2000,false,{},ap(aa,'DescendantAdded').
+Connect,{DeveloperSettings={UpdateMode='RenderStepped',TeamCheckOption='Team'},
+Triggerbot={Enabled=false,TeamCheck=true,AliveCheck=true,WeaponCheck=true,Delay=
+0,TargetChanged=function(aB)return end},Aimbot={Enabled=false,LockMode=2,
+LockPart='Head',MaxDistance=250,TeamCheck=true,AliveCheck=true,WallCheck=1,
+Sensitivity=0,Sensitivity2=1,OffsetToMoveDirection=false,OffsetIncrement=15},
+FOVSettings={Enabled=false,Visible=true,Radius=90,NumSides=60,Thickness=2,
+Transparency=0,Filled=false,Color=af(255,150,150),OutlineColor=af(0,0,0),
+LockedColor=af(150,255,150)},Blacklisted={},FOVCircleOutline=ag'Circle',
+FOVCircle=ag'Circle'}local aN,aO,aP=aJ,function(aN)local aO for aP,b in next,aE(
+av)do local c=ap(b,'Name')if am(al(c),1,#aN)==al(aN)then aO=c end end return aO
+end,function(aN)return ac(aN.X,aN.Y)end local b=function()aN.Locked=nil local b=
+aN.FOVCircle b.Color=aN.FOVSettings.Color aq(at,'MouseDeltaSensitivity',aL)if aK
+then aK:Cancel()end end function aN.Aimbot.SetState(c)aG=c if not c then b()end
+end function aN.PlayerAlive(c)local d=ap(c,'Character')local e=d and az(d,
+'Humanoid')return ap(e,'Health')<=0 end local c,d=function()local c=aN.Aimbot
+local d=c.LockPart if not aN.Locked then aF=aN.FOVSettings.Enabled and aN.
+FOVSettings.Radius or 2000 for e,f in next,aE(av)do local g=ap(f,'Character')
+local h=g and az(g,'Humanoid')if f~=aw and not aj(aN.Blacklisted,ap(f,'Name'))
+and g and ay(g,d)and h then local i,j=ap(g[d],'Position'),aN.DeveloperSettings.
+TeamCheckOption if c.MaxDistance and(ax.CFrame.Position-i).Magnitude>c.
+MaxDistance then continue end if c.TeamCheck and ap(f,j)and ap(f,j)==ap(aw,j)
+then continue end if c.AliveCheck and aN.PlayerAlive(f)then continue end if c.
+WallCheck==2 or c.WallCheck==3 then local m=aA(ap(aw,'Character'))for p,q in
+next,aA(g)do m[#m+1]=q end if#aC(ax,{i},m)>0 then continue end end local m,p,q=
+aB(ax,i)m=aP(m)q=(aD(at)-m).Magnitude if q<aF and p then aF,aN.Locked=q,f end
+end end else local e=ap(aN.Locked,'Character')if e then local f=ay(e,d)if not f
+then b()return end local g=ap(e[d],'Position')if c.MaxDistance and(ax.CFrame.
+Position-g).Magnitude>c.MaxDistance then b()return end local h,i=aB(ax,g)h=aP(h)
+local j=(aD(at)-h).Magnitude if c.WallCheck==3 then local m=aA(ap(aw,'Character'
+))for p,q in next,aA(e)do m[#m+1]=q end if#aC(ax,{g},m)>0 then b()return end end
+if(j>aF or not i)then b()end else b()end end end,function()local c=aN.Triggerbot
+if not c.Enabled then c.TargetChanged()return end local d=ap(aw,'GetMouse')and
+aw:GetMouse()if not d then c.TargetChanged()return end local e=ab.CurrentCamera
+local f,g,h=Ray.new(e.CFrame.Position,(d.Hit.Position-e.CFrame.Position).Unit*
+1000),{aw.Character,e},RaycastParams.new()h.FilterDescendantsInstances=g h.
+FilterType=Enum.RaycastFilterType.Blacklist local i=ab:Raycast(f.Origin,f.
+Direction,h)if not i then c.TargetChanged()return end local j=i.Instance local m
+=j:FindFirstAncestorOfClass'Model'if not m then c.TargetChanged()return end
+local p,q={},false for r,s in pairs(m:GetChildren())do if s.Name=='Head'or s.
+Name:find'Torso'or s.Name:find'Leg'or s.Name:find'Arm'then table.insert(p,s)end
+end q=table.find(p,j)or j:IsDescendantOf(table.find(p,j))if not q then c.
+TargetChanged()return end local r=av:GetPlayerFromCharacter(m)if not r or r==aw
+then c.TargetChanged()return end local s=aN.DeveloperSettings.TeamCheckOption if
+c.TeamCheck and ap(r,s)and ap(r,s)==ap(aw,s)then c.TargetChanged()return end if
+c.AliveCheck and aN.PlayerAlive then c.TargetChanged()end c.TargetChanged(r)task
+.wait(c.Delay)mouse1press()task.wait()mouse1release()end local e=function()aL=
+ap(at,'MouseDeltaSensitivity')local e,f,g,h,i,j=aN.Aimbot,aN.Triggerbot,aN.
+FOVCircle,aN.FOVCircleOutline,(aN.FOVSettings)aH.RenderSteppedConnection=aI(ap(
+as,aN.DeveloperSettings.UpdateMode),function()local m,p=e.OffsetToMoveDirection,
+e.LockPart if i.Enabled and e.Enabled then g.Color=(aN.Locked and i.LockedColor)
+or i.Color h.Color=i.OutlineColor g.Thickness=i.Thickness h.Thickness=i.
+Thickness+1 g.Position=aD(at)h.Position=aD(at)g.NumSides=i.NumSides h.NumSides=i
+.NumSides g.Radius=i.Radius h.Radius=i.Radius g.Transparency=1-i.Transparency h.
+Transparency=1-i.Transparency g.Visible=i.Visible h.Visible=i.Visible else g.
+Visible=false h.Visible=false end if f.Enabled then d()end if aG and e.Enabled
+then c()j=m and ap(az(ap(aN.Locked,'Character'),'Humanoid'),'MoveDirection')*(
+an(e.OffsetIncrement,1,30)/10)or ad if aN.Locked then local q=ap(ap(aN.Locked,
+'Character')[p],'Position')local r=aB(ax,q+j)local s,t=(r.X-aD(at).X)/e.
+Sensitivity2,(r.Y-aD(at).Y)/e.Sensitivity2 if aN.Aimbot.LockMode==2 then ai(s,t)
+else if e.Sensitivity>0 then aK=au:Create(ax,ah(aN.Aimbot.Sensitivity,Enum.
+EasingStyle.Sine,Enum.EasingDirection.Out),{CFrame=ae(ax.CFrame.Position,q+j)})
+aK:Play()else aq(ax,'CFrame',ae(ax.CFrame.Position,q+j))end end end end end)end
+function aN.Exit(f)assert(f,'Aimbot.Exit: Missing parameter #1 "self" <table>.')
+for g,h in next,aH do aM(aH[g])end e=nil aP=nil b=nil c=nil aO=nil f.FOVCircle:
+Remove()f.FOVCircleOutline:Remove()end function aN.Restart()for f,g in next,aH
+do aM(aH[f])end e()end function aN.Blacklist(f,g)assert(f,
 'Aimbot.Blacklist: Missing parameter #1 "self" <table>.')assert(g,
 'Aimbot.Blacklist: Missing parameter #2 "Username" <string>.')g=aO(g)assert(f,
 'Aimbot.Blacklist: User '..g.." couldn't be found.")f.Blacklisted[#f.Blacklisted
@@ -1538,8 +1531,12 @@ State=false,Callback=function(aD,aE)if aE then aB('ChargeTime',0)else aC
 'ChargeTime'end end}az:Toggle{Name='Haste',Description='removes player slowdown'
 ,State=false,Callback=function(aD,aE)if aE then aB('Speed%',-150)else aC'Speed%'
 end end}:Continue()end end do local ay=ax.Visuals do local az=ay:Section{Name=
-'ESP'}az:Toggle{Name='Use Team Color',Description='enables ESP team color',State
-=false,Callback=function(aA,aB)aj.useTeamColor=aB end}az:Toggle{Name=
+'ESP'}az:Slider{Name='Text Font',Description='the font ESP text uses',Value=3,
+Minimum=0,Maximum=3,Step=1,Precision=0,Callback=function(aA,aB)aj.textFont=aB
+end}az:Slider{Name='Text Size',Description='the size of ESP text',Value=13,
+Minimum=1,Maximum=20,Step=1,Precision=0,Callback=function(aA,aB)aj.textSize=aB
+end}az:Toggle{Name='Use Team Color',Description='enables ESP team color',State=
+false,Callback=function(aA,aB)aj.useTeamColor=aB end}az:Toggle{Name=
 'Limit Enabled',Description='enables distance limit',State=false,Callback=
 function(aA,aB)aj.limitDistance=aB end}:Continue()az:Slider({Name='Max Distance'
 ,Description='the maximum distance that ESP will render at',Value=500,Minimum=1,

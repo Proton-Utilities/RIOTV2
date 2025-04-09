@@ -474,6 +474,31 @@ return function(self)
 		do
 			local ESPSection = Tab:Section({ Name = "ESP" })
 
+			ESPSection:Slider({
+				Name = "Text Font",
+				Description = "the font ESP text uses",
+				Value = 3,
+				Minimum = 0,
+				Maximum = 3,
+				Step = 1,
+				Precision = 0,
+				Callback = function(self, value)
+					ESPShared.textFont = value
+				end,
+			})
+			ESPSection:Slider({
+				Name = "Text Size",
+				Description = "the size of ESP text",
+				Value = 13,
+				Minimum = 1,
+				Maximum = 20,
+				Step = 1,
+				Precision = 0,
+				Callback = function(self, value)
+					ESPShared.textSize = value
+				end,
+			})
+
 			ESPSection:Toggle({
 				Name = "Use Team Color",
 				Description = "enables ESP team color",

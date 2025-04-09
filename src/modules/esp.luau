@@ -159,7 +159,6 @@ function EspObject:Construct()
 			boxOutline = self:_create("Square", { Thickness = 2, Visible = false }),
 			box = self:_create("Square", { Thickness = 1, Visible = false }),
 			cornerBox = {},
-			cornerBoxOutline = {},
 			healthBarOutline = self:_create("Line", { Thickness = 6, Visible = false }),
 			healthBar = self:_create("Line", { Thickness = 4, Visible = false }),
 			healthText = self:_create("Text", { Center = true, Visible = false }),
@@ -174,7 +173,6 @@ function EspObject:Construct()
 	};
 	
 	for _ = 1, 8 do
-		table.insert(self.drawings.visible.cornerBoxOutline, self:_create("Line", { Thickness = 4, Visible = false}))
 		table.insert(self.drawings.visible.cornerBox, self:_create("Line", { Thickness = 2, Visible = false }))
 	end	
 
@@ -270,14 +268,11 @@ function EspObject:Render()
 	end
 
 	local cornerBoxEnabled = enabled and onScreen and options.cornerBox
-	local cornerBoxOutlineEnabled = cornerBoxEnabled and options.cornerBoxOutline
 
 	for i = 1, 8 do
 		local cornerLine = visible.cornerBox[i]
-		local outlineLine = visible.cornerBoxOutline[i]
 
 		cornerLine.Visible = cornerBoxEnabled
-		outlineLine.Visible = cornerBoxOutlineEnabled
 	end
 
 	if cornerBoxEnabled then
@@ -291,34 +286,21 @@ function EspObject:Render()
 			local line1 = visible.cornerBox[index]
 			local line2 = visible.cornerBox[index + 1]
 		
-			local extend = 1
+			local thickness = line1.Thickness or 1
+			local overlap = (thickness-1)
+			local offset = overlap / 2
 		
-			local extendedHoriz = horizOffset.Unit * (horizOffset.Magnitude + extend)
-			line1.From = origin
-			line1.To = origin + extendedHoriz
+			local extendedHoriz = horizOffset.Unit * (horizOffset.Magnitude + overlap)
+			line1.From = origin - horizOffset.Unit * offset
+			line1.To = origin + extendedHoriz - horizOffset.Unit * offset
 			line1.Color = parseColor(self, options.cornerBoxColor[1])
 			line1.Transparency = options.cornerBoxColor[2]
-		
-			local extendedVert = vertOffset.Unit * (vertOffset.Magnitude + extend)
-			line2.From = origin
-			line2.To = origin + extendedVert
+
+			local extendedVert = vertOffset.Unit * (vertOffset.Magnitude + overlap)
+			line2.From = origin - vertOffset.Unit * offset
+			line2.To = origin + extendedVert - vertOffset.Unit * offset
 			line2.Color = parseColor(self, options.cornerBoxColor[1])
 			line2.Transparency = options.cornerBoxColor[2]
-		
-			if cornerBoxOutlineEnabled then
-				local o1 = visible.cornerBoxOutline[index]
-				local o2 = visible.cornerBoxOutline[index + 1]
-		
-				o1.From = line1.From
-				o1.To = line1.To
-				o1.Color = parseColor(self, options.cornerBoxOutlineColor[1])
-				o1.Transparency = options.cornerBoxOutlineColor[2]
-		
-				o2.From = line2.From
-				o2.To = line2.To
-				o2.Color = parseColor(self, options.cornerBoxOutlineColor[1])
-				o2.Transparency = options.cornerBoxOutlineColor[2]
-			end
 		end		
 
 		drawCorner(1, corners.topLeft, Vector2.new(cornerWidth, 0), Vector2.new(0, cornerHeight))
@@ -612,7 +594,7 @@ local EspInterface = {
 	whitelist = {},
 	shared = {
 		textSize = 13,
-		textFont = 3,
+		textFont = 2,
 		limitDistance = false,
 		maxDistance = 150,
 		useTeamColor = false,
@@ -629,8 +611,6 @@ local EspInterface = {
 			boxFillColor = { Color3.new(1,0,0), 0.5 },
 			cornerBox = false,
 			cornerBoxColor = { Color3.new(1, 1, 1), 1 },
-			cornerBoxOutline = false,
-			cornerBoxOutlineColor = { Color3.new(0, 0, 0), 1 },
 			healthBar = false,
 			healthyColor = Color3.fromRGB(58, 161, 47),
 			dyingColor = Color3.fromRGB(161, 47, 47),
@@ -680,8 +660,6 @@ local EspInterface = {
 			boxFillColor = { Color3.new(0,1,0), 0.5 },
 			cornerBox = false,
 			cornerBoxColor = { Color3.new(1, 1, 1), 1 },
-			cornerBoxOutline = false,
-			cornerBoxOutlineColor = { Color3.new(0, 0, 0), 1 },
 			healthBar = false,
 			healthyColor = Color3.new(0,1,0),
 			dyingColor = Color3.new(1,0,0),
