@@ -11,6 +11,7 @@ return function(self)
 
 	local Esp = require("modules/esp.luau")
 	local Aiming = require("modules/aiming.luau")
+	local SilentAim = require("games/Arsenal/silentAim.luau")
 
 	--// Variables
 	local Components = Interface.Components
@@ -24,7 +25,11 @@ return function(self)
 
 	local AimbotSettings = Aiming.Aimbot
 	local TriggerbotSettings = Aiming.Triggerbot
-	local FOVSettings = Aiming.FOVSettings
+	local AimbotFOVSettings = Aiming.FOVSettings
+
+	local SilentAimSettings = SilentAim.SilentAim
+	local SilentAimFOVSettings = SilentAimSettings.FOVSettings
+	local SnaplineSettings = SilentAimSettings.SnaplineSettings
 
 	--// References
 	local LocalPlayer = Functions.GetPlayer()
@@ -72,7 +77,6 @@ return function(self)
 						AimbotSettings.Enabled = value
 					end,
 				}, "Aimbot"):Continue()
-
 				AimbotSettingsSection:Keybind({
 					Bind = Enum.UserInputType.MouseButton2,
 					Blacklist = { Enum.UserInputType.MouseButton1 },
@@ -82,59 +86,7 @@ return function(self)
 						end
 						AimbotSettings.SetState(value)
 					end,
-				}, "AimbotKeybind")
-
-				AimbotSettingsSection:Slider({
-					Name = "Smoothing",
-					Description = "aimbot smoothness",
-					Value = 1,
-					Minimum = 1,
-					Maximum = 20,
-					Step = 0.1,
-					Precision = 1,
-					Callback = function(self, value)
-						AimbotSettings.Sensitivity = (value - 1) / (self.Settings.Maximum - 1) * 0.15
-						AimbotSettings.Sensitivity2 = value
-					end,
-				}, "AimbotSmoothing")
-
-				AimbotSettingsSection:Dropdown({
-					Name = "Bone",
-					Description = "selects the bone to aim at",
-					Options = { "Head", "Torso" },
-					Value = { "Head" },
-					Limit = 1,
-					Minimum = 1,
-					Callback = function(self, value)
-						local Part = value[1] == "Torso" and "HumanoidRootPart" or value[1]
-						AimbotSettings.LockPart = Part
-					end,
-				}, "Bone")
-
-				AimbotSettingsSection:Slider({
-					Name = "Max Distance",
-					Description = "the distance aimbot stops locking onto players",
-					Value = 500,
-					Minimum = 1,
-					Maximum = 2000,
-					Step = 1,
-					Precision = 0,
-					Callback = function(self, value)
-						AimbotSettings.MaxDistance = value
-					end,
-				}, "MaxDistance")
-
-				AimbotSettingsSection:Dropdown({
-					Name = "Lock Method",
-					Description = "the input used to lock onto a player",
-					Options = { "Camera", "Mouse" },
-					Value = { "Camera" },
-					Limit = 1,
-					Minimum = 1,
-					Callback = function(self, value)
-						AimbotSettings.LockMode = ({ Camera = 1, Mouse = 2 })[value[1]]
-					end,
-				}, "AimbotLockMethod")
+				})
 
 				AimbotSettingsSection:Dropdown({
 					Name = "Wall Check",
@@ -165,6 +117,58 @@ return function(self)
 						AimbotSettings.AliveCheck = value
 					end,
 				}):Continue()
+
+				AimbotSettingsSection:Slider({
+					Name = "Smoothing",
+					Description = "aimbot smoothness",
+					Value = 1,
+					Minimum = 1,
+					Maximum = 20,
+					Step = 0.1,
+					Precision = 1,
+					Callback = function(self, value)
+						AimbotSettings.Sensitivity = (value - 1) / (self.Settings.Maximum - 1) * 0.15
+						AimbotSettings.Sensitivity2 = value
+					end,
+				}, "AimbotSmoothing")
+
+				AimbotSettingsSection:Dropdown({
+					Name = "Bone",
+					Description = "selects the bone to aim at",
+					Options = { "Head", "Torso" },
+					Value = { "Head" },
+					Limit = 1,
+					Minimum = 1,
+					Callback = function(self, value)
+						local Part = value[1] == "Torso" and "HumanoidRootPart" or value[1]
+						AimbotSettings.LockPart = Part
+					end,
+				}, "Bone")
+
+				AimbotSettingsSection:Dropdown({
+					Name = "Lock Method",
+					Description = "the input used to lock onto a player",
+					Options = { "Camera", "Mouse" },
+					Value = { "Camera" },
+					Limit = 1,
+					Minimum = 1,
+					Callback = function(self, value)
+						AimbotSettings.LockMode = ({ Camera = 1, Mouse = 2 })[value[1]]
+					end,
+				}, "AimbotLockMethod")
+
+				AimbotSettingsSection:Slider({
+					Name = "Max Distance",
+					Description = "the distance aimbot stops locking onto players",
+					Value = 500,
+					Minimum = 1,
+					Maximum = 2000,
+					Step = 1,
+					Precision = 0,
+					Callback = function(self, value)
+						AimbotSettings.MaxDistance = value
+					end,
+				}, "MaxDistance")
 			end
 
 			-- FOV Settings
@@ -176,7 +180,7 @@ return function(self)
 					Description = "whether the aimbot radius limit is active",
 					State = true,
 					Callback = function(self, value)
-						FOVSettings.Enabled = value
+						AimbotFOVSettings.Enabled = value
 					end,
 				})
 
@@ -185,11 +189,12 @@ return function(self)
 					Description = "draws a circle representing the aimbot FOV radius",
 					State = true,
 					Callback = function(self, value)
-						FOVSettings.Visible = value
+						AimbotFOVSettings.Visible = value
 					end,
 				})
 					:Continue()
 					:Colorpicker({
+						Description = "Unlocked Color",
 						AlphaEnabled = false,
 						Color = { Color3.fromRGB(255, 150, 150), 0 },
 						SuggestionColors = {
@@ -199,12 +204,13 @@ return function(self)
 							{ Color3.fromRGB(255, 197, 100) },
 							{ Color3.fromRGB(49, 220, 195) },
 						},
-						Callback = function(color, transparency)
-							FOVSettings.Color = color
+						Callback = function(color)
+							AimbotFOVSettings.Color = color
 						end,
 					})
 					:Continue()
 					:Colorpicker({
+						Description = "Locked Color",
 						AlphaEnabled = false,
 						Color = { Color3.fromRGB(150, 255, 150), 0 },
 						SuggestionColors = {
@@ -214,8 +220,8 @@ return function(self)
 							{ Color3.fromRGB(255, 197, 100) },
 							{ Color3.fromRGB(49, 220, 195) },
 						},
-						Callback = function(color, transparency)
-							FOVSettings.LockedColor = color
+						Callback = function(color)
+							AimbotFOVSettings.LockedColor = color
 						end,
 					})
 
@@ -228,7 +234,7 @@ return function(self)
 					Step = 1,
 					Precision = 0,
 					Callback = function(self, value)
-						FOVSettings.Radius = value
+						AimbotFOVSettings.Radius = value
 					end,
 				}, "AimbotFOVRadiusSlider")
 
@@ -241,7 +247,7 @@ return function(self)
 					Step = 1,
 					Precision = 0,
 					Callback = function(self, value)
-						FOVSettings.NumSides = value
+						AimbotFOVSettings.NumSides = value
 					end,
 				}, "AimbotFOVCircleSidesSlider"):Continue()
 			end
@@ -300,6 +306,198 @@ return function(self)
 		-- Silent Aim
 		do
 			local SilentAimSection = Tab:Section({ Name = "Silent Aim" })
+
+			-- Settings
+			do
+				local SilentAimSettingsSection = SilentAimSection:Section({ Name = "Silent Aim Settings" })
+
+				SilentAimSettingsSection:Toggle({
+					Name = "Enabled",
+					Description = "enables silent aim",
+					State = false,
+					Callback = function(self, value)
+						SilentAimSettings.Enabled = value
+						SilentAimSettings.SetState(value)
+					end,
+				})
+
+				SilentAimSettingsSection:Toggle({
+					Name = "Wall Check",
+					Description = "enables wall check",
+					State = true,
+					Callback = function(self, value)
+						SilentAimSettings.WallCheck = value
+					end,
+				})
+
+				SilentAimSettingsSection:Toggle({
+					Name = "Team Check",
+					Description = "enables team check",
+					State = true,
+					Callback = function(self, value)
+						SilentAimSettings.TeamCheck = value
+					end,
+				})
+
+				SilentAimSettingsSection:Toggle({
+					Name = "Alive Check",
+					Description = "enables alive check",
+					State = true,
+					Callback = function(self, value)
+						SilentAimSettings.AliveCheck = value
+					end,
+				})
+
+				SilentAimSettingsSection:Dropdown({
+					Name = "Bone",
+					Description = "selects the bone bullets redirect to",
+					Options = { "Head", "Torso", "Random" },
+					Value = { "Head" },
+					Limit = 1,
+					Minimum = 1,
+					Callback = function(self, value)
+						if value[1] == "Random" then SilentAimSettings.RandomLockPart = true; return end
+						SilentAimSettings.RandomLockPart = false
+						local Part = value[1] == "Torso" and "HumanoidRootPart" or value[1]
+						SilentAimSettings.LockPart = Part
+					end,
+				}, "Bone")
+
+				SilentAimSettingsSection:Slider({
+					Name = "Hit Chance",
+					Description = "the chance bullets will hit when shot with silent aim",
+					Value = 100,
+					Minimum = 1,
+					Maximum = 100,
+					Step = 1,
+					Precision = 0,
+					Filter = function(value)
+						return tostring(value) .. "%"
+					end,
+					Callback = function(self, value)
+						SilentAimSettings.HitChance = value
+					end,
+				}, "MaxDistance"):Continue()
+
+				SilentAimSettingsSection:Slider({
+					Name = "Max Distance",
+					Description = "the distance silent aim stops redirecting bullets",
+					Value = 500,
+					Minimum = 1,
+					Maximum = 2000,
+					Step = 1,
+					Precision = 0,
+					Callback = function(self, value)
+						SilentAimSettings.MaxDistance = value
+					end,
+				}, "MaxDistance"):Continue()
+			end
+
+			-- FOV Settings
+			do
+				local FOVSettingsSection = SilentAimSection:Section({ Name = "FOV Settings" })
+
+				FOVSettingsSection:Toggle({
+					Name = "Enabled",
+					Description = "whether the silent aim radius limit is active",
+					State = true,
+					Callback = function(self, value)
+						SilentAimFOVSettings.Enabled = value
+					end,
+				})
+
+				FOVSettingsSection:Toggle({
+					Name = "Visible",
+					Description = "draws a circle representing the silent aim FOV radius",
+					State = true,
+					Callback = function(self, value)
+						SilentAimFOVSettings.Visible = value
+					end,
+				})
+					:Continue()
+					:Colorpicker({
+						Color = { Color3.fromRGB(100, 50, 255), 0 },
+						SuggestionColors = {
+							{ Color3.fromRGB(171, 81, 83) },
+							{ Color3.fromRGB(123, 124, 243) },
+							{ Color3.fromRGB(208, 246, 111) },
+							{ Color3.fromRGB(255, 197, 100) },
+							{ Color3.fromRGB(49, 220, 195) },
+						},
+						Callback = function(color, transparency)
+							SilentAimFOVSettings.Color[1], SilentAimFOVSettings.Color[2] = color, 1 - transparency
+							SilentAimFOVSettings.OutlineColor[2] = 1 - transparency
+						end,
+					})
+
+				FOVSettingsSection:Slider({
+					Name = "Radius",
+					Description = "silent aim FOV limit radius",
+					Value = 120,
+					Minimum = 1,
+					Maximum = 500,
+					Step = 1,
+					Precision = 0,
+					Callback = function(self, value)
+						SilentAimFOVSettings.Radius = value
+					end,
+				})
+
+				FOVSettingsSection:Slider({
+					Name = "Circle Sides",
+					Description = "the amount of points the drawn circle has",
+					Value = 45,
+					Minimum = 3,
+					Maximum = 80,
+					Step = 1,
+					Precision = 0,
+					Callback = function(self, value)
+						SilentAimFOVSettings.NumSides = value
+					end,
+				}):Continue()
+			end
+
+			-- Snapline Settings
+			do
+				local SnaplinesSettingsSection = SilentAimSection:Section({ Name = "Snaplines Settings" })
+
+				SnaplinesSettingsSection:Toggle({
+					Name = "Enabled",
+					Description = "whether snapping point lines are enabled",
+					State = true,
+					Callback = function(self, value)
+						SnaplineSettings.Enabled = value
+					end,
+				})
+					:Continue()
+					:Colorpicker({
+						Color = { Color3.fromRGB(150, 200, 255), 0 },
+						SuggestionColors = {
+							{ Color3.fromRGB(171, 81, 83) },
+							{ Color3.fromRGB(123, 124, 243) },
+							{ Color3.fromRGB(208, 246, 111) },
+							{ Color3.fromRGB(255, 197, 100) },
+							{ Color3.fromRGB(49, 220, 195) },
+						},
+						Callback = function(color, transparency)
+							SnaplineSettings.Color[1], SnaplineSettings.Color[2] = color, 1 - transparency
+							SnaplineSettings.OutlineColor[2] = 1 - transparency
+						end,
+					})
+
+				SnaplinesSettingsSection:Slider({
+					Name = "Thickness",
+					Description = "how thick the snapping point line is",
+					Value = 2,
+					Minimum = 1,
+					Maximum = 6,
+					Step = 1,
+					Precision = 0,
+					Callback = function(self, value)
+						SnaplineSettings.Thickness = value
+					end,
+				}):Continue()
+			end
 		end
 
 		-- Hitbox Expander
@@ -762,6 +960,7 @@ return function(self)
 				})
 					:Continue()
 					:Colorpicker({
+						Description = "Healthy Color",
 						AlphaEnabled = false,
 						Color = { Color3.fromRGB(58, 161, 47), 0 },
 						SuggestionColors = {
@@ -779,6 +978,7 @@ return function(self)
 					})
 					:Continue()
 					:Colorpicker({
+						Description = "Dying Color",
 						AlphaEnabled = false,
 						Color = { Color3.fromRGB(161, 47, 47), 0 },
 						SuggestionColors = {
@@ -960,6 +1160,7 @@ return function(self)
 							UpdateVisualPreview(ESPTarg)
 						end,
 					})
+					:Continue()
 			end
 
 			local EnemiesSection = ESPSection:Section({ Name = "Enemies" })
