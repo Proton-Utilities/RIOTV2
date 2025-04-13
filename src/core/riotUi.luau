@@ -105,8 +105,8 @@ local utilities = {
 
 		gui.Parent = (
 			services._runService:IsStudio() and libData.localPlayer:FindFirstChild("PlayerGui")
-			or gethui and gethui()
-			or libData.GetService("CoreGui")
+				or gethui and gethui()
+				or libData.GetService("CoreGui")
 		)
 
 		return gui
@@ -992,49 +992,49 @@ function CreateSlider(Parent, Settings, Flag)
 		local paddingRight = 10
 		local sliderWidth = slider1.AbsoluteSize.X
 		local usableWidth = sliderWidth - (paddingLeft + paddingRight)
-	
+
 		local min = _slider.Settings.Minimum
 		local max = _slider.Settings.Maximum
 		local value = _slider.Settings.Value or (min + max) / 2
-	
+
 		local alpha = (value - min) / (max - min)
-	
+
 		local circleRadius = clipcircle.AbsoluteSize.X / 2
 		bar.Size = UDim2.new(0, usableWidth * alpha, 0, 10)
 		clipcircle.Position = UDim2.new(0, paddingLeft + (usableWidth * alpha), 0.5, 0)
-	
+
 		local precise = tonumber(string.format("%." .. (_slider.Settings.Precision or 0) .. "f", value))
 		local filtered = _slider.Settings.Filter and _slider.Settings.Filter(precise, min, max)
 		amount.Text = filtered or precise
 	end
-	
+
 	local function updateSlider(input)
 		local paddingLeft = 10
 		local paddingRight = 10
 		local mousePosition = input.Position.X
 		local halfWidth = circle.AbsoluteSize.X / 2
 		local adjustedMousePosition = mousePosition - (halfWidth * 0.5)
-	
+
 		local barPositionX = slider1.AbsolutePosition.X + paddingLeft
 		local barSizeX = slider1.AbsoluteSize.X - (paddingLeft + paddingRight)
-	
+
 		adjustedMousePosition = math.clamp(adjustedMousePosition - barPositionX, 0, barSizeX)
-	
+
 		local newValue = adjustedMousePosition / barSizeX
 		newValue = _slider.Settings.Minimum + newValue * (_slider.Settings.Maximum - _slider.Settings.Minimum)
-	
+
 		local step = _slider.Settings.Step or 0
 		_slider.Settings.Value = step > 0 and math.round(newValue / step) * step or newValue
-	
+
 		updateDisplay()
-	
+
 		if _slider.Settings.Callback then
 			utilities.callback(_slider.Settings.Callback, _slider, _slider.Settings.Value)
 		end
 	end
-	
+
 	local dragging = false
-	
+
 	local inputBegan = function(input)
 		if input.UserInputType == Enum.UserInputType.MouseButton1 then
 			dragging = true
@@ -1044,7 +1044,7 @@ function CreateSlider(Parent, Settings, Flag)
 			end
 		end
 	end
-	
+
 	slider1.InputBegan:Connect(inputBegan)
 	slider1.InputEnded:Connect(function(input)
 		if input.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -1054,61 +1054,61 @@ function CreateSlider(Parent, Settings, Flag)
 			end
 		end
 	end)
-	
+
 	slider1:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateDisplay)
 	updateDisplay()
-	
+
 	services._userInputService.InputChanged:Connect(function(input)
 		if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
 			updateSlider(input)
 		end
 	end)
-	
+
 	function _slider:UpdateSettings(Settings)
 		if Settings.Visible ~= nil then
 			_slider.Settings.Visible = Settings.Visible
 			slider.Visible = Settings.Visible
 		end
-	
+
 		if Settings.Name then
 			_slider.Settings.Name = Settings.Name
 			name.Text = Settings.Name
 		end
-	
+
 		if Settings.Description ~= nil then
 			_slider.Settings.Description = Settings.Description
 			description.Text = Settings.Description or ""
 			description.Visible = Settings.Description and true or false
 		end
-	
+
 		if Settings.Minimum then
 			_slider.Settings.Minimum = Settings.Minimum
 		end
-	
+
 		if Settings.Maximum then
 			_slider.Settings.Maximum = Settings.Maximum
 		end
-	
+
 		if Settings.Step ~= nil then
 			_slider.Settings.Step = Settings.Step
 		end
-	
+
 		if Settings.Precision ~= nil then
 			_slider.Settings.Precision = Settings.Precision
 		end
-	
+
 		if Settings.Filter then
 			_slider.Settings.Filter = Settings.Filter
 		end
-	
+
 		if Settings.Callback then
 			_slider.Settings.Callback = Settings.Callback
 		end
-	
+
 		if Settings.inputChanged then
 			_slider.Settings.inputChanged = Settings.inputChanged
 		end
-	
+
 		if Settings.Value then
 			local min = _slider.Settings.Minimum
 			local max = _slider.Settings.Maximum
@@ -1118,43 +1118,43 @@ function CreateSlider(Parent, Settings, Flag)
 				value = math.round(value / step) * step
 			end
 			_slider.Settings.Value = value
-	
+
 			task.defer(function()
 				if slider1.AbsoluteSize.X == 0 then
 					slider1:GetPropertyChangedSignal("AbsoluteSize"):Wait()
 				end
 				updateDisplay()
-	
+
 				if _slider.Settings.Callback then
 					utilities.callback(_slider.Settings.Callback, _slider, _slider.Settings.Value)
 				end
 			end)
 		end
 	end
-	
+
 	local divider = Instance.new("Frame")
 	divider.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 	divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	divider.BorderSizePixel = 0
 	divider.Size = UDim2.new(1, 0, 0, 1)
 	divider.Parent = Parent
-	
+
 	function _slider:Continue()
 		divider.Visible = false
 		return _slider
 	end
-	
+
 	function _slider:End()
 		divider.Visible = true
 		return _slider
 	end
-	
+
 	_slider:UpdateSettings(_slider.Settings)
-	
+
 	if Flag then
 		library.Components[Flag] = _slider
 	end
-	
+
 	return _slider:End()	
 end
 
@@ -2080,6 +2080,7 @@ function CreateColorpicker(Parent, Settings, Flag)
 
 	colorpicker.Parent = Parent
 
+	--[[
 	local colorpickerInput = Instance.new("Frame")
 	colorpickerInput.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 	colorpickerInput.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -2140,122 +2141,294 @@ function CreateColorpicker(Parent, Settings, Flag)
 
 	icon.AnchorPoint = Vector2.new(0, 0.5)
 	icon.Position = UDim2.new(0, 0, 0.5, 0)
+	]]
 
-	function _colorpicker:SetColor(color: Color3, alpha: number)
-		alpha = 1 - alpha or 0
-	
+	local CPcolorpickerInput = Instance.new("Frame")
+	CPcolorpickerInput.Name = "ColorpickerInput"
+	CPcolorpickerInput.AutomaticSize = Enum.AutomaticSize.X
+	CPcolorpickerInput.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	CPcolorpickerInput.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	CPcolorpickerInput.BorderSizePixel = 0
+	CPcolorpickerInput.Position = UDim2.fromScale(0.272, 0.732)
+	CPcolorpickerInput.Size = UDim2.fromOffset(0, 40)
+	CPcolorpickerInput.Visible = false
+	CPcolorpickerInput.Parent = libData.gui
+
+	local CPuICorner = Instance.new("UICorner")
+	CPuICorner.Name = "UICorner"
+	CPuICorner.CornerRadius = UDim.new(0, 5)
+	CPuICorner.Parent = CPcolorpickerInput
+
+	local CPuIListLayout = Instance.new("UIListLayout")
+	CPuIListLayout.Name = "UIListLayout"
+	CPuIListLayout.FillDirection = Enum.FillDirection.Horizontal
+	CPuIListLayout.Padding = UDim.new(0, 10)
+	CPuIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	CPuIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+	CPuIListLayout.Parent = CPcolorpickerInput
+
+	local CPicon = Instance.new("ImageLabel")
+	CPicon.Name = "Icon"
+	CPicon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	CPicon.BackgroundTransparency = 1
+	CPicon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	CPicon.BorderSizePixel = 0
+	CPicon.Image = "rbxassetid://88238578565569"
+	CPicon.ImageColor3 = Color3.fromRGB(156, 156, 156)
+	CPicon.Size = UDim2.fromOffset(20, 20)
+	CPicon.Parent = CPcolorpickerInput
+
+	local CPuIPadding = Instance.new("UIPadding")
+	CPuIPadding.Name = "UIPadding"
+	CPuIPadding.PaddingLeft = UDim.new(0, 15)
+	CPuIPadding.PaddingRight = UDim.new(0, 10)
+	CPuIPadding.Parent = CPcolorpickerInput
+
+	local CPinputs = Instance.new("Frame")
+	CPinputs.Name = "Inputs"
+	CPinputs.AutomaticSize = Enum.AutomaticSize.X
+	CPinputs.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	CPinputs.BackgroundTransparency = 1
+	CPinputs.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	CPinputs.BorderSizePixel = 0
+	CPinputs.Size = UDim2.fromScale(0, 1)
+
+	local alpha = Instance.new("TextBox")
+	alpha.Name = "Alpha"
+	alpha.AutomaticSize = Enum.AutomaticSize.X
+	alpha.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	alpha.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	alpha.BorderSizePixel = 0
+	alpha.ClearTextOnFocus = false
+	alpha.ClipsDescendants = true
+	alpha.CursorPosition = -1
+	alpha.FontFace = Font.new(
+		"rbxassetid://12187365364",
+		Enum.FontWeight.SemiBold,
+		Enum.FontStyle.Normal
+	)
+	alpha.LayoutOrder = 6
+	alpha.PlaceholderColor3 = Color3.fromRGB(120, 120, 120)
+	alpha.PlaceholderText = "Alpha"
+	alpha.Size = UDim2.fromScale(0, 1)
+	alpha.Text = "255"
+	alpha.TextColor3 = Color3.fromRGB(156, 156, 156)
+	alpha.TextSize = 15
+	alpha.TextXAlignment = Enum.TextXAlignment.Left
+
+	local CPuICorner1 = Instance.new("UICorner")
+	CPuICorner1.Name = "UICorner"
+	CPuICorner1.CornerRadius = UDim.new(0, 5)
+	CPuICorner1.Parent = alpha
+
+	local CPuIPadding1 = Instance.new("UIPadding")
+	CPuIPadding1.Name = "UIPadding"
+	CPuIPadding1.PaddingLeft = UDim.new(0, 8)
+	CPuIPadding1.PaddingRight = UDim.new(0, 8)
+	CPuIPadding1.Parent = alpha
+
+	alpha.Parent = CPinputs
+
+	local red = Instance.new("TextBox")
+	red.Name = "Red"
+	red.AutomaticSize = Enum.AutomaticSize.X
+	red.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	red.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	red.BorderSizePixel = 0
+	red.ClearTextOnFocus = false
+	red.ClipsDescendants = true
+	red.CursorPosition = -1
+	red.FontFace = Font.new(
+		"rbxassetid://12187365364",
+		Enum.FontWeight.SemiBold,
+		Enum.FontStyle.Normal
+	)
+	red.PlaceholderColor3 = Color3.fromRGB(120, 120, 120)
+	red.PlaceholderText = "Red"
+	red.Size = UDim2.fromScale(0, 1)
+	red.Text = "255"
+	red.TextColor3 = Color3.fromRGB(156, 156, 156)
+	red.TextSize = 15
+	red.TextXAlignment = Enum.TextXAlignment.Left
+
+	local CPuICorner2 = Instance.new("UICorner")
+	CPuICorner2.Name = "UICorner"
+	CPuICorner2.CornerRadius = UDim.new(0, 5)
+	CPuICorner2.Parent = red
+
+	local CPuIPadding2 = Instance.new("UIPadding")
+	CPuIPadding2.Name = "UIPadding"
+	CPuIPadding2.PaddingLeft = UDim.new(0, 8)
+	CPuIPadding2.PaddingRight = UDim.new(0, 8)
+	CPuIPadding2.Parent = red
+
+	red.Parent = CPinputs
+
+	local blue = Instance.new("TextBox")
+	blue.Name = "Blue"
+	blue.AutomaticSize = Enum.AutomaticSize.X
+	blue.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	blue.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	blue.BorderSizePixel = 0
+	blue.ClearTextOnFocus = false
+	blue.ClipsDescendants = true
+	blue.CursorPosition = -1
+	blue.FontFace = Font.new(
+		"rbxassetid://12187365364",
+		Enum.FontWeight.SemiBold,
+		Enum.FontStyle.Normal
+	)
+	blue.LayoutOrder = 4
+	blue.PlaceholderColor3 = Color3.fromRGB(120, 120, 120)
+	blue.PlaceholderText = "Blue"
+	blue.Size = UDim2.fromScale(0, 1)
+	blue.Text = "255"
+	blue.TextColor3 = Color3.fromRGB(156, 156, 156)
+	blue.TextSize = 15
+	blue.TextXAlignment = Enum.TextXAlignment.Left
+
+	local CPuICorner3 = Instance.new("UICorner")
+	CPuICorner3.Name = "UICorner"
+	CPuICorner3.CornerRadius = UDim.new(0, 5)
+	CPuICorner3.Parent = blue
+
+	local CPuIPadding3 = Instance.new("UIPadding")
+	CPuIPadding3.Name = "UIPadding"
+	CPuIPadding3.PaddingLeft = UDim.new(0, 8)
+	CPuIPadding3.PaddingRight = UDim.new(0, 8)
+	CPuIPadding3.Parent = blue
+
+	blue.Parent = CPinputs
+
+	local green = Instance.new("TextBox")
+	green.Name = "Green"
+	green.AutomaticSize = Enum.AutomaticSize.X
+	green.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	green.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	green.BorderSizePixel = 0
+	green.ClearTextOnFocus = false
+	green.ClipsDescendants = true
+	green.CursorPosition = -1
+	green.FontFace = Font.new(
+		"rbxassetid://12187365364",
+		Enum.FontWeight.SemiBold,
+		Enum.FontStyle.Normal
+	)
+	green.LayoutOrder = 2
+	green.PlaceholderColor3 = Color3.fromRGB(120, 120, 120)
+	green.PlaceholderText = "Green"
+	green.Size = UDim2.fromScale(0, 1)
+	green.Text = "255"
+	green.TextColor3 = Color3.fromRGB(156, 156, 156)
+	green.TextSize = 15
+	green.TextXAlignment = Enum.TextXAlignment.Left
+
+	local CPuICorner4 = Instance.new("UICorner")
+	CPuICorner4.Name = "UICorner"
+	CPuICorner4.CornerRadius = UDim.new(0, 5)
+	CPuICorner4.Parent = green
+
+	local CPuIPadding4 = Instance.new("UIPadding")
+	CPuIPadding4.Name = "UIPadding"
+	CPuIPadding4.PaddingLeft = UDim.new(0, 8)
+	CPuIPadding4.PaddingRight = UDim.new(0, 8)
+	CPuIPadding4.Parent = green
+
+	green.Parent = CPinputs
+
+	local CPuIListLayout1 = Instance.new("UIListLayout")
+	CPuIListLayout1.Name = "UIListLayout"
+	CPuIListLayout1.FillDirection = Enum.FillDirection.Horizontal
+	CPuIListLayout1.SortOrder = Enum.SortOrder.LayoutOrder
+	CPuIListLayout1.VerticalAlignment = Enum.VerticalAlignment.Center
+	CPuIListLayout1.Parent = CPinputs
+
+	CPinputs.Parent = CPcolorpickerInput
+
+	function _colorpicker:SetColor(color: Color3, transparency: number)
+		local finalAlpha = 1 - (transparency or 0)
+
 		_colorpicker.Settings.Color = color
-		_colorpicker.Settings.Transparency = alpha
-	
+		_colorpicker.Settings.Transparency = finalAlpha
+
 		local r = math.round(color.R * 255)
 		local g = math.round(color.G * 255)
 		local b = math.round(color.B * 255)
-		local a = math.round((1 - alpha) * 255)
-	
-		if _colorpicker.Settings.AlphaEnabled == false then
-			inputBox.Text = string.format("%d, %d, %d", r, g, b)
-		else
-			inputBox.Text = string.format("%d, %d, %d, %d", r, g, b, a)
-		end
-	
-		customColor_Color.ImageColor3 = color
-		customColor_Transparency.ImageTransparency = 1 - alpha
-	
-		if _colorpicker.Settings.Callback then
-			utilities.callback(_colorpicker.Settings.Callback, color, alpha)
-		end
-	
-		return _colorpicker
-	end	
+		local a = math.round((1 - finalAlpha) * 255)
 
-	inputBox.FocusLost:Connect(function(enterPressed)
-		if not enterPressed then
-			return
+		red.Text = tostring(r)
+		green.Text = tostring(g)
+		blue.Text = tostring(b)
+		alpha.Text = tostring(a)
+
+		customColor_Color.ImageColor3 = color
+		customColor_Transparency.ImageTransparency = 1 - finalAlpha
+
+		if _colorpicker.Settings.Callback then
+			utilities.callback(_colorpicker.Settings.Callback, color, finalAlpha)
 		end
-	
-		local text = inputBox.Text
-		local r, g, b, a
-	
-		if _colorpicker.Settings.AlphaEnabled == false then
-			r, g, b = text:match("^(%d+)[,%s]+(%d+)[,%s]+(%d+)$")
-			if r and g and b then
-				local rNum = math.clamp(tonumber(r), 0, 255)
-				local gNum = math.clamp(tonumber(g), 0, 255)
-				local bNum = math.clamp(tonumber(b), 0, 255)
-	
-				local color = Color3.fromRGB(rNum, gNum, bNum)
-				_colorpicker:SetColor(color, _colorpicker.Settings.Transparency)
-			else
-				_colorpicker:SetColor(_colorpicker.Settings.Color, _colorpicker.Settings.Transparency)
-			end
-		else
-			r, g, b, a = text:match("^(%d+)[,%s]+(%d+)[,%s]+(%d+)[,%s]+(%d+)$")
-			if r and g and b and a then
-				local rNum = math.clamp(tonumber(r), 0, 255)
-				local gNum = math.clamp(tonumber(g), 0, 255)
-				local bNum = math.clamp(tonumber(b), 0, 255)
-				local aNum = math.clamp(tonumber(a), 0, 255)
-	
-				local color = Color3.fromRGB(rNum, gNum, bNum)
-				local transparency = aNum / 255
-	
-				_colorpicker:SetColor(color, transparency)
-			else
-				_colorpicker:SetColor(_colorpicker.Settings.Color, _colorpicker.Settings.Transparency)
-			end
-		end
-	end)	
+
+		return _colorpicker
+	end
 
 	local function updatePos()
 		local buttonAbsPos = customColor_Color.AbsolutePosition
 		local buttonSize = customColor_Color.AbsoluteSize
 
 		local posX = buttonAbsPos.X + buttonSize.X
-		local posY = buttonAbsPos.Y + (buttonSize.Y * 2) + colorpickerInput.AbsoluteSize.Y
+		local posY = buttonAbsPos.Y + (buttonSize.Y * 2) + CPcolorpickerInput.AbsoluteSize.Y
 
-		colorpickerInput.Position = UDim2.fromOffset(posX, posY)
+		CPcolorpickerInput.Position = UDim2.fromOffset(posX, posY)
 	end
 	updatePos()
 	customColor_Color:GetPropertyChangedSignal("AbsolutePosition"):Connect(updatePos)
 
 	customColor_Color.MouseButton1Click:Connect(function()
-		colorpickerInput.Visible = not colorpickerInput.Visible
+		CPcolorpickerInput.Visible = not CPcolorpickerInput.Visible
 	end)
 
-	inputBox.FocusLost:Connect(function(enterPressed)
-		if not enterPressed then return end
-	
-		local text = inputBox.Text
-		local r, g, b, a
-	
-		if _colorpicker.Settings.AlphaEnabled == false then
-			r, g, b = text:match("^(%d+)[,%s]+(%d+)[,%s]+(%d+)$")
-	
-			if r and g and b then
-				local rNum = math.clamp(tonumber(r), 0, 255)
-				local gNum = math.clamp(tonumber(g), 0, 255)
-				local bNum = math.clamp(tonumber(b), 0, 255)
-	
-				local color = Color3.fromRGB(rNum, gNum, bNum)
-				_colorpicker:SetColor(color, _colorpicker.Settings.Transparency)
-			end
-	
-		else
-			r, g, b, a = text:match("^(%d+)[,%s]+(%d+)[,%s]+(%d+)[,%s]+(%d+)$")
-	
-			if r and g and b and a then
-				local rNum = math.clamp(tonumber(r), 0, 255)
-				local gNum = math.clamp(tonumber(g), 0, 255)
-				local bNum = math.clamp(tonumber(b), 0, 255)
-				local aNum = math.clamp(tonumber(a), 0, 255)
-	
-				local color = Color3.fromRGB(rNum, gNum, bNum)
-				local transparency = aNum / 255
-	
-				_colorpicker:SetColor(color, transparency)
-			end
+	local function handleInput()
+		local r = tonumber(red.Text)
+		local g = tonumber(green.Text)
+		local b = tonumber(blue.Text)
+		local a = tonumber(alpha.Text)
+
+		r = r and math.clamp(r, 0, 255) or  (_colorpicker.Settings.Color.R * 255)
+		g = g and math.clamp(g, 0, 255) or (_colorpicker.Settings.Color.G * 255)
+		b = b and math.clamp(b, 0, 255) or  (_colorpicker.Settings.Color.B * 255)
+		a = a and math.clamp(a, 0, 255) or  (1 - _colorpicker.Settings.Transparency) * 255
+
+		local color = Color3.fromRGB(r, g, b)
+		local transparency = a / 255
+
+		_colorpicker:SetColor(color, transparency)
+	end
+
+	for _, child in pairs(CPinputs:GetChildren()) do
+		if child:IsA("TextBox") then
+			child.FocusLost:Connect(function(enterPressed)
+				if enterPressed then
+					handleInput()
+				end
+			end)
 		end
-	end)	
+	end
+	
+	local hovering = false
+	
+	CPcolorpickerInput.MouseEnter:Connect(function()
+		hovering = true
+	end)
+
+	CPcolorpickerInput.MouseLeave:Connect(function()
+		hovering = false
+	end)
+	
+	services._userInputService.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 and not hovering and CPcolorpickerInput.Visible then
+			CPcolorpickerInput.Visible = false
+		end
+	end)
 
 	function _colorpicker:UpdateSettings(Settings)
 		Settings = Settings or {}
@@ -2278,6 +2451,7 @@ function CreateColorpicker(Parent, Settings, Flag)
 
 		if Settings.AlphaEnabled ~= nil then
 			_colorpicker.Settings.AlphaEnabled = Settings.AlphaEnabled
+			alpha.Visible = Settings.AlphaEnabled
 		end
 
 		if Settings.Color then
@@ -2325,12 +2499,12 @@ function CreateColorpicker(Parent, Settings, Flag)
 
 		if not Settings.Name and not Settings.Description then
 			elementInfo.Visible = false
-			uIPaddingCPInput.PaddingTop = UDim.new(0, 0)
-			uIPaddingCPInput.PaddingBottom = UDim.new(0, 8)
+			uIPadding.PaddingTop = UDim.new(0, 0)
+		elseif not Settings.Name and Settings.Description then
+			uIPadding.PaddingTop = UDim.new(0, -5)
 		else
 			elementInfo.Visible = true
-			uIPaddingCPInput.PaddingTop = UDim.new(0, 8)
-			uIPaddingCPInput.PaddingBottom = UDim.new(0, 8)
+			uIPadding.PaddingTop = UDim.new(0, 8)
 		end
 	end
 
@@ -2514,10 +2688,10 @@ function CreateKeybind(Parent, Settings, Flag)
 			and not gameProcessed
 			and not (
 				_keybind.Settings.Blacklist
-				and (
-					table.find(_keybind.Settings.Blacklist, input.KeyCode)
-					or table.find(_keybind.Settings.Blacklist, input.UserInputType)
-				)
+					and (
+						table.find(_keybind.Settings.Blacklist, input.KeyCode)
+						or table.find(_keybind.Settings.Blacklist, input.UserInputType)
+					)
 			)
 		then
 			if input.UserInputType == Enum.UserInputType.Keyboard then
@@ -2689,6 +2863,7 @@ function library:Window(Settings)
 
 	assert(_window.Settings.Title and type(_window.Settings.Title) == "string", "Missing window title or wrong type")
 	_window.Settings.Keybind = _window.Settings.Keybind or Enum.KeyCode.RightControl
+	libData.winKeybind = _window.Settings.Keybind
 
 	local menu = Instance.new("ImageLabel")
 	menu.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
@@ -3213,6 +3388,7 @@ function library:Window(Settings)
 
 		if Settings.Keybind then
 			_window.Settings.Keybind = Settings.Keybind
+			libData.winKeybind = Settings.Keybind
 		end
 	end
 
@@ -3642,7 +3818,7 @@ function library:Window(Settings)
 				end
 			end
 		end
-		
+
 		if Settings.Distance then
 			if Settings.Distance.Visible ~= nil then
 				distance.Visible = Settings.Distance.Visible
@@ -3654,7 +3830,7 @@ function library:Window(Settings)
 				end
 			end
 		end
-		
+
 		if Settings.Health then
 			if Settings.Health.Visible ~= nil then
 				health.Visible = Settings.Health.Visible
@@ -3666,7 +3842,7 @@ function library:Window(Settings)
 				end
 			end
 		end
-		
+
 		if Settings.Weapon then
 			if Settings.Weapon.Visible ~= nil then
 				weapon.Visible = Settings.Weapon.Visible
@@ -3678,7 +3854,7 @@ function library:Window(Settings)
 				end
 			end
 		end
-		
+
 		if Settings.Name then
 			if Settings.Name.Visible ~= nil then
 				name.Visible = Settings.Name.Visible
@@ -3690,7 +3866,7 @@ function library:Window(Settings)
 				end
 			end
 		end
-		
+
 		if Settings.FillBox then
 			if Settings.FillBox.Visible ~= nil then
 				fillbox.Visible = Settings.FillBox.Visible
@@ -3702,7 +3878,7 @@ function library:Window(Settings)
 				end
 			end
 		end
-		
+
 		if Settings.BoundingBox then
 			if Settings.BoundingBox.Visible ~= nil then
 				boundingbox.Visible = Settings.BoundingBox.Visible
@@ -3714,7 +3890,7 @@ function library:Window(Settings)
 				end
 			end
 		end
-		
+
 		if Settings.CornerBox then
 			if Settings.CornerBox.Visible ~= nil then
 				cornerbox.Visible = Settings.CornerBox.Visible
@@ -3758,7 +3934,7 @@ function library:Notification(Settings)
 		1,
 		(
 			notification.AbsoluteSize.X
-			+ (libData.notifSystem.uIpadding and libData.notifSystem.uIpadding.PaddingRight.Offset or 0)
+				+ (libData.notifSystem.uIpadding and libData.notifSystem.uIpadding.PaddingRight.Offset or 0)
 		),
 		1,
 		0
@@ -3909,7 +4085,7 @@ function library:Notification(Settings)
 					Position = UDim2.new(
 						1,
 						notification.AbsoluteSize.X
-							+ (libData.notifSystem.uIpadding and libData.notifSystem.uIpadding.PaddingRight.Offset or 0),
+						+ (libData.notifSystem.uIpadding and libData.notifSystem.uIpadding.PaddingRight.Offset or 0),
 						1,
 						notification.Position.Y.Offset
 					),
@@ -3931,11 +4107,11 @@ function library:Notification(Settings)
 							0,
 							0,
 							notification.AbsoluteSize.Y
-								+ (
-									libData.notifSystem.uIpadding
-										and libData.notifSystem.uIpadding.PaddingBottom.Offset
-									or 0
-								)
+							+ (
+								libData.notifSystem.uIpadding
+								and libData.notifSystem.uIpadding.PaddingBottom.Offset
+								or 0
+							)
 						),
 					})
 					:Play()
@@ -3996,7 +4172,7 @@ local notifListener = function(instance)
 				utilities
 					.tween(v, TweenInfo.new(0.25, Enum.EasingStyle.Exponential), {
 						Position = v.Position
-							- UDim2.new(0, 0, 0, libData.notifSystem.notifInstances[newNotif].AbsoluteSize.Y + 10),
+						- UDim2.new(0, 0, 0, libData.notifSystem.notifInstances[newNotif].AbsoluteSize.Y + 10),
 					})
 					:Play()
 			end
