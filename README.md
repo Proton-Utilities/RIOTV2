@@ -15,4 +15,3 @@ Authored by biggaboy212
 Install [DarkLua](https://github.com/seaofvoices/darklua/releases/tag/v0.16.0)
 
 Use the keybind ***Ctrl + Shift + B*** to build
-t
