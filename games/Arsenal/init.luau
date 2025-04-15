@@ -964,33 +964,32 @@ return function(self)
 						end,
 					})
 
-					Header:Toggle({
-						Name = "3D Bounding Box",
-						Description = "enables 3d bounding box ESP",
-						State = false,
-						Callback = function(self, value)
-							ESPTarg.box3d = value
-	
+				Header:Toggle({
+					Name = "3D Bounding Box",
+					Description = "enables 3d bounding box ESP",
+					State = false,
+					Callback = function(self, value)
+						ESPTarg.box3d = value
+
+						UpdateVisualPreview(ESPTarg)
+					end,
+				})
+					:Continue()
+					:Colorpicker({
+						Color = { Color3.fromRGB(141, 149, 192), 0 },
+						SuggestionColors = {
+							{ Color3.fromRGB(171, 81, 83) },
+							{ Color3.fromRGB(123, 124, 243) },
+							{ Color3.fromRGB(208, 246, 111) },
+							{ Color3.fromRGB(255, 197, 100) },
+							{ Color3.fromRGB(49, 220, 195) },
+						},
+						Callback = function(color, transparency)
+							ESPTarg.box3dColor[1], ESPTarg.box3dColor[2] = color, 1 - transparency
+
 							UpdateVisualPreview(ESPTarg)
 						end,
 					})
-						:Continue()
-						:Colorpicker({
-							Color = { Color3.fromRGB(141, 149, 192), 0 },
-							SuggestionColors = {
-								{ Color3.fromRGB(171, 81, 83) },
-								{ Color3.fromRGB(123, 124, 243) },
-								{ Color3.fromRGB(208, 246, 111) },
-								{ Color3.fromRGB(255, 197, 100) },
-								{ Color3.fromRGB(49, 220, 195) },
-							},
-							Callback = function(color, transparency)
-								ESPTarg.box3dColor[1], ESPTarg.box3dColor[2] = color, 1 - transparency
-								ESPTarg.box3dOutlineColor[2] = 1 - transparency
-	
-								UpdateVisualPreview(ESPTarg)
-							end,
-						})
 
 				-- Chams
 				Header:Toggle({
@@ -1003,6 +1002,7 @@ return function(self)
 				})
 					:Continue()
 					:Colorpicker({
+						Description = "Fill Color",
 						Color = { Color3.fromRGB(100, 120, 250), 0.8 },
 						SuggestionColors = {
 							{ Color3.fromRGB(171, 81, 83) },
@@ -1019,6 +1019,7 @@ return function(self)
 					})
 					:Continue()
 					:Colorpicker({
+						Description = "Outline Color",
 						Color = { Color3.fromRGB(25, 85, 255), 0.5 },
 						SuggestionColors = {
 							{ Color3.fromRGB(171, 81, 83) },
@@ -1401,22 +1402,5 @@ return function(self)
 		Aiming.PlayerAlive = function(Player)
 			return Player.NRPBS and Player.NRPBS.Health and Player.NRPBS.Health.Value < 0
 		end
-
-		--[[
-			local Map: Folder = Workspace:FindFirstChild("Map")
-			local IgnoreFolder: Folder = Map and Map:FindFirstChild("Ignore")
-
-			if IgnoreFolder then
-				for _, child in ipairs(IgnoreFolder:GetChildren()) do
-					Aiming.AddIgnoreInstance(child)
-					print(#Aiming.Ignored)
-				end
-
-				IgnoreFolder.ChildAdded:Connect(function(child)
-					Aiming.AddIgnoreInstance(child)
-					print(#Aiming.Ignored)
-				end)
-			end
-		]]
 	end
 end

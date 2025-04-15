@@ -1423,19 +1423,20 @@ local i,j=ap(g[d],'Position'),aN.DeveloperSettings.TeamCheckOption if c.
 MaxDistance and(ax.CFrame.Position-i).Magnitude>c.MaxDistance then continue end
 if c.TeamCheck and ap(f,j)and ap(f,j)==ap(aw,j)then continue end if c.AliveCheck
 and aN.PlayerAlive(f)then continue end if c.WallCheck==2 or c.WallCheck==3 then
-local m={ax,ap(aw,'Character'),LockedCharacter}if#aC(ax,{i},m)>0 then continue
-end end local m,p,q=aB(ax,i)m=aP(m)q=(aD(at)-m).Magnitude if q<aF and p then aF,
-aN.Locked=q,f end end end else local e=ap(aN.Locked,'Character')if e then local
-f=ay(e,d)if not f then b()return end local g=ap(e[d],'Position')if c.MaxDistance
-and(ax.CFrame.Position-g).Magnitude>c.MaxDistance then b()return end local h,i=
-aB(ax,g)h=aP(h)local j=(aD(at)-h).Magnitude if c.WallCheck==3 then local m={ax,
-ap(aw,'Character'),e}if#aC(ax,{g},m)>0 then b()return end end if(j>aF or not i)
-then b()end else b()end end end,function()local c=aN.Triggerbot if not c.Enabled
-then c.TargetChanged()return end local d=ap(aw,'GetMouse')and aw:GetMouse()if
-not d then c.TargetChanged()return end local e=ab.CurrentCamera local f,g,h=Ray.
-new(e.CFrame.Position,(d.Hit.Position-e.CFrame.Position).Unit*1000),{aw.
-Character,e},RaycastParams.new()h.FilterDescendantsInstances=g h.FilterType=Enum
-.RaycastFilterType.Blacklist local i=ab:Raycast(f.Origin,f.Direction,h)if not i
+local m=aA(ap(aw,'Character'))for p,q in next,aA(g)do m[#m+1]=q end if#aC(ax,{i}
+,m)>0 then continue end end local m,p,q=aB(ax,i)m=aP(m)q=(aD(at)-m).Magnitude if
+q<aF and p then aF,aN.Locked=q,f end end end else local e=ap(aN.Locked,
+'Character')if e then local f=ay(e,d)if not f then b()return end local g=ap(e[d]
+,'Position')if c.MaxDistance and(ax.CFrame.Position-g).Magnitude>c.MaxDistance
+then b()return end local h,i=aB(ax,g)h=aP(h)local j=(aD(at)-h).Magnitude if c.
+WallCheck==3 then local m=aA(ap(aw,'Character'))for p,q in next,aA(e)do m[#m+1]=
+q end if#aC(ax,{g},m)>0 then b()return end end if j>aF or not i then b()end else
+b()end end end,function()local c=aN.Triggerbot if not c.Enabled then c.
+TargetChanged()return end local d=ap(aw,'GetMouse')and aw:GetMouse()if not d
+then c.TargetChanged()return end local e=ab.CurrentCamera local f,g,h=Ray.new(e.
+CFrame.Position,(d.Hit.Position-e.CFrame.Position).Unit*1000),{aw.Character,e},
+RaycastParams.new()h.FilterDescendantsInstances=g h.FilterType=Enum.
+RaycastFilterType.Blacklist local i=ab:Raycast(f.Origin,f.Direction,h)if not i
 then c.TargetChanged()return end local j=i.Instance local m=j:
 FindFirstAncestorOfClass'Model'if not m then c.TargetChanged()return end local p
 ,q={},false for r,s in pairs(m:GetChildren())do if s.Name=='Head'or s.Name:find
@@ -1736,45 +1737,46 @@ cornerBoxColor[1],aF.cornerBoxColor[2]=aH,1-aI aE(aF)end}aG:Toggle{Name=
 fromRGB(141,149,192),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.
 fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)
 },{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI)aF.box3dColor[1],aF.
-box3dColor[2]=aH,1-aI aF.box3dOutlineColor[2]=1-aI aE(aF)end}aG:Toggle{Name=
-'Chams',Description='enables player chams ESP',State=false,Callback=function(aH,
-aI)aF.chams=aI end}:Continue():Colorpicker{Color={Color3.fromRGB(100,120,250),
-0.8},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)}
+box3dColor[2]=aH,1-aI aE(aF)end}aG:Toggle{Name='Chams',Description=
+'enables player chams ESP',State=false,Callback=function(aH,aI)aF.chams=aI end}:
+Continue():Colorpicker{Description='Fill Color',Color={Color3.fromRGB(100,120,
+250),0.8},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,
+243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
+fromRGB(49,220,195)}},Callback=function(aH,aI)aF.chamsFillColor[1],aF.
+chamsFillColor[2]=aH,aI aE(aF)end}:Continue():Colorpicker{Description=
+'Outline Color',Color={Color3.fromRGB(25,85,255),0.5},SuggestionColors={{Color3.
+fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},
+{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH
+,aI)aF.chamsOutlineColor[1],aF.chamsOutlineColor[2]=aH,aI aE(aF)end}aG:Toggle{
+Name='Tracers',Description='enables tracers ESP',State=false,Callback=function(
+aH,aI)aF.tracer=aI end}:Continue():Colorpicker{Color={Color3.fromRGB(123,124,243
+),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)}
 ,{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-220,195)}},Callback=function(aH,aI)aF.chamsFillColor[1],aF.chamsFillColor[2]=aH,
-aI aE(aF)end}:Continue():Colorpicker{Color={Color3.fromRGB(25,85,255),0.5},
-SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
-Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-220,195)}},Callback=function(aH,aI)aF.chamsOutlineColor[1],aF.chamsOutlineColor[
-2]=aH,aI aE(aF)end}aG:Toggle{Name='Tracers',Description='enables tracers ESP',
-State=false,Callback=function(aH,aI)aF.tracer=aI end}:Continue():Colorpicker{
-Color={Color3.fromRGB(123,124,243),0},SuggestionColors={{Color3.fromRGB(171,81,
-83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.
-fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI)aF.
-tracerColor[1],aF.tracerColor[2]=aH,1-aI aF.tracerOutlineColor[2]=1-aI aE(aF)end
-}aG:Dropdown{Name='Tracers Origin',Description=
-'selects the starting port of tracers',Options={'Top','Middle','Bottom','Mouse'}
-,Value={'Top'},Limit=1,Minimum=1,Callback=function(aH,aI)aF.tracerOrigin=aI[1]
-end}aG:Toggle{Name='Health Bar',Description='enables health bar ESP',State=false
-,Callback=function(aH,aI)aF.healthBar=aI aE(aF)end}:Continue():Colorpicker{
-Description='Healthy Color',AlphaEnabled=false,Color={Color3.fromRGB(58,161,47),
-0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
-Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-220,195)}},Callback=function(aH)aF.healthyColor=aH aE(aF)end}:Continue():
-Colorpicker{Description='Dying Color',AlphaEnabled=false,Color={Color3.fromRGB(
-161,47,47),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,
-124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
-fromRGB(49,220,195)}},Callback=function(aH)aF.dyingColor=aH aE(aF)end}aG:Toggle{
-Name='Off Screen Arrows',Description='enables off screen arrow ESP',State=false,
-Callback=function(aH,aI)aF.offScreenArrow=aI end}:Continue():Colorpicker{Color={
-Color3.fromRGB(255,255,255),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{
-Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,
-197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI)aF.
-offScreenArrowColor[1],aF.offScreenArrowColor[2]=aH,1-aI aF.
-offScreenArrowOutlineColor[2]=1-aI aE(aF)end}:Continue()aG:Slider{Name=
-'Arrow Size',Description='changes the size of the individual off screen arrows',
-Value=15,Minimum=1,Maximum=50,Step=1,Precision=0,Callback=function(aH,aI)ak.
-offScreenArrowSize=aI end}:Continue()aG:Slider{Name='Radius',Description=
+220,195)}},Callback=function(aH,aI)aF.tracerColor[1],aF.tracerColor[2]=aH,1-aI
+aF.tracerOutlineColor[2]=1-aI aE(aF)end}aG:Dropdown{Name='Tracers Origin',
+Description='selects the starting port of tracers',Options={'Top','Middle',
+'Bottom','Mouse'},Value={'Top'},Limit=1,Minimum=1,Callback=function(aH,aI)aF.
+tracerOrigin=aI[1]end}aG:Toggle{Name='Health Bar',Description=
+'enables health bar ESP',State=false,Callback=function(aH,aI)aF.healthBar=aI aE(
+aF)end}:Continue():Colorpicker{Description='Healthy Color',AlphaEnabled=false,
+Color={Color3.fromRGB(58,161,47),0},SuggestionColors={{Color3.fromRGB(171,81,83)
+},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(
+255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH)aF.healthyColor
+=aH aE(aF)end}:Continue():Colorpicker{Description='Dying Color',AlphaEnabled=
+false,Color={Color3.fromRGB(161,47,47),0},SuggestionColors={{Color3.fromRGB(171,
+81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.
+fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH)aF.
+dyingColor=aH aE(aF)end}aG:Toggle{Name='Off Screen Arrows',Description=
+'enables off screen arrow ESP',State=false,Callback=function(aH,aI)aF.
+offScreenArrow=aI end}:Continue():Colorpicker{Color={Color3.fromRGB(255,255,255)
+,0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},
+{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
+220,195)}},Callback=function(aH,aI)aF.offScreenArrowColor[1],aF.
+offScreenArrowColor[2]=aH,1-aI aF.offScreenArrowOutlineColor[2]=1-aI aE(aF)end}:
+Continue()aG:Slider{Name='Arrow Size',Description=
+'changes the size of the individual off screen arrows',Value=15,Minimum=1,
+Maximum=50,Step=1,Precision=0,Callback=function(aH,aI)ak.offScreenArrowSize=aI
+end}:Continue()aG:Slider{Name='Radius',Description=
 'changes the radius limit of offscreen arrows',Value=150,Minimum=1,Maximum=500,
 Step=1,Precision=0,Callback=function(aH,aI)ak.offScreenArrowRadius=aI end}aG:
 Toggle{Name='Name',Description='enables name text ESP',State=false,Callback=

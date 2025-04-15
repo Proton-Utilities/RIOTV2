@@ -7,8 +7,8 @@ return function(self)
 		game:GetService("ReplicatedStorage"):WaitForChild("Functions"):WaitForChild("Ping")
 
 	do
-		local OldTaskSpawn
-		OldTaskSpawn = hookfunction(
+		local Original
+		Original = hookfunction(
 			getrenv().task.spawn,
 			newcclosure(function(Function: (...any) -> ...any, ...)
 				local Arguments = { ... }
@@ -17,14 +17,14 @@ return function(self)
 					return task.wait(9e9)
 				end
 
-				return OldTaskSpawn(Function, ...)
+				return Original(Function, ...)
 			end)
 		)
 	end
 
 	do
-		local Old
-		Old = hookmetamethod(
+		local Original
+		Original = hookmetamethod(
 			game,
 			"__namecall",
 			newcclosure(function(self, Argument, ...)
@@ -37,19 +37,19 @@ return function(self)
 					local Userdata, _ = next(Argument)
 
 					if typeof(Userdata) == "userdata" then
-						hookmetamethod(game, "__namecall", Old)
+						hookmetamethod(game, "__namecall", Original)
 						return task.wait(9e9)
 					end
 				end
 
-				return Old(self, Argument, ...)
+				return Original(self, Argument, ...)
 			end)
 		)
 	end
 
 	do
-		local Old
-		Old = hookmetamethod(
+		local Original
+		Original = hookmetamethod(
 			game,
 			"__namecall",
 			newcclosure(function(self, Argument, ...)
@@ -59,26 +59,26 @@ return function(self)
 					and getnamecallmethod() == "FindService"
 					and Argument == "VirtualUser"
 				then
-					hookmetamethod(game, "__namecall", Old)
+					hookmetamethod(game, "__namecall", Original)
 					return task.wait(9e9)
 				end
 
-				return Old(self, Argument, ...)
+				return Original(self, Argument, ...)
 			end)
 		)
 	end
 
 	do
-		local old
-		old = hookmetamethod(
+		local Original
+		Original = hookmetamethod(
 			game,
 			"__newindex",
-			newcclosure(function(self, index, val)
+			newcclosure(function(self, Index, Value)
 				if self == NewLoader and not checkcaller() then
 					return task.wait(9e9)
 				end
 
-				return old(self, index, val)
+				return Original(self, Index, Value)
 			end)
 		)
 	end
