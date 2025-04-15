@@ -57,6 +57,11 @@ local Aiming = {
 		Delay = 0,
 
 		TargetChanged = function(Target: Player) return end,
+		Trigger = function()
+			mouse1press()
+			task.wait()
+			mouse1release()
+		end
 	},
 
 	Aimbot = {
@@ -170,10 +175,11 @@ local GetClosestPlayer = function()
                 end
                 
                 if Settings.WallCheck == 2 or Settings.WallCheck == 3 then
-                    local BlacklistTable = GetDescendants(__index(LocalPlayer, "Character"))
-                    for _, Value in next, GetDescendants(Character) do
-                        BlacklistTable[#BlacklistTable + 1] = Value
-                    end
+					local BlacklistTable = {
+						Camera,
+						__index(LocalPlayer, "Character"),
+						LockedCharacter
+					}
                     if #GetPartsObscuringTarget(Camera, {PartPosition}, BlacklistTable) > 0 then
                         continue
                     end
@@ -209,10 +215,11 @@ local GetClosestPlayer = function()
             local Distance = (GetMouseLocation(UserInputService) - Vector).Magnitude
             
             if Settings.WallCheck == 3 then
-                local BlacklistTable = GetDescendants(__index(LocalPlayer, "Character"))
-                for _, Value in next, GetDescendants(LockedCharacter) do
-                    BlacklistTable[#BlacklistTable + 1] = Value
-                end
+				local BlacklistTable = {
+					Camera,
+					__index(LocalPlayer, "Character"),
+					LockedCharacter
+				}
                 
                 if #GetPartsObscuringTarget(Camera, {PartPosition}, BlacklistTable) > 0 then
                     CancelLock()
