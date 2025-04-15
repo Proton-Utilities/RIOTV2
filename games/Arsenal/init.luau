@@ -76,7 +76,7 @@ return function(self)
 					Callback = function(self, value)
 						AimbotSettings.Enabled = value
 					end,
-				}, "Aimbot"):Continue()
+				}):Continue()
 				AimbotSettingsSection:Keybind({
 					Bind = Enum.UserInputType.MouseButton2,
 					Blacklist = { Enum.UserInputType.MouseButton1 },
@@ -98,7 +98,7 @@ return function(self)
 					Callback = function(self, value)
 						AimbotSettings.WallCheck = ({ ["Off"] = 1, ["Sticky"] = 2, ["Always On"] = 3 })[value[1]]
 					end,
-				}, "AimbotWallCheckMode")
+				})
 
 				AimbotSettingsSection:Toggle({
 					Name = "Team Check",
@@ -130,7 +130,7 @@ return function(self)
 						AimbotSettings.Sensitivity = (value - 1) / (self.Settings.Maximum - 1) * 0.15
 						AimbotSettings.Sensitivity2 = value
 					end,
-				}, "AimbotSmoothing")
+				})
 
 				AimbotSettingsSection:Dropdown({
 					Name = "Bone",
@@ -143,7 +143,7 @@ return function(self)
 						local Part = value[1] == "Torso" and "HumanoidRootPart" or value[1]
 						AimbotSettings.LockPart = Part
 					end,
-				}, "Bone")
+				})
 
 				AimbotSettingsSection:Dropdown({
 					Name = "Lock Method",
@@ -155,7 +155,7 @@ return function(self)
 					Callback = function(self, value)
 						AimbotSettings.LockMode = ({ Camera = 1, Mouse = 2 })[value[1]]
 					end,
-				}, "AimbotLockMethod")
+				})
 
 				AimbotSettingsSection:Slider({
 					Name = "Max Distance",
@@ -168,7 +168,7 @@ return function(self)
 					Callback = function(self, value)
 						AimbotSettings.MaxDistance = value
 					end,
-				}, "MaxDistance")
+				}):Continue()
 			end
 
 			-- FOV Settings
@@ -236,7 +236,7 @@ return function(self)
 					Callback = function(self, value)
 						AimbotFOVSettings.Radius = value
 					end,
-				}, "AimbotFOVRadiusSlider")
+				})
 
 				FOVSettingsSection:Slider({
 					Name = "Circle Sides",
@@ -249,7 +249,7 @@ return function(self)
 					Callback = function(self, value)
 						AimbotFOVSettings.NumSides = value
 					end,
-				}, "AimbotFOVCircleSidesSlider"):Continue()
+				}):Continue()
 			end
 		end
 
@@ -264,20 +264,20 @@ return function(self)
 				Callback = function(self, value)
 					TriggerbotSettings.Enabled = value
 				end,
-			}, "TriggerbotEnabled")
+			})
 
 			TriggerbotSection:Slider({
-				Name = "Trigger Delay",
-				Description = "in miliseconds, the reaction time of triggerbot",
+				Name = "Reaction Time",
+				Description = "the time it takes for triggerbot to react to targets (ms)",
 				Value = 0,
-				Minimum = 1,
+				Minimum = 0,
 				Maximum = 500,
 				Step = 1,
 				Precision = 0,
 				Callback = function(self, value)
 					TriggerbotSettings.Delay = value / 1000
 				end,
-			}, "TriggerbotDelay")
+			})
 
 			TriggerbotSection:Toggle({
 				Name = "Team Check",
@@ -322,6 +322,19 @@ return function(self)
 				})
 
 				SilentAimSettingsSection:Toggle({
+					Name = "Trigger In Bounds",
+					Description = "fires your gun while a target is within bounds\nFunctions similar to triggerbot.",
+					State = false,
+					Callback = function(self, value)
+						SilentAimSettings.LockContinueTrigger = function()
+							if value then
+								TriggerbotSettings:Trigger()
+							end
+						end
+					end,
+				})
+
+				SilentAimSettingsSection:Toggle({
 					Name = "Wall Check",
 					Description = "enables wall check",
 					State = true,
@@ -356,18 +369,21 @@ return function(self)
 					Limit = 1,
 					Minimum = 1,
 					Callback = function(self, value)
-						if value[1] == "Random" then SilentAimSettings.RandomLockPart = true; return end
+						if value[1] == "Random" then
+							SilentAimSettings.RandomLockPart = true
+							return
+						end
 						SilentAimSettings.RandomLockPart = false
 						local Part = value[1] == "Torso" and "HumanoidRootPart" or value[1]
 						SilentAimSettings.LockPart = Part
 					end,
-				}, "Bone")
+				})
 
 				SilentAimSettingsSection:Slider({
 					Name = "Hit Chance",
 					Description = "the chance bullets will hit when shot with silent aim",
 					Value = 100,
-					Minimum = 1,
+					Minimum = 0,
 					Maximum = 100,
 					Step = 1,
 					Precision = 0,
@@ -377,7 +393,7 @@ return function(self)
 					Callback = function(self, value)
 						SilentAimSettings.HitChance = value
 					end,
-				}, "MaxDistance"):Continue()
+				})
 
 				SilentAimSettingsSection:Slider({
 					Name = "Max Distance",
@@ -390,7 +406,7 @@ return function(self)
 					Callback = function(self, value)
 						SilentAimSettings.MaxDistance = value
 					end,
-				}, "MaxDistance"):Continue()
+				}):Continue()
 			end
 
 			-- FOV Settings
@@ -471,7 +487,7 @@ return function(self)
 				})
 					:Continue()
 					:Colorpicker({
-						Color = { Color3.fromRGB(150, 200, 255), 0 },
+						Color = { Color3.fromRGB(200, 230, 255), 0 },
 						SuggestionColors = {
 							{ Color3.fromRGB(171, 81, 83) },
 							{ Color3.fromRGB(123, 124, 243) },
@@ -500,45 +516,94 @@ return function(self)
 			end
 		end
 
-		-- Hitbox Expander
-		do
-			local HitboxExpanderSection = Tab:Section({ Name = "Hitbox Expander" })
-		end
-
 		-- Gun Modifications
 		do
 			local GunModificationsSection = Tab:Section({ Name = "Gun Modifications" })
 
 			local OriginalValues = {}
+			local OriginalSENVValues = {}
 
-			local function UpdateWeaponValue(Name, NewValue)
+			local function UpdateWeaponValue(Name, NewValue, UseSENV)
+				local SENVWeapons = game.Players.LocalPlayer.PlayerGui.GUI.Client.Functions.Weapons
 				local Weapons: Folder = ReplicatedStorage:FindFirstChild("Weapons")
 
-				if Weapons then
-					for _, Modifier in pairs(Weapons:GetDescendants()) do
-						if Modifier.Name == Name and Modifier.Parent.Parent == Weapons then
-							if OriginalValues[Modifier] == nil then
-								OriginalValues[Modifier] = Modifier.Value
+				if UseSENV then
+					if SENVWeapons and getsenv(SENVWeapons)[Name] then
+						OriginalSENVValues[Name] = getsenv(SENVWeapons)[Name]
+						getsenv(SENVWeapons)[Name] = NewValue
+					end
+				else
+					if Weapons then
+						for _, Modifier in pairs(Weapons:GetDescendants()) do
+							if
+								Modifier.Name == Name
+								and Modifier.Parent.Parent == Weapons
+								and Modifier:IsA("ValueBase")
+							then
+								if OriginalValues[Modifier] == nil then
+									OriginalValues[Modifier] = Modifier.Value
+								end
+
+								if typeof(NewValue) == "function" then
+									Modifier.Value = NewValue(typeof(Modifier.Value), OriginalValues[Modifier])
+								else
+									Modifier.Value = NewValue
+								end
 							end
-
-							Modifier.Value = NewValue
 						end
 					end
 				end
 			end
 
-			local function RestoreWeaponValue(Name)
+			local function RestoreWeaponValue(Name, UseSENV)
+				local SENVWeapons = game.Players.LocalPlayer.PlayerGui.GUI.Client.Functions.Weapons
 				local Weapons: Folder = ReplicatedStorage:FindFirstChild("Weapons")
 
-				if Weapons then
-					for _, Modifier in pairs(Weapons:GetDescendants()) do
-						if Modifier.Name == Name and OriginalValues[Modifier] ~= nil then
-							Modifier.Value = OriginalValues[Modifier]
-							OriginalValues[Modifier] = nil
+				if UseSENV then
+					if SENVWeapons and OriginalSENVValues[Name] then
+						getsenv(SENVWeapons)[Name] = OriginalSENVValues[Name]
+					end
+				else
+					if Weapons then
+						for _, Modifier in pairs(Weapons:GetDescendants()) do
+							if Modifier.Name == Name and OriginalValues[Modifier] ~= nil then
+								Modifier.Value = OriginalValues[Modifier]
+								OriginalValues[Modifier] = nil
+							end
 						end
 					end
 				end
 			end
+
+			GunModificationsSection:Slider({
+				Name = "Bullet Multiplier",
+				Description = "Multiplies the bullets fired per shot\n⚠️ This can lag your game with high values⚠️",
+				Value = 1,
+				Minimum = 1,
+				Maximum = 8,
+				Step = 1,
+				Precision = 0,
+				Callback = function(self, value)
+					UpdateWeaponValue("Bullets", function(Type, Old)
+						return Type == "number" and Old * value or Old
+					end)
+				end,
+			})
+
+			GunModificationsSection:Slider({
+				Name = "Critical Multiplier",
+				Description = "Multiplies the crit multiplier for your gun",
+				Value = 1,
+				Minimum = 1,
+				Maximum = 100,
+				Step = 1,
+				Precision = 0,
+				Callback = function(self, value)
+					UpdateWeaponValue("Crit", function(Type, Old)
+						return Type == "number" and Old * value or Old
+					end)
+				end,
+			})
 
 			GunModificationsSection:Toggle({
 				Name = "Automatics",
@@ -546,8 +611,10 @@ return function(self)
 				State = false,
 				Callback = function(self, value)
 					if value then
+						UpdateWeaponValue("mode", "automatic", true)
 						UpdateWeaponValue("Auto", true)
 					else
+						RestoreWeaponValue("automatic", true)
 						RestoreWeaponValue("Auto")
 					end
 				end,
@@ -567,7 +634,7 @@ return function(self)
 						CurrentCurse.Value = ""
 					end
 				end,
-			}, "InfAmmoToggle")
+			})
 
 			GunModificationsSection:Toggle({
 				Name = "Rapid Fire",
@@ -629,9 +696,40 @@ return function(self)
 				State = false,
 				Callback = function(self, value)
 					if value then
+						UpdateWeaponValue("recoil", 0, true)
 						UpdateWeaponValue("RecoilControl", 0)
 					else
+						RestoreWeaponValue("recoil", true)
 						RestoreWeaponValue("RecoilControl")
+					end
+				end,
+			})
+
+			GunModificationsSection:Toggle({
+				Name = "No Overheating",
+				Description = "removes overheating for the Z80",
+				State = false,
+				Callback = function(self, value)
+					local Gui = LocalPlayer:FindFirstChild("PlayerGui") and LocalPlayer.PlayerGui:FindFirstChild("GUI")
+					local Client = Gui and Gui:FindFirstChild("Client")
+					local Variables = Client and Client:FindFirstChild("Variables")
+					local Overheat = Variables and Variables:FindFirstChild("overheat")
+
+					if not Overheat then
+						return
+					end
+
+					if self._OverheatConn then
+						self._OverheatConn:Disconnect()
+						self._OverheatConn = nil
+					end
+
+					if value then
+						self._OverheatConn = Overheat:GetPropertyChangedSignal("Value"):Connect(function()
+							if Overheat.Value > 0 then
+								Overheat.Value = 0
+							end
+						end)
 					end
 				end,
 			})
@@ -725,7 +823,7 @@ return function(self)
 				Callback = function(self, value)
 					ESPShared.maxDistance = value
 				end,
-			}, "ESPMaxDistanceSlider")
+			}):Continue()
 
 			local function UpdateVisualPreview(Team)
 				Window:VisualPreview({
@@ -865,6 +963,34 @@ return function(self)
 							UpdateVisualPreview(ESPTarg)
 						end,
 					})
+
+					Header:Toggle({
+						Name = "3D Bounding Box",
+						Description = "enables 3d bounding box ESP",
+						State = false,
+						Callback = function(self, value)
+							ESPTarg.box3d = value
+	
+							UpdateVisualPreview(ESPTarg)
+						end,
+					})
+						:Continue()
+						:Colorpicker({
+							Color = { Color3.fromRGB(141, 149, 192), 0 },
+							SuggestionColors = {
+								{ Color3.fromRGB(171, 81, 83) },
+								{ Color3.fromRGB(123, 124, 243) },
+								{ Color3.fromRGB(208, 246, 111) },
+								{ Color3.fromRGB(255, 197, 100) },
+								{ Color3.fromRGB(49, 220, 195) },
+							},
+							Callback = function(color, transparency)
+								ESPTarg.box3dColor[1], ESPTarg.box3dColor[2] = color, 1 - transparency
+								ESPTarg.box3dOutlineColor[2] = 1 - transparency
+	
+								UpdateVisualPreview(ESPTarg)
+							end,
+						})
 
 				-- Chams
 				Header:Toggle({
@@ -1188,7 +1314,7 @@ return function(self)
 				Limit = 1,
 				Minimum = 1,
 				Callback = function(self, value)
-					ESPTarg.tracerOrigin = value[1]
+					
 				end,
 			})
 			ViewmodelSection:Dropdown({
