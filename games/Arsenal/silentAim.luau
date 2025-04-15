@@ -148,6 +148,9 @@ local function GetClosestPlayer()
 				local Distance = (GetMouseLocation(UserInputService) - Vector).Magnitude
 				if Distance < RequiredDistance and OnScreen then
 					RequiredDistance, Environment.Locked = Distance, Value
+					if Settings.LockContinueTrigger then
+						task.spawn(Settings.LockContinueTrigger, Value)
+					end
 					return Character[LockPart]
 				end
 			end
@@ -189,6 +192,10 @@ local function GetClosestPlayer()
 			if Distance > RequiredDistance or not OnScreen then
 				Settings.Locked = nil
 				return nil
+			end
+
+			if Settings.LockContinueTrigger then
+				task.spawn(Settings.LockContinueTrigger, Value)
 			end
 
 			return LockPartInCharacter
