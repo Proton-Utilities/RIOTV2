@@ -12,6 +12,17 @@
     This file was automatically generated with darklua, it is not intended for manual editing.
 --]]
 
+
+local Push = function(File)
+	local Actor = getactors()[1]
+	if Actor then
+		run_on_actor(Actor, File)
+	else
+		loadstring(File)()
+	end
+end
+
+Push([================================================================================[ 
 local a a={cache={},load=function(b)if not a.cache[b]then a.cache[b]={c=a[b]()}
 end return a.cache[b].c end}do function a.a()local b,c={Components={},Assets={
 DefaultImage='rbxassetid://134552883719543',ShieldCheck=
@@ -1389,71 +1400,71 @@ aA=ap(av,'LocalPlayer'),ap(ab,'CurrentCamera'),ap(aa,'FindFirstChild'),ap(aa,
 'GetMouseLocation'),ap(av,'GetPlayers'),2000,false,{},ap(aa,'DescendantAdded').
 Connect,{DeveloperSettings={UpdateMode='RenderStepped',TeamCheckOption='Team'},
 Triggerbot={Enabled=false,TeamCheck=true,AliveCheck=true,WeaponCheck=true,Delay=
-0,TargetChanged=function(aB)return end,Trigger=function()mouse1press()task.wait(
-)mouse1release()end},Aimbot={Enabled=false,LockMode=2,LockPart='Head',
-MaxDistance=250,TeamCheck=true,AliveCheck=true,WallCheck=1,Sensitivity=0,
-Sensitivity2=1,OffsetToMoveDirection=false,OffsetIncrement=15},FOVSettings={
-Enabled=false,Visible=true,Radius=90,NumSides=60,Thickness=2,Transparency=0,
-Filled=false,Color=af(255,150,150),OutlineColor=af(0,0,0),LockedColor=af(150,255
-,150)},Blacklisted={},FOVCircleOutline=ag'Circle',FOVCircle=ag'Circle'}local aN,
-aO,aP=aJ,function(aN)local aO for aP,b in next,aE(av)do local c=ap(b,'Name')if
-am(al(c),1,#aN)==al(aN)then aO=c end end return aO end,function(aN)return ac(aN.
-X,aN.Y)end local b=function()aN.Locked=nil local b=aN.FOVCircle b.Color=aN.
-FOVSettings.Color aq(at,'MouseDeltaSensitivity',aL)if aK then aK:Cancel()end end
-function aN.Aimbot.SetState(c)aG=c if not c then b()end end function aN.
-PlayerAlive(c)local d=ap(c,'Character')local e=d and az(d,'Humanoid')return ap(e
-,'Health')<=0 end local c,d=function()local c=aN.Aimbot local d=c.LockPart if
-not aN.Locked then aF=aN.FOVSettings.Enabled and aN.FOVSettings.Radius or 2000
-for e,f in next,aE(av)do local g=ap(f,'Character')local h=g and az(g,'Humanoid')
-if f~=aw and not aj(aN.Blacklisted,ap(f,'Name'))and g and ay(g,d)and h then
-local i,j=ap(g[d],'Position'),aN.DeveloperSettings.TeamCheckOption if c.
-MaxDistance and(ax.CFrame.Position-i).Magnitude>c.MaxDistance then continue end
-if c.TeamCheck and ap(f,j)and ap(f,j)==ap(aw,j)then continue end if c.AliveCheck
-and aN.PlayerAlive(f)then continue end if c.WallCheck==2 or c.WallCheck==3 then
-local m=aA(ap(aw,'Character'))for p,q in next,aA(g)do m[#m+1]=q end if#aC(ax,{i}
-,m)>0 then continue end end local m,p,q=aB(ax,i)m=aP(m)q=(aD(at)-m).Magnitude if
-q<aF and p then aF,aN.Locked=q,f end end end else local e=ap(aN.Locked,
-'Character')if e then local f=ay(e,d)if not f then b()return end local g=ap(e[d]
-,'Position')if c.MaxDistance and(ax.CFrame.Position-g).Magnitude>c.MaxDistance
-then b()return end local h,i=aB(ax,g)h=aP(h)local j=(aD(at)-h).Magnitude if c.
-WallCheck==3 then local m=aA(ap(aw,'Character'))for p,q in next,aA(e)do m[#m+1]=
-q end if#aC(ax,{g},m)>0 then b()return end end if j>aF or not i then b()end else
-b()end end end,function()local c=aN.Triggerbot if not c.Enabled then c.
-TargetChanged()return end local d=ap(aw,'GetMouse')and aw:GetMouse()if not d
-then c.TargetChanged()return end local e=ab.CurrentCamera local f,g,h=Ray.new(e.
-CFrame.Position,(d.Hit.Position-e.CFrame.Position).Unit*1000),{aw.Character,e},
-RaycastParams.new()h.FilterDescendantsInstances=g h.FilterType=Enum.
-RaycastFilterType.Blacklist local i=ab:Raycast(f.Origin,f.Direction,h)if not i
-then c.TargetChanged()return end local j=i.Instance local m=j:
-FindFirstAncestorOfClass'Model'if not m then c.TargetChanged()return end local p
-,q={},false for r,s in pairs(m:GetChildren())do if s.Name=='Head'or s.Name:find
-'Torso'or s.Name:find'Leg'or s.Name:find'Arm'then table.insert(p,s)end end q=
-table.find(p,j)or j:IsDescendantOf(table.find(p,j))if not q then c.
-TargetChanged()return end local r=av:GetPlayerFromCharacter(m)if not r or r==aw
-then c.TargetChanged()return end local s=aN.DeveloperSettings.TeamCheckOption if
-c.TeamCheck and ap(r,s)and ap(r,s)==ap(aw,s)then c.TargetChanged()return end if
-c.AliveCheck and aN.PlayerAlive then c.TargetChanged()end c.TargetChanged(r)task
-.wait(c.Delay)mouse1press()task.wait()mouse1release()end local e=function()aL=
-ap(at,'MouseDeltaSensitivity')local e,f,g,h,i,j=aN.Aimbot,aN.Triggerbot,aN.
-FOVCircle,aN.FOVCircleOutline,(aN.FOVSettings)aH.RenderSteppedConnection=aI(ap(
-as,aN.DeveloperSettings.UpdateMode),function()local m,p=e.OffsetToMoveDirection,
-e.LockPart if i.Enabled and e.Enabled then g.Color=(aN.Locked and i.LockedColor)
-or i.Color h.Color=i.OutlineColor g.Thickness=i.Thickness h.Thickness=i.
-Thickness+1 g.Position=aD(at)h.Position=aD(at)g.NumSides=i.NumSides h.NumSides=i
-.NumSides g.Radius=i.Radius h.Radius=i.Radius g.Transparency=1-i.Transparency h.
-Transparency=1-i.Transparency g.Visible=i.Visible h.Visible=i.Visible else g.
-Visible=false h.Visible=false end if f.Enabled then d()end if aG and e.Enabled
-then c()j=m and ap(az(ap(aN.Locked,'Character'),'Humanoid'),'MoveDirection')*(
-an(e.OffsetIncrement,1,30)/10)or ad if aN.Locked then local q=ap(ap(aN.Locked,
-'Character')[p],'Position')local r=aB(ax,q+j)local s,t=(r.X-aD(at).X)/e.
-Sensitivity2,(r.Y-aD(at).Y)/e.Sensitivity2 if aN.Aimbot.LockMode==2 then ai(s,t)
-else if e.Sensitivity>0 then aK=au:Create(ax,ah(aN.Aimbot.Sensitivity,Enum.
-EasingStyle.Sine,Enum.EasingDirection.Out),{CFrame=ae(ax.CFrame.Position,q+j)})
-aK:Play()else aq(ax,'CFrame',ae(ax.CFrame.Position,q+j))end end end end end)end
-function aN.Exit(f)assert(f,'Aimbot.Exit: Missing parameter #1 "self" <table>.')
-for g,h in next,aH do aM(aH[g])end e=nil aP=nil b=nil c=nil aO=nil f.FOVCircle:
-Remove()f.FOVCircleOutline:Remove()end function aN.Restart()for f,g in next,aH
-do aM(aH[f])end e()end function aN.Blacklist(f,g)assert(f,
+0,TargetChanged=function(aB)return end,Trigger=function()mouse1press()wait()
+mouse1release()end},Aimbot={Enabled=false,LockMode=2,LockPart='Head',MaxDistance
+=250,TeamCheck=true,AliveCheck=true,WallCheck=1,Sensitivity=0,Sensitivity2=1,
+OffsetToMoveDirection=false,OffsetIncrement=15},FOVSettings={Enabled=false,
+Visible=true,Radius=90,NumSides=60,Thickness=2,Transparency=0,Filled=false,Color
+=af(255,150,150),OutlineColor=af(0,0,0),LockedColor=af(150,255,150)},Blacklisted
+={},FOVCircleOutline=ag'Circle',FOVCircle=ag'Circle'}local aN,aO,aP=aJ,function(
+aN)local aO for aP,b in next,aE(av)do local c=ap(b,'Name')if am(al(c),1,#aN)==
+al(aN)then aO=c end end return aO end,function(aN)return ac(aN.X,aN.Y)end local
+b=function()aN.Locked=nil local b=aN.FOVCircle b.Color=aN.FOVSettings.Color aq(
+at,'MouseDeltaSensitivity',aL)if aK then aK:Cancel()end end function aN.Aimbot.
+SetState(c)aG=c if not c then b()end end function aN.PlayerAlive(c)local d=ap(c,
+'Character')local e=d and az(d,'Humanoid')return ap(e,'Health')<=0 end local c,d
+=function()local c=aN.Aimbot local d=c.LockPart if not aN.Locked then aF=aN.
+FOVSettings.Enabled and aN.FOVSettings.Radius or 2000 for e,f in next,aE(av)do
+local g=ap(f,'Character')local h=g and az(g,'Humanoid')if f~=aw and not aj(aN.
+Blacklisted,ap(f,'Name'))and g and ay(g,d)and h then local i,j=ap(g[d],
+'Position'),aN.DeveloperSettings.TeamCheckOption if c.MaxDistance and(ax.CFrame.
+Position-i).Magnitude>c.MaxDistance then continue end if c.TeamCheck and ap(f,j)
+and ap(f,j)==ap(aw,j)then continue end if c.AliveCheck and aN.PlayerAlive(f)then
+continue end if c.WallCheck==2 or c.WallCheck==3 then local m=aA(ap(aw,
+'Character'))for p,q in next,aA(g)do m[#m+1]=q end if#aC(ax,{i},m)>0 then
+continue end end local m,p,q=aB(ax,i)m=aP(m)q=(aD(at)-m).Magnitude if q<aF and p
+then aF,aN.Locked=q,f end end end else local e=ap(aN.Locked,'Character')if e
+then local f=ay(e,d)if not f then b()return end local g=ap(e[d],'Position')if c.
+MaxDistance and(ax.CFrame.Position-g).Magnitude>c.MaxDistance then b()return end
+local h,i=aB(ax,g)h=aP(h)local j=(aD(at)-h).Magnitude if c.WallCheck==3 then
+local m=aA(ap(aw,'Character'))for p,q in next,aA(e)do m[#m+1]=q end if#aC(ax,{g}
+,m)>0 then b()return end end if j>aF or not i then b()end else b()end end end,
+function()local c=aN.Triggerbot if not c.Enabled then c.TargetChanged()return
+end local d=ap(aw,'GetMouse')and aw:GetMouse()if not d then c.TargetChanged()
+return end local e=ab.CurrentCamera local f,g,h=Ray.new(e.CFrame.Position,(d.Hit
+.Position-e.CFrame.Position).Unit*1000),{aw.Character,e},RaycastParams.new()h.
+FilterDescendantsInstances=g h.FilterType=Enum.RaycastFilterType.Blacklist local
+i=ab:Raycast(f.Origin,f.Direction,h)if not i then c.TargetChanged()return end
+local j=i.Instance local m=j:FindFirstAncestorOfClass'Model'if not m then c.
+TargetChanged()return end local p,q={},false for r,s in pairs(m:GetChildren())do
+if s.Name=='Head'or s.Name:find'Torso'or s.Name:find'Leg'or s.Name:find'Arm'then
+table.insert(p,s)end end q=table.find(p,j)or j:IsDescendantOf(table.find(p,j))if
+not q then c.TargetChanged()return end local r=av:GetPlayerFromCharacter(m)if
+not r or r==aw then c.TargetChanged()return end local s=aN.DeveloperSettings.
+TeamCheckOption if c.TeamCheck and ap(r,s)and ap(r,s)==ap(aw,s)then c.
+TargetChanged()return end if c.AliveCheck and aN.PlayerAlive then c.
+TargetChanged()end c.TargetChanged(r)task.wait(c.Delay)c.Trigger()end local e=
+function()aL=ap(at,'MouseDeltaSensitivity')local e,f,g,h,i,j=aN.Aimbot,aN.
+Triggerbot,aN.FOVCircle,aN.FOVCircleOutline,(aN.FOVSettings)aH.
+RenderSteppedConnection=aI(ap(as,aN.DeveloperSettings.UpdateMode),function()
+local m,p=e.OffsetToMoveDirection,e.LockPart if i.Enabled and e.Enabled then g.
+Color=(aN.Locked and i.LockedColor)or i.Color h.Color=i.OutlineColor g.Thickness
+=i.Thickness h.Thickness=i.Thickness+1 g.Position=aD(at)h.Position=aD(at)g.
+NumSides=i.NumSides h.NumSides=i.NumSides g.Radius=i.Radius h.Radius=i.Radius g.
+Transparency=1-i.Transparency h.Transparency=1-i.Transparency g.Visible=i.
+Visible h.Visible=i.Visible else g.Visible=false h.Visible=false end if f.
+Enabled then d()end if aG and e.Enabled then c()j=m and ap(az(ap(aN.Locked,
+'Character'),'Humanoid'),'MoveDirection')*(an(e.OffsetIncrement,1,30)/10)or ad
+if aN.Locked then local q=ap(ap(aN.Locked,'Character')[p],'Position')local r=aB(
+ax,q+j)local s,t=(r.X-aD(at).X)/e.Sensitivity2,(r.Y-aD(at).Y)/e.Sensitivity2 if
+aN.Aimbot.LockMode==2 then ai(s,t)else if e.Sensitivity>0 then aK=au:Create(ax,
+ah(aN.Aimbot.Sensitivity,Enum.EasingStyle.Sine,Enum.EasingDirection.Out),{CFrame
+=ae(ax.CFrame.Position,q+j)})aK:Play()else aq(ax,'CFrame',ae(ax.CFrame.Position,
+q+j))end end end end end)end function aN.Exit(f)assert(f,
+'Aimbot.Exit: Missing parameter #1 "self" <table>.')for g,h in next,aH do aM(aH[
+g])end e=nil aP=nil b=nil c=nil aO=nil f.FOVCircle:Remove()f.FOVCircleOutline:
+Remove()end function aN.Restart()for f,g in next,aH do aM(aH[f])end e()end
+function aN.Blacklist(f,g)assert(f,
 'Aimbot.Blacklist: Missing parameter #1 "self" <table>.')assert(g,
 'Aimbot.Blacklist: Missing parameter #2 "Username" <string>.')g=aO(g)assert(f,
 'Aimbot.Blacklist: User '..g.." couldn't be found.")f.Blacklisted[#f.Blacklisted
@@ -1841,14 +1852,14 @@ Name='Critical Multiplier',Description=
 'makes all guns automatic',State=false,Callback=function(aI,aJ)if aJ then aG(
 'mode','automatic',true)aG('Auto',true)else aH('automatic',true)aH'Auto'end end}
 aD:Toggle{Name='Infinite Ammo',Description='enables infinite ammo',State=false,
-Callback=function(aI,aJ)local aK=az.wkspc local aL=aK and aK.CurrentCurse if aL
-and aL.Value and aJ then aL.Value='Infinite Ammo'elseif not aJ then aL.Value=''
-end end}aD:Toggle{Name='Rapid Fire',Description='enables rapid fire rate',State=
-false,Callback=function(aI,aJ)if aJ then aG('FireRate',0.02)else aH'FireRate'end
-end}aD:Toggle{Name='No Equip Timer',Description=
-'removes the delay from equipping to shooting',State=false,Callback=function(aI,
-aJ)if aJ then aG('EquipTime',0)else aH'EquipTime'end end}aD:Toggle{Name=
-'Instant Reload',Description='removes reload timer',State=false,Callback=
+Callback=function(aI,aJ)local aK=az:FindFirstChild'wkspc'local aL=aK and aK:
+FindFirstChild'CurrentCurse'if aL and aL.Value and aJ then aL.Value=
+'Infinite Ammo'elseif not aJ then aL.Value=''end end}aD:Toggle{Name='Rapid Fire'
+,Description='enables rapid fire rate',State=false,Callback=function(aI,aJ)if aJ
+then aG('FireRate',0.02)else aH'FireRate'end end}aD:Toggle{Name='No Equip Timer'
+,Description='removes the delay from equipping to shooting',State=false,Callback
+=function(aI,aJ)if aJ then aG('EquipTime',0)else aH'EquipTime'end end}aD:Toggle{
+Name='Instant Reload',Description='removes reload timer',State=false,Callback=
 function(aI,aJ)if aJ then aG('ReloadTime',0)else aH'ReloadTime'end end}aD:Toggle
 {Name='No Spread',Description='removes gun spread',State=false,Callback=function
 (aI,aJ)if aJ then aG('MaxSpread',0)aG('Spread',0)else aH'MaxSpread'aH'Spread'end
@@ -1983,12 +1994,14 @@ onChanged=function(aD,aE)aA:UpdateSettings{Keybind=aE}end}:Continue()aC:Button{
 Color=aj.SystemDarkRed,Name='Unload Menu',Callback=function(aD)ad:Unload()end}:
 Continue()end ab()aB.Legit:Select()ad:Notification{Title=`RIOT V2 - {aa.Name} | getriot.cc`
 ,Description=`RIOT V2 Loaded!`,Lifetime=5}do ae.Load()ae.getWeapon=function(aC)
-local aD='None'if aC then local aE=aC.NRPBS and aC.NRPBS.EquippedTool if aE and
-aE.Value then aD=aE.Value end end return string.upper(aD)end ae.getHealth=
-function(aC)local aD=aC.NRPBS local aE,aF=aD and aD.Health,aD and aD.MaxHealth
+local aD='None'if aC then local aE=aC:FindFirstChild'NRPBS'local aF=aE and aE:
+FindFirstChild'EquippedTool'if aF and aF.Value then aD=aF.Value end end return
+string.upper(aD)end ae.getHealth=function(aC)local aD=aC:FindFirstChild'NRPBS'
+local aE,aF=aD and aD:FindFirstChild'Health',aD and aD:FindFirstChild'MaxHealth'
 if aE and aF then return aE.Value,aF.Value end return 100,100 end end do af.
-Load()af.PlayerAlive=function(aC)return aC.NRPBS and aC.NRPBS.Health and aC.
-NRPBS.Health.Value<0 end end end end end local aa={Universal={Name='Universal',
-Load=a.load'e'},Arsenal={Name='Arsenal',Load=a.load'h',Places={286090429}}}for
-ab,ac in pairs(aa)do if ac.Places then for ad,ae in ipairs(ac.Places)do if ae==
-game.PlaceId then ac:Load()return end end end end aa.Universal:Load()
+Load()af.PlayerAlive=function(aC)local aD=aC:FindFirstChild'NRPBS'local aE=aD
+and aD:FindFirstChild'Health'return aE and aE.Value<0 end end end end end local
+aa={Universal={Name='Universal',Load=a.load'e'},Arsenal={Name='Arsenal',Load=a.
+load'h',Places={286090429}}}for ab,ac in pairs(aa)do if ac.Places then for ad,ae
+in ipairs(ac.Places)do if ae==game.PlaceId then ac:Load()return end end end end
+aa.Universal:Load()]================================================================================])
