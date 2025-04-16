@@ -2,6 +2,11 @@
 --!nolint
 
 local Files = {
+    ["Universal"] = {
+        Name = "Universal",
+        Load = require("games/Universal/init.luau")
+    },
+
     ["Arsenal"] = {
         Name = "Arsenal",
         Load = require("games/Arsenal/init.luau"),
@@ -21,3 +26,5 @@ for _, Game in pairs(Files) do
         end
     end
 end
+
+Files.Universal:Load()

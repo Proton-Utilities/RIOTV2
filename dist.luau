@@ -13,69 +13,42 @@
 --]]
 
 local a a={cache={},load=function(b)if not a.cache[b]then a.cache[b]={c=a[b]()}
-end return a.cache[b].c end}do function a.a()return function(b)local c,d=game:
-GetService'ReplicatedFirst':WaitForChild'NewLoader',game:GetService
-'ReplicatedStorage':WaitForChild'Functions':WaitForChild'Ping'do local e e=
-hookfunction(getrenv().task.spawn,newcclosure(function(f,...)local g={...}if g[1
-]==d and debug.info(f,'n')=='InvokeServer'then return task.wait(9e9)end return
-e(f,...)end))end do local e e=hookmetamethod(game,'__namecall',newcclosure(
-function(f,g,...)if f.Parent==nil and not checkcaller()and getnamecallmethod()==
-'Fire'and typeof(g)=='table'then local h,i=next(g)if typeof(h)=='userdata'then
-hookmetamethod(game,'__namecall',e)return task.wait(9e9)end end return e(f,g,...
-)end))end do local e e=hookmetamethod(game,'__namecall',newcclosure(function(f,g
-,...)if f==game and not checkcaller()and getnamecallmethod()=='FindService'and g
-=='VirtualUser'then hookmetamethod(game,'__namecall',e)return task.wait(9e9)end
-return e(f,g,...)end))end do local e e=hookmetamethod(game,'__newindex',
-newcclosure(function(f,g,h)if f==c and not checkcaller()then return task.wait(
-9e9)end return e(f,g,h)end))end end end function a.b()local b={}b.ProtectGui=
-function(c)local d=cloneref and cloneref(game)or game local e,f=pcall(function()
-c.Parent=gethui and gethui()or cloneref and cloneref(d:GetService'CoreGui')or d:
-GetService'CoreGui'end)return e and c or error('Failed to protect GUI: '..
-tostring(f))end b.ProtectGui=newcclosure and newcclosure(b.ProtectGui)or b.
-ProtectGui b.SecureService=function(c)local d=cloneref and cloneref(game)or game
-local e,f=pcall(function()return cloneref and cloneref(d:GetService(c))or d:
-GetService(c)end)return e and f or error('Unable to retrieve service: '..c)end b
-.SecureService=newcclosure and newcclosure(b.SecureService)or b.SecureService
-function b.GetPlayer()local c,d=pcall(function()return(b.SecureService'Players')
-end)return c and(d).LocalPlayer or nil end function b.GetCharacter(c)local d,e=
-pcall(function()return c and c.Character or nil end)return d and e or nil end
-function b.GetHumanoid(c)local d,e=pcall(function()local d=b.GetCharacter(c)
-return d and d:FindFirstChildOfClass'Humanoid'or nil end)return d and e or nil
-end return b end function a.c()local b,c={Components={},Assets={DefaultImage=
-'rbxassetid://134552883719543',ShieldCheck='rbxassetid://72905476505849',Shield=
-'rbxassetid://125424227377940',Archive='rbxassetid://86530498402003',Folder=
-'rbxassetid://134156031333431',Bolt='rbxassetid://99791134265440',Globe=
-'rbxassetid://132856339478739',Computer='rbxassetid://136037119434947',Settings=
-'rbxassetid://71732494649961'},Colors={SystemDarkRed=Color3.fromRGB(104,29,29)}}
-,{folder='Riot',unloaded=false,localPlayer=nil,camera=nil,gui=nil,overlay=nil,
-dropdownFrames={},notifSystem={totalOffset=0,notifications=nil,uIpadding=nil,
-notifInstances={}},tabSystem={tabInstances={},tabIndex=0,currentTab=nil,
-currentContent=nil},KeyMap_Spec={[Enum.UserInputType.MouseButton1]='VK_LBUTTON',
-[Enum.UserInputType.MouseButton2]='VK_RBUTTON',[Enum.UserInputType.MouseButton3]
-='VK_MBUTTON',[Enum.KeyCode.Return]='VK_RETURN',[Enum.KeyCode.CapsLock]=
-'VK_CAPITAL',[Enum.KeyCode.PageUp]='VK_PRIOR',[Enum.KeyCode.PageDown]='VK_NEXT',
-[Enum.KeyCode.Escape]='VK_ESCAPE',[Enum.KeyCode.Backspace]='VK_BACK',[Enum.
-KeyCode.Space]='VK_SPACE'},GetService=function(b)return cloneref and cloneref(
-game:GetService(b))or game:GetService(b)end}local d={_players=c.GetService
-'Players',_runService=c.GetService'RunService',_userInputService=c.GetService
-'UserInputService',_tweenService=c.GetService'TweenService',_workspace=c.
-GetService'Workspace'}local e={tween=function(e,f,g)return d._tweenService:
-Create(e,f,g)end,callback=function(e,...)local f={...}task.spawn(function()e(
-table.unpack(f))end)end,parseKeyCode=function(e)if c.KeyMap_Spec[e]then return c
-.KeyMap_Spec[e]end if e.Name then return'VK_'..e.Name:upper()end return
-'VK_UNKNOWN'end,secureGui=function(e)local f=Instance.new'ScreenGui'for g,h in
-pairs(e)do if g~='Parent'then pcall(function()f[g]=h end)end end f.Parent=(d.
-_runService:IsStudio()and c.localPlayer:FindFirstChild'PlayerGui'or gethui and
-gethui()or c.GetService'CoreGui')return f end,mouseInFrame=function(e)local f,g,
-h=d._userInputService:GetMouseLocation(),e.AbsolutePosition,e.AbsoluteSize
-return f.X>=g.X and f.X<=g.X+h.X and f.Y>=g.Y and f.Y<=g.Y+h.Y end,makeDraggable
-=function(e,f)assert(e,'Expected a base frame for makeDraggable')f=f or e local
-g,h,i,j=false local k=function(k)local l=k.Position-h e.Position=UDim2.new(i.X.
-Scale,i.X.Offset+l.X,i.Y.Scale,i.Y.Offset+l.Y)end f.InputBegan:Connect(function(
-l)if l.UserInputType==Enum.UserInputType.MouseButton1 or l.UserInputType==Enum.
-UserInputType.Touch then g=true h=l.Position i=e.Position l.Changed:Connect(
-function()if l.UserInputState==Enum.UserInputState.End then g=false end end)end
-end)f.InputChanged:Connect(function(l)if l.UserInputType==Enum.UserInputType.
+end return a.cache[b].c end}do function a.a()local b,c={Components={},Assets={
+DefaultImage='rbxassetid://134552883719543',ShieldCheck=
+'rbxassetid://72905476505849',Shield='rbxassetid://125424227377940',Archive=
+'rbxassetid://86530498402003',Folder='rbxassetid://134156031333431',Bolt=
+'rbxassetid://99791134265440',Globe='rbxassetid://132856339478739',Computer=
+'rbxassetid://136037119434947',Settings='rbxassetid://71732494649961'},Colors={
+SystemDarkRed=Color3.fromRGB(104,29,29)}},{folder='Riot',unloaded=false,
+localPlayer=nil,camera=nil,gui=nil,overlay=nil,dropdownFrames={},notifSystem={
+totalOffset=0,notifications=nil,uIpadding=nil,notifInstances={}},tabSystem={
+tabInstances={},tabIndex=0,currentTab=nil,currentContent=nil},KeyMap_Spec={[Enum
+.UserInputType.MouseButton1]='VK_LBUTTON',[Enum.UserInputType.MouseButton2]=
+'VK_RBUTTON',[Enum.UserInputType.MouseButton3]='VK_MBUTTON',[Enum.KeyCode.Return
+]='VK_RETURN',[Enum.KeyCode.CapsLock]='VK_CAPITAL',[Enum.KeyCode.PageUp]=
+'VK_PRIOR',[Enum.KeyCode.PageDown]='VK_NEXT',[Enum.KeyCode.Escape]='VK_ESCAPE',[
+Enum.KeyCode.Backspace]='VK_BACK',[Enum.KeyCode.Space]='VK_SPACE'},GetService=
+function(b)return cloneref and cloneref(game:GetService(b))or game:GetService(b)
+end}local d={_players=c.GetService'Players',_runService=c.GetService'RunService'
+,_userInputService=c.GetService'UserInputService',_tweenService=c.GetService
+'TweenService',_workspace=c.GetService'Workspace'}local e={tween=function(e,f,g)
+return d._tweenService:Create(e,f,g)end,callback=function(e,...)local f={...}
+task.spawn(function()e(table.unpack(f))end)end,parseKeyCode=function(e)if c.
+KeyMap_Spec[e]then return c.KeyMap_Spec[e]end if e.Name then return'VK_'..e.Name
+:upper()end return'VK_UNKNOWN'end,secureGui=function(e)local f=Instance.new
+'ScreenGui'for g,h in pairs(e)do if g~='Parent'then pcall(function()f[g]=h end)
+end end f.Parent=(d._runService:IsStudio()and c.localPlayer:FindFirstChild
+'PlayerGui'or gethui and gethui()or c.GetService'CoreGui')return f end,
+mouseInFrame=function(e)local f,g,h=d._userInputService:GetMouseLocation(),e.
+AbsolutePosition,e.AbsoluteSize return f.X>=g.X and f.X<=g.X+h.X and f.Y>=g.Y
+and f.Y<=g.Y+h.Y end,makeDraggable=function(e,f)assert(e,
+'Expected a base frame for makeDraggable')f=f or e local g,h,i,j=false local k=
+function(k)local l=k.Position-h e.Position=UDim2.new(i.X.Scale,i.X.Offset+l.X,i.
+Y.Scale,i.Y.Offset+l.Y)end f.InputBegan:Connect(function(l)if l.UserInputType==
+Enum.UserInputType.MouseButton1 or l.UserInputType==Enum.UserInputType.Touch
+then g=true h=l.Position i=e.Position l.Changed:Connect(function()if l.
+UserInputState==Enum.UserInputState.End then g=false end end)end end)f.
+InputChanged:Connect(function(l)if l.UserInputType==Enum.UserInputType.
 MouseMovement or l.UserInputType==Enum.UserInputType.Touch then j=l end end)d.
 _userInputService.InputChanged:Connect(function(l)if g and l==j and e.Visible
 then k(l)end end)end,subParser={None=function(e)return e end,Numeric=function(e)
@@ -1168,42 +1141,56 @@ table.find(c.notifSystem.notifInstances,ac)if ad then for ae,af in pairs(c.
 notifSystem.notifInstances)do if ae~=ad then e.tween(af,TweenInfo.new(0.25,Enum.
 EasingStyle.Exponential),{Position=af.Position-UDim2.new(0,0,0,c.notifSystem.
 notifInstances[ad].AbsoluteSize.Y+10)}):Play()end end end end c.notifSystem.
-notifications.ChildAdded:Connect(ac)return b end function a.d()local aa=a.load
-'b'.SecureService local ab,ac,ad,ae,af=aa'RunService',aa'Players',aa'Workspace',
-aa'UserInputService',aa'CoreGui'local ag,ah=ac.LocalPlayer,ad.CurrentCamera
-local ai,aj,ak,al,am,an,ao,ap,aq,ar,as,at,au,av,aw,ax,ay,az,aA,aB,aC,aD,aE,aF,aG
-,aH,aI,aJ=ah.ViewportSize,math.floor,math.round,math.sin,math.cos,table.clear,
-table.unpack,table.find,table.create,CFrame.fromMatrix,ah.WorldToViewportPoint,
-ad.IsA,ad.GetPivot,ad.FindFirstChild,ad.FindFirstChildOfClass,ad.GetChildren,
-CFrame.identity.PointToObjectSpace,Color3.new().Lerp,Vector2.zero.Min,Vector2.
-zero.Max,Vector2.zero.Lerp,Vector3.zero.Min,Vector3.zero.Max,Vector2.new(7,0),
-Vector2.new(0,1),Vector2.new(0,2),Vector2.new(5,0),{Vector3.new(-1,-1,-1),
-Vector3.new(-1,1,-1),Vector3.new(-1,1,1),Vector3.new(-1,-1,1),Vector3.new(1,-1,-
-1),Vector3.new(1,1,-1),Vector3.new(1,1,1),Vector3.new(1,-1,1)}local aK,aL=
-function(aK)local aL,aM for aN=1,#aK do local aO=aK[aN]local aP,b=aO.CFrame,aO.
-Size aL=aD(aL or aP.Position,(aP-b*0.5).Position)aM=aE(aM or aP.Position,(aP+b*
-0.5).Position)end local aN=(aL+aM)*0.5 local aO=Vector3.new(aN.X,aN.Y,aM.Z)
-return CFrame.new(aN,aO),aM-aL end,function(aK)local aL,aM=as(ah,aK)return
-Vector2.new(aL.X,aL.Y),aM,aL.Z end local aM,aN,aO,aP=function(aM,aN)local aO=aq(
-#aJ)for aP=1,#aJ do aO[aP]=aL((aM+aN*0.5*aJ[aP]).Position)end local aP,b=aA(ai,
-ao(aO)),aB(Vector2.zero,ao(aO))return{corners=aO,topLeft=Vector2.new(aj(aP.X),
-aj(aP.Y)),topRight=Vector2.new(aj(b.X),aj(aP.Y)),bottomLeft=Vector2.new(aj(aP.X)
-,aj(b.Y)),bottomRight=Vector2.new(aj(b.X),aj(b.Y))}end,function(aM,aN)local aO,
-aP,b,c=aM.X,aM.Y,am(aN),al(aN)return Vector2.new(aO*b-aP*c,aO*c+aP*b)end,
-function(aM,aN,aO)if aN=='Team Color'or(aM.interface.shared.useTeamColor and not
-aO)then return aM.interface.getTeamColor(aM.player)or Color3.new(1,1,1)end
-return aN end,{}aP.__index=aP function aP.new(b,c)local d=setmetatable({},aP)d.
-player=assert(b,'Missing argument #1 (Player expected)')d.interface=assert(c,
-'Missing argument #2 (table expected)')d:Construct()return d end function aP:
-_create(b,c)local d=Drawing.new(b)for e,f in next,c do pcall(function()d[e]=f
-end)end self.bin[#self.bin+1]=d return d end function aP:Construct()self.
-charCache={}self.childCount=0 self.bin={}self.drawings={box3d={{self:_create(
+notifications.ChildAdded:Connect(ac)return b end function a.b()local aa={}aa.
+ProtectGui=function(ab)local ac=cloneref and cloneref(game)or game local ad,ae=
+pcall(function()ab.Parent=gethui and gethui()or cloneref and cloneref(ac:
+GetService'CoreGui')or ac:GetService'CoreGui'end)return ad and ab or error(
+'Failed to protect GUI: '..tostring(ae))end aa.ProtectGui=newcclosure and
+newcclosure(aa.ProtectGui)or aa.ProtectGui aa.SecureService=function(ab)local ac
+=cloneref and cloneref(game)or game local ad,ae=pcall(function()return cloneref
+and cloneref(ac:GetService(ab))or ac:GetService(ab)end)return ad and ae or
+error('Unable to retrieve service: '..ab)end aa.SecureService=newcclosure and
+newcclosure(aa.SecureService)or aa.SecureService function aa.GetPlayer()local ab
+,ac=pcall(function()return(aa.SecureService'Players')end)return ab and(ac).
+LocalPlayer or nil end function aa.GetCharacter(ab)local ac,ad=pcall(function()
+return ab and ab.Character or nil end)return ac and ad or nil end function aa.
+GetHumanoid(ab)local ac,ad=pcall(function()local ac=aa.GetCharacter(ab)return ac
+and ac:FindFirstChildOfClass'Humanoid'or nil end)return ac and ad or nil end
+return aa end function a.c()local aa=a.load'b'.SecureService local ab,ac,ad,ae,
+af=aa'RunService',aa'Players',aa'Workspace',aa'UserInputService',aa'CoreGui'
+local ag,ah=ac.LocalPlayer,ad.CurrentCamera local ai,aj,ak,al,am,an,ao,ap,aq,ar,
+as,at,au,av,aw,ax,ay,az,aA,aB,aC,aD,aE,aF,aG,aH,aI,aJ=ah.ViewportSize,math.floor
+,math.round,math.sin,math.cos,table.clear,table.unpack,table.find,table.create,
+CFrame.fromMatrix,ah.WorldToViewportPoint,ad.IsA,ad.GetPivot,ad.FindFirstChild,
+ad.FindFirstChildOfClass,ad.GetChildren,CFrame.identity.PointToObjectSpace,
+Color3.new().Lerp,Vector2.zero.Min,Vector2.zero.Max,Vector2.zero.Lerp,Vector3.
+zero.Min,Vector3.zero.Max,Vector2.new(7,0),Vector2.new(0,1),Vector2.new(0,2),
+Vector2.new(5,0),{Vector3.new(-1,-1,-1),Vector3.new(-1,1,-1),Vector3.new(-1,1,1)
+,Vector3.new(-1,-1,1),Vector3.new(1,-1,-1),Vector3.new(1,1,-1),Vector3.new(1,1,1
+),Vector3.new(1,-1,1)}local aK,aL=function(aK)local aL,aM for aN=1,#aK do local
+aO=aK[aN]local aP,b=aO.CFrame,aO.Size aL=aD(aL or aP.Position,(aP-b*0.5).
+Position)aM=aE(aM or aP.Position,(aP+b*0.5).Position)end local aN=(aL+aM)*0.5
+local aO=Vector3.new(aN.X,aN.Y,aM.Z)return CFrame.new(aN,aO),aM-aL end,function(
+aK)local aL,aM=as(ah,aK)return Vector2.new(aL.X,aL.Y),aM,aL.Z end local aM,aN,aO
+,aP=function(aM,aN)local aO=aq(#aJ)for aP=1,#aJ do aO[aP]=aL((aM+aN*0.5*aJ[aP]).
+Position)end local aP,b=aA(ai,ao(aO)),aB(Vector2.zero,ao(aO))return{corners=aO,
+topLeft=Vector2.new(aj(aP.X),aj(aP.Y)),topRight=Vector2.new(aj(b.X),aj(aP.Y)),
+bottomLeft=Vector2.new(aj(aP.X),aj(b.Y)),bottomRight=Vector2.new(aj(b.X),aj(b.Y)
+)}end,function(aM,aN)local aO,aP,b,c=aM.X,aM.Y,am(aN),al(aN)return Vector2.new(
+aO*b-aP*c,aO*c+aP*b)end,function(aM,aN,aO)if aN=='Team Color'or(aM.interface.
+shared.useTeamColor and not aO)then return aM.interface.getTeamColor(aM.player)
+or Color3.new(1,1,1)end return aN end,{}aP.__index=aP function aP.new(b,c)local
+d=setmetatable({},aP)d.player=assert(b,'Missing argument #1 (Player expected)')d
+.interface=assert(c,'Missing argument #2 (table expected)')d:Construct()return d
+end function aP:_create(b,c)local d=Drawing.new(b)for e,f in next,c do pcall(
+function()d[e]=f end)end self.bin[#self.bin+1]=d return d end function aP:
+Construct()self.charCache={}self.childCount=0 self.bin={}self.drawings={box3d={{
+self:_create('Line',{Thickness=1,Visible=false}),self:_create('Line',{Thickness=
+1,Visible=false}),self:_create('Line',{Thickness=1,Visible=false})},{self:
+_create('Line',{Thickness=1,Visible=false}),self:_create('Line',{Thickness=1,
+Visible=false}),self:_create('Line',{Thickness=1,Visible=false})},{self:_create(
 'Line',{Thickness=1,Visible=false}),self:_create('Line',{Thickness=1,Visible=
 false}),self:_create('Line',{Thickness=1,Visible=false})},{self:_create('Line',{
-Thickness=1,Visible=false}),self:_create('Line',{Thickness=1,Visible=false}),
-self:_create('Line',{Thickness=1,Visible=false})},{self:_create('Line',{
-Thickness=1,Visible=false}),self:_create('Line',{Thickness=1,Visible=false}),
-self:_create('Line',{Thickness=1,Visible=false})},{self:_create('Line',{
 Thickness=1,Visible=false}),self:_create('Line',{Thickness=1,Visible=false}),
 self:_create('Line',{Thickness=1,Visible=false})}},visible={tracerOutline=self:
 _create('Line',{Thickness=2,Visible=false}),tracer=self:_create('Line',{
@@ -1388,7 +1375,7 @@ getTeamColor(e)return e.Team and e.Team.TeamColor and e.Team.TeamColor.Color end
 function d.getCharacter(e)return e.Character end function d.isBodyPart(e)return
 e=='Head'or e:find'Torso'or e:find'Leg'or e:find'Arm'end function d.getHealth(e)
 local f=e and d.getCharacter(e)local g=f and aw(f,'Humanoid')if g then return g.
-Health,g.MaxHealth end return 100,100 end return d end function a.e()local aa,ab
+Health,g.MaxHealth end return 100,100 end return d end function a.d()local aa,ab
 ,ac,ad,ae,af,ag,ah,ai,aj,ak,al,am,an=game,workspace,Vector2.new,Vector3.zero,
 CFrame.new,Color3.fromRGB,Drawing.new,TweenInfo.new,mousemoverel or(Input and
 Input.MouseMove),table.find,table.remove,string.lower,string.sub,math.clamp
@@ -1475,30 +1462,215 @@ do aM(aH[f])end e()end function aN.Blacklist(f,g)assert(f,
 'Aimbot.Whitelist: Missing parameter #2 "Username" <string>.')g=aO(g)assert(g,
 'Aimbot.Whitelist: User '..g.." couldn't be found.")local h=aj(f.Blacklisted,g)
 assert(h,'Aimbot.Whitelist: User '..g..' is not blacklisted.')ak(f.Blacklisted,h
-)end aN.Load=e setmetatable(aN,{__call=e})return aN end function a.f()local aa,
-ab,ac,ad,ae,af=game,workspace,Vector2.new,Color3.fromRGB,Drawing.new,table.find
-local ag=getrawmetatable and getrawmetatable(aa)or{__index=function(ag,ah)return
-ag[ah]end,__newindex=function(ag,ah,ai)ag[ah]=ai end}local ah=ag.__index local
-ai=ah(aa,'GetService')local aj,ak,al=ai(aa,'RunService'),ai(aa,
-'UserInputService'),ai(aa,'Players')local am,an,ao,ap,aq=ah(al,'LocalPlayer'),
-ah(ab,'CurrentCamera'),ah(aa,'FindFirstChild'),ah(aa,'FindFirstChildOfClass'),
-ah(aa,'GetDescendants')local ar,as,at,au,av,aw=ah(an,'WorldToViewportPoint'),ah(
-an,'GetPartsObscuringTarget'),ah(ak,'GetMouseLocation'),ah(al,'GetPlayers'),
-false,{DeveloperSettings={UpdateMode='RenderStepped',TeamCheckOption='Team'},
-SilentAim={Locked=nil,Enabled=true,LockPart='Head',RandomLockPart=false,
-HitChance=100,MaxDistance=250,WallCheck=true,TeamCheck=true,AliveCheck=true,
-FOVSettings={Enabled=true,Visible=true,Radius=90,NumSides=60,Thickness=2,Filled=
-false,Color={ad(255,150,150),0},OutlineColor={ad(0,0,0),0}},SnaplineSettings={
-Enabled=true,Thickness=2,Color={ad(255,0,0),0},OutlineColor={ad(0,0,0),0}}},
-Blacklisted={},FOVCircleOutline=ae'Circle',FOVCircle=ae'Circle',SnaplineOutline=
-ae'Line',Snapline=ae'Line'}function aw.SilentAim.SetState(ax)av=ax end local ax=
-function(ax)return ac(ax.X,ax.Y)end local ay,az,aA,aB=function()local ay=aw.
-SilentAim local az=ay.RandomLockPart and({'Head','HumanoidRootPart'})[math.
-random(1,2)]or ay.LockPart if not ay.Locked then local aA=ay.FOVSettings.Enabled
-and ay.FOVSettings.Radius or 2000 for aB,aC in next,au(al)do local aD=ah(aC,
-'Character')local aE=aD and ap(aD,'Humanoid')if aC~=am and not af(aw.Blacklisted
-,ah(aC,'Name'))and aD and ao(aD,az)and aE then local aF=ah(aD[az],'Position')if
-ay.MaxDistance and(an.CFrame.Position-aF).Magnitude>ay.MaxDistance then continue
+)end aN.Load=e setmetatable(aN,{__call=e})return aN end function a.e()return
+function(aa)local ab,ac,ad=a.load'a',a.load'c',a.load'd'local ae,af,ag,ah=ab.
+Assets,ab.Colors,ac.shared,ac.team local ai,aj,ak,al,am,an=ah.enemy,ah.friendly,
+ad.Aimbot,ad.Triggerbot,ad.FOVSettings,ab:Window{Title=aa.Name,Keybind=Enum.
+KeyCode.RightControl}local ao={Legit=an:Tab{Name='Legit',Image=ae.ShieldCheck},
+Visuals=an:Tab{Name='Visuals',Image=ae.Bolt},Cfg=an:Tab{Name='Cfg',Image=ae.
+Archive}}do local ap=ao.Legit do local aq=ap:Section{Name='Aimbot'}do local ar=
+aq:Section{Name='Aimbot Settings'}ar:Toggle{Name='Enabled',Description=
+'enables aimbot',State=false,Callback=function(as,at)ak.Enabled=at end}:
+Continue()ar:Keybind{Bind=Enum.UserInputType.MouseButton2,Blacklist={Enum.
+UserInputType.MouseButton1},onHeld=function(as,at,au)if au then return end ak.
+SetState(at)end}ar:Dropdown{Name='Wall Check',Description=
+'the method used by wall check',Options={'Off','Sticky','Always On'},Value={
+'Always On'},Limit=1,Minimum=1,Callback=function(as,at)ak.WallCheck=({Off=1,
+Sticky=2,['Always On']=3})[at[1] ]end}ar:Toggle{Name='Team Check',Description=
+'whether to ignore friendlys',State=true,Callback=function(as,at)ak.TeamCheck=at
+end}ar:Toggle{Name='Alive Check',Description='whether to ignore corpses',State=
+true,Callback=function(as,at)ak.AliveCheck=at end}:Continue()ar:Slider{Name=
+'Smoothing',Description='aimbot smoothness',Value=1,Minimum=1,Maximum=20,Step=
+0.1,Precision=1,Callback=function(as,at)ak.Sensitivity=(at-1)/(as.Settings.
+Maximum-1)*0.15 ak.Sensitivity2=at end}ar:Dropdown{Name='Bone',Description=
+'selects the bone to aim at',Options={'Head','Torso'},Value={'Head'},Limit=1,
+Minimum=1,Callback=function(as,at)local au=at[1]=='Torso'and'HumanoidRootPart'or
+at[1]ak.LockPart=au end}ar:Dropdown{Name='Lock Method',Description=
+'the input used to lock onto a player',Options={'Camera','Mouse'},Value={
+'Camera'},Limit=1,Minimum=1,Callback=function(as,at)ak.LockMode=({Camera=1,Mouse
+=2})[at[1] ]end}ar:Slider{Name='Max Distance',Description=
+'the distance aimbot stops locking onto players',Value=500,Minimum=1,Maximum=
+2000,Step=1,Precision=0,Callback=function(as,at)ak.MaxDistance=at end}:Continue(
+)end do local ar=aq:Section{Name='FOV Settings'}ar:Toggle{Name='Enabled',
+Description='whether the aimbot radius limit is active',State=true,Callback=
+function(as,at)am.Enabled=at end}ar:Toggle{Name='Visible',Description=
+'draws a circle representing the aimbot FOV radius',State=true,Callback=function
+(as,at)am.Visible=at end}:Continue():Colorpicker{Description='Unlocked Color',
+AlphaEnabled=false,Color={Color3.fromRGB(255,150,150),0},SuggestionColors={{
+Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246
+,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=
+function(as)am.Color=as end}:Continue():Colorpicker{Description='Locked Color',
+AlphaEnabled=false,Color={Color3.fromRGB(150,255,150),0},SuggestionColors={{
+Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246
+,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=
+function(as)am.LockedColor=as end}ar:Slider{Name='Radius',Description=
+'aimbot FOV limit radius',Value=120,Minimum=1,Maximum=500,Step=1,Precision=0,
+Callback=function(as,at)am.Radius=at end}ar:Slider{Name='Circle Sides',
+Description='the amount of points the drawn circle has',Value=45,Minimum=3,
+Maximum=80,Step=1,Precision=0,Callback=function(as,at)am.NumSides=at end}:
+Continue()end end do local aq=ap:Section{Name='Triggerbot'}aq:Toggle{Name=
+'Enabled',Description='enables triggerbot',State=false,Callback=function(ar,as)
+al.Enabled=as end}aq:Slider{Name='Reaction Time',Description=
+'the time it takes for triggerbot to react to targets (ms)',Value=0,Minimum=0,
+Maximum=500,Step=1,Precision=0,Callback=function(ar,as)al.Delay=as/1000 end}aq:
+Toggle{Name='Team Check',Description='whether to ignore friendlys',State=true,
+Callback=function(ar,as)al.TeamCheck=as end}aq:Toggle{Name='Alive Check',
+Description='whether to ignore corpses',State=true,Callback=function(ar,as)ak.
+AliveCheck=as end}:Continue()end end do local ap=ao.Visuals do local aq=ap:
+Section{Name='ESP'}aq:Slider{Name='Text Font',Description=
+'the font ESP text uses',Value=3,Minimum=0,Maximum=3,Step=1,Precision=0,Callback
+=function(ar,as)ag.textFont=as end}aq:Slider{Name='Text Size',Description=
+'the size of ESP text',Value=13,Minimum=1,Maximum=20,Step=1,Precision=0,Callback
+=function(ar,as)ag.textSize=as end}aq:Toggle{Name='Use Team Color',Description=
+'enables ESP team color',State=false,Callback=function(ar,as)ag.useTeamColor=as
+end}aq:Toggle{Name='Limit Enabled',Description='enables distance limit',State=
+false,Callback=function(ar,as)ag.limitDistance=as end}:Continue()aq:Slider{Name=
+'Max Distance',Description='the maximum distance that ESP will render at',Value=
+500,Minimum=1,Maximum=2000,Step=1,Precision=0,Callback=function(ar,as)ag.
+maxDistance=as end}:Continue()local ar=function(ar)an:VisualPreview{HealthBar={
+Visible=ar.healthBar,Color={ar.healthyColor}},Name={Visible=ar.name,Color={ar.
+nameColor[1],ar.nameColor[2]}},Distance={Visible=ar.distance,Color={ar.
+distanceColor[1],ar.distanceColor[2]}},Health={Visible=ar.healthText,Color={ar.
+healthTextColor[1],ar.healthTextColor[2]}},Weapon={Visible=ar.weapon,Color={ar.
+weaponColor[1],ar.weaponColor[2]}},BoundingBox={Visible=ar.box,Color={ar.
+boxColor[1],ar.boxColor[2]}},CornerBox={Visible=ar.cornerBox,Color={ar.
+cornerBoxColor[1],ar.cornerBoxColor[2]}},FillBox={Visible=ar.boxFill,Color={ar.
+boxFillColor[1],ar.boxFillColor[2]}}}end local as,at=function(as,at)at:Toggle{
+Name='Enabled',Description='enables ESP',State=false,Callback=function(au,av)as.
+enabled=av end}at:Toggle{Name='Bounding Box',Description=
+'enables bounding box ESP',State=false,Callback=function(au,av)as.box=av ar(as)
+end}:Continue():Colorpicker{Color={Color3.fromRGB(77,92,143),0.5},
+SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
+Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
+220,195)}},Callback=function(au,av)as.boxColor[1],as.boxColor[2]=au,1-av as.
+boxOutlineColor[2]=1-av ar(as)end}at:Toggle{Name='Box Fill',Description=
+'enables box fill ESP',State=false,Callback=function(au,av)as.boxFill=av ar(as)
+end}:Continue():Colorpicker{Color={Color3.fromRGB(0,0,0),0.8},SuggestionColors={
+{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,
+246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=
+function(au,av)as.boxFillColor[1],as.boxFillColor[2]=au,1-av ar(as)end}at:Toggle
+{Name='Corner Box',Description='enables corner box ESP',State=false,Callback=
+function(au,av)as.cornerBox=av ar(as)end}:Continue():Colorpicker{Color={Color3.
+fromRGB(123,124,2433),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.
+fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)
+},{Color3.fromRGB(49,220,195)}},Callback=function(au,av)as.cornerBoxColor[1],as.
+cornerBoxColor[2]=au,1-av ar(as)end}at:Toggle{Name='3D Bounding Box',Description
+='enables 3d bounding box ESP',State=false,Callback=function(au,av)as.box3d=av
+ar(as)end}:Continue():Colorpicker{Color={Color3.fromRGB(141,149,192),0},
+SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
+Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
+220,195)}},Callback=function(au,av)as.box3dColor[1],as.box3dColor[2]=au,1-av ar(
+as)end}at:Toggle{Name='Chams',Description='enables player chams ESP',State=false
+,Callback=function(au,av)as.chams=av end}:Continue():Colorpicker{Description=
+'Fill Color',Color={Color3.fromRGB(100,120,250),0.8},SuggestionColors={{Color3.
+fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},
+{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(au
+,av)as.chamsFillColor[1],as.chamsFillColor[2]=au,av ar(as)end}:Continue():
+Colorpicker{Description='Outline Color',Color={Color3.fromRGB(25,85,255),0.5},
+SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
+Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
+220,195)}},Callback=function(au,av)as.chamsOutlineColor[1],as.chamsOutlineColor[
+2]=au,av ar(as)end}at:Toggle{Name='Tracers',Description='enables tracers ESP',
+State=false,Callback=function(au,av)as.tracer=av end}:Continue():Colorpicker{
+Color={Color3.fromRGB(123,124,243),0},SuggestionColors={{Color3.fromRGB(171,81,
+83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.
+fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(au,av)as.
+tracerColor[1],as.tracerColor[2]=au,1-av as.tracerOutlineColor[2]=1-av ar(as)end
+}at:Dropdown{Name='Tracers Origin',Description=
+'selects the starting port of tracers',Options={'Top','Middle','Bottom','Mouse'}
+,Value={'Top'},Limit=1,Minimum=1,Callback=function(au,av)as.tracerOrigin=av[1]
+end}at:Toggle{Name='Health Bar',Description='enables health bar ESP',State=false
+,Callback=function(au,av)as.healthBar=av ar(as)end}:Continue():Colorpicker{
+Description='Healthy Color',AlphaEnabled=false,Color={Color3.fromRGB(58,161,47),
+0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
+Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
+220,195)}},Callback=function(au)as.healthyColor=au ar(as)end}:Continue():
+Colorpicker{Description='Dying Color',AlphaEnabled=false,Color={Color3.fromRGB(
+161,47,47),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,
+124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
+fromRGB(49,220,195)}},Callback=function(au)as.dyingColor=au ar(as)end}at:Toggle{
+Name='Off Screen Arrows',Description='enables off screen arrow ESP',State=false,
+Callback=function(au,av)as.offScreenArrow=av end}:Continue():Colorpicker{Color={
+Color3.fromRGB(255,255,255),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{
+Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,
+197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(au,av)as.
+offScreenArrowColor[1],as.offScreenArrowColor[2]=au,1-av as.
+offScreenArrowOutlineColor[2]=1-av ar(as)end}:Continue()at:Slider{Name=
+'Arrow Size',Description='changes the size of the individual off screen arrows',
+Value=15,Minimum=1,Maximum=50,Step=1,Precision=0,Callback=function(au,av)ag.
+offScreenArrowSize=av end}:Continue()at:Slider{Name='Radius',Description=
+'changes the radius limit of offscreen arrows',Value=150,Minimum=1,Maximum=500,
+Step=1,Precision=0,Callback=function(au,av)ag.offScreenArrowRadius=av end}at:
+Toggle{Name='Name',Description='enables name text ESP',State=false,Callback=
+function(au,av)as.name=av ar(as)end}:Continue():Colorpicker{Color={Color3.
+fromRGB(221,215,148),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.
+fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)
+},{Color3.fromRGB(49,220,195)}},Callback=function(au,av)as.nameColor[1],as.
+nameColor[2]=au,1-av ar(as)end}at:Toggle{Name='Distance',Description=
+'enables distance text ESP',State=false,Callback=function(au,av)as.distance=av
+ar(as)end}:Continue():Colorpicker{Color={Color3.fromRGB(221,215,148),0},
+SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
+Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
+220,195)}},Callback=function(au,av)as.distanceColor[1],as.distanceColor[2]=au,1-
+av ar(as)end}at:Toggle{Name='Weapon',Description='enables weapon text ESP',State
+=false,Callback=function(au,av)as.weapon=av ar(as)end}:Continue():Colorpicker{
+Color={Color3.fromRGB(200,173,182),0},SuggestionColors={{Color3.fromRGB(171,81,
+83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.
+fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(au,av)as.
+weaponColor[1],as.weaponColor[2]=au,1-av ar(as)end}at:Toggle{Name='Health',
+Description='enables health text ESP',State=false,Callback=function(au,av)as.
+healthText=av ar(as)end}:Continue():Colorpicker{Color={Color3.fromRGB(200,173,
+182),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,
+243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
+fromRGB(49,220,195)}},Callback=function(au,av)as.healthTextColor[1],as.
+healthTextColor[2]=au,1-av ar(as)end}:Continue()end,aq:Section{Name='Enemies'}
+as(ai,at)local au=aq:Section{Name='Friendlies'}as(aj,au)end end do local ap=ao.
+Cfg ap:Toggle{Name='Visual preview',Description=
+'enables a visual preview of your esp',State=true,Callback=function(aq,ar)an:
+VisualPreview{Visible=ar}end}:Continue()ap:Keybind{Bind=an.Settings.Keybind,
+Blacklist={Enum.UserInputType.MouseButton1,Enum.UserInputType.MouseButton2},
+onChanged=function(aq,ar)an:UpdateSettings{Keybind=ar}end}:Continue()ap:Button{
+Color=af.SystemDarkRed,Name='Unload Menu',Callback=function(aq)ab:Unload()end}:
+Continue()end ac.Load()ad.Load()ao.Legit:Select()ab:Notification{Title=`RIOT V2 - {
+aa.Name} | getriot.cc`,Description=`RIOT V2 Loaded!`,Lifetime=5}end end function
+a.f()return function(aa)local ab,ac=game:GetService'ReplicatedFirst':
+WaitForChild'NewLoader',game:GetService'ReplicatedStorage':WaitForChild
+'Functions':WaitForChild'Ping'do local ad ad=hookfunction(getrenv().task.spawn,
+newcclosure(function(ae,...)local af={...}if af[1]==ac and debug.info(ae,'n')==
+'InvokeServer'then return task.wait(9e9)end return ad(ae,...)end))end do local
+ad ad=hookmetamethod(game,'__namecall',newcclosure(function(ae,af,...)if ae.
+Parent==nil and not checkcaller()and getnamecallmethod()=='Fire'and typeof(af)==
+'table'then local ag,ah=next(af)if typeof(ag)=='userdata'then hookmetamethod(
+game,'__namecall',ad)return task.wait(9e9)end end return ad(ae,af,...)end))end
+do local ad ad=hookmetamethod(game,'__namecall',newcclosure(function(ae,af,...)
+if ae==game and not checkcaller()and getnamecallmethod()=='FindService'and af==
+'VirtualUser'then hookmetamethod(game,'__namecall',ad)return task.wait(9e9)end
+return ad(ae,af,...)end))end do local ad ad=hookmetamethod(game,'__newindex',
+newcclosure(function(ae,af,ag)if ae==ab and not checkcaller()then return task.
+wait(9e9)end return ad(ae,af,ag)end))end end end function a.g()local aa,ab,ac,ad
+,ae,af=game,workspace,Vector2.new,Color3.fromRGB,Drawing.new,table.find local ag
+=getrawmetatable and getrawmetatable(aa)or{__index=function(ag,ah)return ag[ah]
+end,__newindex=function(ag,ah,ai)ag[ah]=ai end}local ah=ag.__index local ai=ah(
+aa,'GetService')local aj,ak,al=ai(aa,'RunService'),ai(aa,'UserInputService'),ai(
+aa,'Players')local am,an,ao,ap,aq=ah(al,'LocalPlayer'),ah(ab,'CurrentCamera'),
+ah(aa,'FindFirstChild'),ah(aa,'FindFirstChildOfClass'),ah(aa,'GetDescendants')
+local ar,as,at,au,av,aw=ah(an,'WorldToViewportPoint'),ah(an,
+'GetPartsObscuringTarget'),ah(ak,'GetMouseLocation'),ah(al,'GetPlayers'),false,{
+DeveloperSettings={UpdateMode='RenderStepped',TeamCheckOption='Team'},SilentAim=
+{Locked=nil,Enabled=true,LockPart='Head',RandomLockPart=false,HitChance=100,
+MaxDistance=250,WallCheck=true,TeamCheck=true,AliveCheck=true,FOVSettings={
+Enabled=true,Visible=true,Radius=90,NumSides=60,Thickness=2,Filled=false,Color={
+ad(255,150,150),0},OutlineColor={ad(0,0,0),0}},SnaplineSettings={Enabled=true,
+Thickness=2,Color={ad(255,0,0),0},OutlineColor={ad(0,0,0),0}}},Blacklisted={},
+FOVCircleOutline=ae'Circle',FOVCircle=ae'Circle',SnaplineOutline=ae'Line',
+Snapline=ae'Line'}function aw.SilentAim.SetState(ax)av=ax end local ax=function(
+ax)return ac(ax.X,ax.Y)end local ay,az,aA,aB=function()local ay=aw.SilentAim
+local az=ay.RandomLockPart and({'Head','HumanoidRootPart'})[math.random(1,2)]or
+ay.LockPart if not ay.Locked then local aA=ay.FOVSettings.Enabled and ay.
+FOVSettings.Radius or 2000 for aB,aC in next,au(al)do local aD=ah(aC,'Character'
+)local aE=aD and ap(aD,'Humanoid')if aC~=am and not af(aw.Blacklisted,ah(aC,
+'Name'))and aD and ao(aD,az)and aE then local aF=ah(aD[az],'Position')if ay.
+MaxDistance and(an.CFrame.Position-aF).Magnitude>ay.MaxDistance then continue
 end if ay.TeamCheck and ah(aC,aw.DeveloperSettings.TeamCheckOption)and ah(aC,aw.
 DeveloperSettings.TeamCheckOption)==ah(am,aw.DeveloperSettings.TeamCheckOption)
 then continue end if ay.AliveCheck and ah(aE,'Health')<=0 then continue end if
@@ -1545,8 +1717,8 @@ aA(aC)end end)local aC aC=hookmetamethod(aa,'__index',newcclosure(function(aD,aE
 match(debug.info(3,'s'),'Client.Functions.Weapons')and debug.info(debug.info(3,
 'f'),'n')~='RotCamera'then if math.random(1,100)<=aw.SilentAim.HitChance and aB
 then return CFrame.new(an.CFrame.Position,aB.Position)end end return aC(aD,aE)
-end))return aw end function a.g()return function(aa)local ab,ac,ad,ae,af,ag=a.
-load'a',a.load'b',a.load'c',a.load'd',a.load'e',a.load'f'local ah,ai,aj,ak,al=ad
+end))return aw end function a.h()return function(aa)local ab,ac,ad,ae,af,ag=a.
+load'f',a.load'b',a.load'a',a.load'c',a.load'd',a.load'g'local ah,ai,aj,ak,al=ad
 .Components,ad.Assets,ad.Colors,ae.shared,ae.team local am,an,ao,ap,aq,ar=al.
 enemy,al.friendly,af.Aimbot,af.Triggerbot,af.FOVSettings,ag.SilentAim local as,
 at,au,av=ar.FOVSettings,ar.SnaplineSettings,ac.GetPlayer(),ac.SecureService
@@ -1816,7 +1988,7 @@ aE.Value then aD=aE.Value end end return string.upper(aD)end ae.getHealth=
 function(aC)local aD=aC.NRPBS local aE,aF=aD and aD.Health,aD and aD.MaxHealth
 if aE and aF then return aE.Value,aF.Value end return 100,100 end end do af.
 Load()af.PlayerAlive=function(aC)return aC.NRPBS and aC.NRPBS.Health and aC.
-NRPBS.Health.Value<0 end end end end end local aa={Arsenal={Name='Arsenal',Load=
-a.load'g',Places={286090429}}}for ab,ac in pairs(aa)do if ac.Places then for ad,
-ae in ipairs(ac.Places)do if ae==game.PlaceId then ac:Load()return end end end
-end
+NRPBS.Health.Value<0 end end end end end local aa={Universal={Name='Universal',
+Load=a.load'e'},Arsenal={Name='Arsenal',Load=a.load'h',Places={286090429}}}for
+ab,ac in pairs(aa)do if ac.Places then for ad,ae in ipairs(ac.Places)do if ae==
+game.PlaceId then ac:Load()return end end end end aa.Universal:Load()
