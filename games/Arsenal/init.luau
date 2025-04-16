@@ -625,8 +625,8 @@ return function(self)
 				Description = "enables infinite ammo",
 				State = false,
 				Callback = function(self, value)
-					local wkspc = ReplicatedStorage.wkspc
-					local CurrentCurse = wkspc and wkspc.CurrentCurse
+					local wkspc = ReplicatedStorage:FindFirstChild("wkspc")
+					local CurrentCurse = wkspc and wkspc:FindFirstChild("CurrentCurse")
 
 					if CurrentCurse and CurrentCurse.Value and value then
 						CurrentCurse.Value = "Infinite Ammo"
@@ -1376,7 +1376,8 @@ return function(self)
 			local weapon = "None"
 
 			if Player then
-				local tool = Player.NRPBS and Player.NRPBS.EquippedTool
+				local NRPBS = Player:FindFirstChild("NRPBS")
+				local tool = NRPBS and NRPBS:FindFirstChild("EquippedTool")
 				if tool and tool.Value then
 					weapon = tool.Value
 				end
@@ -1386,9 +1387,9 @@ return function(self)
 		end
 
 		Esp.getHealth = function(Player)
-			local Nrbps = Player.NRPBS
-			local Health = Nrbps and Nrbps.Health
-			local MaxHealth = Nrbps and Nrbps.MaxHealth
+			local NRPBS = Player:FindFirstChild("NRPBS")
+			local Health = NRPBS and NRPBS:FindFirstChild("Health")
+			local MaxHealth = NRPBS and NRPBS:FindFirstChild("MaxHealth")
 			if Health and MaxHealth then
 				return Health.Value, MaxHealth.Value
 			end
@@ -1400,7 +1401,9 @@ return function(self)
 	do
 		Aiming.Load()
 		Aiming.PlayerAlive = function(Player)
-			return Player.NRPBS and Player.NRPBS.Health and Player.NRPBS.Health.Value < 0
+			local NRPBS = Player:FindFirstChild("NRPBS")
+			local Health = NRPBS and NRPBS:FindFirstChild("Health")
+			return Health and Health.Value < 0
 		end
 	end
 end
