@@ -64,7 +64,7 @@ local Aiming = {
 		end,
 		Trigger = function()
 			mouse1press()
-			task.wait()
+			wait() -- wait because task.wait is too fast for the game to register the click
 			mouse1release()
 		end,
 	},
@@ -325,9 +325,7 @@ local TriggerbotShoot = function()
 
 	task.wait(Settings.Delay)
 
-	mouse1press()
-	task.wait()
-	mouse1release()
+	Settings.Trigger()
 end
 
 local Load = function()
