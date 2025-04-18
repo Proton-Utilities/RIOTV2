@@ -4,7 +4,14 @@
         {
             "label": "Build source",
             "type": "shell",
-            "command": "${workspaceFolder}\\build\\build.bat",
+            "command": "powershell",
+            "args": [
+                "-ExecutionPolicy", 
+                "Bypass",
+                "-NoProfile",
+                "-Command",
+                "& {.\\build.ps1; code '${workspaceFolder}\\dist.luau'}"
+            ],
             "options": {
                 "cwd": "${workspaceFolder}/build"
             },
@@ -12,6 +19,13 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true,
+                "showReuseMessage": false,
+                "close": true
             }
         }
     ]
