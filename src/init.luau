@@ -1,18 +1,8 @@
 --!nocheck
 --!nolint
 
---// Imports
-local Functions = require("core/functions.luau")
-
---// Methods
-local GetService = Functions.SecureService
-
---// Services
-local CoreGui = GetService("CoreGui")
-local Workspace = GetService("Workspace")
-
 --// Initialize
-if RIOT.BUILD == "Release" then
+if RIOT.BUILD == "Release" and not RIOT.VERSION:find("-") then
 	debug.traceback = function()
 		return ""
 	end
