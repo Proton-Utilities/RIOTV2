@@ -11,7 +11,7 @@ function Push-Marker {
         [string]$name,
         [string]$pattern
     )
-    $script:Markers[$name] = "#- COMPOSER\($pattern\) -#"
+    $script:Markers[$name] = "__COMPOSER : INSERT '$pattern'"
 }
 
 function BType-Input {
@@ -34,15 +34,27 @@ function BVersion-Input {
 }
 
 function Release-Input {
+    if (-not $config.deployment.enabled) {
+        Write-Host "`n[INFO] Deployment is disabled."
+        return $false
+    }
+
     Write-Host "`n[INPUT] Do you want to release this build to the public? (Y/N):"
     $input = Read-Host
     if ($input.ToLower() -notmatch '^y(es)?$') {
         return $false
     }
 
-    Write-Host "[INPUT] Type 'Deploy to $($config.github.repo)' to proceed:"
+    Write-Host "`n[INPUT] Are you sure? (Y/N):"
     $input = Read-Host
-    $expected = "Deploy to $($config.github.repo)"
+    if ($input.ToLower() -notmatch '^y(es)?$') {
+        return $false
+    }
+
+    $expected = "$($config.deployment.github.owner)/$($config.deployment.github.repo)"
+    Write-Host "[INPUT] Type '$expected' to proceed:"
+    $input = Read-Host
+
     
     if ($input -ne $expected) {
         return $false
@@ -126,7 +138,7 @@ function Distribute-Github {
         [string]$distPath
     )
     
-    if (-not $config.github.enabled) {
+    if (-not $config.deployment.github.enabled) {
         Write-Host "[INFO] GitHub distribution is disabled"
         return $true
     }
@@ -136,11 +148,11 @@ function Distribute-Github {
         
         $headers = @{
             "Accept" = "application/vnd.github.v3+json"
-            "Authorization" = "Bearer $($config.github.apiKey)"
+            "Authorization" = "Bearer $($config.deployment.github.apiKey)"
         }
 
         try {
-            $testUrl = "$($config.github.apiUrl)/repos/$($config.github.owner)/$($config.github.repo)"
+            $testUrl = "$($config.deployment.github.apiUrl)/repos/$($config.deployment.github.owner)/$($config.deployment.github.repo)"
             Write-Host "[GITHUB] Testing API connection..."
             $repoTest = Invoke-RestMethod -Uri $testUrl -Headers $headers -Method Get
             Write-Host "[GITHUB] Successfully connected to repository: $($repoTest.full_name)"
@@ -166,7 +178,7 @@ function Distribute-Github {
         } | ConvertTo-Json
 
         Write-Host "[GITHUB] Creating release..."
-        $releaseUrl = "$($config.github.apiUrl)/repos/$($config.github.owner)/$($config.github.repo)/releases"
+        $releaseUrl = "$($config.deployment.github.apiUrl)/repos/$($config.deployment.github.owner)/$($config.deployment.github.repo)/releases"
         $release = Invoke-RestMethod -Uri $releaseUrl -Method Post -Headers $headers -Body $releaseData -ContentType "application/json"
         Write-Host "[GITHUB] Release created successfully"
 
@@ -203,7 +215,7 @@ function Distribute-Luarmor {
         [string]$distPath
     )
     
-    if (-not $config.luarmor.enabled) {
+    if (-not $config.deployment.luarmor.enabled) {
         Write-Host "[INFO] Luarmor distribution is disabled"
         return $true
     }
@@ -212,17 +224,20 @@ function Distribute-Luarmor {
         Write-Host "[LUARMOR] Attempting to update script version $version"
         
         $headers = @{
-            "Authorization" = "Bearer $($config.luarmor.apiKey)"
-            "Content-Type" = "multipart/form-data"
+            "Authorization" = "Bearer $($config.deployment.luarmor.apiKey)"
+            "Content-Type" = "application/json"
         }
 
-        $form = @{
-            file = Get-Item $distPath
+        $fileBytes = [System.IO.File]::ReadAllBytes($distPath)
+        $fileBase64 = [System.Convert]::ToBase64String($fileBytes)
+
+        $body = @{
+            script = $fileBase64
             version = $version
-        }
+        } | ConvertTo-Json
 
-        $luarmorUrl = "https://api.luarmor.net/v3/scripts/$($config.luarmor.scriptId)/versions"
-        $response = Invoke-RestMethod -Uri $luarmorUrl -Method Post -Headers $headers -Form $form
+        $luarmorUrl = "https://api.luarmor.net/v3/projects/$($config.deployment.luarmor.projectId)/scripts/$($config.deployment.luarmor.scriptId)"
+        $response = Invoke-RestMethod -Uri $luarmorUrl -Method Put -Headers $headers -Body $body
 
         Write-Host "[SUCCESS] Luarmor script updated to version $version"
         return $true
@@ -233,14 +248,19 @@ function Distribute-Luarmor {
         if ($_.Exception.Response) {
             Write-Host "Status Code: $($_.Exception.Response.StatusCode.value__)"
             Write-Host "Status Description: $($_.Exception.Response.StatusDescription)"
+            $reader = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream())
+            $reader.BaseStream.Position = 0
+            $reader.DiscardBufferedData()
+            $responseBody = $reader.ReadToEnd()
+            Write-Host "Response Body: $responseBody"
         }
         return $false
     }
 }
 
-Push-Marker "BUILD_TYPE" "\[GET BUILD_TYPE\]"
-Push-Marker "BUILD_VERSION" "\[GET BUILD_VERSION\]"
-Push-Marker "SPLIT" "\[GET BUILD\]"
+Push-Marker "BUILD_TYPE" "GET BUILD_TYPE"
+Push-Marker "BUILD_VERSION" "GET BUILD_VERSION"
+Push-Marker "SPLIT" "GET BUILD"
 
 $buildType     = BType-Input
 $buildVersion  = if ($buildType -eq 'Release') { BVersion-Input } else { $null }
@@ -277,19 +297,17 @@ if ($buildType -eq 'Release') {
         $success = $true
         
         if (-not (Distribute-Github -version $buildVersion -distPath $distPath)) {
-            Write-Host "[ERROR] Failed to distribute build to GitHub"
+            Write-Host "`n[ERROR] Failed to distribute build to GitHub"
             $success = $false
         }
         
         if (-not (Distribute-Luarmor -version $buildVersion -distPath $distPath)) {
-            Write-Host "[ERROR] Failed to distribute build to Luarmor"
+            Write-Host "`n[ERROR] Failed to distribute build to Luarmor"
             $success = $false
         }
         
         if ($success) {
-            Write-Host "[SUCCESS] Build is now distributed to the public"
-        } else {
-            Write-Host "[ERROR] Build distribution failed"
+            Write-Host "`n[SUCCESS] Build is now distributed to the public"
         }
     }
 }
