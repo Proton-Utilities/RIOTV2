@@ -1,14 +1,18 @@
 {
-    "github": {
+    "deployment": {
         "enabled": true,
-        "apiKey": "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",
-        "owner": "Proton-Utilities",
-        "repo": "RIOTV2",
-        "apiUrl": "https://api.github.com"
-    },
-    "luarmor": {
-        "enabled": false,
-        "apiKey": "your-api-key-here",
-        "scriptId": "your-script-id-here"
+        "github": {
+            "enabled": true,
+            "apiKey": "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",
+            "owner": "Proton-Utilities",
+            "repo": "RIOTV2",
+            "apiUrl": "https://api.github.com"
+        },
+        "luarmor": {
+            "enabled": false,
+            "apiKey": "",
+            "projectId": "",
+            "scriptId": ""
+        }
     }
 }
