@@ -1,48 +1,52 @@
-local GetService = require("../core/functions.luau").SecureService
+--!nolint LocalShadow
+--!nolint UnknownGlobal
+--!nocheck
+
+local GetService = require("core/functions.luau").SecureService
 
 -- services
-local runService = GetService("RunService");
-local players = GetService("Players");
-local workspace = GetService("Workspace");
-local uis = GetService("UserInputService")
-local coreGui = GetService("CoreGui")
+local RunService = GetService("RunService")
+local Players = GetService("Players")
+local Workspace = GetService("Workspace")
+local UIS = GetService("UserInputService")
+local CoreGui = GetService("CoreGui")
 
 -- variables
-local localPlayer = players.LocalPlayer;
-local camera = workspace.CurrentCamera;
-local viewportSize = camera.ViewportSize;
+local LocalPlayer = Players.LocalPlayer
+local Camera = Workspace.CurrentCamera
+local ViewportSize = Camera.ViewportSize
 
 -- locals
-local floor = math.floor;
-local round = math.round;
-local sin = math.sin;
-local cos = math.cos;
-local clear = table.clear;
-local unpack = table.unpack;
-local find = table.find;
-local create = table.create;
-local fromMatrix = CFrame.fromMatrix;
+local Floor = math.floor
+local Round = math.round
+local Sin = math.sin
+local Cos = math.cos
+local Clear = table.clear
+local Unpack = table.unpack
+local Find = table.find
+local Create = table.create
+local FromMatrix = CFrame.fromMatrix
 
 -- methods
-local wtvp = camera.WorldToViewportPoint;
-local isA = workspace.IsA;
-local getPivot = workspace.GetPivot;
-local findFirstChild = workspace.FindFirstChild;
-local findFirstChildOfClass = workspace.FindFirstChildOfClass;
-local getChildren = workspace.GetChildren;
-local pointToObjectSpace = CFrame.identity.PointToObjectSpace;
-local lerpColor = Color3.new().Lerp;
-local min2 = Vector2.zero.Min;
-local max2 = Vector2.zero.Max;
-local lerp2 = Vector2.zero.Lerp;
-local min3 = Vector3.zero.Min;
-local max3 = Vector3.zero.Max;
+local WTVP = Camera.WorldToViewportPoint
+local IsA = Workspace.IsA
+local GetPivot = Workspace.GetPivot
+local FindFirstChild = Workspace.FindFirstChild
+local FindFirstChildOfClass = Workspace.FindFirstChildOfClass
+local GetChildren = Workspace.GetChildren
+local PointToObjectSpace = CFrame.identity.PointToObjectSpace
+local LerpColor = Color3.new().Lerp
+local Min2 = Vector2.zero.Min
+local Max2 = Vector2.zero.Max
+local Lerp2 = Vector2.zero.Lerp
+local Min3 = Vector3.zero.Min
+local Max3 = Vector3.zero.Max
 
 -- constants
-local HEALTH_BAR_OFFSET = Vector2.new(7, 0);
-local HEALTH_BAR_OUTLINE_OFFSET = Vector2.new(0, 1);
-local NAME_OFFSET = Vector2.new(0, 2);
-local DISTANCE_OFFSET = Vector2.new(5, 0);
+local HEALTH_BAR_OFFSET = Vector2.new(7, 0)
+local HEALTH_BAR_OUTLINE_OFFSET = Vector2.new(0, 1)
+local NAME_OFFSET = Vector2.new(0, 2)
+local DISTANCE_OFFSET = Vector2.new(5, 0)
 local VERTICES = {
 	Vector3.new(-1, -1, -1),
 	Vector3.new(-1, 1, -1),
@@ -52,536 +56,536 @@ local VERTICES = {
 	Vector3.new(1, 1, -1),
 	Vector3.new(1, 1, 1),
 	Vector3.new(1, -1, 1)
-};
+}
 
 -- functions
-local function getBoundingBox(parts)
-	local min, max;
-	for i = 1, #parts do
-		local part = parts[i];
-		local cframe, size = part.CFrame, part.Size;
+local function GetBoundingBox(Parts)
+	local Min, Max
+	for i = 1, #Parts do
+		local Part = Parts[i]
+		local CFrame, Size = Part.CFrame, Part.Size
 
-		min = min3(min or cframe.Position, (cframe - size*0.5).Position);
-		max = max3(max or cframe.Position, (cframe + size*0.5).Position);
+		Min = Min3(Min or CFrame.Position, (CFrame - Size*0.5).Position)
+		Max = Max3(Max or CFrame.Position, (CFrame + Size*0.5).Position)
 	end
 
-	local center = (min + max)*0.5;
-	local front = Vector3.new(center.X, center.Y, max.Z);
-	return CFrame.new(center, front), max - min;
+	local Center = (Min + Max)*0.5
+	local Front = Vector3.new(Center.X, Center.Y, Max.Z)
+	return CFrame.new(Center, Front), Max - Min
 end
 
-local function worldToScreen(world)
-	local screen, inBounds = wtvp(camera, world);
-	return Vector2.new(screen.X, screen.Y), inBounds, screen.Z;
+local function WorldToScreen(World)
+	local Screen, InBounds = WTVP(Camera, World)
+	return Vector2.new(Screen.X, Screen.Y), InBounds, Screen.Z
 end
 
-local function calculateCorners(cframe, size)
-	local corners = create(#VERTICES);
+local function CalculateCorners(CFrame, Size)
+	local Corners = Create(#VERTICES)
 	for i = 1, #VERTICES do
-		corners[i] = worldToScreen((cframe + size*0.5*VERTICES[i]).Position);
+		Corners[i] = WorldToScreen((CFrame + Size*0.5*VERTICES[i]).Position)
 	end
 
-	local min = min2(viewportSize, unpack(corners));
-	local max = max2(Vector2.zero, unpack(corners));
+	local Min = Min2(ViewportSize, Unpack(Corners))
+	local Max = Max2(Vector2.zero, Unpack(Corners))
 	return {
-		corners = corners,
-		topLeft = Vector2.new(floor(min.X), floor(min.Y)),
-		topRight = Vector2.new(floor(max.X), floor(min.Y)),
-		bottomLeft = Vector2.new(floor(min.X), floor(max.Y)),
-		bottomRight = Vector2.new(floor(max.X), floor(max.Y))
-	};
+		Corners = Corners,
+		TopLeft = Vector2.new(Floor(Min.X), Floor(Min.Y )),
+		TopRight = Vector2.new(Floor(Max.X), Floor(Min.Y)),
+		BottomLeft = Vector2.new(Floor(Min.X), Floor(Max.Y)),
+		BottomRight = Vector2.new(Floor(Max.X), Floor(Max.Y))
+	}
 end
 
-local function rotateVector(vector, radians)
-	local x, y = vector.X, vector.Y;
-	local c, s = cos(radians), sin(radians);
-	return Vector2.new(x*c - y*s, x*s + y*c);
+local function RotateVector(Vector, Radians)
+	local X, Y = Vector.X, Vector.Y
+	local C, S = Cos(Radians), Sin(Radians)
+	return Vector2.new(X*C - Y*S, X*S + Y*C)
 end
 
-local function parseColor(self, color, isOutline)
-	if color == "Team Color" or (self.interface.shared.useTeamColor and not isOutline) then
-		return self.interface.getTeamColor(self.player) or Color3.new(1,1,1);
+local function ParseColor(self, Color, IsOutline)
+	if Color == "Team Color" or (self.Interface.Shared.UseTeamColor and not IsOutline) then
+		return self.Interface.GetTeamColor(self.Player) or Color3.new(1,1,1)
 	end
-	return color;
+	return Color
 end
 
-local EspObject = {};
-EspObject.__index = EspObject;
+local EspObject = {}
+EspObject.__index = EspObject
 
-function EspObject.new(player, interface)
-	local self = setmetatable({}, EspObject);
-	self.player = assert(player, "Missing argument #1 (Player expected)");
-	self.interface = assert(interface, "Missing argument #2 (table expected)");
-	self:Construct();
-	return self;
+function EspObject.New(Player, Interface)
+	local self = setmetatable({}, EspObject)
+	self.Player = assert(Player, "Missing argument #1 (Player expected)")
+	self.Interface = assert(Interface, "Missing argument #2 (table expected)")
+	self:Construct()
+	return self
 end
 
-function EspObject:_create(class, properties)
-	local drawing = Drawing.new(class);
-	for property, value in next, properties do
-		pcall(function() drawing[property] = value; end);
+function EspObject:_Create(Class, Properties)
+	local Drawing = Drawing.new(Class)
+	for Property, Value in next, Properties do
+		pcall(function() Drawing[Property] = Value end)
 	end
-	self.bin[#self.bin + 1] = drawing;
-	return drawing;
+	self.Bin[#self.Bin + 1] = Drawing
+	return Drawing
 end
 
 function EspObject:Construct()
-	self.charCache = {};
-	self.childCount = 0;
-	self.bin = {};
-	self.drawings = {
-		box3d = {
+	self.CharCache = {}
+	self.ChildCount = 0
+	self.Bin = {}
+	self.Drawings = {
+		Box3d = {
 			{
-				self:_create("Line", { Thickness = 1, Visible = false }),
-				self:_create("Line", { Thickness = 1, Visible = false }),
-				self:_create("Line", { Thickness = 1, Visible = false })
+				self:_Create("Line", { Thickness = 1, Visible = false }),
+				self:_Create("Line", { Thickness = 1, Visible = false }),
+				self:_Create("Line", { Thickness = 1, Visible = false })
 			},
 			{
-				self:_create("Line", { Thickness = 1, Visible = false }),
-				self:_create("Line", { Thickness = 1, Visible = false }),
-				self:_create("Line", { Thickness = 1, Visible = false })
+				self:_Create("Line", { Thickness = 1, Visible = false }),
+				self:_Create("Line", { Thickness = 1, Visible = false }),
+				self:_Create("Line", { Thickness = 1, Visible = false })
 			},
 			{
-				self:_create("Line", { Thickness = 1, Visible = false }),
-				self:_create("Line", { Thickness = 1, Visible = false }),
-				self:_create("Line", { Thickness = 1, Visible = false })
+				self:_Create("Line", { Thickness = 1, Visible = false }),
+				self:_Create("Line", { Thickness = 1, Visible = false }),
+				self:_Create("Line", { Thickness = 1, Visible = false })
 			},
 			{
-				self:_create("Line", { Thickness = 1, Visible = false }),
-				self:_create("Line", { Thickness = 1, Visible = false }),
-				self:_create("Line", { Thickness = 1, Visible = false })
+				self:_Create("Line", { Thickness = 1, Visible = false }),
+				self:_Create("Line", { Thickness = 1, Visible = false }),
+				self:_Create("Line", { Thickness = 1, Visible = false })
 			}
 		},
-		visible = {
-			tracerOutline = self:_create("Line", { Thickness = 2, Visible = false }),
-			tracer = self:_create("Line", { Thickness = 1, Visible = false }),
-			boxFill = self:_create("Square", { Filled = true, Visible = false }),
-			boxOutline = self:_create("Square", { Thickness = 2, Visible = false }),
-			box = self:_create("Square", { Thickness = 1, Visible = false }),
-			cornerBox = {},
-			healthBarOutline = self:_create("Line", { Thickness = 6, Visible = false }),
-			healthBar = self:_create("Line", { Thickness = 4, Visible = false }),
-			healthText = self:_create("Text", { Center = true, Visible = false }),
-			name = self:_create("Text", { Text = string.upper(self.player.DisplayName), Center = true, Visible = false }),
-			distance = self:_create("Text", { Center = true, Visible = false }),
-			weapon = self:_create("Text", { Center = true, Visible = false }),
+		Visible = {
+			TracerOutline = self:_Create("Line", { Thickness = 2, Visible = false }),
+			Tracer = self:_Create("Line", { Thickness = 1, Visible = false }),
+			BoxFill = self:_Create("Square", { Filled = true, Visible = false }),
+			BoxOutline = self:_Create("Square", { Thickness = 2, Visible = false }),
+			Box = self:_Create("Square", { Thickness = 1, Visible = false }),
+			CornerBox = {},
+			HealthBarOutline = self:_Create("Line", { Thickness = 6, Visible = false }),
+			HealthBar = self:_Create("Line", { Thickness = 4, Visible = false }),
+			HealthText = self:_Create("Text", { Center = true, Visible = false }),
+			Name = self:_Create("Text", { Text = string.upper(self.Player.DisplayName), Center = true, Visible = false }),
+			Distance = self:_Create("Text", { Center = true, Visible = false }),
+			Weapon = self:_Create("Text", { Center = true, Visible = false }),
 		},
-		hidden = {
-			arrowOutline = self:_create("Triangle", { Thickness = 3, Visible = false }),
-			arrow = self:_create("Triangle", { Filled = true, Visible = false })
+		Hidden = {
+			ArrowOutline = self:_Create("Triangle", { Thickness = 3, Visible = false }),
+			Arrow = self:_Create("Triangle", { Filled = true, Visible = false })
 		}
-	};
+	}
 	
 	for _ = 1, 8 do
-		table.insert(self.drawings.visible.cornerBox, self:_create("Line", { Thickness = 2, Visible = false }))
+		table.insert(self.Drawings.Visible.CornerBox, self:_Create("Line", { Thickness = 2, Visible = false }))
 	end	
 
-	self.renderConnection = runService.RenderStepped:Connect(function(deltaTime)
-		self:Update(deltaTime);
-		self:Render(deltaTime);
-	end);
+	self.RenderConnection = RunService.RenderStepped:Connect(function(DeltaTime)
+		self:Update(DeltaTime)
+		self:Render(DeltaTime)
+	end)
 end
 
 function EspObject:Destruct()
-	self.renderConnection:Disconnect();
+	self.RenderConnection:Disconnect()
 
-	for i = 1, #self.bin do
-		self.bin[i]:Remove();
+	for i = 1, #self.Bin do
+		self.Bin[i]:Remove()
 	end
 
-	clear(self);
+	Clear(self)
 end
 
 function EspObject:Update()
-	local interface = self.interface;
+	local Interface = self.Interface
 
-	self.options = interface.team[interface.isFriendly(self.player) and "friendly" or "enemy"];
-	self.character = interface.getCharacter(self.player);
-	self.health, self.maxHealth = interface.getHealth(self.player);
-	self.weapon = interface.getWeapon(self.player);
-	self.enabled = self.options.enabled and self.character and not (#interface.whitelist > 0 and not find(interface.whitelist, self.player.UserId));
+	self.Options = Interface.Team[Interface.IsFriendly(self.Player) and "Friendly" or "Enemy"]
+	self.Character = Interface.GetCharacter(self.Player)
+	self.Health, self.MaxHealth = Interface.GetHealth(self.Player)
+	self.Weapon = Interface.GetWeapon(self.Player)
+	self.Enabled = self.Options.Enabled and self.Character and not (#Interface.Whitelist > 0 and not Find(Interface.Whitelist, self.Player.UserId))
 
-	local head = self.enabled and findFirstChild(self.character, "Head");
-	if not head then
-		self.charCache = {};
-		self.onScreen = false;
-		return;
+	local RootPart = self.Enabled and FindFirstChild(self.Character, Interface.GetRootPart())
+	if not RootPart then
+		self.CharCache = {}
+		self.OnScreen = false
+		return
 	end
 
-	local _, onScreen, depth = worldToScreen(head.Position);
-	self.onScreen = onScreen;
-	self.distance = depth;
+	local _, OnScreen, Depth = WorldToScreen(RootPart.Position)
+	self.OnScreen = OnScreen
+	self.Distance = Depth
 
-	if interface.shared.limitDistance and depth > interface.shared.maxDistance then
-		self.onScreen = false;
+	if Interface.Shared.LimitDistance and Depth > Interface.Shared.MaxDistance then
+		self.OnScreen = false
 	end
 
-	if self.onScreen then
-		local cache = self.charCache;
-		local children = getChildren(self.character);
-		if not cache[1] or self.childCount ~= #children then
-			clear(cache);
+	if self.OnScreen then
+		local Cache = self.CharCache
+		local Children = GetChildren(self.Character)
+		if not Cache[1] or self.ChildCount ~= #Children then
+			Clear(Cache)
 
-			for i = 1, #children do
-				local part = children[i];
-				if isA(part, "BasePart") and interface.isBodyPart(part.Name) then
-					cache[#cache + 1] = part;
+			for i = 1, #Children do
+				local Part = Children[i]
+				if IsA(Part, "BasePart") and Interface.IsBodyPart(Part.Name) then
+					Cache[#Cache + 1] = Part
 				end
 			end
 
-			self.childCount = #children;
+			self.ChildCount = #Children
 		end
 
-		self.corners = calculateCorners(getBoundingBox(cache));
-	elseif self.options.offScreenArrow then
-		local cframe = camera.CFrame;
-		local flat = fromMatrix(cframe.Position, cframe.RightVector, Vector3.yAxis);
-		local objectSpace = pointToObjectSpace(flat, head.Position);
-		self.direction = Vector2.new(objectSpace.X, objectSpace.Z).Unit;
+		self.Corners = CalculateCorners(GetBoundingBox(Cache))
+	elseif self.Options.OffScreenArrow then
+		local CFrame = Camera.CFrame
+		local Flat = FromMatrix(CFrame.Position, CFrame.RightVector, Vector3.yAxis)
+		local ObjectSpace = PointToObjectSpace(Flat, RootPart.Position)
+		self.Direction = Vector2.new(ObjectSpace.X, ObjectSpace.Z).Unit
 	end
 end
 
 function EspObject:Render()
-	local onScreen = self.onScreen or false;
-	local enabled = self.enabled or false;
-	local visible = self.drawings.visible;
-	local hidden = self.drawings.hidden;
-	local box3d = self.drawings.box3d;
-	local interface = self.interface;
-	local options = self.options;
-	local corners = self.corners;
+	local OnScreen = self.OnScreen or false
+	local Enabled = self.Enabled or false
+	local Visible = self.Drawings.Visible
+	local Hidden = self.Drawings.Hidden
+	local Box3d = self.Drawings.Box3d
+	local Interface = self.Interface
+	local Options = self.Options
+	local Corners = self.Corners
 
-	visible.box.Visible = enabled and onScreen and options.box;
-	visible.boxOutline.Visible = visible.box.Visible and options.boxOutline;
-	if visible.box.Visible then
-		local box = visible.box;
-		box.Position = corners.topLeft;
-		box.Size = corners.bottomRight - corners.topLeft;
-		box.Color = parseColor(self, options.boxColor[1]);
-		box.Transparency = options.boxColor[2];
+	Visible.Box.Visible = Enabled and OnScreen and Options.Box
+	Visible.BoxOutline.Visible = Visible.Box.Visible and Options.BoxOutline
+	if Visible.Box.Visible then
+		local Box = Visible.Box
+		Box.Position = Corners.TopLeft
+		Box.Size = Corners.BottomRight - Corners.TopLeft
+		Box.Color = ParseColor(self, Options.BoxColor[1])
+		Box.Transparency = Options.BoxColor[2]
 
-		local boxOutline = visible.boxOutline;
-		boxOutline.Position = box.Position;
-		boxOutline.Size = box.Size;
-		boxOutline.Color = parseColor(self, options.boxOutlineColor[1], true);
-		boxOutline.Transparency = options.boxOutlineColor[2];
+		local BoxOutline = Visible.BoxOutline
+		BoxOutline.Position = Box.Position
+		BoxOutline.Size = Box.Size
+		BoxOutline.Color = ParseColor(self, Options.BoxOutlineColor[1], true)
+		BoxOutline.Transparency = Options.BoxOutlineColor[2]
 	end
 
-	local cornerBoxEnabled = enabled and onScreen and options.cornerBox
+	local CornerBoxEnabled = Enabled and OnScreen and Options.CornerBox
 
 	for i = 1, 8 do
-		local cornerLine = visible.cornerBox[i]
+		local CornerLine = Visible.CornerBox[i]
 
-		cornerLine.Visible = cornerBoxEnabled
+		CornerLine.Visible = CornerBoxEnabled
 	end
 
-	if cornerBoxEnabled then
-		local cornerWidth = (corners.topRight.X - corners.topLeft.X) * 0.2
-		local cornerHeight = (corners.bottomLeft.Y - corners.topLeft.Y) * 0.2
+	if CornerBoxEnabled then
+		local CornerWidth = (Corners.TopRight.X - Corners.TopLeft.X) * 0.2
+		local CornerHeight = (Corners.BottomLeft.Y - Corners.TopLeft.Y) * 0.2
 
-		cornerWidth = math.clamp(cornerWidth, 2, 30)
-		cornerHeight = math.clamp(cornerHeight, 2, 30)
+		CornerWidth = math.clamp(CornerWidth, 2, 30)
+		CornerHeight = math.clamp(CornerHeight, 2, 30)
 
-		local function drawCorner(index, origin, horizOffset, vertOffset)
-			local line1 = visible.cornerBox[index]
-			local line2 = visible.cornerBox[index + 1]
+		local function DrawCorner(Index, Origin, HorizOffset, VertOffset)
+			local Line1 = Visible.CornerBox[Index]
+			local Line2 = Visible.CornerBox[Index + 1]
 		
-			local thickness = line1.Thickness or 1
-			local overlap = (thickness-1)
-			local offset = overlap / 2
+			local Thickness = Line1.Thickness or 1
+			local Overlap = (Thickness-1)
+			local Offset = Overlap / 2
 		
-			local extendedHoriz = horizOffset.Unit * (horizOffset.Magnitude + overlap)
-			line1.From = origin - horizOffset.Unit * offset
-			line1.To = origin + extendedHoriz - horizOffset.Unit * offset
-			line1.Color = parseColor(self, options.cornerBoxColor[1])
-			line1.Transparency = options.cornerBoxColor[2]
+			local ExtendedHoriz = HorizOffset.Unit * (HorizOffset.Magnitude + Overlap)
+			Line1.From = Origin - HorizOffset.Unit * Offset
+			Line1.To = Origin + ExtendedHoriz - HorizOffset.Unit * Offset
+			Line1.Color = ParseColor(self, Options.CornerBoxColor[1])
+			Line1.Transparency = Options.CornerBoxColor[2]
 
-			local extendedVert = vertOffset.Unit * (vertOffset.Magnitude + overlap)
-			line2.From = origin - vertOffset.Unit * offset
-			line2.To = origin + extendedVert - vertOffset.Unit * offset
-			line2.Color = parseColor(self, options.cornerBoxColor[1])
-			line2.Transparency = options.cornerBoxColor[2]
+			local ExtendedVert = VertOffset.Unit * (VertOffset.Magnitude + Overlap)
+			Line2.From = Origin - VertOffset.Unit * Offset
+			Line2.To = Origin + ExtendedVert - VertOffset.Unit * Offset
+			Line2.Color = ParseColor(self, Options.CornerBoxColor[1])
+			Line2.Transparency = Options.CornerBoxColor[2]
 		end		
 
-		drawCorner(1, corners.topLeft, Vector2.new(cornerWidth, 0), Vector2.new(0, cornerHeight))
-		drawCorner(3, corners.topRight, Vector2.new(-cornerWidth, 0), Vector2.new(0, cornerHeight))
-		drawCorner(5, corners.bottomRight, Vector2.new(-cornerWidth, 0), Vector2.new(0, -cornerHeight))
-		drawCorner(7, corners.bottomLeft, Vector2.new(cornerWidth, 0), Vector2.new(0, -cornerHeight))
+		DrawCorner(1, Corners.TopLeft, Vector2.new(CornerWidth, 0), Vector2.new(0, CornerHeight))
+		DrawCorner(3, Corners.TopRight, Vector2.new(-CornerWidth, 0), Vector2.new(0, CornerHeight))
+		DrawCorner(5, Corners.BottomRight, Vector2.new(-CornerWidth, 0), Vector2.new(0, -CornerHeight))
+		DrawCorner(7, Corners.BottomLeft, Vector2.new(CornerWidth, 0), Vector2.new(0, -CornerHeight))
 	end
 
-	visible.boxFill.Visible = enabled and onScreen and options.boxFill;
-	if visible.boxFill.Visible then
-		local boxFill = visible.boxFill;
-		boxFill.Position = corners.topLeft;
-		boxFill.Size = corners.bottomRight - corners.topLeft;
-		boxFill.Color = parseColor(self, options.boxFillColor[1]);
-		boxFill.Transparency = options.boxFillColor[2];
+	Visible.BoxFill.Visible = Enabled and OnScreen and Options.BoxFill
+	if Visible.BoxFill.Visible then
+		local BoxFill = Visible.BoxFill
+		BoxFill.Position = Corners.TopLeft
+		BoxFill.Size = Corners.BottomRight - Corners.TopLeft
+		BoxFill.Color = ParseColor(self, Options.BoxFillColor[1])
+		BoxFill.Transparency = Options.BoxFillColor[2]
 	end
 
-	visible.healthBar.Visible = enabled and onScreen and options.healthBar;
-	visible.healthBarOutline.Visible = visible.healthBar.Visible and options.healthBarOutline;
-	if visible.healthBar.Visible then
-		local barFrom = corners.topLeft - HEALTH_BAR_OFFSET;
-		local barTo = corners.bottomLeft - HEALTH_BAR_OFFSET;
+	Visible.HealthBar.Visible = Enabled and OnScreen and Options.HealthBar
+	Visible.HealthBarOutline.Visible = Visible.HealthBar.Visible and Options.HealthBarOutline
+	if Visible.HealthBar.Visible then
+		local BarFrom = Corners.TopLeft - HEALTH_BAR_OFFSET
+		local BarTo = Corners.BottomLeft - HEALTH_BAR_OFFSET
 
-		local healthBar = visible.healthBar;
-		healthBar.To = barTo;
-		healthBar.From = lerp2(barTo, barFrom, self.health/self.maxHealth);
-		healthBar.Color = lerpColor(options.dyingColor, options.healthyColor, self.health/self.maxHealth);
+		local HealthBar = Visible.HealthBar
+		HealthBar.To = BarTo
+		HealthBar.From = Lerp2(BarTo, BarFrom, self.Health/self.MaxHealth)
+		HealthBar.Color = LerpColor(Options.DyingColor, Options.HealthyColor, self.Health/self.MaxHealth)
 
-		local healthBarOutline = visible.healthBarOutline;
-		healthBarOutline.To = barTo + HEALTH_BAR_OUTLINE_OFFSET;
-		healthBarOutline.From = barFrom - HEALTH_BAR_OUTLINE_OFFSET;
-		healthBarOutline.Color = parseColor(self, options.healthBarOutlineColor[1], true);
-		healthBarOutline.Transparency = options.healthBarOutlineColor[2];
+		local HealthBarOutline = Visible.HealthBarOutline
+		HealthBarOutline.To = BarTo + HEALTH_BAR_OUTLINE_OFFSET
+		HealthBarOutline.From = BarFrom - HEALTH_BAR_OUTLINE_OFFSET
+		HealthBarOutline.Color = ParseColor(self, Options.HealthBarOutlineColor[1], true)
+		HealthBarOutline.Transparency = Options.HealthBarOutlineColor[2]
 	end
 
-	visible.name.Visible = enabled and onScreen and options.name;
-	if visible.name.Visible then
-		local name = visible.name;
-		name.Size = interface.shared.textSize;
-		name.Font = interface.shared.textFont;
-		name.Color = parseColor(self, options.nameColor[1]);
-		name.Transparency = options.nameColor[2];
-		name.Outline = options.nameOutline;
-		name.OutlineColor = parseColor(self, options.nameOutlineColor, true);
-		name.Position = (corners.topLeft + corners.topRight)*0.5 - Vector2.yAxis*name.TextBounds.Y - NAME_OFFSET;
+	Visible.Name.Visible = Enabled and OnScreen and Options.Name
+	if Visible.Name.Visible then
+		local Name = Visible.Name
+		Name.Size = Interface.Shared.TextSize
+		Name.Font = Interface.Shared.TextFont
+		Name.Color = ParseColor(self, Options.NameColor[1])
+		Name.Transparency = Options.NameColor[2]
+		Name.Outline = Options.NameOutline
+		Name.OutlineColor = ParseColor(self, Options.NameOutlineColor, true)
+		Name.Position = (Corners.TopLeft + Corners.TopRight)*0.5 - Vector2.yAxis*Name.TextBounds.Y - NAME_OFFSET
 	end
 
-	local listYOffset = corners and corners.topRight.Y or 0
+	local ListYOffset = Corners and Corners.TopRight.Y or 0
 
-	visible.distance.Visible = enabled and onScreen and self.distance and options.distance
-	if visible.distance.Visible then
-		local distance = visible.distance
-		distance.Text = round(self.distance * 0.28) .. "M"
-		distance.Size = interface.shared.textSize
-		distance.Font = interface.shared.textFont
-		distance.Color = parseColor(self, options.distanceColor[1])
-		distance.Transparency = options.distanceColor[2]
-		distance.Outline = options.distanceOutline
-		distance.OutlineColor = parseColor(self, options.distanceOutlineColor, true)
+	Visible.Distance.Visible = Enabled and OnScreen and self.Distance and Options.Distance
+	if Visible.Distance.Visible then
+		local Distance = Visible.Distance
+		Distance.Text = Round(self.Distance * 0.28) .. "M"
+		Distance.Size = Interface.Shared.TextSize
+		Distance.Font = Interface.Shared.TextFont
+		Distance.Color = ParseColor(self, Options.DistanceColor[1])
+		Distance.Transparency = Options.DistanceColor[2]
+		Distance.Outline = Options.DistanceOutline
+		Distance.OutlineColor = ParseColor(self, Options.DistanceOutlineColor, true)
 
-		distance.Position = Vector2.new(
-			corners.topRight.X + DISTANCE_OFFSET.X + distance.TextBounds.X * 0.5,
-			listYOffset - distance.TextBounds.Y * 0.5 - DISTANCE_OFFSET.Y
+		Distance.Position = Vector2.new(
+			Corners.TopRight.X + DISTANCE_OFFSET.X + Distance.TextBounds.X * 0.5,
+			ListYOffset - Distance.TextBounds.Y * 0.5 - DISTANCE_OFFSET.Y
 		)
 
-		listYOffset = listYOffset + distance.TextBounds.Y + DISTANCE_OFFSET.Y
+		ListYOffset = ListYOffset + Distance.TextBounds.Y + DISTANCE_OFFSET.Y
 	end
 
-	visible.weapon.Visible = enabled and onScreen and options.weapon
-	if visible.weapon.Visible then
-		local weapon = visible.weapon
-		weapon.Text = self.weapon
-		weapon.Size = interface.shared.textSize
-		weapon.Font = interface.shared.textFont
-		weapon.Color = parseColor(self, options.weaponColor[1])
-		weapon.Transparency = options.weaponColor[2]
-		weapon.Outline = options.weaponOutline
-		weapon.OutlineColor = parseColor(self, options.weaponOutlineColor, true)
+	Visible.Weapon.Visible = Enabled and OnScreen and Options.Weapon
+	if Visible.Weapon.Visible then
+		local Weapon = Visible.Weapon
+		Weapon.Text = self.Weapon
+		Weapon.Size = Interface.Shared.TextSize
+		Weapon.Font = Interface.Shared.TextFont
+		Weapon.Color = ParseColor(self, Options.WeaponColor[1])
+		Weapon.Transparency = Options.WeaponColor[2]
+		Weapon.Outline = Options.WeaponOutline
+		Weapon.OutlineColor = ParseColor(self, Options.WeaponOutlineColor, true)
 
-		weapon.Position = Vector2.new(
-			corners.topRight.X + DISTANCE_OFFSET.X + weapon.TextBounds.X * 0.5,
-			listYOffset - weapon.TextBounds.Y * 0.5
+		Weapon.Position = Vector2.new(
+			Corners.TopRight.X + DISTANCE_OFFSET.X + Weapon.TextBounds.X * 0.5,
+			ListYOffset - Weapon.TextBounds.Y * 0.5
 		)
 
-		listYOffset = listYOffset + weapon.TextBounds.Y + DISTANCE_OFFSET.Y
+		ListYOffset = ListYOffset + Weapon.TextBounds.Y + DISTANCE_OFFSET.Y
 	end
 
-	visible.healthText.Visible = enabled and onScreen and options.healthText
-	if visible.healthText.Visible then
-		local healthText = visible.healthText
-		healthText.Text = round(self.health) .. "HP"
-		healthText.Size = interface.shared.textSize
-		healthText.Font = interface.shared.textFont
-		healthText.Color = parseColor(self, options.healthTextColor[1])
-		healthText.Transparency = options.healthTextColor[2]
-		healthText.Outline = options.healthTextOutline
-		healthText.OutlineColor = parseColor(self, options.healthTextOutlineColor, true)
+	Visible.HealthText.Visible = Enabled and OnScreen and Options.HealthText
+	if Visible.HealthText.Visible then
+		local HealthText = Visible.HealthText
+		HealthText.Text = Round(self.Health) .. "HP"
+		HealthText.Size = Interface.Shared.TextSize
+		HealthText.Font = Interface.Shared.TextFont
+		HealthText.Color = ParseColor(self, Options.HealthTextColor[1])
+		HealthText.Transparency = Options.HealthTextColor[2]
+		HealthText.Outline = Options.HealthTextOutline
+		HealthText.OutlineColor = ParseColor(self, Options.HealthTextOutlineColor, true)
 
-		healthText.Position = Vector2.new(
-			corners.topRight.X + DISTANCE_OFFSET.X + healthText.TextBounds.X * 0.5,
-			listYOffset - healthText.TextBounds.Y * 0.5
+		HealthText.Position = Vector2.new(
+			Corners.TopRight.X + DISTANCE_OFFSET.X + HealthText.TextBounds.X * 0.5,
+			ListYOffset - HealthText.TextBounds.Y * 0.5
 		)
 	end
 
-	visible.tracer.Visible = enabled and onScreen and options.tracer;
-	visible.tracerOutline.Visible = visible.tracer.Visible and options.tracerOutline;
-	if visible.tracer.Visible then
-		local tracer = visible.tracer;
-		tracer.Color = parseColor(self, options.tracerColor[1]);
-		tracer.Transparency = options.tracerColor[2];
-		tracer.To = (corners.bottomLeft + corners.bottomRight)*0.5;
-		tracer.From =
-			options.tracerOrigin == "Middle" and viewportSize*0.5 or
-			options.tracerOrigin == "Top" and viewportSize*Vector2.new(0.5, 0) or
-			options.tracerOrigin == "Bottom" and viewportSize*Vector2.new(0.5, 1) or
-			options.tracerOrigin == "Mouse" and uis:GetMouseLocation();
+	Visible.Tracer.Visible = Enabled and OnScreen and Options.Tracer
+	Visible.TracerOutline.Visible = Visible.Tracer.Visible and Options.TracerOutline
+	if Visible.Tracer.Visible then
+		local Tracer = Visible.Tracer
+		Tracer.Color = ParseColor(self, Options.TracerColor[1])
+		Tracer.Transparency = Options.TracerColor[2]
+		Tracer.To = (Corners.BottomLeft + Corners.BottomRight)*0.5
+		Tracer.From =
+			Options.TracerOrigin == "Middle" and ViewportSize*0.5 or
+			Options.TracerOrigin == "Top" and ViewportSize*Vector2.new(0.5, 0) or
+			Options.TracerOrigin == "Bottom" and ViewportSize*Vector2.new(0.5, 1) or
+			Options.TracerOrigin == "Mouse" and UIS:GetMouseLocation()
 
-		local tracerOutline = visible.tracerOutline;
-		tracerOutline.Color = parseColor(self, options.tracerOutlineColor[1], true);
-		tracerOutline.Transparency = options.tracerOutlineColor[2];
-		tracerOutline.To = tracer.To;
-		tracerOutline.From = tracer.From;
+		local TracerOutline = Visible.TracerOutline
+		TracerOutline.Color = ParseColor(self, Options.TracerOutlineColor[1], true)
+		TracerOutline.Transparency = Options.TracerOutlineColor[2]
+		TracerOutline.To = Tracer.To
+		TracerOutline.From = Tracer.From
 	end
 
-	hidden.arrow.Visible = enabled and (not onScreen) and options.offScreenArrow;
-	hidden.arrowOutline.Visible = hidden.arrow.Visible and options.offScreenArrowOutline;
-	if hidden.arrow.Visible and self.direction then
-		local arrow = hidden.arrow;
-		arrow.PointA = min2(max2(viewportSize*0.5 + self.direction*options.offScreenArrowRadius, Vector2.one*25), viewportSize - Vector2.one*25);
-		arrow.PointB = arrow.PointA - rotateVector(self.direction, 0.45)*options.offScreenArrowSize;
-		arrow.PointC = arrow.PointA - rotateVector(self.direction, -0.45)*options.offScreenArrowSize;
-		arrow.Color = parseColor(self, options.offScreenArrowColor[1]);
-		arrow.Transparency = options.offScreenArrowColor[2];
+	Hidden.Arrow.Visible = Enabled and (not OnScreen) and Options.OffScreenArrow
+	Hidden.ArrowOutline.Visible = Hidden.Arrow.Visible and Options.OffScreenArrowOutline
+	if Hidden.Arrow.Visible and self.Direction then
+		local Arrow = Hidden.Arrow
+		Arrow.PointA = Min2(Max2(ViewportSize*0.5 + self.Direction*Options.OffScreenArrowRadius, Vector2.one*25), ViewportSize - Vector2.one*25)
+		Arrow.PointB = Arrow.PointA - RotateVector(self.Direction, 0.45)*Options.OffScreenArrowSize
+		Arrow.PointC = Arrow.PointA - RotateVector(self.Direction, -0.45)*Options.OffScreenArrowSize
+		Arrow.Color = ParseColor(self, Options.OffScreenArrowColor[1])
+		Arrow.Transparency = Options.OffScreenArrowColor[2]
 
-		local arrowOutline = hidden.arrowOutline;
-		arrowOutline.PointA = arrow.PointA;
-		arrowOutline.PointB = arrow.PointB;
-		arrowOutline.PointC = arrow.PointC;
-		arrowOutline.Color = parseColor(self, options.offScreenArrowOutlineColor[1], true);
-		arrowOutline.Transparency = options.offScreenArrowOutlineColor[2];
+		local ArrowOutline = Hidden.ArrowOutline
+		ArrowOutline.PointA = Arrow.PointA
+		ArrowOutline.PointB = Arrow.PointB
+		ArrowOutline.PointC = Arrow.PointC
+		ArrowOutline.Color = ParseColor(self, Options.OffScreenArrowOutlineColor[1], true)
+		ArrowOutline.Transparency = Options.OffScreenArrowOutlineColor[2]
 	end
 
-	local box3dEnabled = enabled and onScreen and options.box3d;
-	for i = 1, #box3d do
-		local face = box3d[i];
-		for i2 = 1, #face do
-			local line = face[i2];
-			line.Visible = box3dEnabled;
-			line.Color = parseColor(self, options.box3dColor[1]);
-			line.Transparency = options.box3dColor[2];
+	local Box3dEnabled = Enabled and OnScreen and Options.Box3d
+	for i = 1, #Box3d do
+		local Face = Box3d[i]
+		for i2 = 1, #Face do
+			local Line = Face[i2]
+			Line.Visible = Box3dEnabled
+			Line.Color = ParseColor(self, Options.Box3dColor[1])
+			Line.Transparency = Options.Box3dColor[2]
 		end
 
-		if box3dEnabled then
-			local line1 = face[1];
-			line1.From = corners.corners[i];
-			line1.To = corners.corners[i == 4 and 1 or i+1];
+		if Box3dEnabled then
+			local Line1 = Face[1]
+			Line1.From = Corners.Corners[i]
+			Line1.To = Corners.Corners[i == 4 and 1 or i+1]
 
-			local line2 = face[2];
-			line2.From = corners.corners[i == 4 and 1 or i+1];
-			line2.To = corners.corners[i == 4 and 5 or i+5];
+			local Line2 = Face[2]
+			Line2.From = Corners.Corners[i == 4 and 1 or i+1]
+			Line2.To = Corners.Corners[i == 4 and 5 or i+5]
 
-			local line3 = face[3];
-			line3.From = corners.corners[i == 4 and 5 or i+5];
-			line3.To = corners.corners[i == 4 and 8 or i+4];
+			local Line3 = Face[3]
+			Line3.From = Corners.Corners[i == 4 and 5 or i+5]
+			Line3.To = Corners.Corners[i == 4 and 8 or i+4]
 		end
 	end
 end
 
 -- cham object
-local ChamObject = {};
-ChamObject.__index = ChamObject;
+local ChamObject = {}
+ChamObject.__index = ChamObject
 
-function ChamObject.new(player, interface)
-	local self = setmetatable({}, ChamObject);
-	self.player = assert(player, "Missing argument #1 (Player expected)");
-	self.interface = assert(interface, "Missing argument #2 (table expected)");
-	self:Construct();
-	return self;
+function ChamObject.New(Player, Interface)
+	local self = setmetatable({}, ChamObject)
+	self.Player = assert(Player, "Missing argument #1 (Player expected)")
+	self.Interface = assert(Interface, "Missing argument #2 (table expected)")
+	self:Construct()
+	return self
 end
 
 function ChamObject:Construct()
-	self.highlight = Instance.new("Highlight", coreGui);
-	self.updateConnection = runService.RenderStepped:Connect(function()
-		self:Update();
-	end);
+	self.Highlight = Instance.new("Highlight", CoreGui)
+	self.UpdateConnection = RunService.RenderStepped:Connect(function()
+		self:Update()
+	end)
 end
 
 function ChamObject:Destruct()
-	self.updateConnection:Disconnect();
-	self.highlight:Destroy();
+	self.UpdateConnection:Disconnect()
+	self.Highlight:Destroy()
 
-	clear(self);
+	Clear(self)
 end
 
 function ChamObject:Update()
-	local highlight = self.highlight;
-	local interface = self.interface;
-	local character = interface.getCharacter(self.player);
-	local options = interface.team[interface.isFriendly(self.player) and "friendly" or "enemy"];
-	local enabled = options.enabled and character and not (#interface.whitelist > 0 and not find(interface.whitelist, self.player.UserId));
+	local Highlight = self.Highlight
+	local Interface = self.Interface
+	local Character = Interface.GetCharacter(self.Player)
+	local Options = Interface.Team[Interface.IsFriendly(self.Player) and "Friendly" or "Enemy"]
+	local Enabled = Options.Enabled and Character and not (#Interface.Whitelist > 0 and not Find(Interface.Whitelist, self.Player.UserId))
 
-	highlight.Enabled = enabled and options.chams;
-	if highlight.Enabled then
-		highlight.Adornee = character;
-		highlight.FillColor = parseColor(self, options.chamsFillColor[1]);
-		highlight.FillTransparency = options.chamsFillColor[2];
-		highlight.OutlineColor = parseColor(self, options.chamsOutlineColor[1], true);
-		highlight.OutlineTransparency = options.chamsOutlineColor[2];
-		highlight.DepthMode = options.chamsVisibleOnly and "Occluded" or "AlwaysOnTop";
+	Highlight.Enabled = Enabled and Options.Chams
+	if Highlight.Enabled then
+		Highlight.Adornee = Character
+		Highlight.FillColor = ParseColor(self, Options.ChamsFillColor[1])
+		Highlight.FillTransparency = Options.ChamsFillColor[2]
+		Highlight.OutlineColor = ParseColor(self, Options.ChamsOutlineColor[1], true)
+		Highlight.OutlineTransparency = Options.ChamsOutlineColor[2]
+		Highlight.DepthMode = Options.ChamsVisibleOnly and "Occluded" or "AlwaysOnTop"
 	end
 end
 
 -- instance class
-local InstanceObject = {};
-InstanceObject.__index = InstanceObject;
+local InstanceObject = {}
+InstanceObject.__index = InstanceObject
 
-function InstanceObject.new(instance, options)
-	local self = setmetatable({}, InstanceObject);
-	self.instance = assert(instance, "Missing argument #1 (Instance Expected)");
-	self.options = assert(options, "Missing argument #2 (table expected)");
-	self:Construct();
-	return self;
+function InstanceObject.New(Instance, Options)
+	local self = setmetatable({}, InstanceObject)
+	self.Instance = assert(Instance, "Missing argument #1 (Instance Expected)")
+	self.Options = assert(Options, "Missing argument #2 (table expected)")
+	self:Construct()
+	return self
 end
 
 function InstanceObject:Construct()
-	local options = self.options;
-	options.enabled = options.enabled == nil and true or options.enabled;
-	options.text = options.text or "{name}";
-	options.textColor = options.textColor or { Color3.new(1,1,1), 1 };
-	options.textOutline = options.textOutline == nil and true or options.textOutline;
-	options.textOutlineColor = options.textOutlineColor or Color3.new();
-	options.textSize = options.textSize or 13;
-	options.textFont = options.textFont or 2;
-	options.limitDistance = options.limitDistance or false;
-	options.maxDistance = options.maxDistance or 150;
+	local Options = self.Options
+	Options.Enabled = Options.Enabled == nil and true or Options.Enabled
+	Options.Text = Options.Text or "{name}"
+	Options.TextColor = Options.TextColor or { Color3.new(1,1,1), 1 }
+	Options.TextOutline = Options.TextOutline == nil and true or Options.TextOutline
+	Options.TextOutlineColor = Options.TextOutlineColor or Color3.new()
+	Options.TextSize = Options.TextSize or 13
+	Options.TextFont = Options.TextFont or 2
+	Options.LimitDistance = Options.LimitDistance or false
+	Options.MaxDistance = Options.MaxDistance or 150
 
-	self.text = Drawing.new("Text");
-	self.text.Center = true;
+	self.Text = Drawing.new("Text")
+	self.Text.Center = true
 
-	self.renderConnection = runService.Stepped:Connect(function(deltaTime)
-		self:Render(deltaTime);
-	end);
+	self.RenderConnection = RunService.Stepped:Connect(function(DeltaTime)
+		self:Render(DeltaTime)
+	end)
 end
 
 function InstanceObject:Destruct()
-	self.renderConnection:Disconnect();
-	self.text:Remove();
+	self.RenderConnection:Disconnect()
+	self.Text:Remove()
 end
 
 function InstanceObject:Render()
-	local instance = self.instance;
-	if not instance or not instance.Parent then
-		return self:Destruct();
+	local Instance = self.Instance
+	if not Instance or not Instance.Parent then
+		return self:Destruct()
 	end
 
-	local text = self.text;
-	local options = self.options;
-	if not options.enabled then
-		text.Visible = false;
-		return;
+	local Text = self.Text
+	local Options = self.Options
+	if not Options.Enabled then
+		Text.Visible = false
+		return
 	end
 
-	local world = getPivot(instance).Position;
-	local position, visible, depth = worldToScreen(world);
-	if options.limitDistance and depth > options.maxDistance then
-		visible = false;
+	local World = GetPivot(Instance).Position
+	local Position, Visible, Depth = WorldToScreen(World)
+	if Options.LimitDistance and Depth > Options.MaxDistance then
+		Visible = false
 	end
 
-	text.Visible = visible;
-	if text.Visible then
-		text.Position = position;
-		text.Color = options.textColor[1];
-		text.Transparency = options.textColor[2];
-		text.Outline = options.textOutline;
-		text.OutlineColor = options.textOutlineColor;
-		text.Size = options.textSize;
-		text.Font = options.textFont;
-		text.Text = options.text
-			:gsub("{name}", string.upper(instance.Name))
-			:gsub("{distance}", round(depth * 0.28) .. "M")
-			:gsub("{position}", string.upper(tostring(world)));
+	Text.Visible = Visible
+	if Text.Visible then
+		Text.Position = Position
+		Text.Color = Options.TextColor[1]
+		Text.Transparency = Options.TextColor[2]
+		Text.Outline = Options.TextOutline
+		Text.OutlineColor = Options.TextOutlineColor
+		Text.Size = Options.TextSize
+		Text.Font = Options.TextFont
+		Text.Text = Options.Text
+			:gsub("{name}", string.upper(Instance.Name))
+			:gsub("{distance}", Round(Depth * 0.28) .. "M")
+			:gsub("{position}", string.upper(tostring(World)))
 	end
 
 	return nil
@@ -589,211 +593,215 @@ end
 
 -- interface
 local EspInterface = {
-	_hasLoaded = false,
-	_objectCache = {},
-	whitelist = {},
-	shared = {
-		textSize = 13,
-		textFont = 2,
-		limitDistance = false,
-		maxDistance = 150,
-		useTeamColor = false,
-		includeLocalPlayer = false
+	HasLoaded = false,
+	ObjectCache = {},
+	Whitelist = {},
+	Shared = {
+		TextSize = 13,
+		TextFont = 2,
+		LimitDistance = false,
+		MaxDistance = 150,
+		UseTeamColor = false,
+		IncludeLocalPlayer = false
 	},
-	team = {
-		enemy = {
-			enabled = false,
-			box = false,
-			boxColor = { Color3.new(1,0,0), 1 },
-			boxOutline = true,
-			boxOutlineColor = { Color3.new(), 1 },
-			boxFill = false,
-			boxFillColor = { Color3.new(1,0,0), 0.5 },
-			cornerBox = false,
-			cornerBoxColor = { Color3.new(1, 1, 1), 1 },
-			healthBar = false,
-			healthyColor = Color3.fromRGB(58, 161, 47),
-			dyingColor = Color3.fromRGB(161, 47, 47),
-			healthBarOutline = true,
-			healthBarOutlineColor = { Color3.new(), 0.5 },
-			healthText = false,
-			healthTextColor = { Color3.new(1,1,1), 1 },
-			healthTextOutline = true,
-			healthTextOutlineColor = Color3.new(),
-			box3d = false,
-			box3dColor = { Color3.new(1,0,0), 1 },
-			name = false,
-			nameColor = { Color3.new(1,1,1), 1 },
-			nameOutline = true,
-			nameOutlineColor = Color3.new(),
-			weapon = false,
-			weaponColor = { Color3.new(1,1,1), 1 },
-			weaponOutline = true,
-			weaponOutlineColor = Color3.new(),
-			distance = false,
-			distanceColor = { Color3.new(1,1,1), 1 },
-			distanceOutline = true,
-			distanceOutlineColor = Color3.new(),
-			tracer = false,
-			tracerOrigin = "Bottom",
-			tracerColor = { Color3.new(1,0,0), 1 },
-			tracerOutline = true,
-			tracerOutlineColor = { Color3.new(), 1 },
-			offScreenArrow = false,
-			offScreenArrowColor = { Color3.new(1,1,1), 1 },
-			offScreenArrowSize = 15,
-			offScreenArrowRadius = 150,
-			offScreenArrowOutline = true,
-			offScreenArrowOutlineColor = { Color3.new(), 1 },
-			chams = false,
-			chamsVisibleOnly = false,
-			chamsFillColor = { Color3.new(0.2, 0.2, 0.2), 0.5 },
-			chamsOutlineColor = { Color3.new(1,0,0), 0 },
+	Team = {
+		Enemy = {
+			Enabled = false,
+			Box = false,
+			BoxColor = { Color3.new(1,0,0), 1 },
+			BoxOutline = true,
+			BoxOutlineColor = { Color3.new(), 1 },
+			BoxFill = false,
+			BoxFillColor = { Color3.new(1,0,0), 0.5 },
+			CornerBox = false,
+			CornerBoxColor = { Color3.new(1, 1, 1), 1 },
+			HealthBar = false,
+			HealthyColor = Color3.fromRGB(58, 161, 47),
+			DyingColor = Color3.fromRGB(161, 47, 47),
+			HealthBarOutline = true,
+			HealthBarOutlineColor = { Color3.new(), 0.5 },
+			HealthText = false,
+			HealthTextColor = { Color3.new(1,1,1), 1 },
+			HealthTextOutline = true,
+			HealthTextOutlineColor = Color3.new(),
+			Box3d = false,
+			Box3dColor = { Color3.new(1,0,0), 1 },
+			Name = false,
+			NameColor = { Color3.new(1,1,1), 1 },
+			NameOutline = true,
+			NameOutlineColor = Color3.new(),
+			Weapon = false,
+			WeaponColor = { Color3.new(1,1,1), 1 },
+			WeaponOutline = true,
+			WeaponOutlineColor = Color3.new(),
+			Distance = false,
+			DistanceColor = { Color3.new(1,1,1), 1 },
+			DistanceOutline = true,
+			DistanceOutlineColor = Color3.new(),
+			Tracer = false,
+			TracerOrigin = "Bottom",
+			TracerColor = { Color3.new(1,0,0), 1 },
+			TracerOutline = true,
+			TracerOutlineColor = { Color3.new(), 1 },
+			OffScreenArrow = false,
+			OffScreenArrowColor = { Color3.new(1,1,1), 1 },
+			OffScreenArrowSize = 15,
+			OffScreenArrowRadius = 150,
+			OffScreenArrowOutline = true,
+			OffScreenArrowOutlineColor = { Color3.new(), 1 },
+			Chams = false,
+			ChamsVisibleOnly = false,
+			ChamsFillColor = { Color3.new(0.2, 0.2, 0.2), 0.5 },
+			ChamsOutlineColor = { Color3.new(1,0,0), 0 },
 		},
-		friendly = {
-			enabled = false,
-			box = false,
-			boxColor = { Color3.new(0,1,0), 1 },
-			boxOutline = true,
-			boxOutlineColor = { Color3.new(), 1 },
-			boxFill = false,
-			boxFillColor = { Color3.new(0,1,0), 0.5 },
-			cornerBox = false,
-			cornerBoxColor = { Color3.new(1, 1, 1), 1 },
-			healthBar = false,
-			healthyColor = Color3.new(0,1,0),
-			dyingColor = Color3.new(1,0,0),
-			healthBarOutline = true,
-			healthBarOutlineColor = { Color3.new(), 0.5 },
-			healthText = false,
-			healthTextColor = { Color3.new(1,1,1), 1 },
-			healthTextOutline = true,
-			healthTextOutlineColor = Color3.new(),
-			box3d = false,
-			box3dColor = { Color3.new(0,1,0), 1 },
-			name = false,
-			nameColor = { Color3.new(1,1,1), 1 },
-			nameOutline = true,
-			nameOutlineColor = Color3.new(),
-			weapon = false,
-			weaponColor = { Color3.new(1,1,1), 1 },
-			weaponOutline = true,
-			weaponOutlineColor = Color3.new(),
-			distance = false,
-			distanceColor = { Color3.new(1,1,1), 1 },
-			distanceOutline = true,
-			distanceOutlineColor = Color3.new(),
-			tracer = false,
-			tracerOrigin = "Bottom",
-			tracerColor = { Color3.new(0,1,0), 1 },
-			tracerOutline = true,
-			tracerOutlineColor = { Color3.new(), 1 },
-			offScreenArrow = false,
-			offScreenArrowColor = { Color3.new(1,1,1), 1 },
-			offScreenArrowSize = 15,
-			offScreenArrowRadius = 150,
-			offScreenArrowOutline = true,
-			offScreenArrowOutlineColor = { Color3.new(), 1 },
-			chams = false,
-			chamsVisibleOnly = false,
-			chamsFillColor = { Color3.new(0.2, 0.2, 0.2), 0.5 },
-			chamsOutlineColor = { Color3.new(0,1,0), 0 }
+		Friendly = {
+			Enabled = false,
+			Box = false,
+			BoxColor = { Color3.new(0,1,0), 1 },
+			BoxOutline = true,
+			BoxOutlineColor = { Color3.new(), 1 },
+			BoxFill = false,
+			BoxFillColor = { Color3.new(0,1,0), 0.5 },
+			CornerBox = false,
+			CornerBoxColor = { Color3.new(1, 1, 1), 1 },
+			HealthBar = false,
+			HealthyColor = Color3.new(0,1,0),
+			DyingColor = Color3.new(1,0,0),
+			HealthBarOutline = true,
+			HealthBarOutlineColor = { Color3.new(), 0.5 },
+			HealthText = false,
+			HealthTextColor = { Color3.new(1,1,1), 1 },
+			HealthTextOutline = true,
+			HealthTextOutlineColor = Color3.new(),
+			Box3d = false,
+			Box3dColor = { Color3.new(0,1,0), 1 },
+			Name = false,
+			NameColor = { Color3.new(1,1,1), 1 },
+			NameOutline = true,
+			NameOutlineColor = Color3.new(),
+			Weapon = false,
+			WeaponColor = { Color3.new(1,1,1), 1 },
+			WeaponOutline = true,
+			WeaponOutlineColor = Color3.new(),
+			Distance = false,
+			DistanceColor = { Color3.new(1,1,1), 1 },
+			DistanceOutline = true,
+			DistanceOutlineColor = Color3.new(),
+			Tracer = false,
+			TracerOrigin = "Bottom",
+			TracerColor = { Color3.new(0,1,0), 1 },
+			TracerOutline = true,
+			TracerOutlineColor = { Color3.new(), 1 },
+			OffScreenArrow = false,
+			OffScreenArrowColor = { Color3.new(1,1,1), 1 },
+			OffScreenArrowSize = 15,
+			OffScreenArrowRadius = 150,
+			OffScreenArrowOutline = true,
+			OffScreenArrowOutlineColor = { Color3.new(), 1 },
+			Chams = false,
+			ChamsVisibleOnly = false,
+			ChamsFillColor = { Color3.new(0.2, 0.2, 0.2), 0.5 },
+			ChamsOutlineColor = { Color3.new(0,1,0), 0 }
 		}
 	}
-};
+}
 
-function EspInterface.AddInstance(instance, options)
-	local cache = EspInterface._objectCache;
-	if cache[instance] then
-		warn("Instance handler already exists.");
+function EspInterface.AddInstance(Instance, Options)
+	local Cache = EspInterface.ObjectCache
+	if Cache[Instance] then
+		warn("Instance handler already exists.")
 	else
-		cache[instance] = { InstanceObject.new(instance, options) };
+		Cache[Instance] = { InstanceObject.New(Instance, Options) }
 	end
-	return cache[instance][1];
+	return Cache[Instance][1]
 end
 
 function EspInterface.Load()
-	assert(not EspInterface._hasLoaded, "Esp has already been loaded.");
+	assert(not EspInterface.HasLoaded, "Esp has already been loaded.")
 
-	local function createObject(player)
-		EspInterface._objectCache[player] = {
-			EspObject.new(player, EspInterface),
-			ChamObject.new(player, EspInterface)
-		};
+	local function CreateObject(Player)
+		EspInterface.ObjectCache[Player] = {
+			EspObject.New(Player, EspInterface),
+			ChamObject.New(Player, EspInterface)
+		}
 	end
 
-	local function removeObject(player)
-		local object = EspInterface._objectCache[player];
-		if object then
-			for i = 1, #object do
-				object[i]:Destruct();
+	local function RemoveObject(Player)
+		local Object = EspInterface.ObjectCache[Player]
+		if Object then
+			for i = 1, #Object do
+				Object[i]:Destruct()
 			end
-			EspInterface._objectCache[player] = nil;
+			EspInterface.ObjectCache[Player] = nil
 		end
 	end
 
-	local plrs = players:GetPlayers()
+	local Plrs = Players:GetPlayers()
 
-	for i = EspInterface.shared.includeLocalPlayer and 1 or 2, #plrs do
-		createObject(plrs[i]);
+	for i = EspInterface.Shared.IncludeLocalPlayer and 1 or 2, #Plrs do
+		CreateObject(Plrs[i])
 	end
 
-	EspInterface.playerAdded = players.PlayerAdded:Connect(createObject);
-	EspInterface.playerRemoving = players.PlayerRemoving:Connect(removeObject);
-	EspInterface._hasLoaded = true;
+	EspInterface.PlayerAdded = Players.PlayerAdded:Connect(CreateObject)
+	EspInterface.PlayerRemoving = Players.PlayerRemoving:Connect(RemoveObject)
+	EspInterface.HasLoaded = true
 end
 
 function EspInterface.Unload()
-	assert(EspInterface._hasLoaded, "Esp has not been loaded yet.");
+	assert(EspInterface.HasLoaded, "Esp has not been loaded yet.")
 
-	for index, object in next, EspInterface._objectCache do
-		for i = 1, #object do
-			object[i]:Destruct();
+	for Index, Object in next, EspInterface.ObjectCache do
+		for i = 1, #Object do
+			Object[i]:Destruct()
 		end
-		EspInterface._objectCache[index] = nil;
+		EspInterface.ObjectCache[Index] = nil
 	end
 
-	EspInterface.playerAdded:Disconnect();
-	EspInterface.playerRemoving:Disconnect();
-	EspInterface._hasLoaded = false;
+	EspInterface.PlayerAdded:Disconnect()
+	EspInterface.PlayerRemoving:Disconnect()
+	EspInterface.HasLoaded = false
 end
 
-function EspInterface.getWeapon(player)
-	local weapon = "None"
+function EspInterface.GetWeapon(Player)
+	local Weapon = "None"
 
-	if player and player.Character then
-		local tool = player.Character:FindFirstChildOfClass("Tool")
-		if tool then
-			weapon = tool.Name
+	if Player and Player.Character then
+		local Tool = Player.Character:FindFirstChildOfClass("Tool")
+		if Tool then
+			Weapon = Tool.Name
 		end
 	end
 
-	return string.upper(weapon)
+	return string.upper(Weapon)
 end
 
-function EspInterface.isFriendly(player)
-	return player.Team and player.Team == localPlayer.Team;
+function EspInterface.IsFriendly(Player)
+	return Player.Team and Player.Team == LocalPlayer.Team
 end
 
-function EspInterface.getTeamColor(player)
-	return player.Team and player.Team.TeamColor and player.Team.TeamColor.Color;
+function EspInterface.GetTeamColor(Player)
+	return Player.Team and Player.Team.TeamColor and Player.Team.TeamColor.Color
 end
 
-function EspInterface.getCharacter(player)
-	return player.Character;
+function EspInterface.GetCharacter(Player)
+	return Player.Character
 end
 
-function EspInterface.isBodyPart(name)
-	return name == "Head" or name:find("Torso") or name:find("Leg") or name:find("Arm");
+function EspInterface.IsBodyPart(Name)
+	return Name == "Head" or Name:find("Torso") or Name:find("Leg") or Name:find("Arm")
 end
 
-function EspInterface.getHealth(player)
-	local character = player and EspInterface.getCharacter(player);
-	local humanoid = character and findFirstChildOfClass(character, "Humanoid");
-	if humanoid then
-		return humanoid.Health, humanoid.MaxHealth;
+function EspInterface.GetRootPart()
+	return "HumanoidRootPart"
+end
+
+function EspInterface.GetHealth(Player)
+	local Character = Player and EspInterface.GetCharacter(Player)
+	local Humanoid = Character and FindFirstChildOfClass(Character, "Humanoid")
+	if Humanoid then
+		return Humanoid.Health, Humanoid.MaxHealth
 	end
-	return 100, 100;
+	return 100, 100
 end
 
 return EspInterface
