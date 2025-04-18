@@ -2,32 +2,63 @@
 
 $ErrorActionPreference = 'Stop'
 
-function Prompt-Build {
-    Write-Host "[INPUT] Build type (R/Release) (D/Debug):"
-    $input = Read-Host
-    switch -Regex ($input.ToLower()) {
-        '^r(elease)?$' { return 'Release' }
-        '^d(ebug)?$'   { return 'Debug' }
-        default        {
-            Write-Error "Invalid build type. Use: R, Release, D, Debug"
-            exit 1
+$script:Markers = @{}
+
+$config = Get-Content "$PSScriptRoot\config.json" | ConvertFrom-Json
+
+function Push-Marker {
+    param(
+        [string]$name,
+        [string]$pattern
+    )
+    $script:Markers[$name] = "#- COMPOSER\($pattern\) -#"
+}
+
+function BType-Input {
+    while ($true) {
+        Write-Host "[INPUT] Build type (R/Release) (D/Debug):"
+        $input = Read-Host
+        switch -Regex ($input.ToLower()) {
+            '^r(elease)?$' { return 'Release' }
+            '^d(ebug)?$'   { return 'Debug' }
+            default        {
+                Write-Host "[ERROR] Invalid build type. Please enter 'R' for Release or 'D' for Debug."
+                continue
+            }
         }
     }
 }
-
-function Prompt-Version {
+function BVersion-Input {
     Write-Host "[INPUT] Build version (v.MAJOR.MINOR.PATCH eg: v1.0.0/v1.0.0-beta.2)"
     return Read-Host
 }
 
-function Rep-Markers ($content, $buildType, $buildVersion) {
-    return $content | ForEach-Object {
-        ($_ -replace '#- COMPOSER\[(GET\s+BUILD[_\s]+TYPE)\] -#', "'$buildType'") `
-        -replace '#- COMPOSER\[(GET\s+BUILD[_\s]+VERSION)\] -#', $(if ($buildVersion) { "'$buildVersion'" } else { "nil" })      
+function Release-Input {
+    Write-Host "`n[INPUT] Do you want to release this build to the public? (Y/N):"
+    $input = Read-Host
+    if ($input.ToLower() -notmatch '^y(es)?$') {
+        return $false
     }
+
+    Write-Host "[INPUT] Type 'Deploy to $($config.github.repo)' to proceed:"
+    $input = Read-Host
+    $expected = "Deploy to $($config.github.repo)"
+    
+    if ($input -ne $expected) {
+        return $false
+    }    
+
+    return $true
 }
 
-function Get-LineIndentation {
+function Rep-Markers ($content, $buildType, $buildVersion) {
+    $result = $content
+    $result = $result -replace $script:Markers["BUILD_TYPE"], "'$buildType'"
+    $result = $result -replace $script:Markers["BUILD_VERSION"], $(if ($buildVersion) { "'$buildVersion'" } else { "nil" })
+    return $result
+}
+
+function Read-LIndent {
     param([string]$line)
     if ($line -match '^(\s+)') {
         return $matches[1]
@@ -45,17 +76,17 @@ function Extract {
     $pre = [System.Collections.ArrayList]::new()
     $post = [System.Collections.ArrayList]::new()
     $isMarker = $false
-    $inMultilineComment = $false
+    $inMLComment = $false
     $indentation = ''
     
     foreach ($line in $lines) {
         if ($line -match '--\[\[') {
-            $inMultilineComment = $true
+            $inMLComment = $true
             $pre.Add($line) | Out-Null
             continue
         }
         if ($line -match '\]\]') {
-            $inMultilineComment = $false
+            $inMLComment = $false
             if (-not $isMarker) {
                 $pre.Add($line) | Out-Null
             } else {
@@ -64,7 +95,7 @@ function Extract {
             continue
         }
 
-        if ($line -match '^\s*--' -or $inMultilineComment) {
+        if ($line -match '^\s*--' -or $inMLComment) {
             if (-not $isMarker) {
                 $pre.Add($line) | Out-Null
             } else {
@@ -75,7 +106,7 @@ function Extract {
 
         if ($line -match $marker) {
             $isMarker = $true
-            $indentation = Get-LineIndentation $line
+            $indentation = Read-LIndent $line
             continue
         }
         
@@ -89,25 +120,137 @@ function Extract {
     return @($pre, $post, $indentation)
 }
 
-$buildType     = Prompt-Build
-$buildVersion  = if ($buildType -eq 'Release') { Prompt-Version } else { $null }
+function Distribute-Github {
+    param (
+        [string]$version,
+        [string]$distPath
+    )
+    
+    if (-not $config.github.enabled) {
+        Write-Host "[INFO] GitHub distribution is disabled"
+        return $true
+    }
+
+    try {
+        Write-Host "[GITHUB] Attempting to create release with version $version"
+        
+        $headers = @{
+            "Accept" = "application/vnd.github.v3+json"
+            "Authorization" = "Bearer $($config.github.apiKey)"
+        }
+
+        try {
+            $testUrl = "$($config.github.apiUrl)/repos/$($config.github.owner)/$($config.github.repo)"
+            Write-Host "[GITHUB] Testing API connection..."
+            $repoTest = Invoke-RestMethod -Uri $testUrl -Headers $headers -Method Get
+            Write-Host "[GITHUB] Successfully connected to repository: $($repoTest.full_name)"
+        }
+        catch {
+            Write-Host "[ERROR] Failed to connect to GitHub API. Details:"
+            Write-Host "Status Code: $($_.Exception.Response.StatusCode.value__)"
+            Write-Host "Status Description: $($_.Exception.Response.StatusDescription)"
+            $reader = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream())
+            $reader.BaseStream.Position = 0
+            $reader.DiscardBufferedData()
+            $responseBody = $reader.ReadToEnd()
+            Write-Host "Response Body: $responseBody"
+            throw "GitHub API connection failed"
+        }
+
+        $releaseData = @{
+            tag_name = $version
+            name = "RIOT $version"
+            body = "Release notes for $version"
+            draft = $false
+            prerelease = $version -match "-"
+        } | ConvertTo-Json
+
+        Write-Host "[GITHUB] Creating release..."
+        $releaseUrl = "$($config.github.apiUrl)/repos/$($config.github.owner)/$($config.github.repo)/releases"
+        $release = Invoke-RestMethod -Uri $releaseUrl -Method Post -Headers $headers -Body $releaseData -ContentType "application/json"
+        Write-Host "[GITHUB] Release created successfully"
+
+        Write-Host "[GITHUB] Uploading distribution file..."
+        $uploadUrl = $release.upload_url -replace '\{\?.*\}', ''
+        $uploadUrl += "?name=dist.luau"
+
+        $fileBytes = [System.IO.File]::ReadAllBytes($distPath)
+        $response = Invoke-RestMethod -Uri $uploadUrl -Method Post -Headers $headers -Body $fileBytes -ContentType "application/octet-stream"
+        Write-Host "[GITHUB] File uploaded successfully"
+
+        Write-Host "[SUCCESS] Release $version published to GitHub"
+        return $true
+    }
+    catch {
+        Write-Host "[ERROR] Failed to create GitHub release. Details:"
+        Write-Host "Error Message: $($_.Exception.Message)"
+        if ($_.Exception.Response) {
+            Write-Host "Status Code: $($_.Exception.Response.StatusCode.value__)"
+            Write-Host "Status Description: $($_.Exception.Response.StatusDescription)"
+            $reader = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream())
+            $reader.BaseStream.Position = 0
+            $reader.DiscardBufferedData()
+            $responseBody = $reader.ReadToEnd()
+            Write-Host "Response Body: $responseBody"
+        }
+        return $false
+    }
+}
+
+function Distribute-Luarmor {
+    param (
+        [string]$version,
+        [string]$distPath
+    )
+    
+    if (-not $config.luarmor.enabled) {
+        Write-Host "[INFO] Luarmor distribution is disabled"
+        return $true
+    }
+
+    try {
+        Write-Host "[LUARMOR] Attempting to update script version $version"
+        
+        $headers = @{
+            "Authorization" = "Bearer $($config.luarmor.apiKey)"
+            "Content-Type" = "multipart/form-data"
+        }
+
+        $form = @{
+            file = Get-Item $distPath
+            version = $version
+        }
+
+        $luarmorUrl = "https://api.luarmor.net/v3/scripts/$($config.luarmor.scriptId)/versions"
+        $response = Invoke-RestMethod -Uri $luarmorUrl -Method Post -Headers $headers -Form $form
+
+        Write-Host "[SUCCESS] Luarmor script updated to version $version"
+        return $true
+    }
+    catch {
+        Write-Host "[ERROR] Failed to update Luarmor script. Details:"
+        Write-Host "Error Message: $($_.Exception.Message)"
+        if ($_.Exception.Response) {
+            Write-Host "Status Code: $($_.Exception.Response.StatusCode.value__)"
+            Write-Host "Status Description: $($_.Exception.Response.StatusDescription)"
+        }
+        return $false
+    }
+}
+
+Push-Marker "BUILD_TYPE" "\[GET BUILD_TYPE\]"
+Push-Marker "BUILD_VERSION" "\[GET BUILD_VERSION\]"
+Push-Marker "SPLIT" "\[GET BUILD\]"
+
+$buildType     = BType-Input
+$buildVersion  = if ($buildType -eq 'Release') { BVersion-Input } else { $null }
 
 Write-Host "[PROCESSING] Bundling $buildType build..."
 
 $tempDist = "$PSScriptRoot\dist.luau.tmp"
-$splitMarker = '#- COMPOSER\[INSERT\s*\(BUILD\)\] -#'
-
-if (-not (Get-Command darklua -ErrorAction SilentlyContinue)) {
-    Write-Error "Error: darklua not found. Ensure it's in your PATH."
-    exit 1
-}
+$splitMarker = $script:Markers["SPLIT"]
 
 darklua process ../src/init.luau $tempDist -c .darklua.json > $null
-
-if (-not (Test-Path $tempDist)) {
-    Write-Error "Error: dist.luau not found"
-    exit 1
-}
 
 Write-Host "[PROCESSING] Extracting splitter..."
 $splitSegments = Extract -marker $splitMarker -splitFile "split.luau"
@@ -127,4 +270,28 @@ $distribution | Set-Content ../dist.luau -Encoding UTF8
 Remove-Item $tempDist -Force
 
 Write-Host "[SUCCESS] Build complete! Output: ..\dist.luau"
+
+if ($buildType -eq 'Release') {
+    if (Release-Input) {
+        $distPath = (Resolve-Path "..\dist.luau").Path
+        $success = $true
+        
+        if (-not (Distribute-Github -version $buildVersion -distPath $distPath)) {
+            Write-Host "[ERROR] Failed to distribute build to GitHub"
+            $success = $false
+        }
+        
+        if (-not (Distribute-Luarmor -version $buildVersion -distPath $distPath)) {
+            Write-Host "[ERROR] Failed to distribute build to Luarmor"
+            $success = $false
+        }
+        
+        if ($success) {
+            Write-Host "[SUCCESS] Build is now distributed to the public"
+        } else {
+            Write-Host "[ERROR] Build distribution failed"
+        }
+    }
+}
+
 exit 0
