@@ -6,8 +6,8 @@ local game, workspace = game, workspace
 
 local Vector2new, Vector3zero, CFramenew, Color3RGB, Drawingnew, TweenInfonew =
 	Vector2.new, Vector3.zero, CFrame.new, Color3.fromRGB, Drawing.new, TweenInfo.new
-local mousemoverel, tablefind, tableremove, stringlower, stringsub, mathclamp =
-	mousemoverel or (Input and Input.MouseMove), table.find, table.remove, string.lower, string.sub, math.clamp
+local mousemoverel, tablefind, mathclamp =
+	mousemoverel or (Input and Input.MouseMove), table.find, math.clamp
 
 local GameMetatable = getrawmetatable and getrawmetatable(game)
 	or {
@@ -45,11 +45,6 @@ local RequiredDistance, Running, ServiceConnections, Animation, OriginalSensitiv
 local Connect, Disconnect = __index(game, "DescendantAdded").Connect, nil
 
 local Aiming = {
-	DeveloperSettings = {
-		UpdateMode = "RenderStepped",
-		TeamCheckOption = "Team",
-	},
-
 	Triggerbot = {
 		Enabled = false,
 
@@ -64,7 +59,7 @@ local Aiming = {
 		end,
 		Trigger = function()
 			mouse1press()
-			wait() -- wait because task.wait is too fast for the game to register the click
+			wait() -- wait() instead of task.wait() for arsenal lag
 			mouse1release()
 		end,
 	},
@@ -110,32 +105,43 @@ local Aiming = {
 	FOVCircle = Drawingnew("Circle"),
 }
 
-local Environment = Aiming
-
-local FixUsername = function(String)
-	local Result
-
-	for _, Value in next, GetPlayers(Players) do
-		local Name = __index(Value, "Name")
-
-		if stringsub(stringlower(Name), 1, #String) == stringlower(String) then
-			Result = Name
-		end
-	end
-
-	return Result
+--// Game Specific Functions
+function Aiming.IsFriendly(Player)
+	return Player and Player.Team and Player.Team == LocalPlayer.Team
 end
 
+function Aiming.IsBone(Name)
+	return Name == "Head" or Name:find("Torso") or Name:find("Leg") or Name:find("Arm")
+end
+
+function Aiming.GetPlayerFromCharacter(Model)
+	return Players:GetPlayerFromCharacter(Model)
+end
+
+function Aiming.GetCharacter(Player)
+	return Player and Player.Character;
+end
+
+function Aiming.GetHealth(Player)
+	local Character = Player and Aiming.GetCharacter(Player);
+	local Humanoid = Character and FindFirstChildOfClass(Character, "Humanoid");
+	if Humanoid then
+		return Humanoid.Health
+	end
+	return 100
+end
+
+--// Utility
 local ConvertVector = function(Vector)
 	return Vector2new(Vector.X, Vector.Y)
 end
 
 local CancelLock = function()
-	Environment.Locked = nil
+	Aiming.Locked = nil
 
-	local FOVCircle = Environment.FOVCircle
+	local FOVCircle = Aiming.FOVCircle
 
-	FOVCircle.Color = Environment.FOVSettings.Color
+	FOVCircle.Color = Aiming.FOVSettings.Color
 	__newindex(UserInputService, "MouseDeltaSensitivity", OriginalSensitivity)
 
 	if Animation then
@@ -143,37 +149,30 @@ local CancelLock = function()
 	end
 end
 
-function Environment.Aimbot.SetState(State: boolean)
+function Aiming.Aimbot.SetState(State: boolean)
 	Running = State
 	if not State then
 		CancelLock()
 	end
 end
 
-function Environment.PlayerAlive(Player)
-	local Character = __index(Player, "Character")
-	local Humanoid = Character and FindFirstChildOfClass(Character, "Humanoid")
-	return __index(Humanoid, "Health") <= 0
-end
-
 local GetClosestPlayer = function()
-	local Settings = Environment.Aimbot
+	local Settings = Aiming.Aimbot
 	local LockPart = Settings.LockPart
 
-	if not Environment.Locked then
-		RequiredDistance = Environment.FOVSettings.Enabled and Environment.FOVSettings.Radius or 2000
+	if not Aiming.Locked then
+		RequiredDistance = Aiming.FOVSettings.Enabled and Aiming.FOVSettings.Radius or 2000
 		for _, Value in next, GetPlayers(Players) do
-			local Character = __index(Value, "Character")
+			local Character = Aiming.GetCharacter(Value)
 			local Humanoid = Character and FindFirstChildOfClass(Character, "Humanoid")
 			if
 				Value ~= LocalPlayer
-				and not tablefind(Environment.Blacklisted, __index(Value, "Name"))
+				and not tablefind(Aiming.Blacklisted, __index(Value, "Name"))
 				and Character
 				and FindFirstChild(Character, LockPart)
 				and Humanoid
 			then
-				local PartPosition, TeamCheckOption =
-					__index(Character[LockPart], "Position"), Environment.DeveloperSettings.TeamCheckOption
+				local PartPosition = __index(Character[LockPart], "Position")
 
 				if
 					Settings.MaxDistance
@@ -182,22 +181,18 @@ local GetClosestPlayer = function()
 					continue
 				end
 
-				if
-					Settings.TeamCheck
-					and __index(Value, TeamCheckOption)
-					and __index(Value, TeamCheckOption) == __index(LocalPlayer, TeamCheckOption)
-				then
+				if Settings.TeamCheck and Aiming.IsFriendly(Value) then
 					continue
 				end
-				if Settings.AliveCheck and Environment.PlayerAlive(Value) then
+				if Settings.AliveCheck and Aiming.GetHealth(Value) < 0 then
 					continue
 				end
 
 				if Settings.WallCheck == 2 or Settings.WallCheck == 3 then
-                    local BlacklistTable = GetDescendants(__index(LocalPlayer, "Character"))
-                     for _, Value in next, GetDescendants(Character) do
-                         BlacklistTable[#BlacklistTable + 1] = Value
-                     end
+					local BlacklistTable = GetDescendants(Aiming.GetCharacter(LocalPlayer))
+					for _, Value in next, GetDescendants(Character) do
+						BlacklistTable[#BlacklistTable + 1] = Value
+					end
 					if #GetPartsObscuringTarget(Camera, { PartPosition }, BlacklistTable) > 0 then
 						continue
 					end
@@ -207,12 +202,12 @@ local GetClosestPlayer = function()
 				Vector = ConvertVector(Vector)
 				Distance = (GetMouseLocation(UserInputService) - Vector).Magnitude
 				if Distance < RequiredDistance and OnScreen then
-					RequiredDistance, Environment.Locked = Distance, Value
+					RequiredDistance, Aiming.Locked = Distance, Value
 				end
 			end
 		end
 	else
-		local LockedCharacter = __index(Environment.Locked, "Character")
+		local LockedCharacter = Aiming.GetCharacter(Aiming.Locked)
 
 		if LockedCharacter then
 			local LockPartInCharacter = FindFirstChild(LockedCharacter, LockPart)
@@ -233,10 +228,10 @@ local GetClosestPlayer = function()
 			local Distance = (GetMouseLocation(UserInputService) - Vector).Magnitude
 
 			if Settings.WallCheck == 3 then
-                local BlacklistTable = GetDescendants(__index(LocalPlayer, "Character"))
-                 for _, Value in next, GetDescendants(LockedCharacter) do
-                     BlacklistTable[#BlacklistTable + 1] = Value
-                 end
+				local BlacklistTable = GetDescendants(Aiming.GetCharacter(LocalPlayer))
+				for _, Value in next, GetDescendants(LockedCharacter) do
+					BlacklistTable[#BlacklistTable + 1] = Value
+				end
 
 				if #GetPartsObscuringTarget(Camera, { PartPosition }, BlacklistTable) > 0 then
 					CancelLock()
@@ -254,22 +249,24 @@ local GetClosestPlayer = function()
 end
 
 local TriggerbotShoot = function()
-	local Settings = Environment.Triggerbot
+	local Settings = Aiming.Triggerbot
 	if not Settings.Enabled then
 		Settings.TargetChanged()
 		return
 	end
+	print("s")
 
 	local Mouse = __index(LocalPlayer, "GetMouse") and LocalPlayer:GetMouse()
 	if not Mouse then
 		Settings.TargetChanged()
 		return
 	end
+	print("s2")
 
 	local Camera = workspace.CurrentCamera
 	local Ray = Ray.new(Camera.CFrame.Position, (Mouse.Hit.Position - Camera.CFrame.Position).Unit * 1000)
 
-	local IgnoreList = { LocalPlayer.Character, Camera }
+	local IgnoreList = { Aiming.GetCharacter(LocalPlayer), Camera }
 	local RaycastParams = RaycastParams.new()
 	RaycastParams.FilterDescendantsInstances = IgnoreList
 	RaycastParams.FilterType = Enum.RaycastFilterType.Blacklist
@@ -279,6 +276,7 @@ local TriggerbotShoot = function()
 		Settings.TargetChanged()
 		return
 	end
+	print("s3")
 
 	local Target = RaycastResult.Instance
 	local Model = Target:FindFirstAncestorOfClass("Model")
@@ -286,38 +284,43 @@ local TriggerbotShoot = function()
 		Settings.TargetChanged()
 		return
 	end
+	print("s4")
 
-	local Bones = {}
-	local IsBone = false
+	--[[
+		local Bones = {}
 	for _, v in pairs(Model:GetChildren()) do
-		if v.Name == "Head" or v.Name:find("Torso") or v.Name:find("Leg") or v.Name:find("Arm") then
+		if Aiming.IsBone(v.Name) then
 			table.insert(Bones, v)
 		end
 	end
-	IsBone = table.find(Bones, Target) or Target:IsDescendantOf(table.find(Bones, Target))
-
+	
+	local IsBone = false
+	for _, bone in ipairs(Bones) do
+		if Target == bone or Target:IsDescendantOf(bone) then
+			IsBone = true
+			break
+		end
+	end
+	
 	if not IsBone then
 		Settings.TargetChanged()
 		return
 	end
 
-	local Player = Players:GetPlayerFromCharacter(Model)
+	]]
+
+	local Player = Aiming.GetPlayerFromCharacter(Model)
 	if not Player or Player == LocalPlayer then
 		Settings.TargetChanged()
 		return
 	end
 
-	local TeamCheckOption = Environment.DeveloperSettings.TeamCheckOption
-	if
-		Settings.TeamCheck
-		and __index(Player, TeamCheckOption)
-		and __index(Player, TeamCheckOption) == __index(LocalPlayer, TeamCheckOption)
-	then
+	if Settings.TeamCheck and Aiming.IsFriendly(Player) then
 		Settings.TargetChanged()
 		return
 	end
 
-	if Settings.AliveCheck and Environment.PlayerAlive then
+	if Settings.AliveCheck and Aiming.GetHealth(Player) < 0 then
 		Settings.TargetChanged()
 	end
 
@@ -332,20 +335,20 @@ local Load = function()
 	OriginalSensitivity = __index(UserInputService, "MouseDeltaSensitivity")
 
 	local AimbotSettings, TriggerbotSettings, FOVCircle, FOVCircleOutline, FOVSettings, Offset =
-		Environment.Aimbot,
-		Environment.Triggerbot,
-		Environment.FOVCircle,
-		Environment.FOVCircleOutline,
-		Environment.FOVSettings,
+		Aiming.Aimbot,
+		Aiming.Triggerbot,
+		Aiming.FOVCircle,
+		Aiming.FOVCircleOutline,
+		Aiming.FOVSettings,
 		nil
 
 	ServiceConnections.RenderSteppedConnection = Connect(
-		__index(RunService, Environment.DeveloperSettings.UpdateMode),
+		__index(RunService, "RenderStepped"),
 		function()
 			local OffsetToMoveDirection, LockPart = AimbotSettings.OffsetToMoveDirection, AimbotSettings.LockPart
 
 			if FOVSettings.Enabled and AimbotSettings.Enabled then
-				FOVCircle.Color = (Environment.Locked and FOVSettings.LockedColor) or FOVSettings.Color
+				FOVCircle.Color = (Aiming.Locked and FOVSettings.LockedColor) or FOVSettings.Color
 				FOVCircleOutline.Color = FOVSettings.OutlineColor
 
 				FOVCircle.Thickness = FOVSettings.Thickness
@@ -379,14 +382,14 @@ local Load = function()
 
 				Offset = OffsetToMoveDirection
 						and __index(
-							FindFirstChildOfClass(__index(Environment.Locked, "Character"), "Humanoid"),
+							FindFirstChildOfClass(Aiming.GetCharacter(Aiming.Locked), "Humanoid"),
 							"MoveDirection"
 						) * (mathclamp(AimbotSettings.OffsetIncrement, 1, 30) / 10)
 					or Vector3zero
 
-				if Environment.Locked then
+				if Aiming.Locked then
 					local LockedPosition_Vector3 =
-						__index(__index(Environment.Locked, "Character")[LockPart], "Position")
+						__index(Aiming.GetCharacter(Aiming.Locked)[LockPart], "Position")
 					local LockedPosition = WorldToViewportPoint(Camera, LockedPosition_Vector3 + Offset)
 
 					local moveX = (LockedPosition.X - GetMouseLocation(UserInputService).X)
@@ -394,14 +397,14 @@ local Load = function()
 					local moveY = (LockedPosition.Y - GetMouseLocation(UserInputService).Y)
 						/ AimbotSettings.Sensitivity2
 
-					if Environment.Aimbot.LockMode == 2 then
+					if Aiming.Aimbot.LockMode == 2 then
 						mousemoverel(moveX, moveY)
 					else
 						if AimbotSettings.Sensitivity > 0 then
 							Animation = TweenService:Create(
 								Camera,
 								TweenInfonew(
-									Environment.Aimbot.Sensitivity,
+									Aiming.Aimbot.Sensitivity,
 									Enum.EasingStyle.Sine,
 									Enum.EasingDirection.Out
 								),
@@ -422,7 +425,7 @@ local Load = function()
 	)
 end
 
-function Environment.Exit(self)
+function Aiming.Exit(self)
 	assert(self, 'Aimbot.Exit: Missing parameter #1 "self" <table>.')
 
 	for Index, _ in next, ServiceConnections do
@@ -433,13 +436,12 @@ function Environment.Exit(self)
 	ConvertVector = nil
 	CancelLock = nil
 	GetClosestPlayer = nil
-	FixUsername = nil
 
 	self.FOVCircle:Remove()
 	self.FOVCircleOutline:Remove()
 end
 
-function Environment.Restart()
+function Aiming.Restart()
 	for Index, _ in next, ServiceConnections do
 		Disconnect(ServiceConnections[Index])
 	end
@@ -447,34 +449,8 @@ function Environment.Restart()
 	Load()
 end
 
-function Environment.Blacklist(self, Username)
-	assert(self, 'Aimbot.Blacklist: Missing parameter #1 "self" <table>.')
-	assert(Username, 'Aimbot.Blacklist: Missing parameter #2 "Username" <string>.')
+Aiming.Load = Load
 
-	Username = FixUsername(Username)
+setmetatable(Aiming, { __call = Load })
 
-	assert(self, "Aimbot.Blacklist: User " .. Username .. " couldn't be found.")
-
-	self.Blacklisted[#self.Blacklisted + 1] = Username
-end
-
-function Environment.Whitelist(self, Username)
-	assert(self, 'Aimbot.Whitelist: Missing parameter #1 "self" <table>.')
-	assert(Username, 'Aimbot.Whitelist: Missing parameter #2 "Username" <string>.')
-
-	Username = FixUsername(Username)
-
-	assert(Username, "Aimbot.Whitelist: User " .. Username .. " couldn't be found.")
-
-	local Index = tablefind(self.Blacklisted, Username)
-
-	assert(Index, "Aimbot.Whitelist: User " .. Username .. " is not blacklisted.")
-
-	tableremove(self.Blacklisted, Index)
-end
-
-Environment.Load = Load
-
-setmetatable(Environment, { __call = Load })
-
-return Environment
+return Aiming
