@@ -12,17 +12,19 @@ local CoreGui = GetService("CoreGui")
 local Workspace = GetService("Workspace")
 
 --// Initialize
-debug.traceback = function()
-	return ""
-end
-getgenv().print = function(...)
-	return
-end
-getgenv().warn = function(...)
-	return
-end
-getgenv().error = function(...)
-	return
+if RIOT.BUILD == "Release" then
+	debug.traceback = function()
+		return ""
+	end
+	getgenv().print = function(...)
+		return
+	end
+	getgenv().warn = function(...)
+		return
+	end
+	getgenv().error = function(...)
+		return
+	end
 end
 
 local Files = {
