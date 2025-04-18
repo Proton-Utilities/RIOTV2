@@ -254,14 +254,12 @@ local TriggerbotShoot = function()
 		Settings.TargetChanged()
 		return
 	end
-	print("s")
 
 	local Mouse = __index(LocalPlayer, "GetMouse") and LocalPlayer:GetMouse()
 	if not Mouse then
 		Settings.TargetChanged()
 		return
 	end
-	print("s2")
 
 	local Camera = workspace.CurrentCamera
 	local Ray = Ray.new(Camera.CFrame.Position, (Mouse.Hit.Position - Camera.CFrame.Position).Unit * 1000)
@@ -276,7 +274,6 @@ local TriggerbotShoot = function()
 		Settings.TargetChanged()
 		return
 	end
-	print("s3")
 
 	local Target = RaycastResult.Instance
 	local Model = Target:FindFirstAncestorOfClass("Model")
@@ -284,7 +281,6 @@ local TriggerbotShoot = function()
 		Settings.TargetChanged()
 		return
 	end
-	print("s4")
 
 	--[[
 		local Bones = {}
