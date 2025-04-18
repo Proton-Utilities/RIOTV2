@@ -13,7 +13,7 @@
 --]]
 
 
-local Spec_Id = {
+local ROA_Id = {
 	UniverseId = {
 		113491250,
 		2132866904,
@@ -24,9 +24,8 @@ local Push = function(File)
 	local Actor = getactors and getactors()[1]
 
 	if
-		Actor
-		and (Spec_Id.PlaceId and table.find(Spec_Id.PlaceId, game.PlaceId))
-		or (Spec_Id.UniverseId and table.find(Spec_Id.UniverseId, game.GameId))		
+		Actor and (ROA_Id.PlaceId and table.find(ROA_Id.PlaceId, game.PlaceId))
+		or (ROA_Id.UniverseId and table.find(ROA_Id.UniverseId, game.GameId))
 	then
 		return run_on_actor(Actor, File)
 	else
@@ -40,57 +39,44 @@ Push(
 			BUILD = 'Release',
 			VERSION = 'v0.0.0' or 'v0.0.0'
 		}
-		
+
 		local a a={cache={},load=function(b)if not a.cache[b]then a.cache[b]={c=a[b]()}
-		end return a.cache[b].c end}do function a.a()local b={}b.ProtectGui=function(c)
-		local d=cloneref and cloneref(game)or game local e,f=pcall(function()c.Parent=
-		gethui and gethui()or cloneref and cloneref(d:GetService'CoreGui')or d:
-		GetService'CoreGui'end)return e and c or error('Failed to protect GUI: '..
-		tostring(f))end b.ProtectGui=newcclosure and newcclosure(b.ProtectGui)or b.
-		ProtectGui b.SecureService=function(c)local d=cloneref and cloneref(game)or game
-		local e,f=pcall(function()return cloneref and cloneref(d:GetService(c))or d:
-		GetService(c)end)return e and f or error('Unable to retrieve service: '..c)end b
-		.SecureService=newcclosure and newcclosure(b.SecureService)or b.SecureService
-		function b.GetPlayer()local c,d=pcall(function()return(b.SecureService'Players')
-		end)return c and(d).LocalPlayer or nil end function b.GetCharacter(c)local d,e=
-		pcall(function()return c and c.Character or nil end)return d and e or nil end
-		function b.GetHumanoid(c)local d,e=pcall(function()local d=b.GetCharacter(c)
-		return d and d:FindFirstChildOfClass'Humanoid'or nil end)return d and e or nil
-		end return b end function a.b()local b,c={Components={},Assets={DefaultImage=
-		'rbxassetid://134552883719543',ShieldCheck='rbxassetid://72905476505849',Shield=
-		'rbxassetid://125424227377940',Archive='rbxassetid://86530498402003',Folder=
-		'rbxassetid://134156031333431',Bolt='rbxassetid://99791134265440',Globe=
-		'rbxassetid://132856339478739',Computer='rbxassetid://136037119434947',Settings=
-		'rbxassetid://71732494649961'},Colors={SystemDarkRed=Color3.fromRGB(104,29,29)}}
-		,{folder='Riot',unloaded=false,localPlayer=nil,camera=nil,gui=nil,overlay=nil,
-		dropdownFrames={},notifSystem={totalOffset=0,notifications=nil,uIpadding=nil,
-		notifInstances={}},tabSystem={tabInstances={},tabIndex=0,currentTab=nil,
-		currentContent=nil},KeyMap_Spec={[Enum.UserInputType.MouseButton1]='VK_LBUTTON',
-		[Enum.UserInputType.MouseButton2]='VK_RBUTTON',[Enum.UserInputType.MouseButton3]
-		='VK_MBUTTON',[Enum.KeyCode.Return]='VK_RETURN',[Enum.KeyCode.CapsLock]=
-		'VK_CAPITAL',[Enum.KeyCode.PageUp]='VK_PRIOR',[Enum.KeyCode.PageDown]='VK_NEXT',
-		[Enum.KeyCode.Escape]='VK_ESCAPE',[Enum.KeyCode.Backspace]='VK_BACK',[Enum.
-		KeyCode.Space]='VK_SPACE'},GetService=function(b)return cloneref and cloneref(
-		game:GetService(b))or game:GetService(b)end}local d={_players=c.GetService
-		'Players',_runService=c.GetService'RunService',_userInputService=c.GetService
-		'UserInputService',_tweenService=c.GetService'TweenService',_workspace=c.
-		GetService'Workspace'}local e={tween=function(e,f,g)return d._tweenService:
-		Create(e,f,g)end,callback=function(e,...)local f={...}task.spawn(function()e(
-		table.unpack(f))end)end,parseKeyCode=function(e)if c.KeyMap_Spec[e]then return c
-		.KeyMap_Spec[e]end if e.Name then return'VK_'..e.Name:upper()end return
-		'VK_UNKNOWN'end,secureGui=function(e)local f=Instance.new'ScreenGui'for g,h in
-		pairs(e)do if g~='Parent'then pcall(function()f[g]=h end)end end f.Parent=(d.
-		_runService:IsStudio()and c.localPlayer:FindFirstChild'PlayerGui'or gethui and
-		gethui()or c.GetService'CoreGui')return f end,mouseInFrame=function(e)local f,g,
-		h=d._userInputService:GetMouseLocation(),e.AbsolutePosition,e.AbsoluteSize
-		return f.X>=g.X and f.X<=g.X+h.X and f.Y>=g.Y and f.Y<=g.Y+h.Y end,makeDraggable
-		=function(e,f)assert(e,'Expected a base frame for makeDraggable')f=f or e local
-		g,h,i,j=false local k=function(k)local l=k.Position-h e.Position=UDim2.new(i.X.
-		Scale,i.X.Offset+l.X,i.Y.Scale,i.Y.Offset+l.Y)end f.InputBegan:Connect(function(
-		l)if l.UserInputType==Enum.UserInputType.MouseButton1 or l.UserInputType==Enum.
-		UserInputType.Touch then g=true h=l.Position i=e.Position l.Changed:Connect(
-		function()if l.UserInputState==Enum.UserInputState.End then g=false end end)end
-		end)f.InputChanged:Connect(function(l)if l.UserInputType==Enum.UserInputType.
+		end return a.cache[b].c end}do function a.a()local b,c={Components={},Assets={
+		DefaultImage='rbxassetid://134552883719543',ShieldCheck=
+		'rbxassetid://72905476505849',Shield='rbxassetid://125424227377940',Archive=
+		'rbxassetid://86530498402003',Folder='rbxassetid://134156031333431',Bolt=
+		'rbxassetid://99791134265440',Globe='rbxassetid://132856339478739',Computer=
+		'rbxassetid://136037119434947',Settings='rbxassetid://71732494649961'},Colors={
+		SystemDarkRed=Color3.fromRGB(104,29,29)}},{folder='Riot',unloaded=false,
+		localPlayer=nil,camera=nil,gui=nil,overlay=nil,dropdownFrames={},notifSystem={
+		totalOffset=0,notifications=nil,uIpadding=nil,notifInstances={}},tabSystem={
+		tabInstances={},tabIndex=0,currentTab=nil,currentContent=nil},KeyMap_Spec={[Enum
+		.UserInputType.MouseButton1]='VK_LBUTTON',[Enum.UserInputType.MouseButton2]=
+		'VK_RBUTTON',[Enum.UserInputType.MouseButton3]='VK_MBUTTON',[Enum.KeyCode.Return
+		]='VK_RETURN',[Enum.KeyCode.CapsLock]='VK_CAPITAL',[Enum.KeyCode.PageUp]=
+		'VK_PRIOR',[Enum.KeyCode.PageDown]='VK_NEXT',[Enum.KeyCode.Escape]='VK_ESCAPE',[
+		Enum.KeyCode.Backspace]='VK_BACK',[Enum.KeyCode.Space]='VK_SPACE'},GetService=
+		function(b)return cloneref and cloneref(game:GetService(b))or game:GetService(b)
+		end}local d={_players=c.GetService'Players',_runService=c.GetService'RunService'
+		,_userInputService=c.GetService'UserInputService',_tweenService=c.GetService
+		'TweenService',_workspace=c.GetService'Workspace'}local e={tween=function(e,f,g)
+		return d._tweenService:Create(e,f,g)end,callback=function(e,...)local f={...}
+		task.spawn(function()e(table.unpack(f))end)end,parseKeyCode=function(e)if c.
+		KeyMap_Spec[e]then return c.KeyMap_Spec[e]end if e.Name then return'VK_'..e.Name
+		:upper()end return'VK_UNKNOWN'end,secureGui=function(e)local f=Instance.new
+		'ScreenGui'for g,h in pairs(e)do if g~='Parent'then pcall(function()f[g]=h end)
+		end end f.Parent=(d._runService:IsStudio()and c.localPlayer:FindFirstChild
+		'PlayerGui'or gethui and gethui()or c.GetService'CoreGui')return f end,
+		mouseInFrame=function(e)local f,g,h=d._userInputService:GetMouseLocation(),e.
+		AbsolutePosition,e.AbsoluteSize return f.X>=g.X and f.X<=g.X+h.X and f.Y>=g.Y
+		and f.Y<=g.Y+h.Y end,makeDraggable=function(e,f)assert(e,
+		'Expected a base frame for makeDraggable')f=f or e local g,h,i,j=false local k=
+		function(k)local l=k.Position-h e.Position=UDim2.new(i.X.Scale,i.X.Offset+l.X,i.
+		Y.Scale,i.Y.Offset+l.Y)end f.InputBegan:Connect(function(l)if l.UserInputType==
+		Enum.UserInputType.MouseButton1 or l.UserInputType==Enum.UserInputType.Touch
+		then g=true h=l.Position i=e.Position l.Changed:Connect(function()if l.
+		UserInputState==Enum.UserInputState.End then g=false end end)end end)f.
+		InputChanged:Connect(function(l)if l.UserInputType==Enum.UserInputType.
 		MouseMovement or l.UserInputType==Enum.UserInputType.Touch then j=l end end)d.
 		_userInputService.InputChanged:Connect(function(l)if g and l==j and e.Visible
 		then k(l)end end)end,subParser={None=function(e)return e end,Numeric=function(e)
@@ -1183,42 +1169,56 @@ Push(
 		notifSystem.notifInstances)do if ae~=ad then e.tween(af,TweenInfo.new(0.25,Enum.
 		EasingStyle.Exponential),{Position=af.Position-UDim2.new(0,0,0,c.notifSystem.
 		notifInstances[ad].AbsoluteSize.Y+10)}):Play()end end end end c.notifSystem.
-		notifications.ChildAdded:Connect(ac)return b end function a.c()local aa=a.load
-		'a'.SecureService local ab,ac,ad,ae,af=aa'RunService',aa'Players',aa'Workspace',
-		aa'UserInputService',aa'CoreGui'local ag,ah=ac.LocalPlayer,ad.CurrentCamera
-		local ai,aj,ak,al,am,an,ao,ap,aq,ar,as,at,au,av,aw,ax,ay,az,aA,aB,aC,aD,aE,aF,aG
-		,aH,aI,aJ=ah.ViewportSize,math.floor,math.round,math.sin,math.cos,table.clear,
-		table.unpack,table.find,table.create,CFrame.fromMatrix,ah.WorldToViewportPoint,
-		ad.IsA,ad.GetPivot,ad.FindFirstChild,ad.FindFirstChildOfClass,ad.GetChildren,
-		CFrame.identity.PointToObjectSpace,Color3.new().Lerp,Vector2.zero.Min,Vector2.
-		zero.Max,Vector2.zero.Lerp,Vector3.zero.Min,Vector3.zero.Max,Vector2.new(7,0),
-		Vector2.new(0,1),Vector2.new(0,2),Vector2.new(5,0),{Vector3.new(-1,-1,-1),
-		Vector3.new(-1,1,-1),Vector3.new(-1,1,1),Vector3.new(-1,-1,1),Vector3.new(1,-1,-
-		1),Vector3.new(1,1,-1),Vector3.new(1,1,1),Vector3.new(1,-1,1)}local aK,aL=
-		function(aK)local aL,aM for aN=1,#aK do local aO=aK[aN]local aP,b=aO.CFrame,aO.
-		Size aL=aD(aL or aP.Position,(aP-b*0.5).Position)aM=aE(aM or aP.Position,(aP+b*
-		0.5).Position)end local aN=(aL+aM)*0.5 local aO=Vector3.new(aN.X,aN.Y,aM.Z)
-		return CFrame.new(aN,aO),aM-aL end,function(aK)local aL,aM=as(ah,aK)return
-		Vector2.new(aL.X,aL.Y),aM,aL.Z end local aM,aN,aO,aP=function(aM,aN)local aO=aq(
-		#aJ)for aP=1,#aJ do aO[aP]=aL((aM+aN*0.5*aJ[aP]).Position)end local aP,b=aA(ai,
-		ao(aO)),aB(Vector2.zero,ao(aO))return{Corners=aO,TopLeft=Vector2.new(aj(aP.X),
-		aj(aP.Y)),TopRight=Vector2.new(aj(b.X),aj(aP.Y)),BottomLeft=Vector2.new(aj(aP.X)
-		,aj(b.Y)),BottomRight=Vector2.new(aj(b.X),aj(b.Y))}end,function(aM,aN)local aO,
-		aP,b,c=aM.X,aM.Y,am(aN),al(aN)return Vector2.new(aO*b-aP*c,aO*c+aP*b)end,
-		function(aM,aN,aO)if aN=='Team Color'or(aM.Interface.Shared.UseTeamColor and not
-		aO)then return aM.Interface.GetTeamColor(aM.Player)or Color3.new(1,1,1)end
-		return aN end,{}aP.__index=aP function aP.New(b,c)local d=setmetatable({},aP)d.
-		Player=assert(b,'Missing argument #1 (Player expected)')d.Interface=assert(c,
-		'Missing argument #2 (table expected)')d:Construct()return d end function aP:
-		_Create(b,c)local d=Drawing.new(b)for e,f in next,c do pcall(function()d[e]=f
-		end)end self.Bin[#self.Bin+1]=d return d end function aP:Construct()self.
-		CharCache={}self.ChildCount=0 self.Bin={}self.Drawings={Box3d={{self:_Create(
+		notifications.ChildAdded:Connect(ac)return b end function a.b()local aa={}aa.
+		ProtectGui=function(ab)local ac=cloneref and cloneref(game)or game local ad,ae=
+		pcall(function()ab.Parent=gethui and gethui()or cloneref and cloneref(ac:
+		GetService'CoreGui')or ac:GetService'CoreGui'end)return ad and ab or error(
+		'Failed to protect GUI: '..tostring(ae))end aa.ProtectGui=newcclosure and
+		newcclosure(aa.ProtectGui)or aa.ProtectGui aa.SecureService=function(ab)local ac
+		=cloneref and cloneref(game)or game local ad,ae=pcall(function()return cloneref
+		and cloneref(ac:GetService(ab))or ac:GetService(ab)end)return ad and ae or
+		error('Unable to retrieve service: '..ab)end aa.SecureService=newcclosure and
+		newcclosure(aa.SecureService)or aa.SecureService function aa.GetPlayer()local ab
+		,ac=pcall(function()return(aa.SecureService'Players')end)return ab and(ac).
+		LocalPlayer or nil end function aa.GetCharacter(ab)local ac,ad=pcall(function()
+		return ab and ab.Character or nil end)return ac and ad or nil end function aa.
+		GetHumanoid(ab)local ac,ad=pcall(function()local ac=aa.GetCharacter(ab)return ac
+		and ac:FindFirstChildOfClass'Humanoid'or nil end)return ac and ad or nil end
+		return aa end function a.c()local aa=a.load'b'.SecureService local ab,ac,ad,ae,
+		af=aa'RunService',aa'Players',aa'Workspace',aa'UserInputService',aa'CoreGui'
+		local ag,ah=ac.LocalPlayer,ad.CurrentCamera local ai,aj,ak,al,am,an,ao,ap,aq,ar,
+		as,at,au,av,aw,ax,ay,az,aA,aB,aC,aD,aE,aF,aG,aH,aI,aJ=ah.ViewportSize,math.floor
+		,math.round,math.sin,math.cos,table.clear,table.unpack,table.find,table.create,
+		CFrame.fromMatrix,ah.WorldToViewportPoint,ad.IsA,ad.GetPivot,ad.FindFirstChild,
+		ad.FindFirstChildOfClass,ad.GetChildren,CFrame.identity.PointToObjectSpace,
+		Color3.new().Lerp,Vector2.zero.Min,Vector2.zero.Max,Vector2.zero.Lerp,Vector3.
+		zero.Min,Vector3.zero.Max,Vector2.new(7,0),Vector2.new(0,1),Vector2.new(0,2),
+		Vector2.new(5,0),{Vector3.new(-1,-1,-1),Vector3.new(-1,1,-1),Vector3.new(-1,1,1)
+		,Vector3.new(-1,-1,1),Vector3.new(1,-1,-1),Vector3.new(1,1,-1),Vector3.new(1,1,1
+		),Vector3.new(1,-1,1)}local aK,aL=function(aK)local aL,aM for aN=1,#aK do local
+		aO=aK[aN]local aP,b=aO.CFrame,aO.Size aL=aD(aL or aP.Position,(aP-b*0.5).
+		Position)aM=aE(aM or aP.Position,(aP+b*0.5).Position)end local aN=(aL+aM)*0.5
+		local aO=Vector3.new(aN.X,aN.Y,aM.Z)return CFrame.new(aN,aO),aM-aL end,function(
+		aK)local aL,aM=as(ah,aK)return Vector2.new(aL.X,aL.Y),aM,aL.Z end local aM,aN,aO
+		,aP=function(aM,aN)local aO=aq(#aJ)for aP=1,#aJ do aO[aP]=aL((aM+aN*0.5*aJ[aP]).
+		Position)end local aP,b=aA(ai,ao(aO)),aB(Vector2.zero,ao(aO))return{Corners=aO,
+		TopLeft=Vector2.new(aj(aP.X),aj(aP.Y)),TopRight=Vector2.new(aj(b.X),aj(aP.Y)),
+		BottomLeft=Vector2.new(aj(aP.X),aj(b.Y)),BottomRight=Vector2.new(aj(b.X),aj(b.Y)
+		)}end,function(aM,aN)local aO,aP,b,c=aM.X,aM.Y,am(aN),al(aN)return Vector2.new(
+		aO*b-aP*c,aO*c+aP*b)end,function(aM,aN,aO)if aN=='Team Color'or(aM.Interface.
+		Shared.UseTeamColor and not aO)then return aM.Interface.GetTeamColor(aM.Player)
+		or Color3.new(1,1,1)end return aN end,{}aP.__index=aP function aP.New(b,c)local
+		d=setmetatable({},aP)d.Player=assert(b,'Missing argument #1 (Player expected)')d
+		.Interface=assert(c,'Missing argument #2 (table expected)')d:Construct()return d
+		end function aP:_Create(b,c)local d=Drawing.new(b)for e,f in next,c do pcall(
+		function()d[e]=f end)end self.Bin[#self.Bin+1]=d return d end function aP:
+		Construct()self.CharCache={}self.ChildCount=0 self.Bin={}self.Drawings={Box3d={{
+		self:_Create('Line',{Thickness=1,Visible=false}),self:_Create('Line',{Thickness=
+		1,Visible=false}),self:_Create('Line',{Thickness=1,Visible=false})},{self:
+		_Create('Line',{Thickness=1,Visible=false}),self:_Create('Line',{Thickness=1,
+		Visible=false}),self:_Create('Line',{Thickness=1,Visible=false})},{self:_Create(
 		'Line',{Thickness=1,Visible=false}),self:_Create('Line',{Thickness=1,Visible=
 		false}),self:_Create('Line',{Thickness=1,Visible=false})},{self:_Create('Line',{
-		Thickness=1,Visible=false}),self:_Create('Line',{Thickness=1,Visible=false}),
-		self:_Create('Line',{Thickness=1,Visible=false})},{self:_Create('Line',{
-		Thickness=1,Visible=false}),self:_Create('Line',{Thickness=1,Visible=false}),
-		self:_Create('Line',{Thickness=1,Visible=false})},{self:_Create('Line',{
 		Thickness=1,Visible=false}),self:_Create('Line',{Thickness=1,Visible=false}),
 		self:_Create('Line',{Thickness=1,Visible=false})}},Visible={TracerOutline=self:
 		_Create('Line',{Thickness=2,Visible=false}),Tracer=self:_Create('Line',{
@@ -1448,39 +1448,39 @@ Push(
 		aA(aq)-c).Magnitude if aM.WallCheck==3 then local f=ax(aG.GetCharacter(at))for g
 		,h in next,ax(aO)do f[#f+1]=h end if#az(au,{b},f)>0 then aL()return end end if e
 		>aC or not d then aL()end else aL()end end end,function()local aM=aG.Triggerbot
-		if not aM.Enabled then aM.TargetChanged()return end print's'local aN=am(at,
-		'GetMouse')and at:GetMouse()if not aN then aM.TargetChanged()return end print
-		's2'local aO=ab.CurrentCamera local aP,b,c=Ray.new(aO.CFrame.Position,(aN.Hit.
-		Position-aO.CFrame.Position).Unit*1000),{aG.GetCharacter(at),aO},RaycastParams.
-		new()c.FilterDescendantsInstances=b c.FilterType=Enum.RaycastFilterType.
-		Blacklist local d=ab:Raycast(aP.Origin,aP.Direction,c)if not d then aM.
-		TargetChanged()return end print's3'local e=d.Instance local f=e:
-		FindFirstAncestorOfClass'Model'if not f then aM.TargetChanged()return end print
-		's4'local g=aG.GetPlayerFromCharacter(f)if not g or g==at then aM.TargetChanged(
-		)return end if aM.TeamCheck and aG.IsFriendly(g)then aM.TargetChanged()return
-		end if aM.AliveCheck and aG.GetHealth(g)<0 then aM.TargetChanged()end aM.
-		TargetChanged(g)task.wait(aM.Delay)aM.Trigger()end local aO=function()aI=am(aq,
-		'MouseDeltaSensitivity')local aO,aP,b,c,d,e=aG.Aimbot,aG.Triggerbot,aG.FOVCircle
-		,aG.FOVCircleOutline,(aG.FOVSettings)aE.RenderSteppedConnection=aF(am(ap,
-		'RenderStepped'),function()local f,g=aO.OffsetToMoveDirection,aO.LockPart if d.
-		Enabled and aO.Enabled then b.Color=(aG.Locked and d.LockedColor)or d.Color c.
-		Color=d.OutlineColor b.Thickness=d.Thickness c.Thickness=d.Thickness+1 b.
-		Position=aA(aq)c.Position=aA(aq)b.NumSides=d.NumSides c.NumSides=d.NumSides b.
-		Radius=d.Radius c.Radius=d.Radius b.Transparency=1-d.Transparency c.Transparency
-		=1-d.Transparency b.Visible=d.Visible c.Visible=d.Visible else b.Visible=false c
-		.Visible=false end if aP.Enabled then aN()end if aD and aO.Enabled then aM()e=f
-		and am(aw(aG.GetCharacter(aG.Locked),'Humanoid'),'MoveDirection')*(ak(aO.
-		OffsetIncrement,1,30)/10)or ad if aG.Locked then local h=am(aG.GetCharacter(aG.
-		Locked)[g],'Position')local i=ay(au,h+e)local j,m=(i.X-aA(aq).X)/aO.Sensitivity2
-		,(i.Y-aA(aq).Y)/aO.Sensitivity2 if aG.Aimbot.LockMode==2 then ai(j,m)else if aO.
-		Sensitivity>0 then aH=ar:Create(au,ah(aG.Aimbot.Sensitivity,Enum.EasingStyle.
-		Sine,Enum.EasingDirection.Out),{CFrame=ae(au.CFrame.Position,h+e)})aH:Play()else
-		an(au,'CFrame',ae(au.CFrame.Position,h+e))end end end end end)end function aG.
-		Exit(aP)assert(aP,'Aimbot.Exit: Missing parameter #1 "self" <table>.')for b,c in
-		next,aE do aJ(aE[b])end aO=nil aK=nil aL=nil aM=nil aP.FOVCircle:Remove()aP.
+		if not aM.Enabled then aM.TargetChanged()return end local aN=am(at,'GetMouse')
+		and at:GetMouse()if not aN then aM.TargetChanged()return end local aO=ab.
+		CurrentCamera local aP,b,c=Ray.new(aO.CFrame.Position,(aN.Hit.Position-aO.CFrame
+		.Position).Unit*1000),{aG.GetCharacter(at),aO},RaycastParams.new()c.
+		FilterDescendantsInstances=b c.FilterType=Enum.RaycastFilterType.Blacklist local
+		d=ab:Raycast(aP.Origin,aP.Direction,c)if not d then aM.TargetChanged()return end
+		local e=d.Instance local f=e:FindFirstAncestorOfClass'Model'if not f then aM.
+		TargetChanged()return end local g=aG.GetPlayerFromCharacter(f)if not g or g==at
+		then aM.TargetChanged()return end if aM.TeamCheck and aG.IsFriendly(g)then aM.
+		TargetChanged()return end if aM.AliveCheck and aG.GetHealth(g)<0 then aM.
+		TargetChanged()end aM.TargetChanged(g)task.wait(aM.Delay)aM.Trigger()end local
+		aO=function()aI=am(aq,'MouseDeltaSensitivity')local aO,aP,b,c,d,e=aG.Aimbot,aG.
+		Triggerbot,aG.FOVCircle,aG.FOVCircleOutline,(aG.FOVSettings)aE.
+		RenderSteppedConnection=aF(am(ap,'RenderStepped'),function()local f,g=aO.
+		OffsetToMoveDirection,aO.LockPart if d.Enabled and aO.Enabled then b.Color=(aG.
+		Locked and d.LockedColor)or d.Color c.Color=d.OutlineColor b.Thickness=d.
+		Thickness c.Thickness=d.Thickness+1 b.Position=aA(aq)c.Position=aA(aq)b.NumSides
+		=d.NumSides c.NumSides=d.NumSides b.Radius=d.Radius c.Radius=d.Radius b.
+		Transparency=1-d.Transparency c.Transparency=1-d.Transparency b.Visible=d.
+		Visible c.Visible=d.Visible else b.Visible=false c.Visible=false end if aP.
+		Enabled then aN()end if aD and aO.Enabled then aM()e=f and am(aw(aG.
+		GetCharacter(aG.Locked),'Humanoid'),'MoveDirection')*(ak(aO.OffsetIncrement,1,30
+		)/10)or ad if aG.Locked then local h=am(aG.GetCharacter(aG.Locked)[g],'Position'
+		)local i=ay(au,h+e)local j,m=(i.X-aA(aq).X)/aO.Sensitivity2,(i.Y-aA(aq).Y)/aO.
+		Sensitivity2 if aG.Aimbot.LockMode==2 then ai(j,m)else if aO.Sensitivity>0 then
+		aH=ar:Create(au,ah(aG.Aimbot.Sensitivity,Enum.EasingStyle.Sine,Enum.
+		EasingDirection.Out),{CFrame=ae(au.CFrame.Position,h+e)})aH:Play()else an(au,
+		'CFrame',ae(au.CFrame.Position,h+e))end end end end end)end function aG.Exit(aP)
+		assert(aP,'Aimbot.Exit: Missing parameter #1 "self" <table>.')for b,c in next,aE
+		do aJ(aE[b])end aO=nil aK=nil aL=nil aM=nil aP.FOVCircle:Remove()aP.
 		FOVCircleOutline:Remove()end function aG.Restart()for aP,b in next,aE do aJ(aE[
 		aP])end aO()end aG.Load=aO setmetatable(aG,{__call=aO})return aG end function a.
-		e()return function(aa)local ab,ac,ad=a.load'b',a.load'c',a.load'd'local ae,af,ag
+		e()return function(aa)local ab,ac,ad=a.load'a',a.load'c',a.load'd'local ae,af,ag
 		,ah=ab.Assets,ab.Colors,ac.Shared,ac.Team local ai,aj,ak,al,am,an=ah.Enemy,ah.
 		Friendly,ad.Aimbot,ad.Triggerbot,ad.FOVSettings,ab:Window{Title=aa.Name,Keybind=
 		Enum.KeyCode.RightControl}local ao={Legit=an:Tab{Name='Legit',Image=ae.
@@ -1735,7 +1735,7 @@ Push(
 		'f'),'n')~='RotCamera'then if math.random(1,100)<=aw.SilentAim.HitChance and aB
 		then return CFrame.new(an.CFrame.Position,aB.Position)end end return aC(aD,aE)
 		end))return aw end function a.h()return function(aa)local ab,ac,ad,ae,af,ag=a.
-		load'f',a.load'a',a.load'b',a.load'c',a.load'd',a.load'g'local ah,ai,aj,ak,al=ad
+		load'f',a.load'b',a.load'a',a.load'c',a.load'd',a.load'g'local ah,ai,aj,ak,al=ad
 		.Components,ad.Assets,ad.Colors,ae.Shared,ae.Team local am,an,ao,ap,aq,ar=al.
 		Enemy,al.Friendly,af.Aimbot,af.Triggerbot,af.FOVSettings,ag.SilentAim local as,
 		at,au,av=ar.FOVSettings,ar.SnaplineSettings,ac.GetPlayer(),ac.SecureService
@@ -2009,7 +2009,7 @@ Push(
 		Value,aF.Value end end do af.Load()af.GetHealth=function(aC)if not aC then
 		return 0 end local aD=aC:FindFirstChild'NRPBS'if not aD then return 0 end local
 		aE=aD:FindFirstChild'Health'if not aE then return 0 end return aE.Value end end
-		end end function a.i()return function(aa)local ab,ac,ad,ae=a.load'a',a.load'b',a
+		end end function a.i()return function(aa)local ab,ac,ad,ae=a.load'b',a.load'a',a
 		.load'c',a.load'd'local af,ag,ah,ai=ac.Assets,ac.Colors,ad.Shared,ad.Team local
 		aj,ak,al,am,an,ao,ap=ai.Enemy,ai.Friendly,ae.Aimbot,ae.Triggerbot,ae.FOVSettings
 		,ab.GetPlayer(),getrenv()._G local aq,ar,as,at,au=ap.globals,ap.enums,ap.utils,{
@@ -2195,7 +2195,7 @@ Push(
 		'TPVBodyVanillaHead'or aC:find'Torso'or aC:find'Leg'or aC:find'Arm'end end do ae
 		.Load()ae.PlayerAlive=function(aC)if aC then return ad.GetHealth(aC)[1]<0 end
 		return false end end end end function a.j()return function(aa)local ab,ac,ad,ae=
-		a.load'a',a.load'b',a.load'c',a.load'd'local af,ag,ah,ai=ac.Assets,ac.Colors,ad.
+		a.load'b',a.load'a',a.load'c',a.load'd'local af,ag,ah,ai=ac.Assets,ac.Colors,ad.
 		Shared,ad.Team local aj,ak,al,am,an,ao,ap=ai.Enemy,ai.Friendly,ae.Aimbot,ae.
 		Triggerbot,ae.FOVSettings,ab.GetPlayer(),ac:Window{Title=aa.Name,Keybind=Enum.
 		KeyCode.RightControl}local aq={Combat=ap:Tab{Name='Combat',Image=af.Shield},
@@ -2366,18 +2366,17 @@ Push(
 		Continue()end aq.Combat:Select()do ad.IsFriendly=function(ar)return ar and ar.
 		Team and ar.Team==ao.Team and ar.Team.Name~='NoTribe'end ad.Load()end do ae.
 		IsFriendly=ad.IsFriendly ae.Load()end ac:Notification{Title=`RIOT V2 - {aa.Name} | getriot.cc`
-		,Description=`RIOT V2 Loaded!`,Lifetime=5}end end end local aa=a.load'a'local ab
-		=aa.SecureService do ab'CoreGui'ab'Workspace'end if RIOT.BUILD=='Release'then
-		debug.traceback=function()return''end getgenv().print=function(...)return end
-		getgenv().warn=function(...)return end getgenv().error=function(...)return end
-		end local ac={Universal={Name='Universal',Load=a.load'e'},Arsenal={Name=
-		'Arsenal',Load=a.load'h',UniverseId=111958650},Frontlines={Name='Frontlines',
-		Load=a.load'i',UniverseId=2132866904},['Booga Booga Reborn']={Name=
-		'Booga Booga [RB]',Load=a.load'j',UniverseId=4154513353}}print(`Loading - RIOT {
+		,Description=`RIOT V2 Loaded!`,Lifetime=5}end end end if RIOT.BUILD=='Release'
+		and not RIOT.VERSION:find'-'then debug.traceback=function()return''end getgenv()
+		.print=function(...)return end getgenv().warn=function(...)return end getgenv().
+		error=function(...)return end end local aa={Universal={Name='Universal',Load=a.
+		load'e'},Arsenal={Name='Arsenal',Load=a.load'h',UniverseId=111958650},Frontlines
+		={Name='Frontlines',Load=a.load'i',UniverseId=2132866904},['Booga Booga Reborn']
+		={Name='Booga Booga [RB]',Load=a.load'j',UniverseId=4154513353}}print(`Loading - RIOT {
 		RIOT.VERSION} | {RIOT.BUILD}`)if getgenv().__RIOT_LOADED then return end local
-		ad=function(ad)print(`RIOT - Found - {ad.Name}`)getgenv().__RIOT_LOADED=true ad:
-		Load()end for ae,af in pairs(ac)do if af.Places then for ag,ah in ipairs(af.
-		Places)do if ah==game.PlaceId then ad(af)return end end end if af.UniverseId and
-		af.UniverseId==game.GameId then ad(af)return end end ad(ac.Universal)
+		ab=function(ab)print(`RIOT - Found - {ab.Name}`)getgenv().__RIOT_LOADED=true ab:
+		Load()end for ac,ad in pairs(aa)do if ad.Places then for ae,af in ipairs(ad.
+		Places)do if af==game.PlaceId then ab(ad)return end end end if ad.UniverseId and
+		ad.UniverseId==game.GameId then ab(ad)return end end ab(aa.Universal)
 	]================================================================================================================================================================]
 )
