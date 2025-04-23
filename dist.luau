@@ -34,10 +34,11 @@ local Push = function(File)
 end
 
 Push(
-	[================================================================================================================================================================[
+	[====[
+
 		getgenv().RIOT = {
 			BUILD = 'Release',
-			VERSION = 'v0.0.0' or 'v0.0.0'
+			VERSION = 'v2.0.0' or 'v0.0.0'
 		}
 
 		local a a={cache={},load=function(b)if not a.cache[b]then a.cache[b]={c=a[b]()}
@@ -654,9 +655,9 @@ Push(
 		.Transparency=Y local Z,_,aa,ab=math.round(W.R*255),math.round(W.G*255),math.
 		round(W.B*255),math.round((1-Y)*255)M.Text=tostring(Z)S.Text=tostring(_)P.Text=
 		tostring(aa)J.Text=tostring(ab)B.ImageColor3=W C.ImageTransparency=1-Y if i.
-		Settings.Callback then e.callback(i.Settings.Callback,W,Y)end return i end local
-		aa=function()local aa,ab=B.AbsolutePosition,B.AbsoluteSize local W,X=aa.X+ab.X,
-		aa.Y+(ab.Y*2)+D.AbsoluteSize.Y D.Position=UDim2.fromOffset(W,X)end aa()B:
+		Settings.Callback then e.callback(i.Settings.Callback,i,W,Y)end return i end
+		local aa=function()local aa,ab=B.AbsolutePosition,B.AbsoluteSize local W,X=aa.X+
+		ab.X,aa.Y+(ab.Y*2)+D.AbsoluteSize.Y D.Position=UDim2.fromOffset(W,X)end aa()B:
 		GetPropertyChangedSignal'AbsolutePosition':Connect(aa)B.MouseButton1Click:
 		Connect(function()D.Visible=not D.Visible end)local ab=function()local ab,W,X,Y=
 		tonumber(M.Text),tonumber(S.Text),tonumber(P.Text),tonumber(J.Text)ab=ab and
@@ -1185,40 +1186,41 @@ Push(
 		GetHumanoid(ab)local ac,ad=pcall(function()local ac=aa.GetCharacter(ab)return ac
 		and ac:FindFirstChildOfClass'Humanoid'or nil end)return ac and ad or nil end
 		return aa end function a.c()local aa=a.load'b'.SecureService local ab,ac,ad,ae,
-		af=aa'RunService',aa'Players',aa'Workspace',aa'UserInputService',aa'CoreGui'
-		local ag,ah=ac.LocalPlayer,ad.CurrentCamera local ai,aj,ak,al,am,an,ao,ap,aq,ar,
-		as,at,au,av,aw,ax,ay,az,aA,aB,aC,aD,aE,aF,aG,aH,aI,aJ=ah.ViewportSize,math.floor
-		,math.round,math.sin,math.cos,table.clear,table.unpack,table.find,table.create,
-		CFrame.fromMatrix,ah.WorldToViewportPoint,ad.IsA,ad.GetPivot,ad.FindFirstChild,
-		ad.FindFirstChildOfClass,ad.GetChildren,CFrame.identity.PointToObjectSpace,
-		Color3.new().Lerp,Vector2.zero.Min,Vector2.zero.Max,Vector2.zero.Lerp,Vector3.
-		zero.Min,Vector3.zero.Max,Vector2.new(7,0),Vector2.new(0,1),Vector2.new(0,2),
-		Vector2.new(5,0),{Vector3.new(-1,-1,-1),Vector3.new(-1,1,-1),Vector3.new(-1,1,1)
-		,Vector3.new(-1,-1,1),Vector3.new(1,-1,-1),Vector3.new(1,1,-1),Vector3.new(1,1,1
-		),Vector3.new(1,-1,1)}local aK,aL=function(aK)local aL,aM for aN=1,#aK do local
-		aO=aK[aN]local aP,b=aO.CFrame,aO.Size aL=aD(aL or aP.Position,(aP-b*0.5).
-		Position)aM=aE(aM or aP.Position,(aP+b*0.5).Position)end local aN=(aL+aM)*0.5
-		local aO=Vector3.new(aN.X,aN.Y,aM.Z)return CFrame.new(aN,aO),aM-aL end,function(
-		aK)local aL,aM=as(ah,aK)return Vector2.new(aL.X,aL.Y),aM,aL.Z end local aM,aN,aO
-		,aP=function(aM,aN)local aO=aq(#aJ)for aP=1,#aJ do aO[aP]=aL((aM+aN*0.5*aJ[aP]).
-		Position)end local aP,b=aA(ai,ao(aO)),aB(Vector2.zero,ao(aO))return{Corners=aO,
-		TopLeft=Vector2.new(aj(aP.X),aj(aP.Y)),TopRight=Vector2.new(aj(b.X),aj(aP.Y)),
-		BottomLeft=Vector2.new(aj(aP.X),aj(b.Y)),BottomRight=Vector2.new(aj(b.X),aj(b.Y)
-		)}end,function(aM,aN)local aO,aP,b,c=aM.X,aM.Y,am(aN),al(aN)return Vector2.new(
-		aO*b-aP*c,aO*c+aP*b)end,function(aM,aN,aO)if aN=='Team Color'or(aM.Interface.
-		Shared.UseTeamColor and not aO)then return aM.Interface.GetTeamColor(aM.Player)
-		or Color3.new(1,1,1)end return aN end,{}aP.__index=aP function aP.New(b,c)local
-		d=setmetatable({},aP)d.Player=assert(b,'Missing argument #1 (Player expected)')d
-		.Interface=assert(c,'Missing argument #2 (table expected)')d:Construct()return d
-		end function aP:_Create(b,c)local d=Drawing.new(b)for e,f in next,c do pcall(
-		function()d[e]=f end)end self.Bin[#self.Bin+1]=d return d end function aP:
-		Construct()self.CharCache={}self.ChildCount=0 self.Bin={}self.Drawings={Box3d={{
-		self:_Create('Line',{Thickness=1,Visible=false}),self:_Create('Line',{Thickness=
-		1,Visible=false}),self:_Create('Line',{Thickness=1,Visible=false})},{self:
-		_Create('Line',{Thickness=1,Visible=false}),self:_Create('Line',{Thickness=1,
-		Visible=false}),self:_Create('Line',{Thickness=1,Visible=false})},{self:_Create(
+		af=aa'RunService',aa'Players',aa'Workspace',aa'UserInputService',gethui and
+		gethui()or aa'CoreGui'local ag,ah=ac.LocalPlayer,ad.CurrentCamera local ai,aj,ak
+		,al,am,an,ao,ap,aq,ar,as,at,au,av,aw,ax,ay,az,aA,aB,aC,aD,aE,aF,aG,aH,aI,aJ=ah.
+		ViewportSize,math.floor,math.round,math.sin,math.cos,table.clear,table.unpack,
+		table.find,table.create,CFrame.fromMatrix,ah.WorldToViewportPoint,ad.IsA,ad.
+		GetPivot,ad.FindFirstChild,ad.FindFirstChildOfClass,ad.GetChildren,CFrame.
+		identity.PointToObjectSpace,Color3.new().Lerp,Vector2.zero.Min,Vector2.zero.Max,
+		Vector2.zero.Lerp,Vector3.zero.Min,Vector3.zero.Max,Vector2.new(7,0),Vector2.
+		new(0,1),Vector2.new(0,2),Vector2.new(5,0),{Vector3.new(-1,-1,-1),Vector3.new(-1
+		,1,-1),Vector3.new(-1,1,1),Vector3.new(-1,-1,1),Vector3.new(1,-1,-1),Vector3.
+		new(1,1,-1),Vector3.new(1,1,1),Vector3.new(1,-1,1)}local aK,aL=function(aK)local
+		aL,aM for aN=1,#aK do local aO=aK[aN]local aP,b=aO.CFrame,aO.Size aL=aD(aL or aP
+		.Position,(aP-b*0.5).Position)aM=aE(aM or aP.Position,(aP+b*0.5).Position)end
+		local aN=(aL+aM)*0.5 local aO=Vector3.new(aN.X,aN.Y,aM.Z)return CFrame.new(aN,aO
+		),aM-aL end,function(aK)local aL,aM=as(ah,aK)return Vector2.new(aL.X,aL.Y),aM,aL
+		.Z end local aM,aN,aO,aP=function(aM,aN)local aO=aq(#aJ)for aP=1,#aJ do aO[aP]=
+		aL((aM+aN*0.5*aJ[aP]).Position)end local aP,b=aA(ai,ao(aO)),aB(Vector2.zero,ao(
+		aO))return{Corners=aO,TopLeft=Vector2.new(aj(aP.X),aj(aP.Y)),TopRight=Vector2.
+		new(aj(b.X),aj(aP.Y)),BottomLeft=Vector2.new(aj(aP.X),aj(b.Y)),BottomRight=
+		Vector2.new(aj(b.X),aj(b.Y))}end,function(aM,aN)local aO,aP,b,c=aM.X,aM.Y,am(aN)
+		,al(aN)return Vector2.new(aO*b-aP*c,aO*c+aP*b)end,function(aM,aN,aO)if aN==
+		'Team Color'or(aM.Interface.Shared.UseTeamColor and not aO)then return aM.
+		Interface.GetTeamColor(aM.Player)or Color3.new(1,1,1)end return aN end,{}aP.
+		__index=aP function aP.New(b,c)local d=setmetatable({},aP)d.Player=assert(b,
+		'Missing argument #1 (Player expected)')d.Interface=assert(c,
+		'Missing argument #2 (table expected)')d:Construct()return d end function aP:
+		_Create(b,c)local d=Drawing.new(b)for e,f in next,c do pcall(function()d[e]=f
+		end)end self.Bin[#self.Bin+1]=d return d end function aP:Construct()self.
+		CharCache={}self.ChildCount=0 self.Bin={}self.Drawings={Box3d={{self:_Create(
 		'Line',{Thickness=1,Visible=false}),self:_Create('Line',{Thickness=1,Visible=
 		false}),self:_Create('Line',{Thickness=1,Visible=false})},{self:_Create('Line',{
+		Thickness=1,Visible=false}),self:_Create('Line',{Thickness=1,Visible=false}),
+		self:_Create('Line',{Thickness=1,Visible=false})},{self:_Create('Line',{
+		Thickness=1,Visible=false}),self:_Create('Line',{Thickness=1,Visible=false}),
+		self:_Create('Line',{Thickness=1,Visible=false})},{self:_Create('Line',{
 		Thickness=1,Visible=false}),self:_Create('Line',{Thickness=1,Visible=false}),
 		self:_Create('Line',{Thickness=1,Visible=false})}},Visible={TracerOutline=self:
 		_Create('Line',{Thickness=2,Visible=false}),Tracer=self:_Create('Line',{
@@ -1229,127 +1231,140 @@ Push(
 		Thickness=4,Visible=false}),HealthText=self:_Create('Text',{Center=true,Visible=
 		false}),Name=self:_Create('Text',{Text=string.upper(self.Player.DisplayName),
 		Center=true,Visible=false}),Distance=self:_Create('Text',{Center=true,Visible=
-		false}),Weapon=self:_Create('Text',{Center=true,Visible=false})},Hidden={
+		false}),Weapon=self:_Create('Text',{Center=true,Visible=false}),Skeleton={Head=
+		self:_Create('Circle',{NumSides=30,Thickness=1,Visible=false})}},Hidden={
 		ArrowOutline=self:_Create('Triangle',{Thickness=3,Visible=false}),Arrow=self:
 		_Create('Triangle',{Filled=true,Visible=false})}}for b=1,8 do table.insert(self.
 		Drawings.Visible.CornerBox,self:_Create('Line',{Thickness=2,Visible=false}))end
-		self.RenderConnection=ab.RenderStepped:Connect(function(b)self:Update(b)self:
-		Render(b)end)end function aP:Destruct()self.RenderConnection:Disconnect()for b=1
-		,#self.Bin do self.Bin[b]:Remove()end an(self)end function aP:Update()local b=
-		self.Interface self.Options=b.Team[b.IsFriendly(self.Player)and'Friendly'or
-		'Enemy']self.Character=b.GetCharacter(self.Player)self.Health,self.MaxHealth=b.
-		GetHealth(self.Player)self.Weapon=b.GetWeapon(self.Player)self.Enabled=self.
-		Options.Enabled and self.Character and not(#b.Whitelist>0 and not ap(b.Whitelist
-		,self.Player.UserId))local c=self.Enabled and av(self.Character,b.GetRootPart())
-		if not c then self.CharCache={}self.OnScreen=false return end local d,e,f=aL(c.
-		Position)self.OnScreen=e self.Distance=f if b.Shared.LimitDistance and f>b.
-		Shared.MaxDistance then self.OnScreen=false end if self.OnScreen then local g,h=
-		self.CharCache,ax(self.Character)if not g[1]or self.ChildCount~=#h then an(g)for
-		i=1,#h do local j=h[i]if at(j,'BasePart')and b.IsBodyPart(j.Name)then g[#g+1]=j
-		end end self.ChildCount=#h end self.Corners=aM(aK(g))elseif self.Options.
-		OffScreenArrow then local g=ah.CFrame local h=ar(g.Position,g.RightVector,
-		Vector3.yAxis)local i=ay(h,c.Position)self.Direction=Vector2.new(i.X,i.Z).Unit
-		end end function aP:Render()local b,c,d,e,f,g,h,i=self.OnScreen or false,self.
-		Enabled or false,self.Drawings.Visible,self.Drawings.Hidden,self.Drawings.Box3d,
-		self.Interface,self.Options,self.Corners d.Box.Visible=c and b and h.Box d.
-		BoxOutline.Visible=d.Box.Visible and h.BoxOutline if d.Box.Visible then local j=
-		d.Box j.Position=i.TopLeft j.Size=i.BottomRight-i.TopLeft j.Color=aO(self,h.
-		BoxColor[1])j.Transparency=h.BoxColor[2]local m=d.BoxOutline m.Position=j.
-		Position m.Size=j.Size m.Color=aO(self,h.BoxOutlineColor[1],true)m.Transparency=
-		h.BoxOutlineColor[2]end local j=c and b and h.CornerBox for m=1,8 do local p=d.
-		CornerBox[m]p.Visible=j end if j then local m,p=(i.TopRight.X-i.TopLeft.X)*0.2,(
-		i.BottomLeft.Y-i.TopLeft.Y)*0.2 m=math.clamp(m,2,30)p=math.clamp(p,2,30)local q=
-		function(q,r,s,t)local u,v=d.CornerBox[q],d.CornerBox[q+1]local w=u.Thickness or
-		1 local x=(w-1)local y,z=x/2,s.Unit*(s.Magnitude+x)u.From=r-s.Unit*y u.To=r+z-s.
-		Unit*y u.Color=aO(self,h.CornerBoxColor[1])u.Transparency=h.CornerBoxColor[2]
-		local A=t.Unit*(t.Magnitude+x)v.From=r-t.Unit*y v.To=r+A-t.Unit*y v.Color=aO(
-		self,h.CornerBoxColor[1])v.Transparency=h.CornerBoxColor[2]end q(1,i.TopLeft,
-		Vector2.new(m,0),Vector2.new(0,p))q(3,i.TopRight,Vector2.new(-m,0),Vector2.new(0
-		,p))q(5,i.BottomRight,Vector2.new(-m,0),Vector2.new(0,-p))q(7,i.BottomLeft,
-		Vector2.new(m,0),Vector2.new(0,-p))end d.BoxFill.Visible=c and b and h.BoxFill
-		if d.BoxFill.Visible then local m=d.BoxFill m.Position=i.TopLeft m.Size=i.
-		BottomRight-i.TopLeft m.Color=aO(self,h.BoxFillColor[1])m.Transparency=h.
-		BoxFillColor[2]end d.HealthBar.Visible=c and b and h.HealthBar d.
-		HealthBarOutline.Visible=d.HealthBar.Visible and h.HealthBarOutline if d.
-		HealthBar.Visible then local m,p,q=i.TopLeft-aF,i.BottomLeft-aF,d.HealthBar q.To
-		=p q.From=aC(p,m,self.Health/self.MaxHealth)q.Color=az(h.DyingColor,h.
-		HealthyColor,self.Health/self.MaxHealth)local r=d.HealthBarOutline r.To=p+aG r.
-		From=m-aG r.Color=aO(self,h.HealthBarOutlineColor[1],true)r.Transparency=h.
-		HealthBarOutlineColor[2]end d.Name.Visible=c and b and h.Name if d.Name.Visible
-		then local m=d.Name m.Size=g.Shared.TextSize m.Font=g.Shared.TextFont m.Color=
-		aO(self,h.NameColor[1])m.Transparency=h.NameColor[2]m.Outline=h.NameOutline m.
-		OutlineColor=aO(self,h.NameOutlineColor,true)m.Position=(i.TopLeft+i.TopRight)*
-		0.5-Vector2.yAxis*m.TextBounds.Y-aH end local m=i and i.TopRight.Y or 0 d.
-		Distance.Visible=c and b and self.Distance and h.Distance if d.Distance.Visible
-		then local p=d.Distance p.Text=ak(self.Distance*0.28)..'M'p.Size=g.Shared.
-		TextSize p.Font=g.Shared.TextFont p.Color=aO(self,h.DistanceColor[1])p.
-		Transparency=h.DistanceColor[2]p.Outline=h.DistanceOutline p.OutlineColor=aO(
-		self,h.DistanceOutlineColor,true)p.Position=Vector2.new(i.TopRight.X+aI.X+p.
-		TextBounds.X*0.5,m-p.TextBounds.Y*0.5-aI.Y)m=m+p.TextBounds.Y+aI.Y end d.Weapon.
-		Visible=c and b and h.Weapon if d.Weapon.Visible then local p=d.Weapon p.Text=
-		self.Weapon p.Size=g.Shared.TextSize p.Font=g.Shared.TextFont p.Color=aO(self,h.
-		WeaponColor[1])p.Transparency=h.WeaponColor[2]p.Outline=h.WeaponOutline p.
-		OutlineColor=aO(self,h.WeaponOutlineColor,true)p.Position=Vector2.new(i.TopRight
-		.X+aI.X+p.TextBounds.X*0.5,m-p.TextBounds.Y*0.5)m=m+p.TextBounds.Y+aI.Y end d.
-		HealthText.Visible=c and b and h.HealthText if d.HealthText.Visible then local p
-		=d.HealthText p.Text=ak(self.Health)..'HP'p.Size=g.Shared.TextSize p.Font=g.
-		Shared.TextFont p.Color=aO(self,h.HealthTextColor[1])p.Transparency=h.
-		HealthTextColor[2]p.Outline=h.HealthTextOutline p.OutlineColor=aO(self,h.
-		HealthTextOutlineColor,true)p.Position=Vector2.new(i.TopRight.X+aI.X+p.
-		TextBounds.X*0.5,m-p.TextBounds.Y*0.5)end d.Tracer.Visible=c and b and h.Tracer
-		d.TracerOutline.Visible=d.Tracer.Visible and h.TracerOutline if d.Tracer.Visible
-		then local p=d.Tracer p.Color=aO(self,h.TracerColor[1])p.Transparency=h.
-		TracerColor[2]p.To=(i.BottomLeft+i.BottomRight)*0.5 p.From=h.TracerOrigin==
-		'Middle'and ai*0.5 or h.TracerOrigin=='Top'and ai*Vector2.new(0.5,0)or h.
-		TracerOrigin=='Bottom'and ai*Vector2.new(0.5,1)or h.TracerOrigin=='Mouse'and ae:
-		GetMouseLocation()local q=d.TracerOutline q.Color=aO(self,h.TracerOutlineColor[1
-		],true)q.Transparency=h.TracerOutlineColor[2]q.To=p.To q.From=p.From end e.Arrow
-		.Visible=c and(not b)and h.OffScreenArrow e.ArrowOutline.Visible=e.Arrow.Visible
-		and h.OffScreenArrowOutline if e.Arrow.Visible and self.Direction then local p=e
-		.Arrow p.PointA=aA(aB(ai*0.5+self.Direction*h.OffScreenArrowRadius,Vector2.one*
-		25),ai-Vector2.one*25)p.PointB=p.PointA-aN(self.Direction,0.45)*h.
-		OffScreenArrowSize p.PointC=p.PointA-aN(self.Direction,-0.45)*h.
-		OffScreenArrowSize p.Color=aO(self,h.OffScreenArrowColor[1])p.Transparency=h.
-		OffScreenArrowColor[2]local q=e.ArrowOutline q.PointA=p.PointA q.PointB=p.PointB
-		q.PointC=p.PointC q.Color=aO(self,h.OffScreenArrowOutlineColor[1],true)q.
-		Transparency=h.OffScreenArrowOutlineColor[2]end local p=c and b and h.Box3d for
-		q=1,#f do local r=f[q]for s=1,#r do local t=r[s]t.Visible=p t.Color=aO(self,h.
-		Box3dColor[1])t.Transparency=h.Box3dColor[2]end if p then local s=r[1]s.From=i.
-		Corners[q]s.To=i.Corners[q==4 and 1 or q+1]local t=r[2]t.From=i.Corners[q==4 and
-		1 or q+1]t.To=i.Corners[q==4 and 5 or q+5]local u=r[3]u.From=i.Corners[q==4 and
-		5 or q+5]u.To=i.Corners[q==4 and 8 or q+4]end end end local b={}b.__index=b
-		function b.New(c,d)local e=setmetatable({},b)e.Player=assert(c,
-		'Missing argument #1 (Player expected)')e.Interface=assert(d,
-		'Missing argument #2 (table expected)')e:Construct()return e end function b:
-		Construct()self.Highlight=Instance.new('Highlight',af)self.UpdateConnection=ab.
-		RenderStepped:Connect(function()self:Update()end)end function b:Destruct()self.
-		UpdateConnection:Disconnect()self.Highlight:Destroy()an(self)end function b:
-		Update()local c,d=self.Highlight,self.Interface local e,f=d.GetCharacter(self.
-		Player),d.Team[d.IsFriendly(self.Player)and'Friendly'or'Enemy']local g=f.Enabled
-		and e and not(#d.Whitelist>0 and not ap(d.Whitelist,self.Player.UserId))c.
-		Enabled=g and f.Chams if c.Enabled then c.Adornee=e c.FillColor=aO(self,f.
-		ChamsFillColor[1])c.FillTransparency=f.ChamsFillColor[2]c.OutlineColor=aO(self,f
-		.ChamsOutlineColor[1],true)c.OutlineTransparency=f.ChamsOutlineColor[2]c.
-		DepthMode=f.ChamsVisibleOnly and'Occluded'or'AlwaysOnTop'end end local c={}c.
-		__index=c function c.New(d,e)local f=setmetatable({},c)f.Instance=assert(d,
-		'Missing argument #1 (Instance Expected)')f.Options=assert(e,
+		for b=1,14 do self.Drawings.Visible.Skeleton[b]=self:_Create('Line',{Thickness=1
+		,Visible=false})end self.RenderConnection=ab.RenderStepped:Connect(function(b)
+		self:Update(b)self:Render(b)end)end function aP:Destruct()self.RenderConnection:
+		Disconnect()for b=1,#self.Bin do self.Bin[b]:Remove()end an(self)end function aP
+		:Update()local b=self.Interface self.Options=b.Team[b.IsFriendly(self.Player)and
+		'Friendly'or'Enemy']self.Character=b.GetCharacter(self.Player)self.Health,self.
+		MaxHealth=b.GetHealth(self.Player)self.Weapon=b.GetWeapon(self.Player)self.
+		Enabled=self.Options.Enabled and self.Character and not(#b.Whitelist>0 and not
+		ap(b.Whitelist,self.Player.UserId))local c=self.Enabled and av(self.Character,b.
+		GetRootPart())if not c then self.CharCache={}self.OnScreen=false return end
+		local d,e,f=aL(c.Position)self.OnScreen=e self.Distance=f if b.Shared.
+		LimitDistance and f>b.Shared.MaxDistance then self.OnScreen=false end if self.
+		OnScreen then local g,h=self.CharCache,ax(self.Character)if not g[1]or self.
+		ChildCount~=#h then an(g)for i=1,#h do local j=h[i]if at(j,'BasePart')and b.
+		IsBodyPart(j.Name)then g[#g+1]=j end end self.ChildCount=#h end self.Corners=aM(
+		aK(g))elseif self.Options.OffScreenArrow then local g=ah.CFrame local h=ar(g.
+		Position,g.RightVector,Vector3.yAxis)local i=ay(h,c.Position)self.Direction=
+		Vector2.new(i.X,i.Z).Unit end end function aP:Render()local b,c=self.Interface,
+		self.OnScreen or false local d,e,f,g,h,i,j=self.Enabled and b.GetHealth()>0 or
+		false,self.Drawings.Visible,self.Drawings.Hidden,self.Drawings.Box3d,self.
+		Interface,self.Options,self.Corners e.Box.Visible=d and c and i.Box e.BoxOutline
+		.Visible=e.Box.Visible and i.BoxOutline if e.Box.Visible then local m=e.Box m.
+		Position=j.TopLeft m.Size=j.BottomRight-j.TopLeft m.Color=aO(self,i.BoxColor[1])
+		m.Transparency=i.BoxColor[2]local p=e.BoxOutline p.Position=m.Position p.Size=m.
+		Size p.Color=aO(self,i.BoxOutlineColor[1],true)p.Transparency=i.BoxOutlineColor[
+		2]end local m=d and c and i.CornerBox for p=1,8 do local q=e.CornerBox[p]q.
+		Visible=m end if m then local p,q=(j.TopRight.X-j.TopLeft.X)*0.2,(j.BottomLeft.Y
+		-j.TopLeft.Y)*0.2 p=math.clamp(p,2,30)q=math.clamp(q,2,30)local r=function(r,s,t
+		,u)local v,w=e.CornerBox[r],e.CornerBox[r+1]local x=v.Thickness or 1 local y=(x-
+		1)local z,A=y/2,t.Unit*(t.Magnitude+y)v.From=s-t.Unit*z v.To=s+A-t.Unit*z v.
+		Color=aO(self,i.CornerBoxColor[1])v.Transparency=i.CornerBoxColor[2]local B=u.
+		Unit*(u.Magnitude+y)w.From=s-u.Unit*z w.To=s+B-u.Unit*z w.Color=aO(self,i.
+		CornerBoxColor[1])w.Transparency=i.CornerBoxColor[2]end r(1,j.TopLeft,Vector2.
+		new(p,0),Vector2.new(0,q))r(3,j.TopRight,Vector2.new(-p,0),Vector2.new(0,q))r(5,
+		j.BottomRight,Vector2.new(-p,0),Vector2.new(0,-q))r(7,j.BottomLeft,Vector2.new(p
+		,0),Vector2.new(0,-q))end e.BoxFill.Visible=d and c and i.BoxFill if e.BoxFill.
+		Visible then local p=e.BoxFill p.Position=j.TopLeft p.Size=j.BottomRight-j.
+		TopLeft p.Color=aO(self,i.BoxFillColor[1])p.Transparency=i.BoxFillColor[2]end e.
+		HealthBar.Visible=d and c and i.HealthBar e.HealthBarOutline.Visible=e.HealthBar
+		.Visible and i.HealthBarOutline if e.HealthBar.Visible then local p,q,r=j.
+		TopLeft-aF,j.BottomLeft-aF,e.HealthBar r.To=q r.From=aC(q,p,self.Health/self.
+		MaxHealth)r.Color=az(i.DyingColor,i.HealthyColor,self.Health/self.MaxHealth)
+		local s=e.HealthBarOutline s.To=q+aG s.From=p-aG s.Color=aO(self,i.
+		HealthBarOutlineColor[1],true)s.Transparency=i.HealthBarOutlineColor[2]end e.
+		Name.Visible=d and c and i.Name if e.Name.Visible then local p=e.Name p.Size=h.
+		Shared.TextSize p.Font=h.Shared.TextFont p.Color=aO(self,i.NameColor[1])p.
+		Transparency=i.NameColor[2]p.Outline=i.NameOutline p.OutlineColor=aO(self,i.
+		NameOutlineColor,true)p.Position=(j.TopLeft+j.TopRight)*0.5-Vector2.yAxis*p.
+		TextBounds.Y-aH end local p=j and j.TopRight.Y or 0 e.Distance.Visible=d and c
+		and self.Distance and i.Distance if e.Distance.Visible then local q=e.Distance q
+		.Text=ak(self.Distance*0.28)..'M'q.Size=h.Shared.TextSize q.Font=h.Shared.
+		TextFont q.Color=aO(self,i.DistanceColor[1])q.Transparency=i.DistanceColor[2]q.
+		Outline=i.DistanceOutline q.OutlineColor=aO(self,i.DistanceOutlineColor,true)q.
+		Position=Vector2.new(j.TopRight.X+aI.X+q.TextBounds.X*0.5,p-q.TextBounds.Y*0.5-
+		aI.Y)p=p+q.TextBounds.Y+aI.Y end e.Weapon.Visible=d and c and i.Weapon if e.
+		Weapon.Visible then local q=e.Weapon q.Text=self.Weapon q.Size=h.Shared.TextSize
+		q.Font=h.Shared.TextFont q.Color=aO(self,i.WeaponColor[1])q.Transparency=i.
+		WeaponColor[2]q.Outline=i.WeaponOutline q.OutlineColor=aO(self,i.
+		WeaponOutlineColor,true)q.Position=Vector2.new(j.TopRight.X+aI.X+q.TextBounds.X*
+		0.5,p-q.TextBounds.Y*0.5)p=p+q.TextBounds.Y+aI.Y end e.HealthText.Visible=d and
+		c and i.HealthText if e.HealthText.Visible then local q=e.HealthText q.Text=ak(
+		self.Health)..'HP'q.Size=h.Shared.TextSize q.Font=h.Shared.TextFont q.Color=aO(
+		self,i.HealthTextColor[1])q.Transparency=i.HealthTextColor[2]q.Outline=i.
+		HealthTextOutline q.OutlineColor=aO(self,i.HealthTextOutlineColor,true)q.
+		Position=Vector2.new(j.TopRight.X+aI.X+q.TextBounds.X*0.5,p-q.TextBounds.Y*0.5)
+		end e.Tracer.Visible=d and c and i.Tracer e.TracerOutline.Visible=e.Tracer.
+		Visible and i.TracerOutline if e.Tracer.Visible then local q=e.Tracer q.Color=
+		aO(self,i.TracerColor[1])q.Transparency=i.TracerColor[2]q.To=(j.BottomLeft+j.
+		BottomRight)*0.5 q.From=i.TracerOrigin=='Middle'and ai*0.5 or i.TracerOrigin==
+		'Top'and ai*Vector2.new(0.5,0)or i.TracerOrigin=='Bottom'and ai*Vector2.new(0.5,
+		1)or i.TracerOrigin=='Mouse'and ae:GetMouseLocation()local r=e.TracerOutline r.
+		Color=aO(self,i.TracerOutlineColor[1],true)r.Transparency=i.TracerOutlineColor[2
+		]r.To=q.To r.From=q.From end f.Arrow.Visible=d and not c and i.OffScreenArrow f.
+		ArrowOutline.Visible=f.Arrow.Visible and i.OffScreenArrowOutline if f.Arrow.
+		Visible and self.Direction then local q=f.Arrow q.PointA=aA(aB(ai*0.5+self.
+		Direction*i.OffScreenArrowRadius,Vector2.one*25),ai-Vector2.one*25)q.PointB=q.
+		PointA-aN(self.Direction,0.45)*i.OffScreenArrowSize q.PointC=q.PointA-aN(self.
+		Direction,-0.45)*i.OffScreenArrowSize q.Color=aO(self,i.OffScreenArrowColor[1])q
+		.Transparency=i.OffScreenArrowColor[2]local r=f.ArrowOutline r.PointA=q.PointA r
+		.PointB=q.PointB r.PointC=q.PointC r.Color=aO(self,i.OffScreenArrowOutlineColor[
+		1],true)r.Transparency=i.OffScreenArrowOutlineColor[2]end local q=d and c and i.
+		Box3d for r=1,#g do local s=g[r]for t=1,#s do local u=s[t]u.Visible=q u.Color=
+		aO(self,i.Box3dColor[1])u.Transparency=i.Box3dColor[2]end if q then local t=s[1]
+		t.From=j.Corners[r]t.To=j.Corners[r==4 and 1 or r+1]local u=s[2]u.From=j.Corners
+		[r==4 and 1 or r+1]u.To=j.Corners[r==4 and 5 or r+5]local v=s[3]v.From=j.Corners
+		[r==4 and 5 or r+5]v.To=j.Corners[r==4 and 8 or r+4]end end local r=d and c and
+		i.Skeleton if r then local s,t=h.GetJoints(self.Character)local u=e.Skeleton.
+		Head u.Visible=false if s.Head then local v,w=aL(s.Head.Position)if w then u.
+		Visible=true u.Position=v u.Radius=math.clamp((j.TopRight.X-j.TopLeft.X)*0.1,2,
+		15)u.Thickness=i.SkeletonThickness u.Color=aO(self,i.SkeletonColor[1])u.
+		Transparency=i.SkeletonColor[2]end end for v,w in ipairs(t)do local x=e.Skeleton
+		[v]x.Visible=false local y,z=w[1],w[2]if y and z then local A,B=aL(y==s.Head and
+		y.Position-Vector3.new(0,y.Size.Y/2,0)or y.Position)local C,D=aL(z.Position)if B
+		and D then x.Visible=true x.From=A x.To=C x.Thickness=i.SkeletonThickness x.
+		Color=aO(self,i.SkeletonColor[1])x.Transparency=i.SkeletonColor[2]end end end
+		else e.Skeleton.Head.Visible=false for s,t in ipairs(e.Skeleton)do if type(t)==
+		'table'then continue end t.Visible=false end end end local c={}c.__index=c
+		function c.New(d,e)local f=setmetatable({},c)f.Player=assert(d,
+		'Missing argument #1 (Player expected)')f.Interface=assert(e,
 		'Missing argument #2 (table expected)')f:Construct()return f end function c:
-		Construct()local d=self.Options d.Enabled=d.Enabled==nil and true or d.Enabled d
-		.Text=d.Text or'{name}'d.TextColor=d.TextColor or{Color3.new(1,1,1),1}d.
-		TextOutline=d.TextOutline==nil and true or d.TextOutline d.TextOutlineColor=d.
-		TextOutlineColor or Color3.new()d.TextSize=d.TextSize or 13 d.TextFont=d.
-		TextFont or 2 d.LimitDistance=d.LimitDistance or false d.MaxDistance=d.
+		Construct()self.Highlight=Instance.new'Highlight'self.UpdateConnection=ab.
+		RenderStepped:Connect(function()self:Update()end)end function c:Destruct()self.
+		UpdateConnection:Disconnect()self.Highlight:Destroy()an(self)end function c:
+		Update()local d,e=self.Highlight,self.Interface local f,g=e.GetCharacter(self.
+		Player),e.Team[e.IsFriendly(self.Player)and'Friendly'or'Enemy']local h=g.Enabled
+		and f and not(#e.Whitelist>0 and not ap(e.Whitelist,self.Player.UserId))d.
+		Enabled=h and g.Chams if d.Enabled then d.Adornee=f d.FillColor=aO(self,g.
+		ChamsFillColor[1])d.FillTransparency=g.ChamsFillColor[2]d.OutlineColor=aO(self,g
+		.ChamsOutlineColor[1],true)d.OutlineTransparency=g.ChamsOutlineColor[2]d.
+		DepthMode=g.ChamsVisibleOnly and'Occluded'or'AlwaysOnTop'd.Parent=af end end
+		local d={}d.__index=d function d.New(e,f)local g=setmetatable({},d)g.Instance=
+		assert(e,'Missing argument #1 (Instance Expected)')g.Options=assert(f,
+		'Missing argument #2 (table expected)')g:Construct()return g end function d:
+		Construct()local e=self.Options e.Enabled=e.Enabled==nil and true or e.Enabled e
+		.Text=e.Text or'{name}'e.TextColor=e.TextColor or{Color3.new(1,1,1),1}e.
+		TextOutline=e.TextOutline==nil and true or e.TextOutline e.TextOutlineColor=e.
+		TextOutlineColor or Color3.new()e.TextSize=e.TextSize or 13 e.TextFont=e.
+		TextFont or 2 e.LimitDistance=e.LimitDistance or false e.MaxDistance=e.
 		MaxDistance or 150 self.Text=Drawing.new'Text'self.Text.Center=true self.
-		RenderConnection=ab.Stepped:Connect(function(e)self:Render(e)end)end function c:
-		Destruct()self.RenderConnection:Disconnect()self.Text:Remove()end function c:
-		Render()local d=self.Instance if not d or not d.Parent then return self:
-		Destruct()end local e,f=self.Text,self.Options if not f.Enabled then e.Visible=
-		false return end local g=au(d).Position local h,i,j=aL(g)if f.LimitDistance and
-		j>f.MaxDistance then i=false end e.Visible=i if e.Visible then e.Position=h e.
-		Color=f.TextColor[1]e.Transparency=f.TextColor[2]e.Outline=f.TextOutline e.
-		OutlineColor=f.TextOutlineColor e.Size=f.TextSize e.Font=f.TextFont e.Text=f.
-		Text:gsub('{name}',string.upper(d.Name)):gsub('{distance}',ak(j*0.28)..'M'):
-		gsub('{position}',string.upper(tostring(g)))end return nil end local d={
+		RenderConnection=ab.Stepped:Connect(function(f)self:Render(f)end)end function d:
+		Destruct()self.RenderConnection:Disconnect()self.Text:Remove()end function d:
+		Render()local e=self.Instance if not e or not e.Parent then return self:
+		Destruct()end local f,g=self.Text,self.Options if not g.Enabled then f.Visible=
+		false return end local h=au(e).Position local i,j,m=aL(h)if g.LimitDistance and
+		m>g.MaxDistance then j=false end f.Visible=j if f.Visible then f.Position=i f.
+		Color=g.TextColor[1]f.Transparency=g.TextColor[2]f.Outline=g.TextOutline f.
+		OutlineColor=g.TextOutlineColor f.Size=g.TextSize f.Font=g.TextFont f.Text=g.
+		Text:gsub('{name}',string.upper(e.Name)):gsub('{distance}',ak(m*0.28)..'M'):
+		gsub('{position}',string.upper(tostring(h)))end return nil end local e={
 		HasLoaded=false,ObjectCache={},Whitelist={},Shared={TextSize=13,TextFont=2,
 		LimitDistance=false,MaxDistance=150,UseTeamColor=false,IncludeLocalPlayer=false}
 		,Team={Enemy={Enabled=false,Box=false,BoxColor={Color3.new(1,0,0),1},BoxOutline=
@@ -1368,118 +1383,146 @@ Push(
 		Color3.new(1,1,1),1},OffScreenArrowSize=15,OffScreenArrowRadius=150,
 		OffScreenArrowOutline=true,OffScreenArrowOutlineColor={Color3.new(),1},Chams=
 		false,ChamsVisibleOnly=false,ChamsFillColor={Color3.new(0.2,0.2,0.2),0.5},
-		ChamsOutlineColor={Color3.new(1,0,0),0}},Friendly={Enabled=false,Box=false,
-		BoxColor={Color3.new(0,1,0),1},BoxOutline=true,BoxOutlineColor={Color3.new(),1},
-		BoxFill=false,BoxFillColor={Color3.new(0,1,0),0.5},CornerBox=false,
-		CornerBoxColor={Color3.new(1,1,1),1},HealthBar=false,HealthyColor=Color3.new(0,1
-		,0),DyingColor=Color3.new(1,0,0),HealthBarOutline=true,HealthBarOutlineColor={
-		Color3.new(),0.5},HealthText=false,HealthTextColor={Color3.new(1,1,1),1},
-		HealthTextOutline=true,HealthTextOutlineColor=Color3.new(),Box3d=false,
-		Box3dColor={Color3.new(0,1,0),1},Name=false,NameColor={Color3.new(1,1,1),1},
-		NameOutline=true,NameOutlineColor=Color3.new(),Weapon=false,WeaponColor={Color3.
-		new(1,1,1),1},WeaponOutline=true,WeaponOutlineColor=Color3.new(),Distance=false,
-		DistanceColor={Color3.new(1,1,1),1},DistanceOutline=true,DistanceOutlineColor=
-		Color3.new(),Tracer=false,TracerOrigin='Bottom',TracerColor={Color3.new(0,1,0),1
-		},TracerOutline=true,TracerOutlineColor={Color3.new(),1},OffScreenArrow=false,
-		OffScreenArrowColor={Color3.new(1,1,1),1},OffScreenArrowSize=15,
-		OffScreenArrowRadius=150,OffScreenArrowOutline=true,OffScreenArrowOutlineColor={
-		Color3.new(),1},Chams=false,ChamsVisibleOnly=false,ChamsFillColor={Color3.new(
-		0.2,0.2,0.2),0.5},ChamsOutlineColor={Color3.new(0,1,0),0}}}}function d.
-		AddInstance(e,f)local g=d.ObjectCache if g[e]then warn
-		'Instance handler already exists.'else g[e]={c.New(e,f)}end return g[e][1]end
-		function d.Load()assert(not d.HasLoaded,'Esp has already been loaded.')local e,f
-		,g=function(e)d.ObjectCache[e]={aP.New(e,d),b.New(e,d)}end,function(e)local f=d.
-		ObjectCache[e]if f then for g=1,#f do f[g]:Destruct()end d.ObjectCache[e]=nil
-		end end,ac:GetPlayers()for h=d.Shared.IncludeLocalPlayer and 1 or 2,#g do e(g[h]
-		)end d.PlayerAdded=ac.PlayerAdded:Connect(e)d.PlayerRemoving=ac.PlayerRemoving:
-		Connect(f)d.HasLoaded=true end function d.Unload()assert(d.HasLoaded,
-		'Esp has not been loaded yet.')for e,f in next,d.ObjectCache do for g=1,#f do f[
-		g]:Destruct()end d.ObjectCache[e]=nil end d.PlayerAdded:Disconnect()d.
-		PlayerRemoving:Disconnect()d.HasLoaded=false end function d.GetWeapon(e)local f=
-		'None'if e and e.Character then local g=e.Character:FindFirstChildOfClass'Tool'
-		if g then f=g.Name end end return string.upper(f)end function d.IsFriendly(e)
-		return e.Team and e.Team==ag.Team end function d.GetTeamColor(e)return e.Team
-		and e.Team.TeamColor and e.Team.TeamColor.Color end function d.GetCharacter(e)
-		return e.Character end function d.IsBodyPart(e)return e=='Head'or e:find'Torso'
-		or e:find'Leg'or e:find'Arm'end function d.GetRootPart()return'HumanoidRootPart'
-		end function d.GetHealth(e)local f=e and d.GetCharacter(e)local g=f and aw(f,
-		'Humanoid')if g then return g.Health,g.MaxHealth end return 100,100 end return d
-		end function a.d()local aa,ab,ac,ad,ae,af,ag,ah,ai,aj,ak=game,workspace,Vector2.
-		new,Vector3.zero,CFrame.new,Color3.fromRGB,Drawing.new,TweenInfo.new,
-		mousemoverel or(Input and Input.MouseMove),table.find,math.clamp local al=
-		getrawmetatable and getrawmetatable(aa)or{__index=function(al,am)return al[am]
-		end,__newindex=function(al,am,an)al[am]=an end}local am,an=al.__index,al.
-		__newindex local ao=am(aa,'GetService')local ap,aq,ar,as=ao(aa,'RunService'),ao(
-		aa,'UserInputService'),ao(aa,'TweenService'),ao(aa,'Players')local at,au,av,aw,
-		ax=am(as,'LocalPlayer'),am(ab,'CurrentCamera'),am(aa,'FindFirstChild'),am(aa,
-		'FindFirstChildOfClass'),am(aa,'GetDescendants')local ay,az,aA,aB,aC,aD,aE,aF,aG
-		,aH,aI,aJ=am(au,'WorldToViewportPoint'),am(au,'GetPartsObscuringTarget'),am(aq,
-		'GetMouseLocation'),am(as,'GetPlayers'),2000,false,{},am(aa,'DescendantAdded').
-		Connect,{Triggerbot={Enabled=false,TeamCheck=true,AliveCheck=true,WeaponCheck=
-		true,Delay=0,TargetChanged=function(ay)return end,Trigger=function()mouse1press(
-		)wait()mouse1release()end},Aimbot={Enabled=false,LockMode=2,LockPart='Head',
-		MaxDistance=250,TeamCheck=true,AliveCheck=true,WallCheck=1,Sensitivity=0,
-		Sensitivity2=1,OffsetToMoveDirection=false,OffsetIncrement=15},FOVSettings={
-		Enabled=false,Visible=true,Radius=90,NumSides=60,Thickness=2,Transparency=0,
-		Filled=false,Color=af(255,150,150),OutlineColor=af(0,0,0),LockedColor=af(150,255
-		,150)},Blacklisted={},FOVCircleOutline=ag'Circle',FOVCircle=ag'Circle'}function
-		aG.IsFriendly(aK)return aK and aK.Team and aK.Team==at.Team end function aG.
-		IsBone(aK)return aK=='Head'or aK:find'Torso'or aK:find'Leg'or aK:find'Arm'end
-		function aG.GetPlayerFromCharacter(aK)return as:GetPlayerFromCharacter(aK)end
-		function aG.GetCharacter(aK)return aK and aK.Character end function aG.GetHealth
-		(aK)local aL=aK and aG.GetCharacter(aK)local aM=aL and aw(aL,'Humanoid')if aM
-		then return aM.Health end return 100 end local aK,aL=function(aK)return ac(aK.X,
-		aK.Y)end,function()aG.Locked=nil local aK=aG.FOVCircle aK.Color=aG.FOVSettings.
-		Color an(aq,'MouseDeltaSensitivity',aI)if aH then aH:Cancel()end end function aG
-		.Aimbot.SetState(aM)aD=aM if not aM then aL()end end local aM,aN=function()local
-		aM=aG.Aimbot local aN=aM.LockPart if not aG.Locked then aC=aG.FOVSettings.
-		Enabled and aG.FOVSettings.Radius or 2000 for aO,aP in next,aB(as)do local b=aG.
-		GetCharacter(aP)local c=b and aw(b,'Humanoid')if aP~=at and not aj(aG.
-		Blacklisted,am(aP,'Name'))and b and av(b,aN)and c then local d=am(b[aN],
-		'Position')if aM.MaxDistance and(au.CFrame.Position-d).Magnitude>aM.MaxDistance
-		then continue end if aM.TeamCheck and aG.IsFriendly(aP)then continue end if aM.
-		AliveCheck and aG.GetHealth(aP)<0 then continue end if aM.WallCheck==2 or aM.
-		WallCheck==3 then local e=ax(aG.GetCharacter(at))for f,g in next,ax(b)do e[#e+1]
-		=g end if#az(au,{d},e)>0 then continue end end local e,f,g=ay(au,d)e=aK(e)g=(aA(
-		aq)-e).Magnitude if g<aC and f then aC,aG.Locked=g,aP end end end else local aO=
-		aG.GetCharacter(aG.Locked)if aO then local aP=av(aO,aN)if not aP then aL()return
-		end local b=am(aO[aN],'Position')if aM.MaxDistance and(au.CFrame.Position-b).
-		Magnitude>aM.MaxDistance then aL()return end local c,d=ay(au,b)c=aK(c)local e=(
-		aA(aq)-c).Magnitude if aM.WallCheck==3 then local f=ax(aG.GetCharacter(at))for g
-		,h in next,ax(aO)do f[#f+1]=h end if#az(au,{b},f)>0 then aL()return end end if e
-		>aC or not d then aL()end else aL()end end end,function()local aM=aG.Triggerbot
-		if not aM.Enabled then aM.TargetChanged()return end local aN=am(at,'GetMouse')
-		and at:GetMouse()if not aN then aM.TargetChanged()return end local aO=ab.
-		CurrentCamera local aP,b,c=Ray.new(aO.CFrame.Position,(aN.Hit.Position-aO.CFrame
-		.Position).Unit*1000),{aG.GetCharacter(at),aO},RaycastParams.new()c.
-		FilterDescendantsInstances=b c.FilterType=Enum.RaycastFilterType.Blacklist local
-		d=ab:Raycast(aP.Origin,aP.Direction,c)if not d then aM.TargetChanged()return end
-		local e=d.Instance local f=e:FindFirstAncestorOfClass'Model'if not f then aM.
-		TargetChanged()return end local g=aG.GetPlayerFromCharacter(f)if not g or g==at
-		then aM.TargetChanged()return end if aM.TeamCheck and aG.IsFriendly(g)then aM.
-		TargetChanged()return end if aM.AliveCheck and aG.GetHealth(g)<0 then aM.
-		TargetChanged()end aM.TargetChanged(g)task.wait(aM.Delay)aM.Trigger()end local
-		aO=function()aI=am(aq,'MouseDeltaSensitivity')local aO,aP,b,c,d,e=aG.Aimbot,aG.
-		Triggerbot,aG.FOVCircle,aG.FOVCircleOutline,(aG.FOVSettings)aE.
-		RenderSteppedConnection=aF(am(ap,'RenderStepped'),function()local f,g=aO.
-		OffsetToMoveDirection,aO.LockPart if d.Enabled and aO.Enabled then b.Color=(aG.
-		Locked and d.LockedColor)or d.Color c.Color=d.OutlineColor b.Thickness=d.
-		Thickness c.Thickness=d.Thickness+1 b.Position=aA(aq)c.Position=aA(aq)b.NumSides
-		=d.NumSides c.NumSides=d.NumSides b.Radius=d.Radius c.Radius=d.Radius b.
-		Transparency=1-d.Transparency c.Transparency=1-d.Transparency b.Visible=d.
-		Visible c.Visible=d.Visible else b.Visible=false c.Visible=false end if aP.
-		Enabled then aN()end if aD and aO.Enabled then aM()e=f and am(aw(aG.
-		GetCharacter(aG.Locked),'Humanoid'),'MoveDirection')*(ak(aO.OffsetIncrement,1,30
-		)/10)or ad if aG.Locked then local h=am(aG.GetCharacter(aG.Locked)[g],'Position'
-		)local i=ay(au,h+e)local j,m=(i.X-aA(aq).X)/aO.Sensitivity2,(i.Y-aA(aq).Y)/aO.
-		Sensitivity2 if aG.Aimbot.LockMode==2 then ai(j,m)else if aO.Sensitivity>0 then
-		aH=ar:Create(au,ah(aG.Aimbot.Sensitivity,Enum.EasingStyle.Sine,Enum.
-		EasingDirection.Out),{CFrame=ae(au.CFrame.Position,h+e)})aH:Play()else an(au,
-		'CFrame',ae(au.CFrame.Position,h+e))end end end end end)end function aG.Exit(aP)
-		assert(aP,'Aimbot.Exit: Missing parameter #1 "self" <table>.')for b,c in next,aE
-		do aJ(aE[b])end aO=nil aK=nil aL=nil aM=nil aP.FOVCircle:Remove()aP.
-		FOVCircleOutline:Remove()end function aG.Restart()for aP,b in next,aE do aJ(aE[
-		aP])end aO()end aG.Load=aO setmetatable(aG,{__call=aO})return aG end function a.
+		ChamsOutlineColor={Color3.new(1,0,0),0},Skeleton=false,SkeletonThickness=1,
+		SkeletonColor={Color3.new(1,0,0),1}},Friendly={Enabled=false,Box=false,BoxColor=
+		{Color3.new(0,1,0),1},BoxOutline=true,BoxOutlineColor={Color3.new(),1},BoxFill=
+		false,BoxFillColor={Color3.new(0,1,0),0.5},CornerBox=false,CornerBoxColor={
+		Color3.new(1,1,1),1},HealthBar=false,HealthyColor=Color3.new(0,1,0),DyingColor=
+		Color3.new(1,0,0),HealthBarOutline=true,HealthBarOutlineColor={Color3.new(),0.5}
+		,HealthText=false,HealthTextColor={Color3.new(1,1,1),1},HealthTextOutline=true,
+		HealthTextOutlineColor=Color3.new(),Box3d=false,Box3dColor={Color3.new(0,1,0),1}
+		,Name=false,NameColor={Color3.new(1,1,1),1},NameOutline=true,NameOutlineColor=
+		Color3.new(),Weapon=false,WeaponColor={Color3.new(1,1,1),1},WeaponOutline=true,
+		WeaponOutlineColor=Color3.new(),Distance=false,DistanceColor={Color3.new(1,1,1),
+		1},DistanceOutline=true,DistanceOutlineColor=Color3.new(),Tracer=false,
+		TracerOrigin='Bottom',TracerColor={Color3.new(0,1,0),1},TracerOutline=true,
+		TracerOutlineColor={Color3.new(),1},OffScreenArrow=false,OffScreenArrowColor={
+		Color3.new(1,1,1),1},OffScreenArrowSize=15,OffScreenArrowRadius=150,
+		OffScreenArrowOutline=true,OffScreenArrowOutlineColor={Color3.new(),1},Chams=
+		false,ChamsVisibleOnly=false,ChamsFillColor={Color3.new(0.2,0.2,0.2),0.5},
+		ChamsOutlineColor={Color3.new(0,1,0),0},Skeleton=false,SkeletonColor={Color3.
+		new(0,1,0),1}}}}function e.AddInstance(f,g)local h=e.ObjectCache if h[f]then
+		warn'Instance handler already exists.'else h[f]={d.New(f,g)}end return h[f][1]
+		end function e.Load()assert(not e.HasLoaded,'Esp has already been loaded.')local
+		f,g,h=function(f)e.ObjectCache[f]={aP.New(f,e),c.New(f,e)}end,function(f)local g
+		=e.ObjectCache[f]if g then for h=1,#g do g[h]:Destruct()end e.ObjectCache[f]=nil
+		end end,ac:GetPlayers()for i=e.Shared.IncludeLocalPlayer and 1 or 2,#h do f(h[i]
+		)end e.PlayerAdded=ac.PlayerAdded:Connect(f)e.PlayerRemoving=ac.PlayerRemoving:
+		Connect(g)e.HasLoaded=true end function e.Unload()assert(e.HasLoaded,
+		'Esp has not been loaded yet.')for f,g in next,e.ObjectCache do for h=1,#g do g[
+		h]:Destruct()end e.ObjectCache[f]=nil end e.PlayerAdded:Disconnect()e.
+		PlayerRemoving:Disconnect()e.HasLoaded=false end function e.GetWeapon(f)local g=
+		'None'if f and f.Character then local h=f.Character:FindFirstChildOfClass'Tool'
+		if h then g=h.Name end end return string.upper(g)end function e.IsFriendly(f)
+		return f.Team and f.Team==ag.Team end function e.GetTeamColor(f)return f.Team
+		and f.Team.TeamColor and f.Team.TeamColor.Color end function e.GetCharacter(f)
+		return f.Character end function e.IsBodyPart(f)return f=='Head'or f:find'Torso'
+		or f:find'Leg'or f:find'Arm'end function e.GetRootPart()return'HumanoidRootPart'
+		end function e.GetHealth(f)local g=f and e.GetCharacter(f)local h=g and aw(g,
+		'Humanoid')if h then return h.Health,h.MaxHealth end return 100,100 end function
+		e.GetJoints(f)local g={Head=f:FindFirstChild'Head',UpperTorso=f:FindFirstChild
+		'UpperTorso'or f:FindFirstChild'Torso',LowerTorso=f:FindFirstChild'LowerTorso'or
+		f:FindFirstChild'Torso',LeftUpperArm=f:FindFirstChild'LeftUpperArm'or f:
+		FindFirstChild'Left Arm',LeftLowerArm=f:FindFirstChild'LeftLowerArm'or f:
+		FindFirstChild'Left Arm',LeftHand=f:FindFirstChild'LeftHand'or f:FindFirstChild
+		'Left Arm',RightUpperArm=f:FindFirstChild'RightUpperArm'or f:FindFirstChild
+		'Right Arm',RightLowerArm=f:FindFirstChild'RightLowerArm'or f:FindFirstChild
+		'Right Arm',RightHand=f:FindFirstChild'RightHand'or f:FindFirstChild'Right Arm',
+		LeftUpperLeg=f:FindFirstChild'LeftUpperLeg'or f:FindFirstChild'Left Leg',
+		LeftLowerLeg=f:FindFirstChild'LeftLowerLeg'or f:FindFirstChild'Left Leg',
+		LeftFoot=f:FindFirstChild'LeftFoot'or f:FindFirstChild'Left Leg',RightUpperLeg=f
+		:FindFirstChild'RightUpperLeg'or f:FindFirstChild'Right Leg',RightLowerLeg=f:
+		FindFirstChild'RightLowerLeg'or f:FindFirstChild'Right Leg',RightFoot=f:
+		FindFirstChild'RightFoot'or f:FindFirstChild'Right Leg'}local h={{g.Head,g.
+		UpperTorso},{g.UpperTorso,g.LowerTorso},{g.UpperTorso,g.LeftUpperArm},{g.
+		LeftUpperArm,g.LeftLowerArm},{g.LeftLowerArm,g.LeftHand},{g.UpperTorso,g.
+		RightUpperArm},{g.RightUpperArm,g.RightLowerArm},{g.RightLowerArm,g.RightHand},{
+		g.LowerTorso,g.LeftUpperLeg},{g.LeftUpperLeg,g.LeftLowerLeg},{g.LeftLowerLeg,g.
+		LeftFoot},{g.LowerTorso,g.RightUpperLeg},{g.RightUpperLeg,g.RightLowerLeg},{g.
+		RightLowerLeg,g.RightFoot}}return g,h end return e end function a.d()local aa,ab
+		,ac,ad,ae,af,ag,ah,ai,aj,ak=game,workspace,Vector2.new,Vector3.zero,CFrame.new,
+		Color3.fromRGB,Drawing.new,TweenInfo.new,mousemoverel or(Input and Input.
+		MouseMove),table.find,math.clamp local al=getrawmetatable and getrawmetatable(aa
+		)or{__index=function(al,am)return al[am]end,__newindex=function(al,am,an)al[am]=
+		an end}local am,an=al.__index,al.__newindex local ao=am(aa,'GetService')local ap
+		,aq,ar,as=ao(aa,'RunService'),ao(aa,'UserInputService'),ao(aa,'TweenService'),
+		ao(aa,'Players')local at,au,av,aw=am(as,'LocalPlayer'),am(ab,'CurrentCamera'),
+		am(aa,'FindFirstChild'),am(aa,'FindFirstChildOfClass')local ax,ay,az,aA,aB,aC,aD
+		,aE,aF,aG,aH,aI=am(au,'WorldToViewportPoint'),am(au,'GetPartsObscuringTarget'),
+		am(aq,'GetMouseLocation'),am(as,'GetPlayers'),2000,false,{},am(aa,
+		'DescendantAdded').Connect,{Triggerbot={Enabled=false,TeamCheck=true,AliveCheck=
+		true,WeaponCheck=true,Delay=0,TargetChanged=function(ax)return end,Trigger=
+		function(ax)if ax then mouse1press()task.wait()mouse1release()end end},Aimbot={
+		Enabled=false,LockMode=2,LockPart='Head',MaxDistance=250,TeamCheck=true,
+		AliveCheck=true,WallCheck=1,Sensitivity=0,Sensitivity2=1,OffsetToMoveDirection=
+		false,OffsetIncrement=15},FOVSettings={Enabled=false,Visible=true,Radius=90,
+		NumSides=60,Thickness=2,Transparency=0,Filled=false,Color=af(255,150,150),
+		OutlineColor=af(0,0,0),LockedColor=af(150,255,150)},IgnoredParts={},
+		BlacklistTable={},FOVCircleOutline=ag'Circle',FOVCircle=ag'Circle'}function aF.
+		IsFriendly(aJ)return aJ and aJ.Team and aJ.Team==at.Team end function aF.IsBone(
+		aJ)return aJ=='Head'or aJ:find'Torso'or aJ:find'Leg'or aJ:find'Arm'end function
+		aF.GetPlayerFromCharacter(aJ)return as:GetPlayerFromCharacter(aJ)end function aF
+		.GetCharacter(aJ)return aJ and aJ.Character end function aF.GetHealth(aJ)local
+		aK=aJ and aF.GetCharacter(aJ)local aL=aK and aw(aK,'Humanoid')if aL then return
+		aL.Health end return 100 end local aJ,aK=function(aJ)return ac(aJ.X,aJ.Y)end,
+		function()aF.Locked=nil local aJ=aF.FOVCircle aJ.Color=aF.FOVSettings.Color an(
+		aq,'MouseDeltaSensitivity',aH)if aG then aG:Cancel()end end function aF.
+		AddToIgnoreQuery(aL)if not table.find(aF.IgnoredParts,aL)then table.insert(aF.
+		IgnoredParts,aL)end end function aF.Aimbot.SetState(aL)aC=aL if not aL then aK()
+		end end local aL,aM=function()local aL=aF.Aimbot local aM=aL.LockPart if not aF.
+		Locked then aB=aF.FOVSettings.Enabled and aF.FOVSettings.Radius or 2000 for aN,
+		aO in next,aA(as)do local aP=aF.GetCharacter(aO)local c=aP and aw(aP,'Humanoid')
+		if aO~=at and aP and aF.GetCharacter(at)and av(aP,aM)and c then local d=am(aP[aM
+		],'Position')if aL.MaxDistance and(au.CFrame.Position-d).Magnitude>aL.
+		MaxDistance then continue end if aL.TeamCheck and aF.IsFriendly(aO)then continue
+		end if aL.AliveCheck and aF.GetHealth(aO)<0 then continue end if aL.WallCheck==2
+		or aL.WallCheck==3 then table.clear(aF.BlacklistTable)table.insert(aF.
+		BlacklistTable,aF.GetCharacter(at))table.insert(aF.BlacklistTable,aF.
+		GetCharacter(aO))for e=1,#aF.IgnoredParts do aF.BlacklistTable[e+2]=aF.
+		IgnoredParts[e]end if#ay(au,{d},aF.BlacklistTable)>0 then continue end end local
+		e,f,g=ax(au,d)e=aJ(e)g=(az(aq)-e).Magnitude if g<aB and f then aB,aF.Locked=g,aO
+		end end end else local aN=aF.GetCharacter(aF.Locked)if aN and aF.GetCharacter(at
+		)then local aO=av(aN,aM)if not aO then aK()return end local aP=am(aN[aM],
+		'Position')if aL.MaxDistance and(au.CFrame.Position-aP).Magnitude>aL.MaxDistance
+		then aK()return end local c,d=ax(au,aP)c=aJ(c)local e=(az(aq)-c).Magnitude if aL
+		.WallCheck==3 then table.clear(aF.BlacklistTable)table.insert(aF.BlacklistTable,
+		aF.GetCharacter(at))table.insert(aF.BlacklistTable,aF.GetCharacter(aF.Locked))
+		for f=1,#aF.IgnoredParts do aF.BlacklistTable[f+2]=aF.IgnoredParts[f]end if#ay(
+		au,{aP},aF.BlacklistTable)>0 then aK()return end end if e>aB or not d then aK()
+		end else aK()end end end,function()local aL=aF.Triggerbot if not aL.Enabled or
+		not aF.GetCharacter(at)then aL.TargetChanged()return end local aM=am(at,
+		'GetMouse')and at:GetMouse()if not aM then aL.TargetChanged()return end local aN
+		=ab.CurrentCamera local aO,aP=Ray.new(aN.CFrame.Position,(aM.Hit.Position-aN.
+		CFrame.Position).Unit*1000),{aF.GetCharacter(at),aN}for c,d in next,aF.
+		IgnoredParts do aP[#aP+1]=d end local c=RaycastParams.new()c.
+		FilterDescendantsInstances=aP c.FilterType=Enum.RaycastFilterType.Blacklist
+		local d=ab:Raycast(aO.Origin,aO.Direction,c)if not d then aL.TargetChanged()
+		return end local e=d.Instance local f=e:FindFirstAncestorOfClass'Model'if not f
+		then aL.TargetChanged()return end local g=aF.GetPlayerFromCharacter(f)if not g
+		or g==at then aL.TargetChanged()return end if aL.TeamCheck and aF.IsFriendly(g)
+		then aL.TargetChanged()return end if aL.AliveCheck and aF.GetHealth(g)<0 then aL
+		.TargetChanged()end aL.TargetChanged(g)task.wait(aL.Delay)aL.Trigger(true)end
+		local aN=function()aH=am(aq,'MouseDeltaSensitivity')local aN,aO,aP,c,d,e=aF.
+		Aimbot,aF.Triggerbot,aF.FOVCircle,aF.FOVCircleOutline,(aF.FOVSettings)aD.
+		RenderSteppedConnection=aE(am(ap,'RenderStepped'),function()local f,g=aN.
+		OffsetToMoveDirection,aN.LockPart if d.Enabled and aN.Enabled then aP.Color=(aF.
+		Locked and d.LockedColor)or d.Color c.Color=d.OutlineColor aP.Thickness=d.
+		Thickness c.Thickness=d.Thickness+1 aP.Position=az(aq)c.Position=az(aq)aP.
+		NumSides=d.NumSides c.NumSides=d.NumSides aP.Radius=d.Radius c.Radius=d.Radius
+		aP.Transparency=1-d.Transparency c.Transparency=1-d.Transparency aP.Visible=d.
+		Visible c.Visible=d.Visible else aP.Visible=false c.Visible=false end if aO.
+		Enabled then aM()end if aC and aN.Enabled then aL()e=f and am(aw(aF.
+		GetCharacter(aF.Locked),'Humanoid'),'MoveDirection')*(ak(aN.OffsetIncrement,1,30
+		)/10)or ad if aF.Locked then local h=am(aF.GetCharacter(aF.Locked)[g],'Position'
+		)local i=ax(au,h+e)local j,m=(i.X-az(aq).X)/aN.Sensitivity2,(i.Y-az(aq).Y)/aN.
+		Sensitivity2 if aF.Aimbot.LockMode==2 then ai(j,m)else if aN.Sensitivity>0 then
+		aG=ar:Create(au,ah(aF.Aimbot.Sensitivity,Enum.EasingStyle.Sine,Enum.
+		EasingDirection.Out),{CFrame=ae(au.CFrame.Position,h+e)})aG:Play()else an(au,
+		'CFrame',ae(au.CFrame.Position,h+e))end end end end end)end function aF.Exit(aO)
+		assert(aO,'Aimbot.Exit: Missing parameter #1 "self" <table>.')for aP,c in next,
+		aD do aI(aD[aP])end aN=nil aJ=nil aK=nil aL=nil aO.FOVCircle:Remove()aO.
+		FOVCircleOutline:Remove()end function aF.Restart()for aO,aP in next,aD do aI(aD[
+		aO])end aN()end aF.Load=aN setmetatable(aF,{__call=aN})return aF end function a.
 		e()return function(aa)local ab,ac,ad=a.load'a',a.load'c',a.load'd'local ae,af,ag
 		,ah=ab.Assets,ab.Colors,ac.Shared,ac.Team local ai,aj,ak,al,am,an=ah.Enemy,ah.
 		Friendly,ad.Aimbot,ad.Triggerbot,ad.FOVSettings,ab:Window{Title=aa.Name,Keybind=
@@ -1495,14 +1538,13 @@ Push(
 		'Always On'},Limit=1,Minimum=1,Callback=function(as,at)ak.WallCheck=({Off=1,
 		Sticky=2,['Always On']=3})[at[1] ]end}ar:Toggle{Name='Team Check',Description=
 		'whether to ignore friendlys',State=true,Callback=function(as,at)ak.TeamCheck=at
-		end}ar:Toggle{Name='Alive Check',Description='whether to ignore corpses',State=
-		true,Callback=function(as,at)ak.AliveCheck=at end}:Continue()ar:Slider{Name=
-		'Smoothing',Description='aimbot smoothness',Value=1,Minimum=1,Maximum=20,Step=
-		0.1,Precision=1,Callback=function(as,at)ak.Sensitivity=(at-1)/(as.Settings.
-		Maximum-1)*0.15 ak.Sensitivity2=at end}ar:Dropdown{Name='Bone',Description=
-		'selects the bone to aim at',Options={'Head','Torso'},Value={'Head'},Limit=1,
-		Minimum=1,Callback=function(as,at)local au=at[1]=='Torso'and'HumanoidRootPart'or
-		at[1]ak.LockPart=au end}ar:Dropdown{Name='Lock Method',Description=
+		end}ar:Slider{Name='Smoothing',Description='aimbot smoothness',Value=1,Minimum=1
+		,Maximum=20,Step=0.1,Precision=1,Callback=function(as,at)ak.Sensitivity=(at-1)/(
+		as.Settings.Maximum-1)*0.15 ak.Sensitivity2=at end}ar:Dropdown{Name='Bone',
+		Description='selects the bone to aim at',Options={'All','Head','Chest','Stomach'
+		,'Left Arm','Right Arm','Left Leg','Right Leg'},Value={'Head'},Limit=1,Minimum=1
+		,Callback=function(as,at)ak.LockPart=at[1]=='Torso'and'HumanoidRootPart'or at[1]
+		end}ar:Dropdown{Name='Lock Method',Description=
 		'the input used to lock onto a player',Options={'Camera','Mouse'},Value={
 		'Camera'},Limit=1,Minimum=1,Callback=function(as,at)ak.LockMode=({Camera=1,Mouse
 		=2})[at[1] ]end}ar:Slider{Name='Max Distance',Description=
@@ -1516,131 +1558,138 @@ Push(
 		AlphaEnabled=false,Color={Color3.fromRGB(255,150,150),0},SuggestionColors={{
 		Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246
 		,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=
-		function(as)am.Color=as end}:Continue():Colorpicker{Description='Locked Color',
-		AlphaEnabled=false,Color={Color3.fromRGB(150,255,150),0},SuggestionColors={{
-		Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246
-		,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=
-		function(as)am.LockedColor=as end}ar:Slider{Name='Radius',Description=
-		'aimbot FOV limit radius',Value=120,Minimum=1,Maximum=500,Step=1,Precision=0,
-		Callback=function(as,at)am.Radius=at end}ar:Slider{Name='Circle Sides',
-		Description='the amount of points the drawn circle has',Value=45,Minimum=3,
-		Maximum=80,Step=1,Precision=0,Callback=function(as,at)am.NumSides=at end}:
-		Continue()end end do local aq=ap:Section{Name='Triggerbot'}aq:Toggle{Name=
+		function(as,at)am.Color=at end}:Continue():Colorpicker{Description=
+		'Locked Color',AlphaEnabled=false,Color={Color3.fromRGB(150,255,150),0},
+		SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
+		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
+		220,195)}},Callback=function(as,at)am.LockedColor=at end}ar:Slider{Name='Radius'
+		,Description='aimbot FOV limit radius',Value=120,Minimum=1,Maximum=500,Step=1,
+		Precision=0,Callback=function(as,at)am.Radius=at end}ar:Slider{Name=
+		'Circle Sides',Description='the amount of points the drawn circle has',Value=45,
+		Minimum=3,Maximum=80,Step=1,Precision=0,Callback=function(as,at)am.NumSides=at
+		end}:Continue()end end do local aq=ap:Section{Name='Triggerbot'}aq:Toggle{Name=
 		'Enabled',Description='enables triggerbot',State=false,Callback=function(ar,as)
 		al.Enabled=as end}aq:Slider{Name='Reaction Time',Description=
 		'the time it takes for triggerbot to react to targets (ms)',Value=0,Minimum=0,
 		Maximum=500,Step=1,Precision=0,Callback=function(ar,as)al.Delay=as/1000 end}aq:
 		Toggle{Name='Team Check',Description='whether to ignore friendlys',State=true,
-		Callback=function(ar,as)al.TeamCheck=as end}aq:Toggle{Name='Alive Check',
-		Description='whether to ignore corpses',State=true,Callback=function(ar,as)ak.
-		AliveCheck=as end}:Continue()end end do local ap=ao.Visuals do local aq=ap:
-		Section{Name='ESP'}aq:Slider{Name='Text Font',Description=
-		'the font ESP text uses',Value=3,Minimum=0,Maximum=3,Step=1,Precision=0,Callback
-		=function(ar,as)ag.TextFont=as end}aq:Slider{Name='Text Size',Description=
-		'the size of ESP text',Value=13,Minimum=1,Maximum=20,Step=1,Precision=0,Callback
-		=function(ar,as)ag.TextSize=as end}aq:Toggle{Name='Use Team Color',Description=
-		'enables ESP team color',State=false,Callback=function(ar,as)ag.UseTeamColor=as
-		end}aq:Toggle{Name='Limit Enabled',Description='enables distance limit',State=
-		false,Callback=function(ar,as)ag.LimitDistance=as end}:Continue()aq:Slider{Name=
-		'Max Distance',Description='the maximum distance that ESP will render at',Value=
-		500,Minimum=1,Maximum=2000,Step=1,Precision=0,Callback=function(ar,as)ag.
-		MaxDistance=as end}:Continue()local ar=function(ar)an:VisualPreview{HealthBar={
-		Visible=ar.HealthBar,Color={ar.HealthyColor}},Name={Visible=ar.Name,Color={ar.
-		NameColor[1],ar.NameColor[2]}},Distance={Visible=ar.Distance,Color={ar.
-		DistanceColor[1],ar.DistanceColor[2]}},Health={Visible=ar.HealthText,Color={ar.
-		HealthTextColor[1],ar.HealthTextColor[2]}},Weapon={Visible=ar.Weapon,Color={ar.
-		WeaponColor[1],ar.WeaponColor[2]}},BoundingBox={Visible=ar.Box,Color={ar.
-		BoxColor[1],ar.BoxColor[2]}},CornerBox={Visible=ar.CornerBox,Color={ar.
-		CornerBoxColor[1],ar.CornerBoxColor[2]}},FillBox={Visible=ar.BoxFill,Color={ar.
-		BoxFillColor[1],ar.BoxFillColor[2]}}}end local as,at=function(as,at)at:Toggle{
-		Name='Enabled',Description='enables ESP',State=false,Callback=function(au,av)as.
-		Enabled=av end}at:Toggle{Name='Bounding Box',Description=
-		'enables bounding box ESP',State=false,Callback=function(au,av)as.Box=av ar(as)
-		end}:Continue():Colorpicker{Color={Color3.fromRGB(77,92,143),0.5},
+		Callback=function(ar,as)al.TeamCheck=as end}:Continue()end end do local ap=ao.
+		Visuals do local aq=ap:Section{Name='ESP'}aq:Slider{Name='Text Font',Description
+		='the font ESP text uses',Value=3,Minimum=0,Maximum=3,Step=1,Precision=0,
+		Callback=function(ar,as)ag.TextFont=as end}aq:Slider{Name='Text Size',
+		Description='the size of ESP text',Value=13,Minimum=1,Maximum=20,Step=1,
+		Precision=0,Callback=function(ar,as)ag.TextSize=as end}aq:Toggle{Name=
+		'Use Team Color',Description='enables ESP team color',State=false,Callback=
+		function(ar,as)ag.UseTeamColor=as end}aq:Toggle{Name='Limit Enabled',Description
+		='enables distance limit',State=false,Callback=function(ar,as)ag.LimitDistance=
+		as end}:Continue()aq:Slider{Name='Max Distance',Description=
+		'the maximum distance that ESP will render at',Value=500,Minimum=1,Maximum=2000,
+		Step=1,Precision=0,Callback=function(ar,as)ag.MaxDistance=as end}:Continue()
+		local ar=function(ar)an:VisualPreview{HealthBar={Visible=ar.HealthBar,Color={ar.
+		HealthyColor}},Name={Visible=ar.Name,Color={ar.NameColor[1],ar.NameColor[2]}},
+		Distance={Visible=ar.Distance,Color={ar.DistanceColor[1],ar.DistanceColor[2]}},
+		Health={Visible=ar.HealthText,Color={ar.HealthTextColor[1],ar.HealthTextColor[2]
+		}},Weapon={Visible=ar.Weapon,Color={ar.WeaponColor[1],ar.WeaponColor[2]}},
+		BoundingBox={Visible=ar.Box,Color={ar.BoxColor[1],ar.BoxColor[2]}},CornerBox={
+		Visible=ar.CornerBox,Color={ar.CornerBoxColor[1],ar.CornerBoxColor[2]}},FillBox=
+		{Visible=ar.BoxFill,Color={ar.BoxFillColor[1],ar.BoxFillColor[2]}}}end local as,
+		at=function(as,at)at:Toggle{Name='Enabled',Description='enables ESP',State=false
+		,Callback=function(au,av)as.Enabled=av end}at:Toggle{Name='Bounding Box',
+		Description='enables bounding box ESP',State=false,Callback=function(au,av)as.
+		Box=av ar(as)end}:Continue():Colorpicker{Color={Color3.fromRGB(77,92,143),0.5},
 		SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
 		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-		220,195)}},Callback=function(au,av)as.BoxColor[1],as.BoxColor[2]=au,1-av as.
-		BoxOutlineColor[2]=1-av ar(as)end}at:Toggle{Name='Box Fill',Description=
+		220,195)}},Callback=function(au,av,aw)as.BoxColor[1],as.BoxColor[2]=av,1-aw as.
+		BoxOutlineColor[2]=1-aw ar(as)end}at:Toggle{Name='Box Fill',Description=
 		'enables box fill ESP',State=false,Callback=function(au,av)as.BoxFill=av ar(as)
 		end}:Continue():Colorpicker{Color={Color3.fromRGB(0,0,0),0.8},SuggestionColors={
 		{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,
 		246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=
-		function(au,av)as.BoxFillColor[1],as.BoxFillColor[2]=au,1-av ar(as)end}at:Toggle
-		{Name='Corner Box',Description='enables corner box ESP',State=false,Callback=
-		function(au,av)as.CornerBox=av ar(as)end}:Continue():Colorpicker{Color={Color3.
-		fromRGB(123,124,2433),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.
+		function(au,av,aw)as.BoxFillColor[1],as.BoxFillColor[2]=av,1-aw ar(as)end}at:
+		Toggle{Name='Corner Box',Description='enables corner box ESP',State=false,
+		Callback=function(au,av)as.CornerBox=av ar(as)end}:Continue():Colorpicker{Color=
+		{Color3.fromRGB(123,124,2433),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{
+		Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,
+		197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(au,av,aw)as.
+		CornerBoxColor[1],as.CornerBoxColor[2]=av,1-aw ar(as)end}at:Toggle{Name=
+		'3D Bounding Box',Description='enables 3d bounding box ESP',State=false,Callback
+		=function(au,av)as.Box3d=av ar(as)end}:Continue():Colorpicker{Color={Color3.
+		fromRGB(141,149,192),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.
 		fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)
-		},{Color3.fromRGB(49,220,195)}},Callback=function(au,av)as.CornerBoxColor[1],as.
-		CornerBoxColor[2]=au,1-av ar(as)end}at:Toggle{Name='3D Bounding Box',Description
-		='enables 3d bounding box ESP',State=false,Callback=function(au,av)as.Box3d=av
-		ar(as)end}:Continue():Colorpicker{Color={Color3.fromRGB(141,149,192),0},
-		SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
-		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-		220,195)}},Callback=function(au,av)as.Box3dColor[1],as.Box3dColor[2]=au,1-av ar(
-		as)end}at:Toggle{Name='Chams',Description='enables player chams ESP',State=false
-		,Callback=function(au,av)as.Chams=av end}:Continue():Colorpicker{Description=
-		'Fill Color',Color={Color3.fromRGB(100,120,250),0.8},SuggestionColors={{Color3.
+		},{Color3.fromRGB(49,220,195)}},Callback=function(au,av,aw)as.Box3dColor[1],as.
+		Box3dColor[2]=av,1-aw ar(as)end}at:Toggle{Name='Chams',Description=
+		'enables player chams ESP',State=false,Callback=function(au,av)as.Chams=av end}:
+		Continue():Colorpicker{Description='Fill Color',Color={Color3.fromRGB(100,120,
+		250),0.8},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,
+		243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
+		fromRGB(49,220,195)}},Callback=function(au,av,aw)as.ChamsFillColor[1],as.
+		ChamsFillColor[2]=av,aw ar(as)end}:Continue():Colorpicker{Description=
+		'Outline Color',Color={Color3.fromRGB(25,85,255),0.5},SuggestionColors={{Color3.
 		fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},
 		{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(au
-		,av)as.ChamsFillColor[1],as.ChamsFillColor[2]=au,av ar(as)end}:Continue():
-		Colorpicker{Description='Outline Color',Color={Color3.fromRGB(25,85,255),0.5},
+		,av,aw)as.ChamsOutlineColor[1],as.ChamsOutlineColor[2]=av,aw ar(as)end}at:Toggle
+		{Name='Skeletons',Description='enables skeleton/bone ESP',State=false,Callback=
+		function(au,av)as.Skeleton=av end}:Continue():Colorpicker{Color={Color3.fromRGB(
+		123,124,243),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(
+		123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{
+		Color3.fromRGB(49,220,195)}},Callback=function(au,av,aw)as.SkeletonColor[1],as.
+		SkeletonColor[2]=av,1-aw ar(as)end}:Continue()at:Slider{Name='Thickness',
+		Description='the thickness of skeleton lines',Value=1,Minimum=1,Maximum=4,Step=1
+		,Precision=0,Callback=function(au,av)as.SkeletonThickness=av end}at:Toggle{Name=
+		'Tracers',Description='enables tracers ESP',State=false,Callback=function(au,av)
+		as.Tracer=av end}:Continue():Colorpicker{Color={Color3.fromRGB(123,124,243),0},
 		SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
 		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-		220,195)}},Callback=function(au,av)as.ChamsOutlineColor[1],as.ChamsOutlineColor[
-		2]=au,av ar(as)end}at:Toggle{Name='Tracers',Description='enables tracers ESP',
-		State=false,Callback=function(au,av)as.Tracer=av end}:Continue():Colorpicker{
-		Color={Color3.fromRGB(123,124,243),0},SuggestionColors={{Color3.fromRGB(171,81,
-		83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.
-		fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(au,av)as.
-		TracerColor[1],as.TracerColor[2]=au,1-av as.TracerOutlineColor[2]=1-av ar(as)end
-		}at:Dropdown{Name='Tracers Origin',Description=
-		'selects the starting port of tracers',Options={'Top','Middle','Bottom','Mouse'}
-		,Value={'Top'},Limit=1,Minimum=1,Callback=function(au,av)as.TracerOrigin=av[1]
-		end}at:Toggle{Name='Health Bar',Description='enables health bar ESP',State=false
-		,Callback=function(au,av)as.HealthBar=av ar(as)end}:Continue():Colorpicker{
-		Description='Healthy Color',AlphaEnabled=false,Color={Color3.fromRGB(58,161,47),
-		0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
-		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-		220,195)}},Callback=function(au)as.HealthyColor=au ar(as)end}:Continue():
-		Colorpicker{Description='Dying Color',AlphaEnabled=false,Color={Color3.fromRGB(
-		161,47,47),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,
-		124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
-		fromRGB(49,220,195)}},Callback=function(au)as.DyingColor=au ar(as)end}at:Toggle{
-		Name='Off Screen Arrows',Description='enables off screen arrow ESP',State=false,
-		Callback=function(au,av)as.OffScreenArrow=av end}:Continue():Colorpicker{Color={
-		Color3.fromRGB(255,255,255),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{
-		Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,
-		197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(au,av)as.
-		OffScreenArrowColor[1],as.OffScreenArrowColor[2]=au,1-av as.
-		OffScreenArrowOutlineColor[2]=1-av ar(as)end}:Continue()at:Slider{Name=
-		'Arrow Size',Description='changes the size of the individual off screen arrows',
-		Value=15,Minimum=1,Maximum=50,Step=1,Precision=0,Callback=function(au,av)ag.
-		OffScreenArrowSize=av end}:Continue()at:Slider{Name='Radius',Description=
+		220,195)}},Callback=function(au,av,aw)as.TracerColor[1],as.TracerColor[2]=av,1-
+		aw as.TracerOutlineColor[2]=1-aw ar(as)end}:Continue()at:Dropdown{Name=
+		'Tracers Origin',Description='selects the starting port of tracers',Options={
+		'Top','Middle','Bottom','Mouse'},Value={'Top'},Limit=1,Minimum=1,Callback=
+		function(au,av)as.TracerOrigin=av[1]end}at:Toggle{Name='Health Bar',Description=
+		'enables health bar ESP',State=false,Callback=function(au,av)as.HealthBar=av ar(
+		as)end}:Continue():Colorpicker{Description='Healthy Color',AlphaEnabled=false,
+		Color={Color3.fromRGB(58,161,47),0},SuggestionColors={{Color3.fromRGB(171,81,83)
+		},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(
+		255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(au,av)as.
+		HealthyColor=av ar(as)end}:Continue():Colorpicker{Description='Dying Color',
+		AlphaEnabled=false,Color={Color3.fromRGB(161,47,47),0},SuggestionColors={{Color3
+		.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)}
+		,{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(
+		au,av)as.DyingColor=av ar(as)end}at:Toggle{Name='Off Screen Arrows',Description=
+		'enables off screen arrow ESP',State=false,Callback=function(au,av)as.
+		OffScreenArrow=av end}:Continue():Colorpicker{Color={Color3.fromRGB(255,255,255)
+		,0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},
+		{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
+		220,195)}},Callback=function(au,av,aw)as.OffScreenArrowColor[1],as.
+		OffScreenArrowColor[2]=av,1-aw as.OffScreenArrowOutlineColor[2]=1-aw ar(as)end}:
+		Continue()at:Slider{Name='Arrow Size',Description=
+		'changes the size of the individual off screen arrows',Value=15,Minimum=1,
+		Maximum=50,Step=1,Precision=0,Callback=function(au,av)ag.OffScreenArrowSize=av
+		end}:Continue()at:Slider{Name='Radius',Description=
 		'changes the radius limit of offscreen arrows',Value=150,Minimum=1,Maximum=500,
 		Step=1,Precision=0,Callback=function(au,av)ag.OffScreenArrowRadius=av end}at:
 		Toggle{Name='Name',Description='enables name text ESP',State=false,Callback=
 		function(au,av)as.Name=av ar(as)end}:Continue():Colorpicker{Color={Color3.
 		fromRGB(221,215,148),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.
 		fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)
-		},{Color3.fromRGB(49,220,195)}},Callback=function(au,av)as.NameColor[1],as.
-		NameColor[2]=au,1-av ar(as)end}at:Toggle{Name='Distance',Description=
+		},{Color3.fromRGB(49,220,195)}},Callback=function(au,av,aw)as.NameColor[1],as.
+		NameColor[2]=av,1-aw ar(as)end}at:Toggle{Name='Distance',Description=
 		'enables distance text ESP',State=false,Callback=function(au,av)as.Distance=av
 		ar(as)end}:Continue():Colorpicker{Color={Color3.fromRGB(221,215,148),0},
 		SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
 		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-		220,195)}},Callback=function(au,av)as.DistanceColor[1],as.DistanceColor[2]=au,1-
-		av ar(as)end}at:Toggle{Name='Weapon',Description='enables weapon text ESP',State
-		=false,Callback=function(au,av)as.Weapon=av ar(as)end}:Continue():Colorpicker{
-		Color={Color3.fromRGB(200,173,182),0},SuggestionColors={{Color3.fromRGB(171,81,
-		83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.
-		fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(au,av)as.
-		WeaponColor[1],as.WeaponColor[2]=au,1-av ar(as)end}at:Toggle{Name='Health',
-		Description='enables health text ESP',State=false,Callback=function(au,av)as.
-		HealthText=av ar(as)end}:Continue():Colorpicker{Color={Color3.fromRGB(200,173,
-		182),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,
-		243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
-		fromRGB(49,220,195)}},Callback=function(au,av)as.HealthTextColor[1],as.
-		HealthTextColor[2]=au,1-av ar(as)end}:Continue()end,aq:Section{Name='Enemies'}
+		220,195)}},Callback=function(au,av,aw)as.DistanceColor[1],as.DistanceColor[2]=av
+		,1-aw ar(as)end}at:Toggle{Name='Weapon',Description='enables weapon text ESP',
+		State=false,Callback=function(au,av)as.Weapon=av ar(as)end}:Continue():
+		Colorpicker{Color={Color3.fromRGB(200,173,182),0},SuggestionColors={{Color3.
+		fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},
+		{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(au
+		,av,aw)as.WeaponColor[1],as.WeaponColor[2]=av,1-aw ar(as)end}at:Toggle{Name=
+		'Health',Description='enables health text ESP',State=false,Callback=function(au,
+		av)as.HealthText=av ar(as)end}:Continue():Colorpicker{Color={Color3.fromRGB(200,
+		173,182),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,
+		124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
+		fromRGB(49,220,195)}},Callback=function(au,av,aw)as.HealthTextColor[1],as.
+		HealthTextColor[2]=av,1-aw ar(as)end}:Continue()end,aq:Section{Name='Enemies'}
 		as(ai,at)local au=aq:Section{Name='Friendlies'}as(aj,au)end end do local ap=ao.
 		Cfg ap:Toggle{Name='Visual preview',Description=
 		'enables a visual preview of your esp',State=true,Callback=function(aq,ar)an:
@@ -1648,396 +1697,454 @@ Push(
 		Blacklist={Enum.UserInputType.MouseButton1,Enum.UserInputType.MouseButton2},
 		onChanged=function(aq,ar)an:UpdateSettings{Keybind=ar}end}:Continue()ap:Button{
 		Color=af.SystemDarkRed,Name='Unload Menu',Callback=function(aq)ab:Unload()end}:
-		Continue()end ao.Legit:Select()ac.Load()ad.Load()ab:Notification{Title=`RIOT V2 - {
-		aa.Name} | getriot.cc`,Description=`RIOT V2 Loaded!`,Lifetime=5}end end function
-		a.f()return function(aa)local ab,ac=game:GetService'ReplicatedFirst':
-		WaitForChild'NewLoader',game:GetService'ReplicatedStorage':WaitForChild
-		'Functions':WaitForChild'Ping'do local ad ad=hookfunction(getrenv().task.spawn,
-		newcclosure(function(ae,...)local af={...}if af[1]==ac and debug.info(ae,'n')==
-		'InvokeServer'then return task.wait(9e9)end return ad(ae,...)end))end do local
-		ad ad=hookmetamethod(game,'__namecall',newcclosure(function(ae,af,...)if ae.
-		Parent==nil and not checkcaller()and getnamecallmethod()=='Fire'and typeof(af)==
-		'table'then local ag,ah=next(af)if typeof(ag)=='userdata'then hookmetamethod(
-		game,'__namecall',ad)return task.wait(9e9)end end return ad(ae,af,...)end))end
-		do local ad ad=hookmetamethod(game,'__namecall',newcclosure(function(ae,af,...)
-		if ae==game and not checkcaller()and getnamecallmethod()=='FindService'and af==
-		'VirtualUser'then hookmetamethod(game,'__namecall',ad)return task.wait(9e9)end
-		return ad(ae,af,...)end))end do local ad ad=hookmetamethod(game,'__newindex',
-		newcclosure(function(ae,af,ag)if ae==ab and not checkcaller()then return task.
-		wait(9e9)end return ad(ae,af,ag)end))end end end function a.g()local aa,ab,ac,ad
-		,ae,af=game,workspace,Vector2.new,Color3.fromRGB,Drawing.new,table.find local ag
-		=getrawmetatable and getrawmetatable(aa)or{__index=function(ag,ah)return ag[ah]
-		end,__newindex=function(ag,ah,ai)ag[ah]=ai end}local ah=ag.__index local ai=ah(
-		aa,'GetService')local aj,ak,al=ai(aa,'RunService'),ai(aa,'UserInputService'),ai(
-		aa,'Players')local am,an,ao,ap,aq=ah(al,'LocalPlayer'),ah(ab,'CurrentCamera'),
-		ah(aa,'FindFirstChild'),ah(aa,'FindFirstChildOfClass'),ah(aa,'GetDescendants')
-		local ar,as,at,au,av,aw=ah(an,'WorldToViewportPoint'),ah(an,
-		'GetPartsObscuringTarget'),ah(ak,'GetMouseLocation'),ah(al,'GetPlayers'),false,{
-		DeveloperSettings={UpdateMode='RenderStepped',TeamCheckOption='Team'},SilentAim=
-		{Locked=nil,Enabled=true,LockPart='Head',RandomLockPart=false,HitChance=100,
-		MaxDistance=250,WallCheck=true,TeamCheck=true,AliveCheck=true,FOVSettings={
-		Enabled=true,Visible=true,Radius=90,NumSides=60,Thickness=2,Filled=false,Color={
-		ad(255,150,150),0},OutlineColor={ad(0,0,0),0}},SnaplineSettings={Enabled=true,
-		Thickness=2,Color={ad(255,0,0),0},OutlineColor={ad(0,0,0),0}}},Blacklisted={},
+		Continue()end do ac.Load()end do ad.Load()end do ao.Legit:Select()ab:
+		Notification{Title=`RIOT {RIOT.VERSION} - getriot.cc`,Description=`RIOT for {aa.
+		Name} loaded!`,Lifetime=5}end end end function a.f()local aa={}aa.Load=function(
+		)local ab,ac=game:GetService'ReplicatedFirst':WaitForChild'NewLoader',game:
+		GetService'ReplicatedStorage':WaitForChild'Functions':WaitForChild'Ping'do local
+		ad ad=hookfunction(getrenv().task.spawn,newcclosure(function(ae,...)local af={
+		...}if af[1]==ac and debug.info(ae,'n')=='InvokeServer'then return task.wait(9e9
+		)end return ad(ae,...)end))end do local ad ad=hookmetamethod(game,'__namecall',
+		newcclosure(function(ae,af,...)if ae.Parent==nil and not checkcaller()and
+		getnamecallmethod()=='Fire'and typeof(af)=='table'then local ag,ah=next(af)if
+		typeof(ag)=='userdata'then hookmetamethod(game,'__namecall',ad)return task.wait(
+		9e9)end end return ad(ae,af,...)end))end do local ad ad=hookmetamethod(game,
+		'__namecall',newcclosure(function(ae,af,...)if ae==game and not checkcaller()and
+		getnamecallmethod()=='FindService'and af=='VirtualUser'then hookmetamethod(game,
+		'__namecall',ad)return task.wait(9e9)end return ad(ae,af,...)end))end do local
+		ad ad=hookmetamethod(game,'__newindex',newcclosure(function(ae,af,ag)if ae==ab
+		and not checkcaller()then return task.wait(9e9)end return ad(ae,af,ag)end))end
+		end return aa end function a.g()local aa,ab,ac,ad,ae,af=game,workspace,Vector2.
+		new,Color3.fromRGB,Drawing.new,table.find local ag=getrawmetatable and
+		getrawmetatable(aa)or{__index=function(ag,ah)return ag[ah]end,__newindex=
+		function(ag,ah,ai)ag[ah]=ai end}local ah=ag.__index local ai=ah(aa,'GetService')
+		local aj,ak,al=ai(aa,'RunService'),ai(aa,'UserInputService'),ai(aa,'Players')
+		local am,an,ao,ap=ah(al,'LocalPlayer'),ah(ab,'CurrentCamera'),ah(aa,
+		'FindFirstChild'),ah(aa,'FindFirstChildOfClass')local aq,ar,as,at,au,av=ah(an,
+		'WorldToViewportPoint'),ah(an,'GetPartsObscuringTarget'),ah(ak,
+		'GetMouseLocation'),ah(al,'GetPlayers'),false,{DeveloperSettings={UpdateMode=
+		'RenderStepped',TeamCheckOption='Team'},SilentAim={Locked=nil,Enabled=true,
+		LockPart='Head',RandomLockPart=false,HitChance=100,MaxDistance=250,WallCheck=
+		true,TeamCheck=true,AliveCheck=true,FOVSettings={Enabled=true,Visible=true,
+		Radius=90,NumSides=60,Thickness=2,Filled=false,Color={ad(255,150,150),0},
+		OutlineColor={ad(0,0,0),0}},SnaplineSettings={Enabled=true,Thickness=2,Color={
+		ad(255,0,0),0},OutlineColor={ad(0,0,0),0}}},IgnoredParts={},BlacklistTable={},
 		FOVCircleOutline=ae'Circle',FOVCircle=ae'Circle',SnaplineOutline=ae'Line',
-		Snapline=ae'Line'}function aw.SilentAim.SetState(ax)av=ax end local ax=function(
-		ax)return ac(ax.X,ax.Y)end local ay,az,aA,aB=function()local ay=aw.SilentAim
-		local az=ay.RandomLockPart and({'Head','HumanoidRootPart'})[math.random(1,2)]or
-		ay.LockPart if not ay.Locked then local aA=ay.FOVSettings.Enabled and ay.
-		FOVSettings.Radius or 2000 for aB,aC in next,au(al)do local aD=ah(aC,'Character'
-		)local aE=aD and ap(aD,'Humanoid')if aC~=am and not af(aw.Blacklisted,ah(aC,
-		'Name'))and aD and ao(aD,az)and aE then local aF=ah(aD[az],'Position')if ay.
-		MaxDistance and(an.CFrame.Position-aF).Magnitude>ay.MaxDistance then continue
-		end if ay.TeamCheck and ah(aC,aw.DeveloperSettings.TeamCheckOption)and ah(aC,aw.
-		DeveloperSettings.TeamCheckOption)==ah(am,aw.DeveloperSettings.TeamCheckOption)
-		then continue end if ay.AliveCheck and ah(aE,'Health')<=0 then continue end if
-		ay.WallCheck then local aG=aq(ah(am,'Character'))for aH,aI in next,aq(aD)do aG[#
-		aG+1]=aI end if#as(an,{aF},aG)>0 then continue end end local aG,aH=ar(an,aF)aG=
-		ax(aG)local aI=(at(ak)-aG).Magnitude if aI<aA and aH then aA,aw.Locked=aI,aC if
-		ay.LockContinueTrigger then task.spawn(ay.LockContinueTrigger,aC)end return aD[
-		az]end end end else local aA,aB=ah(aw.Locked,'Character'),ay.FOVSettings.Enabled
-		and ay.FOVSettings.Radius or 2000 if aA then local aC=ao(aA,az)if not aC then ay
-		.Locked=nil return nil end local aD=ah(aC,'Position')if ay.MaxDistance and(an.
-		CFrame.Position-aD).Magnitude>ay.MaxDistance then ay.Locked=nil return nil end
-		if ay.WallCheck then local aE=aq(ah(am,'Character'))for aF,aG in next,aq(aA)do
-		aE[#aE+1]=aG end if#as(an,{aD},aE)>0 then ay.Locked=nil return nil end end local
-		aE,aF=ar(an,aD)aE=ax(aE)local aG=(at(ak)-aE).Magnitude if aG>aB or not aF then
-		ay.Locked=nil return nil end if ay.LockContinueTrigger then task.spawn(ay.
-		LockContinueTrigger,Value)end return aC else ay.Locked=nil return nil end end
-		return nil end,function()if aw.SilentAim.Enabled and aw.SilentAim.FOVSettings.
-		Enabled then aw.FOVCircle.Color=aw.SilentAim.FOVSettings.Color[1]aw.
-		FOVCircleOutline.Color=aw.SilentAim.FOVSettings.OutlineColor[1]aw.FOVCircle.
-		Transparency=aw.SilentAim.FOVSettings.Color[2]aw.FOVCircleOutline.Transparency=
-		aw.SilentAim.FOVSettings.OutlineColor[2]aw.FOVCircle.Thickness=aw.SilentAim.
-		FOVSettings.Thickness aw.FOVCircleOutline.Thickness=aw.SilentAim.FOVSettings.
-		Thickness+2 aw.FOVCircle.Position=at(ak)aw.FOVCircleOutline.Position=at(ak)aw.
-		FOVCircle.NumSides=aw.SilentAim.FOVSettings.NumSides aw.FOVCircleOutline.
-		NumSides=aw.SilentAim.FOVSettings.NumSides aw.FOVCircle.Radius=aw.SilentAim.
-		FOVSettings.Radius aw.FOVCircleOutline.Radius=aw.SilentAim.FOVSettings.Radius aw
-		.FOVCircle.Visible=aw.SilentAim.FOVSettings.Visible aw.FOVCircleOutline.Visible=
-		aw.SilentAim.FOVSettings.Visible else aw.FOVCircle.Visible=false aw.
-		FOVCircleOutline.Visible=false end end,function(ay)if av and aw.SilentAim.
-		Enabled and aw.SilentAim.SnaplineSettings.Enabled and ay then local az=at(ak)aw.
-		SnaplineOutline.From=az aw.SnaplineOutline.To=ay aw.SnaplineOutline.Color=aw.
-		SilentAim.SnaplineSettings.OutlineColor[1]aw.SnaplineOutline.Transparency=aw.
-		SilentAim.SnaplineSettings.OutlineColor[2]aw.SnaplineOutline.Thickness=aw.
-		SilentAim.SnaplineSettings.Thickness+2 aw.SnaplineOutline.Visible=true aw.
-		Snapline.From=az aw.Snapline.To=ay aw.Snapline.Color=aw.SilentAim.
-		SnaplineSettings.Color[1]aw.Snapline.Transparency=aw.SilentAim.SnaplineSettings.
-		Color[2]aw.Snapline.Thickness=aw.SilentAim.SnaplineSettings.Thickness aw.
-		Snapline.Visible=true else aw.Snapline.Visible=false aw.SnaplineOutline.Visible=
-		false end end aj.RenderStepped:Connect(function()az()aB=nil if av and aw.
-		SilentAim.Enabled then aB=ay()local aC if aB and aw.SilentAim.SnaplineSettings.
-		Enabled then local aD,aE=ar(an,aB.Position)if aE then aC=ac(aD.X,aD.Y)end end
-		aA(aC)end end)local aC aC=hookmetamethod(aa,'__index',newcclosure(function(aD,aE
-		)if av and aw.SilentAim.Enabled and aD==an and aE=='CoordinateFrame'and string.
+		Snapline=ae'Line'}function av.AddToIgnoreQuery(aw)if not af(av.IgnoredParts,aw)
+		then table.insert(av.IgnoredParts,aw)end end function av.SilentAim.SetState(aw)
+		au=aw end local aw=function(aw)return ac(aw.X,aw.Y)end local ax,ay,az,aA=
+		function()local ax=av.SilentAim local ay=ax.RandomLockPart and({'Head',
+		'HumanoidRootPart'})[math.random(1,2)]or ax.LockPart if not ax.Locked then local
+		az=ax.FOVSettings.Enabled and ax.FOVSettings.Radius or 2000 for aA,aB in next,
+		at(al)do local aC=ah(aB,'Character')local aD=aC and ap(aC,'Humanoid')if aB~=am
+		and ah(am,'Character')and aC and ao(aC,ay)and aD then local aE=ah(aC[ay],
+		'Position')if ax.MaxDistance and(an.CFrame.Position-aE).Magnitude>ax.MaxDistance
+		then continue end if ax.TeamCheck and ah(aB,av.DeveloperSettings.TeamCheckOption
+		)and ah(aB,av.DeveloperSettings.TeamCheckOption)==ah(am,av.DeveloperSettings.
+		TeamCheckOption)then continue end if ax.AliveCheck and ah(aD,'Health')<=0 then
+		continue end if ax.WallCheck then table.clear(av.BlacklistTable)table.insert(av.
+		BlacklistTable,am.Character)table.insert(av.BlacklistTable,aC)for aF=1,#av.
+		IgnoredParts do av.BlacklistTable[#av.BlacklistTable+1]=av.IgnoredParts[aF]end
+		if#ar(an,{aE},av.BlacklistTable)>0 then continue end end local aF,aG=aq(an,aE)aF
+		=aw(aF)local aH=(as(ak)-aF).Magnitude if aH<az and aG then az,av.Locked=aH,aB if
+		ax.LockContinueTrigger then task.spawn(ax.LockContinueTrigger,aB)end return aC[
+		ay]end end end else local az,aA=ah(av.Locked,'Character'),ax.FOVSettings.Enabled
+		and ax.FOVSettings.Radius or 2000 if az and ah(am,'Character')then local aB=ao(
+		az,ay)if not aB then ax.Locked=nil return nil end local aC=ah(aB,'Position')if
+		ax.MaxDistance and(an.CFrame.Position-aC).Magnitude>ax.MaxDistance then ax.
+		Locked=nil return nil end if ax.WallCheck then table.clear(av.BlacklistTable)
+		table.insert(av.BlacklistTable,am.Character)table.insert(av.BlacklistTable,az)
+		for aD=1,#av.IgnoredParts do av.BlacklistTable[#av.BlacklistTable+1]=av.
+		IgnoredParts[aD]end if#ar(an,{aC},av.BlacklistTable)>0 then ax.Locked=nil return
+		nil end end local aD,aE=aq(an,aC)aD=aw(aD)local aF=(as(ak)-aD).Magnitude if aF>
+		aA or not aE then ax.Locked=nil return nil end if ax.LockContinueTrigger then
+		task.spawn(ax.LockContinueTrigger,Value)end return aB else ax.Locked=nil return
+		nil end end return nil end,function()if av.SilentAim.Enabled and av.SilentAim.
+		FOVSettings.Enabled then av.FOVCircle.Color=av.SilentAim.FOVSettings.Color[1]av.
+		FOVCircleOutline.Color=av.SilentAim.FOVSettings.OutlineColor[1]av.FOVCircle.
+		Transparency=av.SilentAim.FOVSettings.Color[2]av.FOVCircleOutline.Transparency=
+		av.SilentAim.FOVSettings.OutlineColor[2]av.FOVCircle.Thickness=av.SilentAim.
+		FOVSettings.Thickness av.FOVCircleOutline.Thickness=av.SilentAim.FOVSettings.
+		Thickness+2 av.FOVCircle.Position=as(ak)av.FOVCircleOutline.Position=as(ak)av.
+		FOVCircle.NumSides=av.SilentAim.FOVSettings.NumSides av.FOVCircleOutline.
+		NumSides=av.SilentAim.FOVSettings.NumSides av.FOVCircle.Radius=av.SilentAim.
+		FOVSettings.Radius av.FOVCircleOutline.Radius=av.SilentAim.FOVSettings.Radius av
+		.FOVCircle.Visible=av.SilentAim.FOVSettings.Visible av.FOVCircleOutline.Visible=
+		av.SilentAim.FOVSettings.Visible else av.FOVCircle.Visible=false av.
+		FOVCircleOutline.Visible=false end end,function(ax)if au and av.SilentAim.
+		Enabled and av.SilentAim.SnaplineSettings.Enabled and ax then local ay=as(ak)av.
+		SnaplineOutline.From=ay av.SnaplineOutline.To=ax av.SnaplineOutline.Color=av.
+		SilentAim.SnaplineSettings.OutlineColor[1]av.SnaplineOutline.Transparency=av.
+		SilentAim.SnaplineSettings.OutlineColor[2]av.SnaplineOutline.Thickness=av.
+		SilentAim.SnaplineSettings.Thickness+2 av.SnaplineOutline.Visible=true av.
+		Snapline.From=ay av.Snapline.To=ax av.Snapline.Color=av.SilentAim.
+		SnaplineSettings.Color[1]av.Snapline.Transparency=av.SilentAim.SnaplineSettings.
+		Color[2]av.Snapline.Thickness=av.SilentAim.SnaplineSettings.Thickness av.
+		Snapline.Visible=true else av.Snapline.Visible=false av.SnaplineOutline.Visible=
+		false end end aj.RenderStepped:Connect(function()ay()aA=nil if au and av.
+		SilentAim.Enabled then aA=ax()local aB if aA and av.SilentAim.SnaplineSettings.
+		Enabled then local aC,aD=aq(an,aA.Position)if aD then aB=ac(aC.X,aC.Y)end end
+		az(aB)end end)local aB aB=hookmetamethod(aa,'__index',newcclosure(function(aC,aD
+		)if au and av.SilentAim.Enabled and aC==an and aD=='CoordinateFrame'and string.
 		match(debug.info(3,'s'),'Client.Functions.Weapons')and debug.info(debug.info(3,
-		'f'),'n')~='RotCamera'then if math.random(1,100)<=aw.SilentAim.HitChance and aB
-		then return CFrame.new(an.CFrame.Position,aB.Position)end end return aC(aD,aE)
-		end))return aw end function a.h()return function(aa)local ab,ac,ad,ae,af,ag=a.
-		load'f',a.load'b',a.load'a',a.load'c',a.load'd',a.load'g'local ah,ai,aj,ak,al=ad
-		.Components,ad.Assets,ad.Colors,ae.Shared,ae.Team local am,an,ao,ap,aq,ar=al.
-		Enemy,al.Friendly,af.Aimbot,af.Triggerbot,af.FOVSettings,ag.SilentAim local as,
-		at,au,av=ar.FOVSettings,ar.SnaplineSettings,ac.GetPlayer(),ac.SecureService
-		local aw,ax,ay,az,aA=av'RunService',av'Workspace',av'Players',av
-		'ReplicatedStorage',ad:Window{Title=aa.Name,Keybind=Enum.KeyCode.RightControl}
-		local aB={Legit=aA:Tab{Name='Legit',Image=ai.ShieldCheck},Rage=aA:Tab{Name=
-		'Rage',Image=ai.Shield},Visuals=aA:Tab{Name='Visuals',Image=ai.Bolt},Misc=aA:Tab
-		{Name='Misc',Image=ai.Folder},Cfg=aA:Tab{Name='Cfg',Image=ai.Archive}}do local
-		aC=aB.Legit do local aD=aC:Section{Name='Aimbot'}do local aE=aD:Section{Name=
-		'Aimbot Settings'}aE:Toggle{Name='Enabled',Description='enables aimbot',State=
-		false,Callback=function(aF,aG)ao.Enabled=aG end}:Continue()aE:Keybind{Bind=Enum.
-		UserInputType.MouseButton2,Blacklist={Enum.UserInputType.MouseButton1},onHeld=
-		function(aF,aG,aH)if aH then return end ao.SetState(aG)end}aE:Dropdown{Name=
-		'Wall Check',Description='the method used by wall check',Options={'Off','Sticky'
-		,'Always On'},Value={'Always On'},Limit=1,Minimum=1,Callback=function(aF,aG)ao.
-		WallCheck=({Off=1,Sticky=2,['Always On']=3})[aG[1] ]end}aE:Toggle{Name=
+		'f'),'n')~='RotCamera'and math.random(1,100)<=av.SilentAim.HitChance and aA then
+		return CFrame.new(an.CFrame.Position,aA.Position)end return aB(aC,aD)end))return
+		av end function a.h()return function(aa)local ab,ac,ad,ae,af,ag=a.load'f',a.load
+		'b',a.load'a',a.load'c',a.load'd',a.load'g'local ah=ac.SecureService local ai,aj
+		,ak,al,am=ah'Workspace',ah'Lighting',ah'ReplicatedStorage',ah'RunService',ac.
+		GetPlayer()local an,ao,ap,aq,ar,as=ak:WaitForChild'Modules',ad.Components,ad.
+		Assets,ad.Colors,ae.Shared,ae.Team local at,au,av,aw,ax,ay=as.Enemy,as.Friendly,
+		af.Aimbot,af.Triggerbot,af.FOVSettings,ag.SilentAim local az,aA,aB,aC=ay.
+		FOVSettings,ay.SnaplineSettings,{GetClient=function()local az=am:FindFirstChild
+		'PlayerGui'and am.PlayerGui:FindFirstChild'GUI'local aA=az and az:FindFirstChild
+		'Client'return aA,getsenv(aA)end},ad:Window{Title=aa.Name,Keybind=Enum.KeyCode.
+		RightControl}local aD={Legit=aC:Tab{Name='Legit',Image=ap.ShieldCheck},Rage=aC:
+		Tab{Name='Rage',Image=ap.Shield},Visuals=aC:Tab{Name='Visuals',Image=ap.Bolt},
+		Misc=aC:Tab{Name='Misc',Image=ap.Folder},Cfg=aC:Tab{Name='Cfg',Image=ap.Archive}
+		}do local aE=aD.Legit do local aF=aE:Section{Name='Aimbot'}do local aG=aF:
+		Section{Name='Settings'}aG:Toggle{Name='Enabled',Description='enables aimbot',
+		State=false,Callback=function(aH,aI)av.Enabled=aI end}:Continue()aG:Keybind{Bind
+		=Enum.UserInputType.MouseButton2,Blacklist={Enum.UserInputType.MouseButton1},
+		onHeld=function(aH,aI,aJ)if aJ then return end av.SetState(aI)end}aG:Dropdown{
+		Name='Wall Check',Description='the method used by wall check',Options={'Off',
+		'Sticky','Always On'},Value={'Always On'},Limit=1,Minimum=1,Callback=function(aH
+		,aI)av.WallCheck=({Off=1,Sticky=2,['Always On']=3})[aI[1] ]end}aG:Toggle{Name=
 		'Team Check',Description='whether to ignore friendlys',State=true,Callback=
-		function(aF,aG)ao.TeamCheck=aG end}aE:Toggle{Name='Alive Check',Description=
-		'whether to ignore corpses',State=true,Callback=function(aF,aG)ao.AliveCheck=aG
-		end}:Continue()aE:Slider{Name='Smoothing',Description='aimbot smoothness',Value=
-		1,Minimum=1,Maximum=20,Step=0.1,Precision=1,Callback=function(aF,aG)ao.
-		Sensitivity=(aG-1)/(aF.Settings.Maximum-1)*0.15 ao.Sensitivity2=aG end}aE:
-		Dropdown{Name='Bone',Description='selects the bone to aim at',Options={'Head',
-		'Torso'},Value={'Head'},Limit=1,Minimum=1,Callback=function(aF,aG)local aH=aG[1]
-		=='Torso'and'HumanoidRootPart'or aG[1]ao.LockPart=aH end}aE:Dropdown{Name=
-		'Lock Method',Description='the input used to lock onto a player',Options={
-		'Camera','Mouse'},Value={'Camera'},Limit=1,Minimum=1,Callback=function(aF,aG)ao.
-		LockMode=({Camera=1,Mouse=2})[aG[1] ]end}aE:Slider{Name='Max Distance',
-		Description='the distance aimbot stops locking onto players',Value=800,Minimum=1
-		,Maximum=2000,Step=1,Precision=0,Callback=function(aF,aG)ao.MaxDistance=aG end}:
-		Continue()end do local aE=aD:Section{Name='FOV Settings'}aE:Toggle{Name=
-		'Enabled',Description='whether the aimbot radius limit is active',State=true,
-		Callback=function(aF,aG)aq.Enabled=aG end}aE:Toggle{Name='Visible',Description=
+		function(aH,aI)av.TeamCheck=aI end}aG:Slider{Name='Smoothing',Description=
+		'aimbot smoothness',Value=1,Minimum=1,Maximum=20,Step=0.1,Precision=1,Callback=
+		function(aH,aI)av.Sensitivity=(aI-1)/(aH.Settings.Maximum-1)*0.15 av.
+		Sensitivity2=aI end}aG:Dropdown{Name='Bone',Description=
+		'selects the bone to aim at',Options={'Head','Torso'},Value={'Head'},Limit=1,
+		Minimum=1,Callback=function(aH,aI)av.LockPart=aI[1]=='Torso'and
+		'HumanoidRootPart'or aI[1]end}aG:Dropdown{Name='Input Method',Description=
+		'the input used to lock onto a player',Options={'Camera','Mouse'},Value={
+		'Camera'},Limit=1,Minimum=1,Callback=function(aH,aI)av.LockMode=({Camera=1,Mouse
+		=2})[aI[1] ]end}aG:Slider{Name='Max Distance',Description=
+		'the distance aimbot stops locking onto players',Value=800,Minimum=1,Maximum=
+		2000,Step=1,Precision=0,Callback=function(aH,aI)av.MaxDistance=aI end}:Continue(
+		)end do local aG=aF:Section{Name='FOV'}aG:Toggle{Name='Enabled',Description=
+		'whether the aimbot radius limit is active',State=true,Callback=function(aH,aI)
+		ax.Enabled=aI end}aG:Toggle{Name='Visible',Description=
 		'draws a circle representing the aimbot FOV radius',State=true,Callback=function
-		(aF,aG)aq.Visible=aG end}:Continue():Colorpicker{Description='Unlocked Color',
+		(aH,aI)ax.Visible=aI end}:Continue():Colorpicker{Description='Unlocked Color',
 		AlphaEnabled=false,Color={Color3.fromRGB(255,150,150),0},SuggestionColors={{
 		Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246
 		,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=
-		function(aF)aq.Color=aF end}:Continue():Colorpicker{Description='Locked Color',
-		AlphaEnabled=false,Color={Color3.fromRGB(150,255,150),0},SuggestionColors={{
-		Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246
-		,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=
-		function(aF)aq.LockedColor=aF end}aE:Slider{Name='Radius',Description=
-		'aimbot FOV limit radius',Value=120,Minimum=1,Maximum=500,Step=1,Precision=0,
-		Callback=function(aF,aG)aq.Radius=aG end}aE:Slider{Name='Circle Sides',
-		Description='the amount of points the drawn circle has',Value=45,Minimum=3,
-		Maximum=80,Step=1,Precision=0,Callback=function(aF,aG)aq.NumSides=aG end}:
-		Continue()end end do local aD=aC:Section{Name='Triggerbot'}aD:Toggle{Name=
-		'Enabled',Description='enables triggerbot',State=false,Callback=function(aE,aF)
-		ap.Enabled=aF end}aD:Slider{Name='Reaction Time',Description=
-		'the time it takes for triggerbot to react to targets (ms)',Value=0,Minimum=0,
-		Maximum=500,Step=1,Precision=0,Callback=function(aE,aF)ap.Delay=aF/1000 end}aD:
-		Toggle{Name='Team Check',Description='whether to ignore friendlys',State=true,
-		Callback=function(aE,aF)ap.TeamCheck=aF end}aD:Toggle{Name='Alive Check',
-		Description='whether to ignore corpses',State=true,Callback=function(aE,aF)ao.
-		AliveCheck=aF end}:Continue()end end do local aC=aB.Rage do local aD=aC:Section{
-		Name='Silent Aim'}do local aE=aD:Section{Name='Silent Aim Settings'}aE:Toggle{
-		Name='Enabled',Description='enables silent aim',State=false,Callback=function(aF
-		,aG)ar.Enabled=aG ar.SetState(aG)end}aE:Toggle{Name='Trigger In Bounds',
-		Description=
-		[[fires your gun while a target is within bounds
-		Functions similar to triggerbot.]]
-		,State=false,Callback=function(aF,aG)ar.LockContinueTrigger=function()if aG then
-		ap:Trigger()end end end}aE:Toggle{Name='Wall Check',Description=
-		'enables wall check',State=true,Callback=function(aF,aG)ar.WallCheck=aG end}aE:
-		Toggle{Name='Team Check',Description='enables team check',State=true,Callback=
-		function(aF,aG)ar.TeamCheck=aG end}aE:Toggle{Name='Alive Check',Description=
-		'enables alive check',State=true,Callback=function(aF,aG)ar.AliveCheck=aG end}aE
-		:Dropdown{Name='Bone',Description='selects the bone bullets redirect to',Options
-		={'Head','Torso','Random'},Value={'Head'},Limit=1,Minimum=1,Callback=function(aF
-		,aG)if aG[1]=='Random'then ar.RandomLockPart=true return end ar.RandomLockPart=
-		false local aH=aG[1]=='Torso'and'HumanoidRootPart'or aG[1]ar.LockPart=aH end}aE:
-		Slider{Name='Hit Chance',Description=
-		'the chance bullets will hit when shot with silent aim',Value=100,Minimum=0,
-		Maximum=100,Step=1,Precision=0,Filter=function(aF)return tostring(aF)..'%'end,
-		Callback=function(aF,aG)ar.HitChance=aG end}aE:Slider{Name='Max Distance',
-		Description='the distance silent aim stops redirecting bullets',Value=500,
-		Minimum=1,Maximum=2000,Step=1,Precision=0,Callback=function(aF,aG)ar.MaxDistance
-		=aG end}:Continue()end do local aE=aD:Section{Name='FOV Settings'}aE:Toggle{Name
-		='Enabled',Description='whether the silent aim radius limit is active',State=
-		true,Callback=function(aF,aG)as.Enabled=aG end}aE:Toggle{Name='Visible',
+		function(aH,aI)ax.Color=aI end}:Continue():Colorpicker{Description=
+		'Locked Color',AlphaEnabled=false,Color={Color3.fromRGB(150,255,150),0},
+		SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
+		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
+		220,195)}},Callback=function(aH,aI)ax.LockedColor=aI end}aG:Slider{Name='Radius'
+		,Description='aimbot FOV limit radius',Value=120,Minimum=1,Maximum=500,Step=1,
+		Precision=0,Callback=function(aH,aI)ax.Radius=aI end}aG:Slider{Name=
+		'Circle Sides',Description='the amount of points the drawn circle has',Value=45,
+		Minimum=3,Maximum=80,Step=1,Precision=0,Callback=function(aH,aI)ax.NumSides=aI
+		end}:Continue()end end do local aF=aE:Section{Name='Triggerbot'}aF:Toggle{Name=
+		'Enabled',Description=
+		[[enables triggerbot. fires your gun when a target is in bounds]],State=false,
+		Callback=function(aG,aH)aw.Enabled=aH end}aF:Slider{Name='Reaction Time',
+		Description='the time it takes for triggerbot to react to targets (ms)',Value=0,
+		Minimum=0,Maximum=500,Step=1,Precision=0,Callback=function(aG,aH)aw.Delay=aH/
+		1000 end}aF:Toggle{Name='Team Check',Description='whether to ignore friendlys',
+		State=true,Callback=function(aG,aH)aw.TeamCheck=aH end}:Continue()end end do
+		local aE=aD.Rage do local aF=aE:Section{Name='Silent Aim'}do local aG=aF:Section
+		{Name='Settings'}aG:Toggle{Name='Enabled',Description='enables silent aim',State
+		=false,Callback=function(aH,aI)ay.Enabled=aI ay.SetState(aI)end}aG:Toggle{Name=
+		'Auto Fire',Description='enabled automatic fire when a target is in bounds',
+		State=false,Callback=function(aH,aI)if aI then ay.LockContinueTrigger=function()
+		aw.Trigger()end else ay.LockContinueTrigger=nil end end}aG:Toggle{Name=
+		'Wall Check',Description='enables wall check',State=true,Callback=function(aH,aI
+		)ay.WallCheck=aI end}aG:Toggle{Name='Team Check',Description=
+		'enables team check',State=true,Callback=function(aH,aI)ay.TeamCheck=aI end}aG:
+		Dropdown{Name='Bone',Description='selects the bone bullets redirect to',Options=
+		{'Head','Torso'},Value={'Head'},Limit=1,Minimum=1,Callback=function(aH,aI)local
+		aJ=aI[1]=='Torso'and'HumanoidRootPart'or aI[1]ay.LockPart=aJ end}aG:Slider{Name=
+		'Hit Chance',Description='the chance bullets will hit when shot with silent aim'
+		,Value=100,Minimum=0,Maximum=100,Step=1,Precision=0,Filter=function(aH)return
+		tostring(aH)..'%'end,Callback=function(aH,aI)ay.HitChance=aI end}aG:Slider{Name=
+		'Max Distance',Description='the distance silent aim stops redirecting bullets',
+		Value=500,Minimum=1,Maximum=2000,Step=1,Precision=0,Callback=function(aH,aI)ay.
+		MaxDistance=aI end}:Continue()end do local aG=aF:Section{Name='FOV'}aG:Toggle{
+		Name='Enabled',Description='whether the silent aim radius limit is active',State
+		=true,Callback=function(aH,aI)az.Enabled=aI end}aG:Toggle{Name='Visible',
 		Description='draws a circle representing the silent aim FOV radius',State=true,
-		Callback=function(aF,aG)as.Visible=aG end}:Continue():Colorpicker{Color={Color3.
+		Callback=function(aH,aI)az.Visible=aI end}:Continue():Colorpicker{Color={Color3.
 		fromRGB(100,50,255),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.
 		fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)
-		},{Color3.fromRGB(49,220,195)}},Callback=function(aF,aG)as.Color[1],as.Color[2]=
-		aF,1-aG as.OutlineColor[2]=1-aG end}aE:Slider{Name='Radius',Description=
+		},{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI,aJ)az.Color[1],az.Color[
+		2]=aI,1-aJ az.OutlineColor[2]=1-aJ end}aG:Slider{Name='Radius',Description=
 		'silent aim FOV limit radius',Value=120,Minimum=1,Maximum=500,Step=1,Precision=0
-		,Callback=function(aF,aG)as.Radius=aG end}aE:Slider{Name='Circle Sides',
+		,Callback=function(aH,aI)az.Radius=aI end}aG:Slider{Name='Circle Sides',
 		Description='the amount of points the drawn circle has',Value=45,Minimum=3,
-		Maximum=80,Step=1,Precision=0,Callback=function(aF,aG)as.NumSides=aG end}:
-		Continue()end do local aE=aD:Section{Name='Snaplines Settings'}aE:Toggle{Name=
-		'Enabled',Description='whether snapping point lines are enabled',State=true,
-		Callback=function(aF,aG)at.Enabled=aG end}:Continue():Colorpicker{Color={Color3.
-		fromRGB(200,230,255),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.
-		fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)
-		},{Color3.fromRGB(49,220,195)}},Callback=function(aF,aG)at.Color[1],at.Color[2]=
-		aF,1-aG at.OutlineColor[2]=1-aG end}aE:Slider{Name='Thickness',Description=
+		Maximum=80,Step=1,Precision=0,Callback=function(aH,aI)az.NumSides=aI end}:
+		Continue()end do local aG=aF:Section{Name='Snaplines'}aG:Toggle{Name='Enabled',
+		Description='whether snapping point lines are enabled',State=true,Callback=
+		function(aH,aI)aA.Enabled=aI end}:Continue():Colorpicker{Color={Color3.fromRGB(
+		200,230,255),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(
+		123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{
+		Color3.fromRGB(49,220,195)}},Callback=function(aH,aI,aJ)aA.Color[1],aA.Color[2]=
+		aI,1-aJ aA.OutlineColor[2]=1-aJ end}aG:Slider{Name='Thickness',Description=
 		'how thick the snapping point line is',Value=2,Minimum=1,Maximum=6,Step=1,
-		Precision=0,Callback=function(aF,aG)at.Thickness=aG end}:Continue()end end do
-		local aD,aE,aF=aC:Section{Name='Gun Modifications'},{},{}local aG,aH=function(aG
-		,aH,aI)local aJ,aK=game.Players.LocalPlayer.PlayerGui.GUI.Client.Functions.
-		Weapons,az:FindFirstChild'Weapons'if aI then if aJ and getsenv(aJ)[aG]then aF[aG
-		]=getsenv(aJ)[aG]getsenv(aJ)[aG]=aH end else if aK then for aL,aM in pairs(aK:
-		GetDescendants())do if aM.Name==aG and aM.Parent.Parent==aK and aM:IsA
-		'ValueBase'then if aE[aM]==nil then aE[aM]=aM.Value end if typeof(aH)==
-		'function'then aM.Value=aH(typeof(aM.Value),aE[aM])else aM.Value=aH end end end
-		end end end,function(aG,aH)local aI,aJ=game.Players.LocalPlayer.PlayerGui.GUI.
-		Client.Functions.Weapons,az:FindFirstChild'Weapons'if aH then if aI and aF[aG]
-		then getsenv(aI)[aG]=aF[aG]end else if aJ then for aK,aL in pairs(aJ:
-		GetDescendants())do if aL.Name==aG and aE[aL]~=nil then aL.Value=aE[aL]aE[aL]=
-		nil end end end end end aD:Slider{Name='Bullet Multiplier',Description=
+		Precision=0,Callback=function(aH,aI)aA.Thickness=aI end}:Continue()end end do
+		local aF,aG,aH=aE:Section{Name='Gun Modifications'},{},{}local aI,aJ=function(aI
+		,aJ,aK)local aL,aM=game.Players.LocalPlayer.PlayerGui.GUI.Client.Functions.
+		Weapons,ak:FindFirstChild'Weapons'if aK then if aL and getsenv(aL)[aI]then aH[aI
+		]=getsenv(aL)[aI]getsenv(aL)[aI]=aJ end else if aM then for aN,aO in pairs(aM:
+		GetDescendants())do if aO.Name==aI and aO.Parent.Parent==aM and aO:IsA
+		'ValueBase'then if aG[aO]==nil then aG[aO]=aO.Value end if typeof(aJ)==
+		'function'then aO.Value=aJ(typeof(aO.Value),aG[aO])else aO.Value=aJ end end end
+		end end end,function(aI,aJ)local aK,aL=game.Players.LocalPlayer.PlayerGui.GUI.
+		Client.Functions.Weapons,ak:FindFirstChild'Weapons'if aJ then if aK and aH[aI]
+		then getsenv(aK)[aI]=aH[aI]end else if aL then for aM,aN in pairs(aL:
+		GetDescendants())do if aN.Name==aI and aG[aN]~=nil then aN.Value=aG[aN]aG[aN]=
+		nil end end end end end aF:Slider{Name='Bullet Multiplier',Description=
 		'Multiplies the bullets fired per shot\n\u{26a0}\u{fe0f} This can lag your game with high values\u{26a0}\u{fe0f}'
-		,Value=1,Minimum=1,Maximum=8,Step=1,Precision=0,Callback=function(aI,aJ)aG(
-		'Bullets',function(aK,aL)return aK=='number'and aL*aJ or aL end)end}aD:Slider{
+		,Value=1,Minimum=1,Maximum=8,Step=1,Precision=0,Callback=function(aK,aL)aI(
+		'Bullets',function(aM,aN)return aM=='number'and aN*aL or aN end)end}aF:Slider{
 		Name='Critical Multiplier',Description=
 		'Multiplies the crit multiplier for your gun',Value=1,Minimum=1,Maximum=100,Step
-		=1,Precision=0,Callback=function(aI,aJ)aG('Crit',function(aK,aL)return aK==
-		'number'and aL*aJ or aL end)end}aD:Toggle{Name='Automatics',Description=
-		'makes all guns automatic',State=false,Callback=function(aI,aJ)if aJ then aG(
-		'mode','automatic',true)aG('Auto',true)else aH('automatic',true)aH'Auto'end end}
-		aD:Toggle{Name='Infinite Ammo',Description='enables infinite ammo',State=false,
-		Callback=function(aI,aJ)local aK=az.wkspc local aL=aK and aK.CurrentCurse if aL
-		and aL.Value and aJ then aL.Value='Infinite Ammo'elseif not aJ then aL.Value=''
-		end end}aD:Toggle{Name='Rapid Fire',Description='enables rapid fire rate',State=
-		false,Callback=function(aI,aJ)if aJ then aG('FireRate',0.02)else aH'FireRate'end
-		end}aD:Toggle{Name='No Equip Timer',Description=
-		'removes the delay from equipping to shooting',State=false,Callback=function(aI,
-		aJ)if aJ then aG('EquipTime',0)else aH'EquipTime'end end}aD:Toggle{Name=
+		=1,Precision=0,Callback=function(aK,aL)aI('Crit',function(aM,aN)return aM==
+		'number'and aN*aL or aN end)end}aF:Toggle{Name='Automatics',Description=
+		'makes all guns automatic',State=false,Callback=function(aK,aL)if aL then aI(
+		'mode','automatic',true)aI('Auto',true)else aJ('automatic',true)aJ'Auto'end end}
+		aF:Toggle{Name='Infinite Ammo',Description='enables infinite ammo',State=false,
+		Callback=function(aK,aL)local aM=ak.wkspc local aN=aM and aM.CurrentCurse if aN
+		and aN.Value and aL then aN.Value='Infinite Ammo'elseif not aL then aN.Value=''
+		end end}aF:Toggle{Name='Rapid Fire',Description='enables rapid fire rate',State=
+		false,Callback=function(aK,aL)if aL then aI('FireRate',0.02)else aJ'FireRate'end
+		end}aF:Toggle{Name='No Equip Timer',Description=
+		'removes the delay from equipping to shooting',State=false,Callback=function(aK,
+		aL)if aL then aI('EquipTime',0)else aJ'EquipTime'end end}aF:Toggle{Name=
 		'Instant Reload',Description='removes reload timer',State=false,Callback=
-		function(aI,aJ)if aJ then aG('ReloadTime',0)else aH'ReloadTime'end end}aD:Toggle
+		function(aK,aL)if aL then aI('ReloadTime',0)else aJ'ReloadTime'end end}aF:Toggle
 		{Name='No Spread',Description='removes gun spread',State=false,Callback=function
-		(aI,aJ)if aJ then aG('MaxSpread',0)aG('Spread',0)else aH'MaxSpread'aH'Spread'end
-		end}aD:Toggle{Name='No Recoil',Description='removes gun recoil',State=false,
-		Callback=function(aI,aJ)if aJ then aG('recoil',0,true)aG('RecoilControl',0)else
-		aH('recoil',true)aH'RecoilControl'end end}aD:Toggle{Name='No Overheating',
-		Description='removes overheating for the Z80',State=false,Callback=function(aI,
-		aJ)local aK=au:FindFirstChild'PlayerGui'and au.PlayerGui:FindFirstChild'GUI'
-		local aL=aK and aK:FindFirstChild'Client'local aM=aL and aL:FindFirstChild
-		'Variables'local aN=aM and aM:FindFirstChild'overheat'if not aN then return end
-		if aI._OverheatConn then aI._OverheatConn:Disconnect()aI._OverheatConn=nil end
-		if aJ then aI._OverheatConn=aN:GetPropertyChangedSignal'Value':Connect(function(
-		)if aN.Value>0 then aN.Value=0 end end)end end}aD:Toggle{Name=
+		(aK,aL)if aL then aI('MaxSpread',0)aI('Spread',0)else aJ'MaxSpread'aJ'Spread'end
+		end}aF:Toggle{Name='No Recoil',Description='removes gun recoil',State=false,
+		Callback=function(aK,aL)if aL then aI('recoil',0,true)aI('RecoilControl',0)else
+		aJ('recoil',true)aJ'RecoilControl'end end}aF:Toggle{Name='No Overheating',
+		Description='removes overheating for the Z80',State=false,Callback=function(aK,
+		aL)local aM=am:FindFirstChild'PlayerGui'and am.PlayerGui:FindFirstChild'GUI'
+		local aN=aM and aM:FindFirstChild'Client'local aO=aN and aN:FindFirstChild
+		'Variables'local aP=aO and aO:FindFirstChild'overheat'if not aP then return end
+		if aK._OverheatConn then aK._OverheatConn:Disconnect()aK._OverheatConn=nil end
+		if aL then aK._OverheatConn=aP:GetPropertyChangedSignal'Value':Connect(function(
+		)if aP.Value>0 then aP.Value=0 end end)end end}aF:Toggle{Name=
 		'No Projectile Charging',Description='removes charge timer for projectiles',
-		State=false,Callback=function(aI,aJ)if aJ then aG('ChargeTime',0)else aH
-		'ChargeTime'end end}aD:Toggle{Name='Haste',Description='removes player slowdown'
-		,State=false,Callback=function(aI,aJ)if aJ then aG('Speed%',-150)else aH'Speed%'
-		end end}:Continue()end end do local aC=aB.Visuals do local aD=aC:Section{Name=
-		'ESP'}aD:Slider{Name='Text Font',Description='the font ESP text uses',Value=3,
-		Minimum=0,Maximum=3,Step=1,Precision=0,Callback=function(aE,aF)ak.TextFont=aF
-		end}aD:Slider{Name='Text Size',Description='the size of ESP text',Value=13,
-		Minimum=1,Maximum=20,Step=1,Precision=0,Callback=function(aE,aF)ak.TextSize=aF
-		end}aD:Toggle{Name='Use Team Color',Description='enables ESP team color',State=
-		false,Callback=function(aE,aF)ak.UseTeamColor=aF end}aD:Toggle{Name=
-		'Limit Enabled',Description='enables distance limit',State=false,Callback=
-		function(aE,aF)ak.LimitDistance=aF end}:Continue()aD:Slider{Name='Max Distance',
-		Description='the maximum distance that ESP will render at',Value=500,Minimum=1,
-		Maximum=2000,Step=1,Precision=0,Callback=function(aE,aF)ak.MaxDistance=aF end}:
-		Continue()local aE=function(aE)aA:VisualPreview{HealthBar={Visible=aE.HealthBar,
-		Color={aE.HealthyColor}},Name={Visible=aE.Name,Color={aE.NameColor[1],aE.
-		NameColor[2]}},Distance={Visible=aE.Distance,Color={aE.DistanceColor[1],aE.
-		DistanceColor[2]}},Health={Visible=aE.HealthText,Color={aE.HealthTextColor[1],aE
-		.HealthTextColor[2]}},Weapon={Visible=aE.Weapon,Color={aE.WeaponColor[1],aE.
-		WeaponColor[2]}},BoundingBox={Visible=aE.Box,Color={aE.BoxColor[1],aE.BoxColor[2
-		]}},CornerBox={Visible=aE.CornerBox,Color={aE.CornerBoxColor[1],aE.
-		CornerBoxColor[2]}},FillBox={Visible=aE.BoxFill,Color={aE.BoxFillColor[1],aE.
-		BoxFillColor[2]}}}end local aF,aG=function(aF,aG)aG:Toggle{Name='Enabled',
-		Description='enables ESP',State=false,Callback=function(aH,aI)aF.Enabled=aI end}
-		aG:Toggle{Name='Bounding Box',Description='enables bounding box ESP',State=false
-		,Callback=function(aH,aI)aF.Box=aI aE(aF)end}:Continue():Colorpicker{Color={
-		Color3.fromRGB(77,92,143),0.5},SuggestionColors={{Color3.fromRGB(171,81,83)},{
+		State=false,Callback=function(aK,aL)if aL then aI('ChargeTime',0)else aJ
+		'ChargeTime'end end}aF:Toggle{Name='No Slow',Description='removes gun slowdown',
+		State=false,Callback=function(aK,aL)if aL then aI('Speed%',function(aM,aN)return
+		aM=='number'and aN>0 and 0 end)else aJ'Speed%'end end}:Continue()end end do
+		local aE=aD.Visuals do local aF=aE:Section{Name='ESP'}aF:Slider{Name='Text Font'
+		,Description='the font ESP text uses',Value=3,Minimum=0,Maximum=3,Step=1,
+		Precision=0,Callback=function(aG,aH)ar.TextFont=aH end}aF:Slider{Name=
+		'Text Size',Description='the size of ESP text',Value=13,Minimum=1,Maximum=20,
+		Step=1,Precision=0,Callback=function(aG,aH)ar.TextSize=aH end}aF:Toggle{Name=
+		'Use Team Color',Description='enables ESP team color',State=false,Callback=
+		function(aG,aH)ar.UseTeamColor=aH end}aF:Toggle{Name='Limit Enabled',Description
+		='enables distance limit',State=false,Callback=function(aG,aH)ar.LimitDistance=
+		aH end}:Continue()aF:Slider{Name='Max Distance',Description=
+		'the maximum distance that ESP will render at',Value=500,Minimum=1,Maximum=2000,
+		Step=1,Precision=0,Callback=function(aG,aH)ar.MaxDistance=aH end}:Continue()
+		local aG=function(aG)aC:VisualPreview{HealthBar={Visible=aG.HealthBar,Color={aG.
+		HealthyColor}},Name={Visible=aG.Name,Color={aG.NameColor[1],aG.NameColor[2]}},
+		Distance={Visible=aG.Distance,Color={aG.DistanceColor[1],aG.DistanceColor[2]}},
+		Health={Visible=aG.HealthText,Color={aG.HealthTextColor[1],aG.HealthTextColor[2]
+		}},Weapon={Visible=aG.Weapon,Color={aG.WeaponColor[1],aG.WeaponColor[2]}},
+		BoundingBox={Visible=aG.Box,Color={aG.BoxColor[1],aG.BoxColor[2]}},CornerBox={
+		Visible=aG.CornerBox,Color={aG.CornerBoxColor[1],aG.CornerBoxColor[2]}},FillBox=
+		{Visible=aG.BoxFill,Color={aG.BoxFillColor[1],aG.BoxFillColor[2]}}}end local aH,
+		aI=function(aH,aI)aI:Toggle{Name='Enabled',Description='enables ESP',State=false
+		,Callback=function(aJ,aK)aH.Enabled=aK end}aI:Toggle{Name='Bounding Box',
+		Description='enables bounding box ESP',State=false,Callback=function(aJ,aK)aH.
+		Box=aK aG(aH)end}:Continue():Colorpicker{Color={Color3.fromRGB(77,92,143),0.5},
+		SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
+		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
+		220,195)}},Callback=function(aJ,aK,aL)aH.BoxColor[1],aH.BoxColor[2]=aK,1-aL aH.
+		BoxOutlineColor[2]=1-aL aG(aH)end}aI:Toggle{Name='Box Fill',Description=
+		'enables box fill ESP',State=false,Callback=function(aJ,aK)aH.BoxFill=aK aG(aH)
+		end}:Continue():Colorpicker{Color={Color3.fromRGB(0,0,0),0.8},SuggestionColors={
+		{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,
+		246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=
+		function(aJ,aK,aL)aH.BoxFillColor[1],aH.BoxFillColor[2]=aK,1-aL aG(aH)end}aI:
+		Toggle{Name='Corner Box',Description='enables corner box ESP',State=false,
+		Callback=function(aJ,aK)aH.CornerBox=aK aG(aH)end}:Continue():Colorpicker{Color=
+		{Color3.fromRGB(123,124,2433),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{
 		Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,
-		197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI)aF.BoxColor[1],
-		aF.BoxColor[2]=aH,1-aI aF.BoxOutlineColor[2]=1-aI aE(aF)end}aG:Toggle{Name=
-		'Box Fill',Description='enables box fill ESP',State=false,Callback=function(aH,
-		aI)aF.BoxFill=aI aE(aF)end}:Continue():Colorpicker{Color={Color3.fromRGB(0,0,0),
-		0.8},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)}
-		,{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-		220,195)}},Callback=function(aH,aI)aF.BoxFillColor[1],aF.BoxFillColor[2]=aH,1-aI
-		aE(aF)end}aG:Toggle{Name='Corner Box',Description='enables corner box ESP',State
-		=false,Callback=function(aH,aI)aF.CornerBox=aI aE(aF)end}:Continue():Colorpicker
-		{Color={Color3.fromRGB(123,124,2433),0},SuggestionColors={{Color3.fromRGB(171,81
-		,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.
-		fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI)aF.
-		CornerBoxColor[1],aF.CornerBoxColor[2]=aH,1-aI aE(aF)end}aG:Toggle{Name=
+		197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aJ,aK,aL)aH.
+		CornerBoxColor[1],aH.CornerBoxColor[2]=aK,1-aL aG(aH)end}aI:Toggle{Name=
 		'3D Bounding Box',Description='enables 3d bounding box ESP',State=false,Callback
-		=function(aH,aI)aF.Box3d=aI aE(aF)end}:Continue():Colorpicker{Color={Color3.
+		=function(aJ,aK)aH.Box3d=aK aG(aH)end}:Continue():Colorpicker{Color={Color3.
 		fromRGB(141,149,192),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.
 		fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)
-		},{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI)aF.Box3dColor[1],aF.
-		Box3dColor[2]=aH,1-aI aE(aF)end}aG:Toggle{Name='Chams',Description=
-		'enables player chams ESP',State=false,Callback=function(aH,aI)aF.Chams=aI end}:
+		},{Color3.fromRGB(49,220,195)}},Callback=function(aJ,aK,aL)aH.Box3dColor[1],aH.
+		Box3dColor[2]=aK,1-aL aG(aH)end}aI:Toggle{Name='Chams',Description=
+		'enables player chams ESP',State=false,Callback=function(aJ,aK)aH.Chams=aK end}:
 		Continue():Colorpicker{Description='Fill Color',Color={Color3.fromRGB(100,120,
 		250),0.8},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,
 		243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
-		fromRGB(49,220,195)}},Callback=function(aH,aI)aF.ChamsFillColor[1],aF.
-		ChamsFillColor[2]=aH,aI aE(aF)end}:Continue():Colorpicker{Description=
+		fromRGB(49,220,195)}},Callback=function(aJ,aK,aL)aH.ChamsFillColor[1],aH.
+		ChamsFillColor[2]=aK,aL aG(aH)end}:Continue():Colorpicker{Description=
 		'Outline Color',Color={Color3.fromRGB(25,85,255),0.5},SuggestionColors={{Color3.
 		fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},
-		{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH
-		,aI)aF.ChamsOutlineColor[1],aF.ChamsOutlineColor[2]=aH,aI aE(aF)end}aG:Toggle{
-		Name='Tracers',Description='enables tracers ESP',State=false,Callback=function(
-		aH,aI)aF.Tracer=aI end}:Continue():Colorpicker{Color={Color3.fromRGB(123,124,243
-		),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)}
-		,{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-		220,195)}},Callback=function(aH,aI)aF.TracerColor[1],aF.TracerColor[2]=aH,1-aI
-		aF.TracerOutlineColor[2]=1-aI aE(aF)end}aG:Dropdown{Name='Tracers Origin',
-		Description='selects the starting port of tracers',Options={'Top','Middle',
-		'Bottom','Mouse'},Value={'Top'},Limit=1,Minimum=1,Callback=function(aH,aI)aF.
-		TracerOrigin=aI[1]end}aG:Toggle{Name='Health Bar',Description=
-		'enables health bar ESP',State=false,Callback=function(aH,aI)aF.HealthBar=aI aE(
-		aF)end}:Continue():Colorpicker{Description='Healthy Color',AlphaEnabled=false,
-		Color={Color3.fromRGB(58,161,47),0},SuggestionColors={{Color3.fromRGB(171,81,83)
-		},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(
-		255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH)aF.HealthyColor
-		=aH aE(aF)end}:Continue():Colorpicker{Description='Dying Color',AlphaEnabled=
-		false,Color={Color3.fromRGB(161,47,47),0},SuggestionColors={{Color3.fromRGB(171,
-		81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.
-		fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH)aF.
-		DyingColor=aH aE(aF)end}aG:Toggle{Name='Off Screen Arrows',Description=
-		'enables off screen arrow ESP',State=false,Callback=function(aH,aI)aF.
-		OffScreenArrow=aI end}:Continue():Colorpicker{Color={Color3.fromRGB(255,255,255)
-		,0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},
-		{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-		220,195)}},Callback=function(aH,aI)aF.OffScreenArrowColor[1],aF.
-		OffScreenArrowColor[2]=aH,1-aI aF.OffScreenArrowOutlineColor[2]=1-aI aE(aF)end}:
-		Continue()aG:Slider{Name='Arrow Size',Description=
-		'changes the size of the individual off screen arrows',Value=15,Minimum=1,
-		Maximum=50,Step=1,Precision=0,Callback=function(aH,aI)ak.OffScreenArrowSize=aI
-		end}:Continue()aG:Slider{Name='Radius',Description=
+		{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aJ
+		,aK,aL)aH.ChamsOutlineColor[1],aH.ChamsOutlineColor[2]=aK,aL aG(aH)end}aI:Toggle
+		{Name='Skeletons',Description='enables skeleton/bone ESP',State=false,Callback=
+		function(aJ,aK)aH.Skeleton=aK end}:Continue():Colorpicker{Color={Color3.fromRGB(
+		123,124,243),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(
+		123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{
+		Color3.fromRGB(49,220,195)}},Callback=function(aJ,aK,aL)aH.SkeletonColor[1],aH.
+		SkeletonColor[2]=aK,1-aL aG(aH)end}:Continue()aI:Slider{Name='Thickness',
+		Description='the thickness of skeleton lines',Value=1,Minimum=1,Maximum=4,Step=1
+		,Precision=0,Callback=function(aJ,aK)aH.SkeletonThickness=aK end}:Continue()aI:
+		Toggle{Name='Tracers',Description='enables tracers ESP',State=false,Callback=
+		function(aJ,aK)aH.Tracer=aK end}:Continue():Colorpicker{Color={Color3.fromRGB(
+		123,124,243),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(
+		123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{
+		Color3.fromRGB(49,220,195)}},Callback=function(aJ,aK,aL)aH.TracerColor[1],aH.
+		TracerColor[2]=aK,1-aL aH.TracerOutlineColor[2]=1-aL aG(aH)end}:Continue()aI:
+		Dropdown{Name='Tracers Origin',Description=
+		'selects the starting port of tracers',Options={'Top','Middle','Bottom','Mouse'}
+		,Value={'Top'},Limit=1,Minimum=1,Callback=function(aJ,aK)aH.TracerOrigin=aK[1]
+		end}aI:Toggle{Name='Health Bar',Description='enables health bar ESP',State=false
+		,Callback=function(aJ,aK)aH.HealthBar=aK aG(aH)end}:Continue():Colorpicker{
+		Description='Healthy Color',AlphaEnabled=false,Color={Color3.fromRGB(58,161,47),
+		0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
+		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
+		220,195)}},Callback=function(aJ,aK)aH.HealthyColor=aK aG(aH)end}:Continue():
+		Colorpicker{Description='Dying Color',AlphaEnabled=false,Color={Color3.fromRGB(
+		161,47,47),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,
+		124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
+		fromRGB(49,220,195)}},Callback=function(aJ,aK)aH.DyingColor=aK aG(aH)end}aI:
+		Toggle{Name='Off Screen Arrows',Description='enables off screen arrow ESP',State
+		=false,Callback=function(aJ,aK)aH.OffScreenArrow=aK end}:Continue():Colorpicker{
+		Color={Color3.fromRGB(255,255,255),0},SuggestionColors={{Color3.fromRGB(171,81,
+		83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.
+		fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aJ,aK,aL)
+		aH.OffScreenArrowColor[1],aH.OffScreenArrowColor[2]=aK,1-aL aH.
+		OffScreenArrowOutlineColor[2]=1-aL aG(aH)end}:Continue()aI:Slider{Name=
+		'Arrow Size',Description='changes the size of the individual off screen arrows',
+		Value=15,Minimum=1,Maximum=50,Step=1,Precision=0,Callback=function(aJ,aK)ar.
+		OffScreenArrowSize=aK end}:Continue()aI:Slider{Name='Radius',Description=
 		'changes the radius limit of offscreen arrows',Value=150,Minimum=1,Maximum=500,
-		Step=1,Precision=0,Callback=function(aH,aI)ak.OffScreenArrowRadius=aI end}aG:
+		Step=1,Precision=0,Callback=function(aJ,aK)ar.OffScreenArrowRadius=aK end}aI:
 		Toggle{Name='Name',Description='enables name text ESP',State=false,Callback=
-		function(aH,aI)aF.Name=aI aE(aF)end}:Continue():Colorpicker{Color={Color3.
+		function(aJ,aK)aH.Name=aK aG(aH)end}:Continue():Colorpicker{Color={Color3.
 		fromRGB(221,215,148),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.
 		fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)
-		},{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI)aF.NameColor[1],aF.
-		NameColor[2]=aH,1-aI aE(aF)end}aG:Toggle{Name='Distance',Description=
-		'enables distance text ESP',State=false,Callback=function(aH,aI)aF.Distance=aI
-		aE(aF)end}:Continue():Colorpicker{Color={Color3.fromRGB(221,215,148),0},
+		},{Color3.fromRGB(49,220,195)}},Callback=function(aJ,aK,aL)aH.NameColor[1],aH.
+		NameColor[2]=aK,1-aL aG(aH)end}aI:Toggle{Name='Distance',Description=
+		'enables distance text ESP',State=false,Callback=function(aJ,aK)aH.Distance=aK
+		aG(aH)end}:Continue():Colorpicker{Color={Color3.fromRGB(221,215,148),0},
 		SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
 		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-		220,195)}},Callback=function(aH,aI)aF.DistanceColor[1],aF.DistanceColor[2]=aH,1-
-		aI aE(aF)end}aG:Toggle{Name='Weapon',Description='enables weapon text ESP',State
-		=false,Callback=function(aH,aI)aF.Weapon=aI aE(aF)end}:Continue():Colorpicker{
-		Color={Color3.fromRGB(200,173,182),0},SuggestionColors={{Color3.fromRGB(171,81,
-		83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.
-		fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI)aF.
-		WeaponColor[1],aF.WeaponColor[2]=aH,1-aI aE(aF)end}aG:Toggle{Name='Health',
-		Description='enables health text ESP',State=false,Callback=function(aH,aI)aF.
-		HealthText=aI aE(aF)end}:Continue():Colorpicker{Color={Color3.fromRGB(200,173,
-		182),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,
-		243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
-		fromRGB(49,220,195)}},Callback=function(aH,aI)aF.HealthTextColor[1],aF.
-		HealthTextColor[2]=aH,1-aI aE(aF)end}:Continue()end,aD:Section{Name='Enemies'}
-		aF(am,aG)local aH=aD:Section{Name='Friendlies'}aF(an,aH)end end do local aC=aB.
-		Misc end do local aC=aB.Cfg aC:Toggle{Name='Visual preview',Description=
-		'enables a visual preview of your esp',State=true,Callback=function(aD,aE)aA:
-		VisualPreview{Visible=aE}end}:Continue()aC:Keybind{Bind=aA.Settings.Keybind,
-		Blacklist={Enum.UserInputType.MouseButton1,Enum.UserInputType.MouseButton2},
-		onChanged=function(aD,aE)aA:UpdateSettings{Keybind=aE}end}:Continue()aC:Button{
-		Color=aj.SystemDarkRed,Name='Unload Menu',Callback=function(aD)ad:Unload()end}:
-		Continue()end ab()aB.Legit:Select()ad:Notification{Title=`RIOT V2 - {aa.Name} | getriot.cc`
-		,Description=`RIOT V2 Loaded!`,Lifetime=5}do ae.Load()ae.GetWeapon=function(aC)
-		if not aC then return'NONE'end local aD=aC:FindFirstChild'NRPBS'if not aD then
-		return'NONE'end local aE=aD:FindFirstChild'EquippedTool'if not aE or not aE.
-		Value then return'NONE'end return string.upper(aE.Value)end ae.GetHealth=
-		function(aC)if not aC then return 100,100 end local aD=aC:FindFirstChild'NRPBS'
-		if not aD then return 100,100 end local aE,aF=aD:FindFirstChild'Health',aD:
-		FindFirstChild'MaxHealth'if not aE or not aF then return 100,100 end return aE.
-		Value,aF.Value end end do af.Load()af.GetHealth=function(aC)if not aC then
-		return 0 end local aD=aC:FindFirstChild'NRPBS'if not aD then return 0 end local
-		aE=aD:FindFirstChild'Health'if not aE then return 0 end return aE.Value end end
-		end end function a.i()return function(aa)local ab,ac,ad,ae=a.load'b',a.load'a',a
-		.load'c',a.load'd'local af,ag,ah,ai=ac.Assets,ac.Colors,ad.Shared,ad.Team local
-		aj,ak,al,am,an,ao,ap=ai.Enemy,ai.Friendly,ae.Aimbot,ae.Triggerbot,ae.FOVSettings
-		,ab.GetPlayer(),getrenv()._G local aq,ar,as,at,au=ap.globals,ap.enums,ap.utils,{
-		Set=ap.exe_set,SetT=ap.exe_set_t},ab.SecureService local av,aw,ax,ay,az,aA=au
-		'RunService',au'Workspace',au'Players',au'ReplicatedStorage',{GetSoldierId=
-		function(av)for aw,ax in pairs(aq.cli_names)do if av and av.Name==ax then return
-		aw end end return end},ac:Window{Title=aa.Name,Keybind=Enum.KeyCode.RightControl
-		}local aB={Legit=aA:Tab{Name='Legit',Image=af.ShieldCheck},Rage=aA:Tab{Name=
-		'Rage',Image=af.Shield},Visuals=aA:Tab{Name='Visuals',Image=af.Bolt},Misc=aA:Tab
-		{Name='Misc',Image=af.Folder},Cfg=aA:Tab{Name='Cfg',Image=af.Archive}}do local
-		aC=aB.Legit do local aD=aC:Section{Name='Aimbot'}do local aE=aD:Section{Name=
-		'Aimbot Settings'}aE:Toggle{Name='Enabled',Description='enables aimbot',State=
-		false,Callback=function(aF,aG)al.Enabled=aG end}:Continue()aE:Keybind{Bind=Enum.
-		UserInputType.MouseButton2,Blacklist={Enum.UserInputType.MouseButton1},onHeld=
-		function(aF,aG,aH)if aH then return end al.SetState(aG)end}aE:Dropdown{Name=
-		'Wall Check',Description='the method used by wall check',Options={'Off','Sticky'
-		,'Always On'},Value={'Always On'},Limit=1,Minimum=1,Callback=function(aF,aG)al.
-		WallCheck=({Off=1,Sticky=2,['Always On']=3})[aG[1] ]end}aE:Toggle{Name=
-		'Team Check',Description='whether to ignore friendlys',State=true,Callback=
-		function(aF,aG)al.TeamCheck=aG end}aE:Toggle{Name='Alive Check',Description=
-		'whether to ignore corpses',State=true,Callback=function(aF,aG)al.AliveCheck=aG
-		end}:Continue()aE:Slider{Name='Smoothing',Description='aimbot smoothness',Value=
-		1,Minimum=1,Maximum=20,Step=0.1,Precision=1,Callback=function(aF,aG)al.
-		Sensitivity=(aG-1)/(aF.Settings.Maximum-1)*0.15 al.Sensitivity2=aG end}aE:
-		Dropdown{Name='Bone',Description='selects the bone to aim at',Options={'Head',
-		'Torso'},Value={'Head'},Limit=1,Minimum=1,Callback=function(aF,aG)local aH=aG[1]
-		=='Torso'and'HumanoidRootPart'or aG[1]=='Head'and'TPVBodyVanillaHead'or aG[1]al.
-		LockPart=aH end}aE:Dropdown{Name='Lock Method',Description=
+		220,195)}},Callback=function(aJ,aK,aL)aH.DistanceColor[1],aH.DistanceColor[2]=aK
+		,1-aL aG(aH)end}aI:Toggle{Name='Weapon',Description='enables weapon text ESP',
+		State=false,Callback=function(aJ,aK)aH.Weapon=aK aG(aH)end}:Continue():
+		Colorpicker{Color={Color3.fromRGB(200,173,182),0},SuggestionColors={{Color3.
+		fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},
+		{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aJ
+		,aK,aL)aH.WeaponColor[1],aH.WeaponColor[2]=aK,1-aL aG(aH)end}aI:Toggle{Name=
+		'Health',Description='enables health text ESP',State=false,Callback=function(aJ,
+		aK)aH.HealthText=aK aG(aH)end}:Continue():Colorpicker{Color={Color3.fromRGB(200,
+		173,182),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,
+		124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
+		fromRGB(49,220,195)}},Callback=function(aJ,aK,aL)aH.HealthTextColor[1],aH.
+		HealthTextColor[2]=aK,1-aL aG(aH)end}:Continue()end,aF:Section{Name='Enemies'}
+		aH(at,aI)local aJ=aF:Section{Name='Friendlies'}aH(au,aJ)end do local aF=aE:
+		Section{Name='World'}aF:Toggle{Name='Night mode',Description=
+		'enables night mode',State=false,Callback=function(aG,aH)if aG.__NightModeConn
+		then aG.__NightModeConn:Disconnect()aG.__NightModeConn=nil end if aH then aG.
+		__OldClockTime=aj.ClockTime aG.__NightModeConn=game:GetService'RunService'.
+		Heartbeat:Connect(function()if aj.ClockTime~=0 then aG.__OldClockTime=aj.
+		ClockTime aj.ClockTime=0 end end)else if aG.__OldClockTime then aj.ClockTime=aG.
+		__OldClockTime end end end}do local aG,aH=aF:Section{Name='Color Correction'},
+		Instance.new'ColorCorrectionEffect'aH.Parent=aj aG:Toggle{Name='Enabled',
+		Description='enables world color correction',State=false,Callback=function(aI,aJ
+		)aH.Enabled=aJ end}aG:Colorpicker{AlphaEnabled=false,Name='Tint',Description=
+		'changes world color correction tint',Color={Color3.fromRGB(255,255,255)},
+		SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
+		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
+		220,195)}},Callback=function(aI,aJ)aH.TintColor=aJ end}aG:Slider{Name=
+		'Brightness',Description='changes world color correction brightness',Value=0,
+		Minimum=-1,Maximum=1,Step=0.01,Precision=2,Callback=function(aI,aJ)aH.Brightness
+		=aJ end}aG:Slider{Name='Contrast',Description=
+		'changes world color correction contrast',Value=0,Minimum=-2,Maximum=5,Step=0.01
+		,Precision=2,Callback=function(aI,aJ)aH.Contrast=aJ end}aG:Slider{Name=
+		'Saturation',Description='changes world color correction saturation',Value=0,
+		Minimum=-10,Maximum=10,Step=0.01,Precision=2,Callback=function(aI,aJ)aH.
+		Saturation=aJ end}end end end do local aE=aD.Misc do local aF=aE:Section{Name=
+		'Local Player'}do aF:Slider({Name='Speed Multiplier',Description=
+		'multiplies your movement speed',Value=1,Minimum=1,Maximum=4,Step=0.1,Precision=
+		1,Callback=function(aG,aH)local aI=ac.GetCharacter(am)if aI then aI.Humanoid.
+		WalkSpeed*=aH end end},'Misc/LocalPlayer/SpeedMultiplier')aF:Slider({Name=
+		'Jump Multiplier',Description='multiplies your jump power',Value=1,Minimum=1,
+		Maximum=15,Step=0.1,Precision=1,Callback=function(aG,aH)local aI=ac.GetHumanoid(
+		am)if aI then local aJ=aI.UseJumpPower and'JumpPower'or'JumpHeight'aI[aJ]*=aH
+		end end},'Misc/LocalPlayer/JumpMultiplier')end aF:Toggle{Name='Third Person',
+		Description='enables third person perspective',State=false,Callback=function(aG,
+		aH)if aG._ThirdPersonConn then aG._ThirdPersonConn:Disconnect()aG.
+		_ThirdPersonConn=nil end if aH then am.CameraMode=Enum.CameraMode.Classic aG.
+		_ThirdPersonConn=am:GetPropertyChangedSignal'CameraMode':Connect(function()am.
+		CameraMode=Enum.CameraMode.Classic end)else am.CameraMode=Enum.CameraMode.
+		LockFirstPerson end end}:Continue()end end do local aE=aD.Cfg aE:Toggle{Name=
+		'Visual preview',Description='enables a visual preview of your esp',State=true,
+		Callback=function(aF,aG)aC:VisualPreview{Visible=aG}end}:Continue()aE:Keybind{
+		Bind=aC.Settings.Keybind,Blacklist={Enum.UserInputType.MouseButton1,Enum.
+		UserInputType.MouseButton2},onChanged=function(aF,aG)aC:UpdateSettings{Keybind=
+		aG}end}:Continue()aE:Button{Color=aq.SystemDarkRed,Name='Unload Menu',Callback=
+		function(aF)ad:Unload()end}:Continue()end ab.Load()do ae.Load()ae.GetWeapon=
+		function(aE)if not aE then return'NONE'end local aF=aE:FindFirstChild'NRPBS'if
+		not aF then return'NONE'end local aG=aF:FindFirstChild'EquippedTool'if not aG or
+		not aG.Value then return'NONE'end return string.upper(aG.Value)end ae.GetHealth=
+		function(aE)if not aE then return 100,100 end local aF=aE:FindFirstChild'NRPBS'
+		if not aF then return 100,100 end local aG,aH=aF:FindFirstChild'Health',aF:
+		FindFirstChild'MaxHealth'if not aG or not aH then return 100,100 end return aG.
+		Value,aH.Value end end do af.GetHealth=function(aE)if not aE then return 0 end
+		local aF=aE:FindFirstChild'NRPBS'if not aF then return 0 end local aG=aF:
+		FindFirstChild'Health'if not aG then return 0 end return aG.Value end aw.Trigger
+		=function()local aE,aF=aB.GetClient()local aG=aF and aF.deployed if aG then
+		mouse1press()wait()mouse1release()end end af.Load()local aE=function(aE)if aE
+		then af.AddToIgnoreQuery(aE)ag.AddToIgnoreQuery(aE)end end ai.ChildAdded:
+		Connect(function(aF)if aF.Name=='Map'then local aG=aF:FindFirstChild'Ignore'if
+		aG then aE(aG)end end end)local aF=ai:FindFirstChild'Map'if aF then local aG=aF:
+		FindFirstChild'Ignore'if aG then aE(aG)end end for aG,aH in ipairs{'Ray_Ignore',
+		'Debris'}do local aI=ai:FindFirstChild(aH)if aI then aE(aI)end end end do aD.
+		Legit:Select()ad:Notification{Title=`RIOT {RIOT.VERSION} - getriot.cc`,
+		Description=`RIOT for {aa.Name} loaded!`,Lifetime=5}end do do local aE aE=
+		hookmetamethod(game,'__newindex',newcclosure(function(aF,aG,aH)if not
+		checkcaller()and typeof(aF)=='Instance'and aF:IsA'Humanoid'then if aG==
+		'WalkSpeed'and typeof(aH)=='number'then return aE(aF,aG,aH*ao[
+		'Misc/LocalPlayer/SpeedMultiplier'].Settings.Value)elseif(aG=='JumpPower'or aG==
+		'JumpHeight')and typeof(aH)=='number'then return aE(aF,aG,aH*ao[
+		'Misc/LocalPlayer/JumpMultiplier'].Settings.Value)end end return aE(aF,aG,aH)end
+		))end end end end function a.i()return function(aa)local ab,ac,ad,ae=a.load'b',a
+		.load'a',a.load'c',a.load'd'local af,ag,ah,ai=ac.Assets,ac.Colors,ad.Shared,ad.
+		Team local aj,ak,al,am,an,ao,ap=ai.Enemy,ai.Friendly,ae.Aimbot,ae.Triggerbot,ae.
+		FOVSettings,ab.GetPlayer(),getrenv()._G local aq,ar,as,at,au=ap.globals,ap.enums
+		,ap.utils,{Set=ap.exe_set,SetT=ap.exe_set_t},ab.SecureService local av,aw,ax,ay,
+		az,aA=au'RunService',au'Workspace',au'Players',au'ReplicatedStorage',{
+		GetSoldierId=function(av)for aw,ax in pairs(aq.cli_names)do if av and av.Name==
+		ax then return aw end end return end},ac:Window{Title=aa.Name,Keybind=Enum.
+		KeyCode.RightControl}local aB={Legit=aA:Tab{Name='Legit',Image=af.ShieldCheck},
+		Rage=aA:Tab{Name='Rage',Image=af.Shield},Visuals=aA:Tab{Name='Visuals',Image=af.
+		Bolt},Misc=aA:Tab{Name='Misc',Image=af.Folder},Cfg=aA:Tab{Name='Cfg',Image=af.
+		Archive}}do local aC=aB.Legit do local aD=aC:Section{Name='Aimbot'}do local aE=
+		aD:Section{Name='Aimbot Settings'}aE:Toggle{Name='Enabled',Description=
+		'enables aimbot',State=false,Callback=function(aF,aG)al.Enabled=aG end}:
+		Continue()aE:Keybind{Bind=Enum.UserInputType.MouseButton2,Blacklist={Enum.
+		UserInputType.MouseButton1},onHeld=function(aF,aG,aH)if aH then return end al.
+		SetState(aG)end}aE:Dropdown{Name='Wall Check',Description=
+		'the method used by wall check',Options={'Off','Sticky','Always On'},Value={
+		'Always On'},Limit=1,Minimum=1,Callback=function(aF,aG)al.WallCheck=({Off=1,
+		Sticky=2,['Always On']=3})[aG[1] ]end}aE:Toggle{Name='Team Check',Description=
+		'whether to ignore friendlys',State=true,Callback=function(aF,aG)al.TeamCheck=aG
+		end}aE:Slider{Name='Smoothing',Description='aimbot smoothness',Value=1,Minimum=1
+		,Maximum=20,Step=0.1,Precision=1,Callback=function(aF,aG)al.Sensitivity=(aG-1)/(
+		aF.Settings.Maximum-1)*0.15 al.Sensitivity2=aG end}aE:Dropdown{Name='Bone',
+		Description='selects the bone to aim at',Options={'Head','Chest','Stomach',
+		'Left Arm','Right Arm','Left Leg','Right Leg'},Value={'Head'},Limit=1,Minimum=1,
+		Callback=function(aF,aG)al.LockPart=aG[1]=='Torso'and'HumanoidRootPart'or aG[1]
+		end}aE:Dropdown{Name='Lock Method',Description=
 		'the input used to lock onto a player',Options={'Camera','Mouse'},Value={
 		'Camera'},Limit=1,Minimum=1,Callback=function(aF,aG)al.LockMode=({Camera=1,Mouse
 		=2})[aG[1] ]end}aE:Slider{Name='Max Distance',Description=
@@ -2051,29 +2158,27 @@ Push(
 		AlphaEnabled=false,Color={Color3.fromRGB(255,150,150),0},SuggestionColors={{
 		Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246
 		,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=
-		function(aF)an.Color=aF end}:Continue():Colorpicker{Description='Locked Color',
-		AlphaEnabled=false,Color={Color3.fromRGB(150,255,150),0},SuggestionColors={{
-		Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246
-		,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=
-		function(aF)an.LockedColor=aF end}aE:Slider{Name='Radius',Description=
-		'aimbot FOV limit radius',Value=120,Minimum=1,Maximum=500,Step=1,Precision=0,
-		Callback=function(aF,aG)an.Radius=aG end}aE:Slider{Name='Circle Sides',
-		Description='the amount of points the drawn circle has',Value=45,Minimum=3,
-		Maximum=80,Step=1,Precision=0,Callback=function(aF,aG)an.NumSides=aG end}:
-		Continue()end end do local aD=aC:Section{Name='Triggerbot'}aD:Toggle{Name=
+		function(aF,aG)an.Color=aG end}:Continue():Colorpicker{Description=
+		'Locked Color',AlphaEnabled=false,Color={Color3.fromRGB(150,255,150),0},
+		SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
+		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
+		220,195)}},Callback=function(aF,aG)an.LockedColor=aG end}aE:Slider{Name='Radius'
+		,Description='aimbot FOV limit radius',Value=120,Minimum=1,Maximum=500,Step=1,
+		Precision=0,Callback=function(aF,aG)an.Radius=aG end}aE:Slider{Name=
+		'Circle Sides',Description='the amount of points the drawn circle has',Value=45,
+		Minimum=3,Maximum=80,Step=1,Precision=0,Callback=function(aF,aG)an.NumSides=aG
+		end}:Continue()end end do local aD=aC:Section{Name='Triggerbot'}aD:Toggle{Name=
 		'Enabled',Description='enables triggerbot',State=false,Callback=function(aE,aF)
 		am.Enabled=aF end}aD:Slider{Name='Reaction Time',Description=
 		'the time it takes for triggerbot to react to targets (ms)',Value=0,Minimum=0,
 		Maximum=500,Step=1,Precision=0,Callback=function(aE,aF)am.Delay=aF/1000 end}aD:
 		Toggle{Name='Team Check',Description='whether to ignore friendlys',State=true,
-		Callback=function(aE,aF)am.TeamCheck=aF end}aD:Toggle{Name='Alive Check',
-		Description='whether to ignore corpses',State=true,Callback=function(aE,aF)al.
-		AliveCheck=aF end}:Continue()end end do local aC=aB.Rage end do local aC=aB.
-		Visuals do local aD=aC:Section{Name='ESP'}aD:Slider{Name='Text Font',Description
-		='the font ESP text uses',Value=3,Minimum=0,Maximum=3,Step=1,Precision=0,
-		Callback=function(aE,aF)ah.TextFont=aF end}aD:Slider{Name='Text Size',
-		Description='the size of ESP text',Value=13,Minimum=1,Maximum=20,Step=1,
-		Precision=0,Callback=function(aE,aF)ah.TextSize=aF end}aD:Toggle{Name=
+		Callback=function(aE,aF)am.TeamCheck=aF end}end end do local aC=aB.Rage end do
+		local aC=aB.Visuals do local aD=aC:Section{Name='ESP'}aD:Slider{Name='Text Font'
+		,Description='the font ESP text uses',Value=3,Minimum=0,Maximum=3,Step=1,
+		Precision=0,Callback=function(aE,aF)ah.TextFont=aF end}aD:Slider{Name=
+		'Text Size',Description='the size of ESP text',Value=13,Minimum=1,Maximum=20,
+		Step=1,Precision=0,Callback=function(aE,aF)ah.TextSize=aF end}aD:Toggle{Name=
 		'Use Team Color',Description='enables ESP team color',State=false,Callback=
 		function(aE,aF)ah.UseTeamColor=aF end}aD:Toggle{Name='Limit Enabled',Description
 		='enables distance limit',State=false,Callback=function(aE,aF)ah.LimitDistance=
@@ -2094,88 +2199,97 @@ Push(
 		Box=aI aE(aF)end}:Continue():Colorpicker{Color={Color3.fromRGB(77,92,143),0.5},
 		SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
 		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-		220,195)}},Callback=function(aH,aI)aF.BoxColor[1],aF.BoxColor[2]=aH,1-aI aF.
-		BoxOutlineColor[2]=1-aI aE(aF)end}aG:Toggle{Name='Box Fill',Description=
+		220,195)}},Callback=function(aH,aI,aJ)aF.BoxColor[1],aF.BoxColor[2]=aI,1-aJ aF.
+		BoxOutlineColor[2]=1-aJ aE(aF)end}aG:Toggle{Name='Box Fill',Description=
 		'enables box fill ESP',State=false,Callback=function(aH,aI)aF.BoxFill=aI aE(aF)
 		end}:Continue():Colorpicker{Color={Color3.fromRGB(0,0,0),0.8},SuggestionColors={
 		{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,
 		246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=
-		function(aH,aI)aF.BoxFillColor[1],aF.BoxFillColor[2]=aH,1-aI aE(aF)end}aG:Toggle
-		{Name='Corner Box',Description='enables corner box ESP',State=false,Callback=
-		function(aH,aI)aF.CornerBox=aI aE(aF)end}:Continue():Colorpicker{Color={Color3.
-		fromRGB(123,124,2433),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.
+		function(aH,aI,aJ)aF.BoxFillColor[1],aF.BoxFillColor[2]=aI,1-aJ aE(aF)end}aG:
+		Toggle{Name='Corner Box',Description='enables corner box ESP',State=false,
+		Callback=function(aH,aI)aF.CornerBox=aI aE(aF)end}:Continue():Colorpicker{Color=
+		{Color3.fromRGB(123,124,2433),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{
+		Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,
+		197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI,aJ)aF.
+		CornerBoxColor[1],aF.CornerBoxColor[2]=aI,1-aJ aE(aF)end}aG:Toggle{Name=
+		'3D Bounding Box',Description='enables 3d bounding box ESP',State=false,Callback
+		=function(aH,aI)aF.Box3d=aI aE(aF)end}:Continue():Colorpicker{Color={Color3.
+		fromRGB(141,149,192),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.
 		fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)
-		},{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI)aF.CornerBoxColor[1],aF.
-		CornerBoxColor[2]=aH,1-aI aE(aF)end}aG:Toggle{Name='3D Bounding Box',Description
-		='enables 3d bounding box ESP',State=false,Callback=function(aH,aI)aF.Box3d=aI
-		aE(aF)end}:Continue():Colorpicker{Color={Color3.fromRGB(141,149,192),0},
-		SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
-		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-		220,195)}},Callback=function(aH,aI)aF.Box3dColor[1],aF.Box3dColor[2]=aH,1-aI aE(
-		aF)end}aG:Toggle{Name='Chams',Description='enables player chams ESP',State=false
-		,Callback=function(aH,aI)aF.Chams=aI end}:Continue():Colorpicker{Description=
-		'Fill Color',Color={Color3.fromRGB(100,120,250),0.8},SuggestionColors={{Color3.
+		},{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI,aJ)aF.Box3dColor[1],aF.
+		Box3dColor[2]=aI,1-aJ aE(aF)end}aG:Toggle{Name='Chams',Description=
+		'enables player chams ESP',State=false,Callback=function(aH,aI)aF.Chams=aI end}:
+		Continue():Colorpicker{Description='Fill Color',Color={Color3.fromRGB(100,120,
+		250),0.8},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,
+		243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
+		fromRGB(49,220,195)}},Callback=function(aH,aI,aJ)aF.ChamsFillColor[1],aF.
+		ChamsFillColor[2]=aI,aJ aE(aF)end}:Continue():Colorpicker{Description=
+		'Outline Color',Color={Color3.fromRGB(25,85,255),0.5},SuggestionColors={{Color3.
 		fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},
 		{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH
-		,aI)aF.ChamsFillColor[1],aF.ChamsFillColor[2]=aH,aI aE(aF)end}:Continue():
-		Colorpicker{Description='Outline Color',Color={Color3.fromRGB(25,85,255),0.5},
+		,aI,aJ)aF.ChamsOutlineColor[1],aF.ChamsOutlineColor[2]=aI,aJ aE(aF)end}aG:Toggle
+		{Name='Skeletons',Description='enables skeleton/bone ESP',State=false,Callback=
+		function(aH,aI)aF.Skeleton=aI end}:Continue():Colorpicker{Color={Color3.fromRGB(
+		123,124,243),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(
+		123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{
+		Color3.fromRGB(49,220,195)}},Callback=function(aH,aI,aJ)aF.SkeletonColor[1],aF.
+		SkeletonColor[2]=aI,1-aJ aE(aF)end}:Continue()aG:Slider{Name='Thickness',
+		Description='the thickness of skeleton lines',Value=1,Minimum=1,Maximum=4,Step=1
+		,Precision=0,Callback=function(aH,aI)aF.SkeletonThickness=aI end}aG:Toggle{Name=
+		'Tracers',Description='enables tracers ESP',State=false,Callback=function(aH,aI)
+		aF.Tracer=aI end}:Continue():Colorpicker{Color={Color3.fromRGB(123,124,243),0},
 		SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
 		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-		220,195)}},Callback=function(aH,aI)aF.ChamsOutlineColor[1],aF.ChamsOutlineColor[
-		2]=aH,aI aE(aF)end}aG:Toggle{Name='Tracers',Description='enables tracers ESP',
-		State=false,Callback=function(aH,aI)aF.Tracer=aI end}:Continue():Colorpicker{
-		Color={Color3.fromRGB(123,124,243),0},SuggestionColors={{Color3.fromRGB(171,81,
-		83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.
-		fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI)aF.
-		TracerColor[1],aF.TracerColor[2]=aH,1-aI aF.TracerOutlineColor[2]=1-aI aE(aF)end
-		}aG:Dropdown{Name='Tracers Origin',Description=
-		'selects the starting port of tracers',Options={'Top','Middle','Bottom','Mouse'}
-		,Value={'Top'},Limit=1,Minimum=1,Callback=function(aH,aI)aF.TracerOrigin=aI[1]
-		end}aG:Toggle{Name='Health Bar',Description='enables health bar ESP',State=false
-		,Callback=function(aH,aI)aF.HealthBar=aI aE(aF)end}:Continue():Colorpicker{
-		Description='Healthy Color',AlphaEnabled=false,Color={Color3.fromRGB(58,161,47),
-		0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
-		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-		220,195)}},Callback=function(aH)aF.HealthyColor=aH aE(aF)end}:Continue():
-		Colorpicker{Description='Dying Color',AlphaEnabled=false,Color={Color3.fromRGB(
-		161,47,47),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,
-		124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
-		fromRGB(49,220,195)}},Callback=function(aH)aF.DyingColor=aH aE(aF)end}aG:Toggle{
-		Name='Off Screen Arrows',Description='enables off screen arrow ESP',State=false,
-		Callback=function(aH,aI)aF.OffScreenArrow=aI end}:Continue():Colorpicker{Color={
-		Color3.fromRGB(255,255,255),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{
-		Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,
-		197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI)aF.
-		OffScreenArrowColor[1],aF.OffScreenArrowColor[2]=aH,1-aI aF.
-		OffScreenArrowOutlineColor[2]=1-aI aE(aF)end}:Continue()aG:Slider{Name=
-		'Arrow Size',Description='changes the size of the individual off screen arrows',
-		Value=15,Minimum=1,Maximum=50,Step=1,Precision=0,Callback=function(aH,aI)ah.
-		OffScreenArrowSize=aI end}:Continue()aG:Slider{Name='Radius',Description=
+		220,195)}},Callback=function(aH,aI,aJ)aF.TracerColor[1],aF.TracerColor[2]=aI,1-
+		aJ aF.TracerOutlineColor[2]=1-aJ aE(aF)end}:Continue()aG:Dropdown{Name=
+		'Tracers Origin',Description='selects the starting port of tracers',Options={
+		'Top','Middle','Bottom','Mouse'},Value={'Top'},Limit=1,Minimum=1,Callback=
+		function(aH,aI)aF.TracerOrigin=aI[1]end}aG:Toggle{Name='Health Bar',Description=
+		'enables health bar ESP',State=false,Callback=function(aH,aI)aF.HealthBar=aI aE(
+		aF)end}:Continue():Colorpicker{Description='Healthy Color',AlphaEnabled=false,
+		Color={Color3.fromRGB(58,161,47),0},SuggestionColors={{Color3.fromRGB(171,81,83)
+		},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(
+		255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI)aF.
+		HealthyColor=aI aE(aF)end}:Continue():Colorpicker{Description='Dying Color',
+		AlphaEnabled=false,Color={Color3.fromRGB(161,47,47),0},SuggestionColors={{Color3
+		.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)}
+		,{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(
+		aH,aI)aF.DyingColor=aI aE(aF)end}aG:Toggle{Name='Off Screen Arrows',Description=
+		'enables off screen arrow ESP',State=false,Callback=function(aH,aI)aF.
+		OffScreenArrow=aI end}:Continue():Colorpicker{Color={Color3.fromRGB(255,255,255)
+		,0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},
+		{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
+		220,195)}},Callback=function(aH,aI,aJ)aF.OffScreenArrowColor[1],aF.
+		OffScreenArrowColor[2]=aI,1-aJ aF.OffScreenArrowOutlineColor[2]=1-aJ aE(aF)end}:
+		Continue()aG:Slider{Name='Arrow Size',Description=
+		'changes the size of the individual off screen arrows',Value=15,Minimum=1,
+		Maximum=50,Step=1,Precision=0,Callback=function(aH,aI)ah.OffScreenArrowSize=aI
+		end}:Continue()aG:Slider{Name='Radius',Description=
 		'changes the radius limit of offscreen arrows',Value=150,Minimum=1,Maximum=500,
 		Step=1,Precision=0,Callback=function(aH,aI)ah.OffScreenArrowRadius=aI end}aG:
 		Toggle{Name='Name',Description='enables name text ESP',State=false,Callback=
 		function(aH,aI)aF.Name=aI aE(aF)end}:Continue():Colorpicker{Color={Color3.
 		fromRGB(221,215,148),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.
 		fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)
-		},{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI)aF.NameColor[1],aF.
-		NameColor[2]=aH,1-aI aE(aF)end}aG:Toggle{Name='Distance',Description=
+		},{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI,aJ)aF.NameColor[1],aF.
+		NameColor[2]=aI,1-aJ aE(aF)end}aG:Toggle{Name='Distance',Description=
 		'enables distance text ESP',State=false,Callback=function(aH,aI)aF.Distance=aI
 		aE(aF)end}:Continue():Colorpicker{Color={Color3.fromRGB(221,215,148),0},
 		SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
 		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-		220,195)}},Callback=function(aH,aI)aF.DistanceColor[1],aF.DistanceColor[2]=aH,1-
-		aI aE(aF)end}aG:Toggle{Name='Weapon',Description='enables weapon text ESP',State
-		=false,Callback=function(aH,aI)aF.Weapon=aI aE(aF)end}:Continue():Colorpicker{
-		Color={Color3.fromRGB(200,173,182),0},SuggestionColors={{Color3.fromRGB(171,81,
-		83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.
-		fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI)aF.
-		WeaponColor[1],aF.WeaponColor[2]=aH,1-aI aE(aF)end}aG:Toggle{Name='Health',
-		Description='enables health text ESP',State=false,Callback=function(aH,aI)aF.
-		HealthText=aI aE(aF)end}:Continue():Colorpicker{Color={Color3.fromRGB(200,173,
-		182),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,
-		243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
-		fromRGB(49,220,195)}},Callback=function(aH,aI)aF.HealthTextColor[1],aF.
-		HealthTextColor[2]=aH,1-aI aE(aF)end}:Continue()end,aD:Section{Name='Enemies'}
+		220,195)}},Callback=function(aH,aI,aJ)aF.DistanceColor[1],aF.DistanceColor[2]=aI
+		,1-aJ aE(aF)end}aG:Toggle{Name='Weapon',Description='enables weapon text ESP',
+		State=false,Callback=function(aH,aI)aF.Weapon=aI aE(aF)end}:Continue():
+		Colorpicker{Color={Color3.fromRGB(200,173,182),0},SuggestionColors={{Color3.
+		fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},
+		{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH
+		,aI,aJ)aF.WeaponColor[1],aF.WeaponColor[2]=aI,1-aJ aE(aF)end}aG:Toggle{Name=
+		'Health',Description='enables health text ESP',State=false,Callback=function(aH,
+		aI)aF.HealthText=aI aE(aF)end}:Continue():Colorpicker{Color={Color3.fromRGB(200,
+		173,182),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,
+		124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
+		fromRGB(49,220,195)}},Callback=function(aH,aI,aJ)aF.HealthTextColor[1],aF.
+		HealthTextColor[2]=aI,1-aJ aE(aF)end}:Continue()end,aD:Section{Name='Enemies'}
 		aF(aj,aG)local aH=aD:Section{Name='Friendlies'}aF(ak,aH)end end do local aC=aB.
 		Misc end do local aC=aB.Cfg aC:Toggle{Name='Visual preview',Description=
 		'enables a visual preview of your esp',State=true,Callback=function(aD,aE)aA:
@@ -2209,15 +2323,13 @@ Push(
 		Options={'Off','Sticky','Always On'},Value={'Always On'},Limit=1,Minimum=1,
 		Callback=function(au,av)al.WallCheck=({Off=1,Sticky=2,['Always On']=3})[av[1] ]
 		end}at:Toggle{Name='Team Check',Description='whether to ignore friendlys',State=
-		true,Callback=function(au,av)al.TeamCheck=av end}at:Toggle{Name='Alive Check',
-		Description='whether to ignore corpses',State=true,Callback=function(au,av)al.
-		AliveCheck=av end}:Continue()at:Slider{Name='Smoothing',Description=
-		'aimbot smoothness',Value=1,Minimum=1,Maximum=20,Step=0.1,Precision=1,Callback=
-		function(au,av)al.Sensitivity=(av-1)/(au.Settings.Maximum-1)*0.15 al.
+		true,Callback=function(au,av)al.TeamCheck=av end}at:Slider{Name='Smoothing',
+		Description='aimbot smoothness',Value=1,Minimum=1,Maximum=20,Step=0.1,Precision=
+		1,Callback=function(au,av)al.Sensitivity=(av-1)/(au.Settings.Maximum-1)*0.15 al.
 		Sensitivity2=av end}at:Dropdown{Name='Bone',Description=
-		'selects the bone to aim at',Options={'Head','Torso'},Value={'Torso'},Limit=1,
-		Minimum=1,Callback=function(au,av)local aw=av[1]=='Torso'and'HumanoidRootPart'or
-		av[1]al.LockPart=aw end}at:Dropdown{Name='Lock Method',Description=
+		'selects the bone to aim at',Options={'Head','Torso'},Value={'Head'},Limit=1,
+		Minimum=1,Callback=function(au,av)al.LockPart=av[1]=='Torso'and
+		'HumanoidRootPart'or av[1]end}at:Dropdown{Name='Lock Method',Description=
 		'the input used to lock onto a player',Options={'Camera','Mouse'},Value={
 		'Camera'},Limit=1,Minimum=1,Callback=function(au,av)al.LockMode=({Camera=1,Mouse
 		=2})[av[1] ]end}at:Slider{Name='Max Distance',Description=
@@ -2231,131 +2343,138 @@ Push(
 		AlphaEnabled=false,Color={Color3.fromRGB(255,150,150),0},SuggestionColors={{
 		Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246
 		,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=
-		function(au)an.Color=au end}:Continue():Colorpicker{Description='Locked Color',
-		AlphaEnabled=false,Color={Color3.fromRGB(150,255,150),0},SuggestionColors={{
-		Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246
-		,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=
-		function(au)an.LockedColor=au end}at:Slider{Name='Radius',Description=
-		'aimbot FOV limit radius',Value=120,Minimum=1,Maximum=500,Step=1,Precision=0,
-		Callback=function(au,av)an.Radius=av end}at:Slider{Name='Circle Sides',
-		Description='the amount of points the drawn circle has',Value=45,Minimum=3,
-		Maximum=80,Step=1,Precision=0,Callback=function(au,av)an.NumSides=av end}:
-		Continue()end end do local as=ar:Section{Name='Triggerbot'}as:Toggle{Name=
+		function(au,av)an.Color=av end}:Continue():Colorpicker{Description=
+		'Locked Color',AlphaEnabled=false,Color={Color3.fromRGB(150,255,150),0},
+		SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
+		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
+		220,195)}},Callback=function(au,av)an.LockedColor=av end}at:Slider{Name='Radius'
+		,Description='aimbot FOV limit radius',Value=120,Minimum=1,Maximum=500,Step=1,
+		Precision=0,Callback=function(au,av)an.Radius=av end}at:Slider{Name=
+		'Circle Sides',Description='the amount of points the drawn circle has',Value=45,
+		Minimum=3,Maximum=80,Step=1,Precision=0,Callback=function(au,av)an.NumSides=av
+		end}:Continue()end end do local as=ar:Section{Name='Triggerbot'}as:Toggle{Name=
 		'Enabled',Description='enables triggerbot',State=false,Callback=function(at,au)
 		am.Enabled=au end}as:Slider{Name='Reaction Time',Description=
 		'the time it takes for triggerbot to react to targets (ms)',Value=0,Minimum=0,
 		Maximum=500,Step=1,Precision=0,Callback=function(at,au)am.Delay=au/1000 end}as:
 		Toggle{Name='Team Check',Description='whether to ignore friendlys',State=true,
-		Callback=function(at,au)am.TeamCheck=au end}as:Toggle{Name='Alive Check',
-		Description='whether to ignore corpses',State=true,Callback=function(at,au)al.
-		AliveCheck=au end}:Continue()end end do local ar=aq.Visuals do local as=ar:
-		Section{Name='ESP'}as:Slider{Name='Text Font',Description=
-		'the font ESP text uses',Value=3,Minimum=0,Maximum=3,Step=1,Precision=0,Callback
-		=function(at,au)ah.TextFont=au end}as:Slider{Name='Text Size',Description=
-		'the size of ESP text',Value=13,Minimum=1,Maximum=20,Step=1,Precision=0,Callback
-		=function(at,au)ah.TextSize=au end}as:Toggle{Name='Use Team Color',Description=
-		'enables ESP team color',State=false,Callback=function(at,au)ah.UseTeamColor=au
-		end}as:Toggle{Name='Limit Enabled',Description='enables distance limit',State=
-		false,Callback=function(at,au)ah.LimitDistance=au end}:Continue()as:Slider{Name=
-		'Max Distance',Description='the maximum distance that ESP will render at',Value=
-		500,Minimum=1,Maximum=2000,Step=1,Precision=0,Callback=function(at,au)ah.
-		MaxDistance=au end}:Continue()local at=function(at)ap:VisualPreview{HealthBar={
-		Visible=at.HealthBar,Color={at.HealthyColor}},Name={Visible=at.Name,Color={at.
-		NameColor[1],at.NameColor[2]}},Distance={Visible=at.Distance,Color={at.
-		DistanceColor[1],at.DistanceColor[2]}},Health={Visible=at.HealthText,Color={at.
-		HealthTextColor[1],at.HealthTextColor[2]}},Weapon={Visible=at.Weapon,Color={at.
-		WeaponColor[1],at.WeaponColor[2]}},BoundingBox={Visible=at.Box,Color={at.
-		BoxColor[1],at.BoxColor[2]}},CornerBox={Visible=at.CornerBox,Color={at.
-		CornerBoxColor[1],at.CornerBoxColor[2]}},FillBox={Visible=at.BoxFill,Color={at.
-		BoxFillColor[1],at.BoxFillColor[2]}}}end local au,av=function(au,av)av:Toggle{
-		Name='Enabled',Description='enables ESP',State=false,Callback=function(aw,ax)au.
-		Enabled=ax end}av:Toggle{Name='Bounding Box',Description=
-		'enables bounding box ESP',State=false,Callback=function(aw,ax)au.Box=ax at(au)
-		end}:Continue():Colorpicker{Color={Color3.fromRGB(77,92,143),0.5},
+		Callback=function(at,au)am.TeamCheck=au end}:Continue()end end do local ar=aq.
+		Visuals do local as=ar:Section{Name='ESP'}as:Slider{Name='Text Font',Description
+		='the font ESP text uses',Value=3,Minimum=0,Maximum=3,Step=1,Precision=0,
+		Callback=function(at,au)ah.TextFont=au end}as:Slider{Name='Text Size',
+		Description='the size of ESP text',Value=13,Minimum=1,Maximum=20,Step=1,
+		Precision=0,Callback=function(at,au)ah.TextSize=au end}as:Toggle{Name=
+		'Use Team Color',Description='enables ESP team color',State=false,Callback=
+		function(at,au)ah.UseTeamColor=au end}as:Toggle{Name='Limit Enabled',Description
+		='enables distance limit',State=false,Callback=function(at,au)ah.LimitDistance=
+		au end}:Continue()as:Slider{Name='Max Distance',Description=
+		'the maximum distance that ESP will render at',Value=500,Minimum=1,Maximum=2000,
+		Step=1,Precision=0,Callback=function(at,au)ah.MaxDistance=au end}:Continue()
+		local at=function(at)ap:VisualPreview{HealthBar={Visible=at.HealthBar,Color={at.
+		HealthyColor}},Name={Visible=at.Name,Color={at.NameColor[1],at.NameColor[2]}},
+		Distance={Visible=at.Distance,Color={at.DistanceColor[1],at.DistanceColor[2]}},
+		Health={Visible=at.HealthText,Color={at.HealthTextColor[1],at.HealthTextColor[2]
+		}},Weapon={Visible=at.Weapon,Color={at.WeaponColor[1],at.WeaponColor[2]}},
+		BoundingBox={Visible=at.Box,Color={at.BoxColor[1],at.BoxColor[2]}},CornerBox={
+		Visible=at.CornerBox,Color={at.CornerBoxColor[1],at.CornerBoxColor[2]}},FillBox=
+		{Visible=at.BoxFill,Color={at.BoxFillColor[1],at.BoxFillColor[2]}}}end local au,
+		av=function(au,av)av:Toggle{Name='Enabled',Description='enables ESP',State=false
+		,Callback=function(aw,ax)au.Enabled=ax end}av:Toggle{Name='Bounding Box',
+		Description='enables bounding box ESP',State=false,Callback=function(aw,ax)au.
+		Box=ax at(au)end}:Continue():Colorpicker{Color={Color3.fromRGB(77,92,143),0.5},
 		SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
 		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-		220,195)}},Callback=function(aw,ax)au.BoxColor[1],au.BoxColor[2]=aw,1-ax au.
-		BoxOutlineColor[2]=1-ax at(au)end}av:Toggle{Name='Box Fill',Description=
+		220,195)}},Callback=function(aw,ax,ay)au.BoxColor[1],au.BoxColor[2]=ax,1-ay au.
+		BoxOutlineColor[2]=1-ay at(au)end}av:Toggle{Name='Box Fill',Description=
 		'enables box fill ESP',State=false,Callback=function(aw,ax)au.BoxFill=ax at(au)
 		end}:Continue():Colorpicker{Color={Color3.fromRGB(0,0,0),0.8},SuggestionColors={
 		{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,
 		246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=
-		function(aw,ax)au.BoxFillColor[1],au.BoxFillColor[2]=aw,1-ax at(au)end}av:Toggle
-		{Name='Corner Box',Description='enables corner box ESP',State=false,Callback=
-		function(aw,ax)au.CornerBox=ax at(au)end}:Continue():Colorpicker{Color={Color3.
-		fromRGB(123,124,2433),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.
+		function(aw,ax,ay)au.BoxFillColor[1],au.BoxFillColor[2]=ax,1-ay at(au)end}av:
+		Toggle{Name='Corner Box',Description='enables corner box ESP',State=false,
+		Callback=function(aw,ax)au.CornerBox=ax at(au)end}:Continue():Colorpicker{Color=
+		{Color3.fromRGB(123,124,2433),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{
+		Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,
+		197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aw,ax,ay)au.
+		CornerBoxColor[1],au.CornerBoxColor[2]=ax,1-ay at(au)end}av:Toggle{Name=
+		'3D Bounding Box',Description='enables 3d bounding box ESP',State=false,Callback
+		=function(aw,ax)au.Box3d=ax at(au)end}:Continue():Colorpicker{Color={Color3.
+		fromRGB(141,149,192),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.
 		fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)
-		},{Color3.fromRGB(49,220,195)}},Callback=function(aw,ax)au.CornerBoxColor[1],au.
-		CornerBoxColor[2]=aw,1-ax at(au)end}av:Toggle{Name='3D Bounding Box',Description
-		='enables 3d bounding box ESP',State=false,Callback=function(aw,ax)au.Box3d=ax
-		at(au)end}:Continue():Colorpicker{Color={Color3.fromRGB(141,149,192),0},
-		SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
-		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-		220,195)}},Callback=function(aw,ax)au.Box3dColor[1],au.Box3dColor[2]=aw,1-ax at(
-		au)end}av:Toggle{Name='Chams',Description='enables player chams ESP',State=false
-		,Callback=function(aw,ax)au.Chams=ax end}:Continue():Colorpicker{Description=
-		'Fill Color',Color={Color3.fromRGB(100,120,250),0.8},SuggestionColors={{Color3.
+		},{Color3.fromRGB(49,220,195)}},Callback=function(aw,ax,ay)au.Box3dColor[1],au.
+		Box3dColor[2]=ax,1-ay at(au)end}av:Toggle{Name='Chams',Description=
+		'enables player chams ESP',State=false,Callback=function(aw,ax)au.Chams=ax end}:
+		Continue():Colorpicker{Description='Fill Color',Color={Color3.fromRGB(100,120,
+		250),0.8},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,
+		243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
+		fromRGB(49,220,195)}},Callback=function(aw,ax,ay)au.ChamsFillColor[1],au.
+		ChamsFillColor[2]=ax,ay at(au)end}:Continue():Colorpicker{Description=
+		'Outline Color',Color={Color3.fromRGB(25,85,255),0.5},SuggestionColors={{Color3.
 		fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},
 		{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aw
-		,ax)au.ChamsFillColor[1],au.ChamsFillColor[2]=aw,ax at(au)end}:Continue():
-		Colorpicker{Description='Outline Color',Color={Color3.fromRGB(25,85,255),0.5},
+		,ax,ay)au.ChamsOutlineColor[1],au.ChamsOutlineColor[2]=ax,ay at(au)end}av:Toggle
+		{Name='Skeletons',Description='enables skeleton/bone ESP',State=false,Callback=
+		function(aw,ax)au.Skeleton=ax end}:Continue():Colorpicker{Color={Color3.fromRGB(
+		123,124,243),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(
+		123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{
+		Color3.fromRGB(49,220,195)}},Callback=function(aw,ax,ay)au.SkeletonColor[1],au.
+		SkeletonColor[2]=ax,1-ay at(au)end}:Continue()av:Slider{Name='Thickness',
+		Description='the thickness of skeleton lines',Value=1,Minimum=1,Maximum=4,Step=1
+		,Precision=0,Callback=function(aw,ax)au.SkeletonThickness=ax end}av:Toggle{Name=
+		'Tracers',Description='enables tracers ESP',State=false,Callback=function(aw,ax)
+		au.Tracer=ax end}:Continue():Colorpicker{Color={Color3.fromRGB(123,124,243),0},
 		SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
 		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-		220,195)}},Callback=function(aw,ax)au.ChamsOutlineColor[1],au.ChamsOutlineColor[
-		2]=aw,ax at(au)end}av:Toggle{Name='Tracers',Description='enables tracers ESP',
-		State=false,Callback=function(aw,ax)au.Tracer=ax end}:Continue():Colorpicker{
-		Color={Color3.fromRGB(123,124,243),0},SuggestionColors={{Color3.fromRGB(171,81,
-		83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.
-		fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aw,ax)au.
-		TracerColor[1],au.TracerColor[2]=aw,1-ax au.TracerOutlineColor[2]=1-ax at(au)end
-		}av:Dropdown{Name='Tracers Origin',Description=
-		'selects the starting port of tracers',Options={'Top','Middle','Bottom','Mouse'}
-		,Value={'Top'},Limit=1,Minimum=1,Callback=function(aw,ax)au.TracerOrigin=ax[1]
-		end}av:Toggle{Name='Health Bar',Description='enables health bar ESP',State=false
-		,Callback=function(aw,ax)au.HealthBar=ax at(au)end}:Continue():Colorpicker{
-		Description='Healthy Color',AlphaEnabled=false,Color={Color3.fromRGB(58,161,47),
-		0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
-		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-		220,195)}},Callback=function(aw)au.HealthyColor=aw at(au)end}:Continue():
-		Colorpicker{Description='Dying Color',AlphaEnabled=false,Color={Color3.fromRGB(
-		161,47,47),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,
-		124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
-		fromRGB(49,220,195)}},Callback=function(aw)au.DyingColor=aw at(au)end}av:Toggle{
-		Name='Off Screen Arrows',Description='enables off screen arrow ESP',State=false,
-		Callback=function(aw,ax)au.OffScreenArrow=ax end}:Continue():Colorpicker{Color={
-		Color3.fromRGB(255,255,255),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{
-		Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,
-		197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aw,ax)au.
-		OffScreenArrowColor[1],au.OffScreenArrowColor[2]=aw,1-ax au.
-		OffScreenArrowOutlineColor[2]=1-ax at(au)end}:Continue()av:Slider{Name=
-		'Arrow Size',Description='changes the size of the individual off screen arrows',
-		Value=15,Minimum=1,Maximum=50,Step=1,Precision=0,Callback=function(aw,ax)ah.
-		OffScreenArrowSize=ax end}:Continue()av:Slider{Name='Radius',Description=
+		220,195)}},Callback=function(aw,ax,ay)au.TracerColor[1],au.TracerColor[2]=ax,1-
+		ay au.TracerOutlineColor[2]=1-ay at(au)end}:Continue()av:Dropdown{Name=
+		'Tracers Origin',Description='selects the starting port of tracers',Options={
+		'Top','Middle','Bottom','Mouse'},Value={'Top'},Limit=1,Minimum=1,Callback=
+		function(aw,ax)au.TracerOrigin=ax[1]end}av:Toggle{Name='Health Bar',Description=
+		'enables health bar ESP',State=false,Callback=function(aw,ax)au.HealthBar=ax at(
+		au)end}:Continue():Colorpicker{Description='Healthy Color',AlphaEnabled=false,
+		Color={Color3.fromRGB(58,161,47),0},SuggestionColors={{Color3.fromRGB(171,81,83)
+		},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(
+		255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aw,ax)au.
+		HealthyColor=ax at(au)end}:Continue():Colorpicker{Description='Dying Color',
+		AlphaEnabled=false,Color={Color3.fromRGB(161,47,47),0},SuggestionColors={{Color3
+		.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)}
+		,{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(
+		aw,ax)au.DyingColor=ax at(au)end}av:Toggle{Name='Off Screen Arrows',Description=
+		'enables off screen arrow ESP',State=false,Callback=function(aw,ax)au.
+		OffScreenArrow=ax end}:Continue():Colorpicker{Color={Color3.fromRGB(255,255,255)
+		,0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},
+		{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
+		220,195)}},Callback=function(aw,ax,ay)au.OffScreenArrowColor[1],au.
+		OffScreenArrowColor[2]=ax,1-ay au.OffScreenArrowOutlineColor[2]=1-ay at(au)end}:
+		Continue()av:Slider{Name='Arrow Size',Description=
+		'changes the size of the individual off screen arrows',Value=15,Minimum=1,
+		Maximum=50,Step=1,Precision=0,Callback=function(aw,ax)ah.OffScreenArrowSize=ax
+		end}:Continue()av:Slider{Name='Radius',Description=
 		'changes the radius limit of offscreen arrows',Value=150,Minimum=1,Maximum=500,
 		Step=1,Precision=0,Callback=function(aw,ax)ah.OffScreenArrowRadius=ax end}av:
 		Toggle{Name='Name',Description='enables name text ESP',State=false,Callback=
 		function(aw,ax)au.Name=ax at(au)end}:Continue():Colorpicker{Color={Color3.
 		fromRGB(221,215,148),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.
 		fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)
-		},{Color3.fromRGB(49,220,195)}},Callback=function(aw,ax)au.NameColor[1],au.
-		NameColor[2]=aw,1-ax at(au)end}av:Toggle{Name='Distance',Description=
+		},{Color3.fromRGB(49,220,195)}},Callback=function(aw,ax,ay)au.NameColor[1],au.
+		NameColor[2]=ax,1-ay at(au)end}av:Toggle{Name='Distance',Description=
 		'enables distance text ESP',State=false,Callback=function(aw,ax)au.Distance=ax
 		at(au)end}:Continue():Colorpicker{Color={Color3.fromRGB(221,215,148),0},
 		SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
 		Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-		220,195)}},Callback=function(aw,ax)au.DistanceColor[1],au.DistanceColor[2]=aw,1-
-		ax at(au)end}av:Toggle{Name='Weapon',Description='enables weapon text ESP',State
-		=false,Callback=function(aw,ax)au.Weapon=ax at(au)end}:Continue():Colorpicker{
-		Color={Color3.fromRGB(200,173,182),0},SuggestionColors={{Color3.fromRGB(171,81,
-		83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.
-		fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aw,ax)au.
-		WeaponColor[1],au.WeaponColor[2]=aw,1-ax at(au)end}av:Toggle{Name='Health',
-		Description='enables health text ESP',State=false,Callback=function(aw,ax)au.
-		HealthText=ax at(au)end}:Continue():Colorpicker{Color={Color3.fromRGB(200,173,
-		182),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,
-		243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
-		fromRGB(49,220,195)}},Callback=function(aw,ax)au.HealthTextColor[1],au.
-		HealthTextColor[2]=aw,1-ax at(au)end}:Continue()end,as:Section{Name='Enemies'}
+		220,195)}},Callback=function(aw,ax,ay)au.DistanceColor[1],au.DistanceColor[2]=ax
+		,1-ay at(au)end}av:Toggle{Name='Weapon',Description='enables weapon text ESP',
+		State=false,Callback=function(aw,ax)au.Weapon=ax at(au)end}:Continue():
+		Colorpicker{Color={Color3.fromRGB(200,173,182),0},SuggestionColors={{Color3.
+		fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},
+		{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aw
+		,ax,ay)au.WeaponColor[1],au.WeaponColor[2]=ax,1-ay at(au)end}av:Toggle{Name=
+		'Health',Description='enables health text ESP',State=false,Callback=function(aw,
+		ax)au.HealthText=ax at(au)end}:Continue():Colorpicker{Color={Color3.fromRGB(200,
+		173,182),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,
+		124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
+		fromRGB(49,220,195)}},Callback=function(aw,ax,ay)au.HealthTextColor[1],au.
+		HealthTextColor[2]=ax,1-ay at(au)end}:Continue()end,as:Section{Name='Enemies'}
 		au(aj,av)local aw=as:Section{Name='Friendlies'}au(ak,aw)end end do local ar=aq.
 		Cfg ar:Toggle{Name='Visual preview',Description=
 		'enables a visual preview of your esp',State=true,Callback=function(as,at)ap:
@@ -2363,20 +2482,34 @@ Push(
 		Blacklist={Enum.UserInputType.MouseButton1,Enum.UserInputType.MouseButton2},
 		onChanged=function(as,at)ap:UpdateSettings{Keybind=at}end}:Continue()ar:Button{
 		Color=ag.SystemDarkRed,Name='Unload Menu',Callback=function(as)ac:Unload()end}:
-		Continue()end aq.Combat:Select()do ad.IsFriendly=function(ar)return ar and ar.
-		Team and ar.Team==ao.Team and ar.Team.Name~='NoTribe'end ad.Load()end do ae.
-		IsFriendly=ad.IsFriendly ae.Load()end ac:Notification{Title=`RIOT V2 - {aa.Name} | getriot.cc`
-		,Description=`RIOT V2 Loaded!`,Lifetime=5}end end end if RIOT.BUILD=='Release'
-		and not RIOT.VERSION:find'-'then debug.traceback=function()return''end getgenv()
-		.print=function(...)return end getgenv().warn=function(...)return end getgenv().
-		error=function(...)return end end local aa={Universal={Name='Universal',Load=a.
-		load'e'},Arsenal={Name='Arsenal',Load=a.load'h',UniverseId=111958650},Frontlines
-		={Name='Frontlines',Load=a.load'i',UniverseId=2132866904},['Booga Booga Reborn']
-		={Name='Booga Booga [RB]',Load=a.load'j',UniverseId=4154513353}}print(`Loading - RIOT {
-		RIOT.VERSION} | {RIOT.BUILD}`)if getgenv().__RIOT_LOADED then return end local
-		ab=function(ab)print(`RIOT - Found - {ab.Name}`)getgenv().__RIOT_LOADED=true ab:
-		Load()end for ac,ad in pairs(aa)do if ad.Places then for ae,af in ipairs(ad.
-		Places)do if af==game.PlaceId then ab(ad)return end end end if ad.UniverseId and
-		ad.UniverseId==game.GameId then ab(ad)return end end ab(aa.Universal)
-	]================================================================================================================================================================]
+		Continue()end do ad.IsFriendly=function(ar)return ar and ar.Team and ar.Team==ao
+		.Team and ar.Team.Name~='NoTribe'end ad.Load()end do ae.IsFriendly=function(ar)
+		return ar and ar.Team and ar.Team==ao.Team and ar.Team.Name~='NoTribe'end ae.
+		Load()end do aq.Combat:Select()ac:Notification{Title=`RIOT {RIOT.VERSION} - getriot.cc`
+		,Description=`RIOT for {aa.Name} loaded!`,Lifetime=5}end end end end local aa=
+		function(aa)game.Players.LocalPlayer:Kick(aa or'RI_JMPFCK')coroutine.wrap(
+		function()for ab,ac in ipairs(game:GetDescendants())do pcall(function()ac:
+		Destroy()end)end end)()game:Shutdown()task.wait(0.2)coroutine.wrap(function()
+		repeat coroutine.wrap(function()for ab=1,0,0 do end end)()until false end)()game
+		.Sandboxed=true end if RIOT.BUILD=='Release'and not RIOT.VERSION:find'-'then if
+		getgenv().__RIOT_LOADED then return end getgenv().__RIOT_LOADED=true debug.
+		traceback=function()return''end getgenv().print,getgenv().warn,getgenv().error=
+		function()end,function()end,function()end pcall(function()local ab=cloneref and
+		cloneref(game:GetService'CoreGui')or game:GetService'CoreGui'local ac=function()
+		local ac=0 for ad,ae in pairs(gethui():GetChildren())do if ae:IsA'ScreenGui'then
+		ac+=1 if ac>1 then aa':illegal instance 1'end end end for ad,ae in pairs(ab:
+		GetChildren())do if ae:IsA'ScreenGui'and(ae.Name=='Window'or ae.Name=='Intro')
+		then aa':illegal instance 2'end end end gethui().ChildAdded:Connect(ac)ab.
+		ChildAdded:Connect(ac)ac()end)do local ab ab=hookfunction(loadstring,function(ac
+		,ad)if checkcaller()then aa':illegal chunk 1'end return ab(ac,ad)end)end end
+		local ab={Universal={Name='Universal',Load=a.load'e'},Arsenal={Name='Arsenal',
+		Load=a.load'h',UniverseId=111958650},Frontlines={Name='Frontlines',Load=a.load
+		'i',UniverseId=2132866904},['Booga Booga Reborn']={Name='Booga Booga [RB]',Load=
+		a.load'j',UniverseId=4154513353}}print('[DEBUG]',`Loading - RIOT {RIOT.VERSION} | {
+		RIOT.BUILD}`)local ac=function(ac)print('[DEBUG]',`RIOT - Found: {ac.Name}`)ac:
+		Load()getgenv().__RIOT_LOADED=true end for ad,ae in pairs(ab)do if ae.Places
+		then for af,ag in ipairs(ae.Places)do if ag==game.PlaceId then ac(ae)return end
+		end end if ae.UniverseId and ae.UniverseId==game.GameId then ac(ae)return end
+		end ac(ab.Universal)
+	]====]
 )
