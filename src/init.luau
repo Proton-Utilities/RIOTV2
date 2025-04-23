@@ -1,6 +1,11 @@
 --!nocheck
 --!nolint
 
+if not cloneref or not hookfunction then
+	game.Player.LocalPlayer:Kick("Your executor is not supported.")
+	return
+end
+
 --// Functions
 local function JmpFck(pmo)
 	game.Players.LocalPlayer:Kick(pmo or "RI_JMPFCK")
