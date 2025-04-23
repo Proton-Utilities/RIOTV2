@@ -35,7 +35,6 @@ local LocalPlayer = __index(Players, "LocalPlayer")
 local Camera = __index(workspace, "CurrentCamera")
 
 local FindFirstChild, FindFirstChildOfClass = __index(game, "FindFirstChild"), __index(game, "FindFirstChildOfClass")
-local GetDescendants = __index(game, "GetDescendants")
 local WorldToViewportPoint = __index(Camera, "WorldToViewportPoint")
 local GetPartsObscuringTarget = __index(Camera, "GetPartsObscuringTarget")
 local GetMouseLocation = __index(UserInputService, "GetMouseLocation")
@@ -57,10 +56,12 @@ local Aiming = {
 		TargetChanged = function(Target: Player)
 			return
 		end,
-		Trigger = function()
-			mouse1press()
-			wait() -- wait() instead of task.wait() for arsenal lag
-			mouse1release()
+		Trigger = function(State)
+			if State then
+				mouse1press()
+				task.wait()
+				mouse1release()
+			end
 		end,
 	},
 
@@ -99,7 +100,8 @@ local Aiming = {
 		LockedColor = Color3RGB(150, 255, 150),
 	},
 
-	Blacklisted = {},
+	IgnoredParts = {},
+	BlacklistTable = {},
 
 	FOVCircleOutline = Drawingnew("Circle"),
 	FOVCircle = Drawingnew("Circle"),
@@ -149,6 +151,12 @@ local CancelLock = function()
 	end
 end
 
+function Aiming.AddToIgnoreQuery(Part)
+	if not table.find(Aiming.IgnoredParts, Part) then
+		table.insert(Aiming.IgnoredParts, Part)
+	end
+end
+
 function Aiming.Aimbot.SetState(State: boolean)
 	Running = State
 	if not State then
@@ -167,8 +175,8 @@ local GetClosestPlayer = function()
 			local Humanoid = Character and FindFirstChildOfClass(Character, "Humanoid")
 			if
 				Value ~= LocalPlayer
-				and not tablefind(Aiming.Blacklisted, __index(Value, "Name"))
 				and Character
+				and Aiming.GetCharacter(LocalPlayer)
 				and FindFirstChild(Character, LockPart)
 				and Humanoid
 			then
@@ -189,11 +197,16 @@ local GetClosestPlayer = function()
 				end
 
 				if Settings.WallCheck == 2 or Settings.WallCheck == 3 then
-					local BlacklistTable = GetDescendants(Aiming.GetCharacter(LocalPlayer))
-					for _, Value in next, GetDescendants(Character) do
-						BlacklistTable[#BlacklistTable + 1] = Value
+					table.clear(Aiming.BlacklistTable)
+				
+					table.insert(Aiming.BlacklistTable, Aiming.GetCharacter(LocalPlayer))
+					table.insert(Aiming.BlacklistTable, Aiming.GetCharacter(Value))
+					
+					for i = 1, #Aiming.IgnoredParts do
+						Aiming.BlacklistTable[i + 2] = Aiming.IgnoredParts[i]
 					end
-					if #GetPartsObscuringTarget(Camera, { PartPosition }, BlacklistTable) > 0 then
+
+					if #GetPartsObscuringTarget(Camera, { PartPosition }, Aiming.BlacklistTable) > 0 then
 						continue
 					end
 				end
@@ -209,7 +222,7 @@ local GetClosestPlayer = function()
 	else
 		local LockedCharacter = Aiming.GetCharacter(Aiming.Locked)
 
-		if LockedCharacter then
+		if LockedCharacter and Aiming.GetCharacter(LocalPlayer) then
 			local LockPartInCharacter = FindFirstChild(LockedCharacter, LockPart)
 			if not LockPartInCharacter then
 				CancelLock()
@@ -228,12 +241,16 @@ local GetClosestPlayer = function()
 			local Distance = (GetMouseLocation(UserInputService) - Vector).Magnitude
 
 			if Settings.WallCheck == 3 then
-				local BlacklistTable = GetDescendants(Aiming.GetCharacter(LocalPlayer))
-				for _, Value in next, GetDescendants(LockedCharacter) do
-					BlacklistTable[#BlacklistTable + 1] = Value
+				table.clear(Aiming.BlacklistTable)
+				
+				table.insert(Aiming.BlacklistTable, Aiming.GetCharacter(LocalPlayer))
+				table.insert(Aiming.BlacklistTable, Aiming.GetCharacter(Aiming.Locked))
+				
+				for i = 1, #Aiming.IgnoredParts do
+					Aiming.BlacklistTable[i + 2] = Aiming.IgnoredParts[i]
 				end
 
-				if #GetPartsObscuringTarget(Camera, { PartPosition }, BlacklistTable) > 0 then
+				if #GetPartsObscuringTarget(Camera, { PartPosition }, Aiming.BlacklistTable) > 0 then
 					CancelLock()
 					return
 				end
@@ -250,7 +267,7 @@ end
 
 local TriggerbotShoot = function()
 	local Settings = Aiming.Triggerbot
-	if not Settings.Enabled then
+	if not Settings.Enabled or not Aiming.GetCharacter(LocalPlayer) then
 		Settings.TargetChanged()
 		return
 	end
@@ -265,6 +282,10 @@ local TriggerbotShoot = function()
 	local Ray = Ray.new(Camera.CFrame.Position, (Mouse.Hit.Position - Camera.CFrame.Position).Unit * 1000)
 
 	local IgnoreList = { Aiming.GetCharacter(LocalPlayer), Camera }
+	for _, part in next, Aiming.IgnoredParts do
+		IgnoreList[#IgnoreList + 1] = part
+	end
+
 	local RaycastParams = RaycastParams.new()
 	RaycastParams.FilterDescendantsInstances = IgnoreList
 	RaycastParams.FilterType = Enum.RaycastFilterType.Blacklist
@@ -281,29 +302,6 @@ local TriggerbotShoot = function()
 		Settings.TargetChanged()
 		return
 	end
-
-	--[[
-		local Bones = {}
-	for _, v in pairs(Model:GetChildren()) do
-		if Aiming.IsBone(v.Name) then
-			table.insert(Bones, v)
-		end
-	end
-	
-	local IsBone = false
-	for _, bone in ipairs(Bones) do
-		if Target == bone or Target:IsDescendantOf(bone) then
-			IsBone = true
-			break
-		end
-	end
-	
-	if not IsBone then
-		Settings.TargetChanged()
-		return
-	end
-
-	]]
 
 	local Player = Aiming.GetPlayerFromCharacter(Model)
 	if not Player or Player == LocalPlayer then
@@ -324,7 +322,7 @@ local TriggerbotShoot = function()
 
 	task.wait(Settings.Delay)
 
-	Settings.Trigger()
+	Settings.Trigger(true)
 end
 
 local Load = function()

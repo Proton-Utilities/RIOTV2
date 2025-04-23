@@ -9,7 +9,7 @@ local RunService = GetService("RunService")
 local Players = GetService("Players")
 local Workspace = GetService("Workspace")
 local UIS = GetService("UserInputService")
-local CoreGui = GetService("CoreGui")
+local CoreGui = gethui and gethui() or GetService("CoreGui")
 
 -- variables
 local LocalPlayer = Players.LocalPlayer
@@ -55,7 +55,7 @@ local VERTICES = {
 	Vector3.new(1, -1, -1),
 	Vector3.new(1, 1, -1),
 	Vector3.new(1, 1, 1),
-	Vector3.new(1, -1, 1)
+	Vector3.new(1, -1, 1),
 }
 
 -- functions
@@ -65,11 +65,11 @@ local function GetBoundingBox(Parts)
 		local Part = Parts[i]
 		local CFrame, Size = Part.CFrame, Part.Size
 
-		Min = Min3(Min or CFrame.Position, (CFrame - Size*0.5).Position)
-		Max = Max3(Max or CFrame.Position, (CFrame + Size*0.5).Position)
+		Min = Min3(Min or CFrame.Position, (CFrame - Size * 0.5).Position)
+		Max = Max3(Max or CFrame.Position, (CFrame + Size * 0.5).Position)
 	end
 
-	local Center = (Min + Max)*0.5
+	local Center = (Min + Max) * 0.5
 	local Front = Vector3.new(Center.X, Center.Y, Max.Z)
 	return CFrame.new(Center, Front), Max - Min
 end
@@ -82,29 +82,29 @@ end
 local function CalculateCorners(CFrame, Size)
 	local Corners = Create(#VERTICES)
 	for i = 1, #VERTICES do
-		Corners[i] = WorldToScreen((CFrame + Size*0.5*VERTICES[i]).Position)
+		Corners[i] = WorldToScreen((CFrame + Size * 0.5 * VERTICES[i]).Position)
 	end
 
 	local Min = Min2(ViewportSize, Unpack(Corners))
 	local Max = Max2(Vector2.zero, Unpack(Corners))
 	return {
 		Corners = Corners,
-		TopLeft = Vector2.new(Floor(Min.X), Floor(Min.Y )),
+		TopLeft = Vector2.new(Floor(Min.X), Floor(Min.Y)),
 		TopRight = Vector2.new(Floor(Max.X), Floor(Min.Y)),
 		BottomLeft = Vector2.new(Floor(Min.X), Floor(Max.Y)),
-		BottomRight = Vector2.new(Floor(Max.X), Floor(Max.Y))
+		BottomRight = Vector2.new(Floor(Max.X), Floor(Max.Y)),
 	}
 end
 
 local function RotateVector(Vector, Radians)
 	local X, Y = Vector.X, Vector.Y
 	local C, S = Cos(Radians), Sin(Radians)
-	return Vector2.new(X*C - Y*S, X*S + Y*C)
+	return Vector2.new(X * C - Y * S, X * S + Y * C)
 end
 
 local function ParseColor(self, Color, IsOutline)
 	if Color == "Team Color" or (self.Interface.Shared.UseTeamColor and not IsOutline) then
-		return self.Interface.GetTeamColor(self.Player) or Color3.new(1,1,1)
+		return self.Interface.GetTeamColor(self.Player) or Color3.new(1, 1, 1)
 	end
 	return Color
 end
@@ -123,7 +123,9 @@ end
 function EspObject:_Create(Class, Properties)
 	local Drawing = Drawing.new(Class)
 	for Property, Value in next, Properties do
-		pcall(function() Drawing[Property] = Value end)
+		pcall(function()
+			Drawing[Property] = Value
+		end)
 	end
 	self.Bin[#self.Bin + 1] = Drawing
 	return Drawing
@@ -138,23 +140,23 @@ function EspObject:Construct()
 			{
 				self:_Create("Line", { Thickness = 1, Visible = false }),
 				self:_Create("Line", { Thickness = 1, Visible = false }),
-				self:_Create("Line", { Thickness = 1, Visible = false })
+				self:_Create("Line", { Thickness = 1, Visible = false }),
 			},
 			{
 				self:_Create("Line", { Thickness = 1, Visible = false }),
 				self:_Create("Line", { Thickness = 1, Visible = false }),
-				self:_Create("Line", { Thickness = 1, Visible = false })
+				self:_Create("Line", { Thickness = 1, Visible = false }),
 			},
 			{
 				self:_Create("Line", { Thickness = 1, Visible = false }),
 				self:_Create("Line", { Thickness = 1, Visible = false }),
-				self:_Create("Line", { Thickness = 1, Visible = false })
+				self:_Create("Line", { Thickness = 1, Visible = false }),
 			},
 			{
 				self:_Create("Line", { Thickness = 1, Visible = false }),
 				self:_Create("Line", { Thickness = 1, Visible = false }),
-				self:_Create("Line", { Thickness = 1, Visible = false })
-			}
+				self:_Create("Line", { Thickness = 1, Visible = false }),
+			},
 		},
 		Visible = {
 			TracerOutline = self:_Create("Line", { Thickness = 2, Visible = false }),
@@ -166,19 +168,29 @@ function EspObject:Construct()
 			HealthBarOutline = self:_Create("Line", { Thickness = 6, Visible = false }),
 			HealthBar = self:_Create("Line", { Thickness = 4, Visible = false }),
 			HealthText = self:_Create("Text", { Center = true, Visible = false }),
-			Name = self:_Create("Text", { Text = string.upper(self.Player.DisplayName), Center = true, Visible = false }),
+			Name = self:_Create(
+				"Text",
+				{ Text = string.upper(self.Player.DisplayName), Center = true, Visible = false }
+			),
 			Distance = self:_Create("Text", { Center = true, Visible = false }),
 			Weapon = self:_Create("Text", { Center = true, Visible = false }),
+			Skeleton = {
+				Head = self:_Create("Circle", { NumSides = 30, Thickness = 1, Visible = false }),
+			},
 		},
 		Hidden = {
 			ArrowOutline = self:_Create("Triangle", { Thickness = 3, Visible = false }),
-			Arrow = self:_Create("Triangle", { Filled = true, Visible = false })
-		}
+			Arrow = self:_Create("Triangle", { Filled = true, Visible = false }),
+		},
 	}
-	
+
 	for _ = 1, 8 do
 		table.insert(self.Drawings.Visible.CornerBox, self:_Create("Line", { Thickness = 2, Visible = false }))
-	end	
+	end
+
+	for i = 1, 14 do
+		self.Drawings.Visible.Skeleton[i] = self:_Create("Line", { Thickness = 1, Visible = false })
+	end
 
 	self.RenderConnection = RunService.RenderStepped:Connect(function(DeltaTime)
 		self:Update(DeltaTime)
@@ -203,7 +215,9 @@ function EspObject:Update()
 	self.Character = Interface.GetCharacter(self.Player)
 	self.Health, self.MaxHealth = Interface.GetHealth(self.Player)
 	self.Weapon = Interface.GetWeapon(self.Player)
-	self.Enabled = self.Options.Enabled and self.Character and not (#Interface.Whitelist > 0 and not Find(Interface.Whitelist, self.Player.UserId))
+	self.Enabled = self.Options.Enabled
+		and self.Character
+		and not (#Interface.Whitelist > 0 and not Find(Interface.Whitelist, self.Player.UserId))
 
 	local RootPart = self.Enabled and FindFirstChild(self.Character, Interface.GetRootPart())
 	if not RootPart then
@@ -246,8 +260,9 @@ function EspObject:Update()
 end
 
 function EspObject:Render()
+	local Interface = self.Interface
 	local OnScreen = self.OnScreen or false
-	local Enabled = self.Enabled or false
+	local Enabled = self.Enabled and Interface.GetHealth() > 0 or false
 	local Visible = self.Drawings.Visible
 	local Hidden = self.Drawings.Hidden
 	local Box3d = self.Drawings.Box3d
@@ -289,11 +304,11 @@ function EspObject:Render()
 		local function DrawCorner(Index, Origin, HorizOffset, VertOffset)
 			local Line1 = Visible.CornerBox[Index]
 			local Line2 = Visible.CornerBox[Index + 1]
-		
+
 			local Thickness = Line1.Thickness or 1
-			local Overlap = (Thickness-1)
+			local Overlap = (Thickness - 1)
 			local Offset = Overlap / 2
-		
+
 			local ExtendedHoriz = HorizOffset.Unit * (HorizOffset.Magnitude + Overlap)
 			Line1.From = Origin - HorizOffset.Unit * Offset
 			Line1.To = Origin + ExtendedHoriz - HorizOffset.Unit * Offset
@@ -305,7 +320,7 @@ function EspObject:Render()
 			Line2.To = Origin + ExtendedVert - VertOffset.Unit * Offset
 			Line2.Color = ParseColor(self, Options.CornerBoxColor[1])
 			Line2.Transparency = Options.CornerBoxColor[2]
-		end		
+		end
 
 		DrawCorner(1, Corners.TopLeft, Vector2.new(CornerWidth, 0), Vector2.new(0, CornerHeight))
 		DrawCorner(3, Corners.TopRight, Vector2.new(-CornerWidth, 0), Vector2.new(0, CornerHeight))
@@ -330,8 +345,8 @@ function EspObject:Render()
 
 		local HealthBar = Visible.HealthBar
 		HealthBar.To = BarTo
-		HealthBar.From = Lerp2(BarTo, BarFrom, self.Health/self.MaxHealth)
-		HealthBar.Color = LerpColor(Options.DyingColor, Options.HealthyColor, self.Health/self.MaxHealth)
+		HealthBar.From = Lerp2(BarTo, BarFrom, self.Health / self.MaxHealth)
+		HealthBar.Color = LerpColor(Options.DyingColor, Options.HealthyColor, self.Health / self.MaxHealth)
 
 		local HealthBarOutline = Visible.HealthBarOutline
 		HealthBarOutline.To = BarTo + HEALTH_BAR_OUTLINE_OFFSET
@@ -349,7 +364,7 @@ function EspObject:Render()
 		Name.Transparency = Options.NameColor[2]
 		Name.Outline = Options.NameOutline
 		Name.OutlineColor = ParseColor(self, Options.NameOutlineColor, true)
-		Name.Position = (Corners.TopLeft + Corners.TopRight)*0.5 - Vector2.yAxis*Name.TextBounds.Y - NAME_OFFSET
+		Name.Position = (Corners.TopLeft + Corners.TopRight) * 0.5 - Vector2.yAxis * Name.TextBounds.Y - NAME_OFFSET
 	end
 
 	local ListYOffset = Corners and Corners.TopRight.Y or 0
@@ -415,12 +430,11 @@ function EspObject:Render()
 		local Tracer = Visible.Tracer
 		Tracer.Color = ParseColor(self, Options.TracerColor[1])
 		Tracer.Transparency = Options.TracerColor[2]
-		Tracer.To = (Corners.BottomLeft + Corners.BottomRight)*0.5
-		Tracer.From =
-			Options.TracerOrigin == "Middle" and ViewportSize*0.5 or
-			Options.TracerOrigin == "Top" and ViewportSize*Vector2.new(0.5, 0) or
-			Options.TracerOrigin == "Bottom" and ViewportSize*Vector2.new(0.5, 1) or
-			Options.TracerOrigin == "Mouse" and UIS:GetMouseLocation()
+		Tracer.To = (Corners.BottomLeft + Corners.BottomRight) * 0.5
+		Tracer.From = Options.TracerOrigin == "Middle" and ViewportSize * 0.5
+			or Options.TracerOrigin == "Top" and ViewportSize * Vector2.new(0.5, 0)
+			or Options.TracerOrigin == "Bottom" and ViewportSize * Vector2.new(0.5, 1)
+			or Options.TracerOrigin == "Mouse" and UIS:GetMouseLocation()
 
 		local TracerOutline = Visible.TracerOutline
 		TracerOutline.Color = ParseColor(self, Options.TracerOutlineColor[1], true)
@@ -429,13 +443,16 @@ function EspObject:Render()
 		TracerOutline.From = Tracer.From
 	end
 
-	Hidden.Arrow.Visible = Enabled and (not OnScreen) and Options.OffScreenArrow
+	Hidden.Arrow.Visible = Enabled and not OnScreen and Options.OffScreenArrow
 	Hidden.ArrowOutline.Visible = Hidden.Arrow.Visible and Options.OffScreenArrowOutline
 	if Hidden.Arrow.Visible and self.Direction then
 		local Arrow = Hidden.Arrow
-		Arrow.PointA = Min2(Max2(ViewportSize*0.5 + self.Direction*Options.OffScreenArrowRadius, Vector2.one*25), ViewportSize - Vector2.one*25)
-		Arrow.PointB = Arrow.PointA - RotateVector(self.Direction, 0.45)*Options.OffScreenArrowSize
-		Arrow.PointC = Arrow.PointA - RotateVector(self.Direction, -0.45)*Options.OffScreenArrowSize
+		Arrow.PointA = Min2(
+			Max2(ViewportSize * 0.5 + self.Direction * Options.OffScreenArrowRadius, Vector2.one * 25),
+			ViewportSize - Vector2.one * 25
+		)
+		Arrow.PointB = Arrow.PointA - RotateVector(self.Direction, 0.45) * Options.OffScreenArrowSize
+		Arrow.PointC = Arrow.PointA - RotateVector(self.Direction, -0.45) * Options.OffScreenArrowSize
 		Arrow.Color = ParseColor(self, Options.OffScreenArrowColor[1])
 		Arrow.Transparency = Options.OffScreenArrowColor[2]
 
@@ -460,20 +477,71 @@ function EspObject:Render()
 		if Box3dEnabled then
 			local Line1 = Face[1]
 			Line1.From = Corners.Corners[i]
-			Line1.To = Corners.Corners[i == 4 and 1 or i+1]
+			Line1.To = Corners.Corners[i == 4 and 1 or i + 1]
 
 			local Line2 = Face[2]
-			Line2.From = Corners.Corners[i == 4 and 1 or i+1]
-			Line2.To = Corners.Corners[i == 4 and 5 or i+5]
+			Line2.From = Corners.Corners[i == 4 and 1 or i + 1]
+			Line2.To = Corners.Corners[i == 4 and 5 or i + 5]
 
 			local Line3 = Face[3]
-			Line3.From = Corners.Corners[i == 4 and 5 or i+5]
-			Line3.To = Corners.Corners[i == 4 and 8 or i+4]
+			Line3.From = Corners.Corners[i == 4 and 5 or i + 5]
+			Line3.To = Corners.Corners[i == 4 and 8 or i + 4]
+		end
+	end
+
+	local SkeletonEnabled = Enabled and OnScreen and Options.Skeleton
+	if SkeletonEnabled then
+		local Joints, AttachPoints = Interface.GetJoints(self.Character)
+
+		local HeadCircle = Visible.Skeleton.Head
+		HeadCircle.Visible = false
+
+		if Joints.Head then
+			local HeadPos, HeadVisible = WorldToScreen(Joints.Head.Position)
+			if HeadVisible then
+				HeadCircle.Visible = true
+				HeadCircle.Position = HeadPos
+				HeadCircle.Radius = math.clamp((Corners.TopRight.X - Corners.TopLeft.X) * 0.1, 2, 15)
+				HeadCircle.Thickness = Options.SkeletonThickness
+				HeadCircle.Color = ParseColor(self, Options.SkeletonColor[1])
+				HeadCircle.Transparency = Options.SkeletonColor[2]
+			end
+		end
+
+		for i, Connection in ipairs(AttachPoints) do
+			local Line = Visible.Skeleton[i]
+			Line.Visible = false
+
+			local Start = Connection[1]
+			local End = Connection[2]
+
+			if Start and End then
+				local StartPos, StartVisible = WorldToScreen(
+					Start == Joints.Head and Start.Position - Vector3.new(0, Start.Size.Y / 2, 0) or Start.Position
+				)
+				local EndPos, EndVisible = WorldToScreen(End.Position)
+
+				if StartVisible and EndVisible then
+					Line.Visible = true
+					Line.From = StartPos
+					Line.To = EndPos
+					Line.Thickness = Options.SkeletonThickness
+					Line.Color = ParseColor(self, Options.SkeletonColor[1])
+					Line.Transparency = Options.SkeletonColor[2]
+				end
+			end
+		end
+	else
+		Visible.Skeleton.Head.Visible = false
+		for _, Line in ipairs(Visible.Skeleton) do
+			if type(Line) == "table" then
+				continue
+			end
+			Line.Visible = false
 		end
 	end
 end
 
--- cham object
 local ChamObject = {}
 ChamObject.__index = ChamObject
 
@@ -486,7 +554,7 @@ function ChamObject.New(Player, Interface)
 end
 
 function ChamObject:Construct()
-	self.Highlight = Instance.new("Highlight", CoreGui)
+	self.Highlight = Instance.new("Highlight")
 	self.UpdateConnection = RunService.RenderStepped:Connect(function()
 		self:Update()
 	end)
@@ -504,7 +572,9 @@ function ChamObject:Update()
 	local Interface = self.Interface
 	local Character = Interface.GetCharacter(self.Player)
 	local Options = Interface.Team[Interface.IsFriendly(self.Player) and "Friendly" or "Enemy"]
-	local Enabled = Options.Enabled and Character and not (#Interface.Whitelist > 0 and not Find(Interface.Whitelist, self.Player.UserId))
+	local Enabled = Options.Enabled
+		and Character
+		and not (#Interface.Whitelist > 0 and not Find(Interface.Whitelist, self.Player.UserId))
 
 	Highlight.Enabled = Enabled and Options.Chams
 	if Highlight.Enabled then
@@ -514,6 +584,7 @@ function ChamObject:Update()
 		Highlight.OutlineColor = ParseColor(self, Options.ChamsOutlineColor[1], true)
 		Highlight.OutlineTransparency = Options.ChamsOutlineColor[2]
 		Highlight.DepthMode = Options.ChamsVisibleOnly and "Occluded" or "AlwaysOnTop"
+		Highlight.Parent = CoreGui
 	end
 end
 
@@ -533,7 +604,7 @@ function InstanceObject:Construct()
 	local Options = self.Options
 	Options.Enabled = Options.Enabled == nil and true or Options.Enabled
 	Options.Text = Options.Text or "{name}"
-	Options.TextColor = Options.TextColor or { Color3.new(1,1,1), 1 }
+	Options.TextColor = Options.TextColor or { Color3.new(1, 1, 1), 1 }
 	Options.TextOutline = Options.TextOutline == nil and true or Options.TextOutline
 	Options.TextOutlineColor = Options.TextOutlineColor or Color3.new()
 	Options.TextSize = Options.TextSize or 13
@@ -602,17 +673,17 @@ local EspInterface = {
 		LimitDistance = false,
 		MaxDistance = 150,
 		UseTeamColor = false,
-		IncludeLocalPlayer = false
+		IncludeLocalPlayer = false,
 	},
 	Team = {
 		Enemy = {
 			Enabled = false,
 			Box = false,
-			BoxColor = { Color3.new(1,0,0), 1 },
+			BoxColor = { Color3.new(1, 0, 0), 1 },
 			BoxOutline = true,
 			BoxOutlineColor = { Color3.new(), 1 },
 			BoxFill = false,
-			BoxFillColor = { Color3.new(1,0,0), 0.5 },
+			BoxFillColor = { Color3.new(1, 0, 0), 0.5 },
 			CornerBox = false,
 			CornerBoxColor = { Color3.new(1, 1, 1), 1 },
 			HealthBar = false,
@@ -621,30 +692,30 @@ local EspInterface = {
 			HealthBarOutline = true,
 			HealthBarOutlineColor = { Color3.new(), 0.5 },
 			HealthText = false,
-			HealthTextColor = { Color3.new(1,1,1), 1 },
+			HealthTextColor = { Color3.new(1, 1, 1), 1 },
 			HealthTextOutline = true,
 			HealthTextOutlineColor = Color3.new(),
 			Box3d = false,
-			Box3dColor = { Color3.new(1,0,0), 1 },
+			Box3dColor = { Color3.new(1, 0, 0), 1 },
 			Name = false,
-			NameColor = { Color3.new(1,1,1), 1 },
+			NameColor = { Color3.new(1, 1, 1), 1 },
 			NameOutline = true,
 			NameOutlineColor = Color3.new(),
 			Weapon = false,
-			WeaponColor = { Color3.new(1,1,1), 1 },
+			WeaponColor = { Color3.new(1, 1, 1), 1 },
 			WeaponOutline = true,
 			WeaponOutlineColor = Color3.new(),
 			Distance = false,
-			DistanceColor = { Color3.new(1,1,1), 1 },
+			DistanceColor = { Color3.new(1, 1, 1), 1 },
 			DistanceOutline = true,
 			DistanceOutlineColor = Color3.new(),
 			Tracer = false,
 			TracerOrigin = "Bottom",
-			TracerColor = { Color3.new(1,0,0), 1 },
+			TracerColor = { Color3.new(1, 0, 0), 1 },
 			TracerOutline = true,
 			TracerOutlineColor = { Color3.new(), 1 },
 			OffScreenArrow = false,
-			OffScreenArrowColor = { Color3.new(1,1,1), 1 },
+			OffScreenArrowColor = { Color3.new(1, 1, 1), 1 },
 			OffScreenArrowSize = 15,
 			OffScreenArrowRadius = 150,
 			OffScreenArrowOutline = true,
@@ -652,48 +723,51 @@ local EspInterface = {
 			Chams = false,
 			ChamsVisibleOnly = false,
 			ChamsFillColor = { Color3.new(0.2, 0.2, 0.2), 0.5 },
-			ChamsOutlineColor = { Color3.new(1,0,0), 0 },
+			ChamsOutlineColor = { Color3.new(1, 0, 0), 0 },
+			Skeleton = false,
+			SkeletonThickness = 1,
+			SkeletonColor = { Color3.new(1, 0, 0), 1 },
 		},
 		Friendly = {
 			Enabled = false,
 			Box = false,
-			BoxColor = { Color3.new(0,1,0), 1 },
+			BoxColor = { Color3.new(0, 1, 0), 1 },
 			BoxOutline = true,
 			BoxOutlineColor = { Color3.new(), 1 },
 			BoxFill = false,
-			BoxFillColor = { Color3.new(0,1,0), 0.5 },
+			BoxFillColor = { Color3.new(0, 1, 0), 0.5 },
 			CornerBox = false,
 			CornerBoxColor = { Color3.new(1, 1, 1), 1 },
 			HealthBar = false,
-			HealthyColor = Color3.new(0,1,0),
-			DyingColor = Color3.new(1,0,0),
+			HealthyColor = Color3.new(0, 1, 0),
+			DyingColor = Color3.new(1, 0, 0),
 			HealthBarOutline = true,
 			HealthBarOutlineColor = { Color3.new(), 0.5 },
 			HealthText = false,
-			HealthTextColor = { Color3.new(1,1,1), 1 },
+			HealthTextColor = { Color3.new(1, 1, 1), 1 },
 			HealthTextOutline = true,
 			HealthTextOutlineColor = Color3.new(),
 			Box3d = false,
-			Box3dColor = { Color3.new(0,1,0), 1 },
+			Box3dColor = { Color3.new(0, 1, 0), 1 },
 			Name = false,
-			NameColor = { Color3.new(1,1,1), 1 },
+			NameColor = { Color3.new(1, 1, 1), 1 },
 			NameOutline = true,
 			NameOutlineColor = Color3.new(),
 			Weapon = false,
-			WeaponColor = { Color3.new(1,1,1), 1 },
+			WeaponColor = { Color3.new(1, 1, 1), 1 },
 			WeaponOutline = true,
 			WeaponOutlineColor = Color3.new(),
 			Distance = false,
-			DistanceColor = { Color3.new(1,1,1), 1 },
+			DistanceColor = { Color3.new(1, 1, 1), 1 },
 			DistanceOutline = true,
 			DistanceOutlineColor = Color3.new(),
 			Tracer = false,
 			TracerOrigin = "Bottom",
-			TracerColor = { Color3.new(0,1,0), 1 },
+			TracerColor = { Color3.new(0, 1, 0), 1 },
 			TracerOutline = true,
 			TracerOutlineColor = { Color3.new(), 1 },
 			OffScreenArrow = false,
-			OffScreenArrowColor = { Color3.new(1,1,1), 1 },
+			OffScreenArrowColor = { Color3.new(1, 1, 1), 1 },
 			OffScreenArrowSize = 15,
 			OffScreenArrowRadius = 150,
 			OffScreenArrowOutline = true,
@@ -701,9 +775,11 @@ local EspInterface = {
 			Chams = false,
 			ChamsVisibleOnly = false,
 			ChamsFillColor = { Color3.new(0.2, 0.2, 0.2), 0.5 },
-			ChamsOutlineColor = { Color3.new(0,1,0), 0 }
-		}
-	}
+			ChamsOutlineColor = { Color3.new(0, 1, 0), 0 },
+			Skeleton = false,
+			SkeletonColor = { Color3.new(0, 1, 0), 1 },
+		},
+	},
 }
 
 function EspInterface.AddInstance(Instance, Options)
@@ -722,7 +798,7 @@ function EspInterface.Load()
 	local function CreateObject(Player)
 		EspInterface.ObjectCache[Player] = {
 			EspObject.New(Player, EspInterface),
-			ChamObject.New(Player, EspInterface)
+			ChamObject.New(Player, EspInterface),
 		}
 	end
 
@@ -802,6 +878,48 @@ function EspInterface.GetHealth(Player)
 		return Humanoid.Health, Humanoid.MaxHealth
 	end
 	return 100, 100
+end
+
+function EspInterface.GetJoints(Character)
+	local Joints = {
+		Head = Character:FindFirstChild("Head"),
+
+		UpperTorso = Character:FindFirstChild("UpperTorso") or Character:FindFirstChild("Torso"),
+		LowerTorso = Character:FindFirstChild("LowerTorso") or Character:FindFirstChild("Torso"),
+
+		LeftUpperArm = Character:FindFirstChild("LeftUpperArm") or Character:FindFirstChild("Left Arm"),
+		LeftLowerArm = Character:FindFirstChild("LeftLowerArm") or Character:FindFirstChild("Left Arm"),
+		LeftHand = Character:FindFirstChild("LeftHand") or Character:FindFirstChild("Left Arm"),
+
+		RightUpperArm = Character:FindFirstChild("RightUpperArm") or Character:FindFirstChild("Right Arm"),
+		RightLowerArm = Character:FindFirstChild("RightLowerArm") or Character:FindFirstChild("Right Arm"),
+		RightHand = Character:FindFirstChild("RightHand") or Character:FindFirstChild("Right Arm"),
+
+		LeftUpperLeg = Character:FindFirstChild("LeftUpperLeg") or Character:FindFirstChild("Left Leg"),
+		LeftLowerLeg = Character:FindFirstChild("LeftLowerLeg") or Character:FindFirstChild("Left Leg"),
+		LeftFoot = Character:FindFirstChild("LeftFoot") or Character:FindFirstChild("Left Leg"),
+
+		RightUpperLeg = Character:FindFirstChild("RightUpperLeg") or Character:FindFirstChild("Right Leg"),
+		RightLowerLeg = Character:FindFirstChild("RightLowerLeg") or Character:FindFirstChild("Right Leg"),
+		RightFoot = Character:FindFirstChild("RightFoot") or Character:FindFirstChild("Right Leg"),
+	}
+	local AttachPoints = {
+		{ Joints.Head, Joints.UpperTorso },
+		{ Joints.UpperTorso, Joints.LowerTorso },
+		{ Joints.UpperTorso, Joints.LeftUpperArm },
+		{ Joints.LeftUpperArm, Joints.LeftLowerArm },
+		{ Joints.LeftLowerArm, Joints.LeftHand },
+		{ Joints.UpperTorso, Joints.RightUpperArm },
+		{ Joints.RightUpperArm, Joints.RightLowerArm },
+		{ Joints.RightLowerArm, Joints.RightHand },
+		{ Joints.LowerTorso, Joints.LeftUpperLeg },
+		{ Joints.LeftUpperLeg, Joints.LeftLowerLeg },
+		{ Joints.LeftLowerLeg, Joints.LeftFoot },
+		{ Joints.LowerTorso, Joints.RightUpperLeg },
+		{ Joints.RightUpperLeg, Joints.RightLowerLeg },
+		{ Joints.RightLowerLeg, Joints.RightFoot },
+	}
+	return Joints, AttachPoints
 end
 
 return EspInterface

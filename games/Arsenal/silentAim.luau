@@ -27,7 +27,6 @@ local LocalPlayer = __index(Players, "LocalPlayer")
 local Camera = __index(workspace, "CurrentCamera")
 
 local FindFirstChild, FindFirstChildOfClass = __index(game, "FindFirstChild"), __index(game, "FindFirstChildOfClass")
-local GetDescendants = __index(game, "GetDescendants")
 local WorldToViewportPoint = __index(Camera, "WorldToViewportPoint")
 local GetPartsObscuringTarget = __index(Camera, "GetPartsObscuringTarget")
 local GetMouseLocation = __index(UserInputService, "GetMouseLocation")
@@ -77,7 +76,8 @@ local Environment = {
 		},
 	},
 
-	Blacklisted = {},
+	IgnoredParts = {},
+	BlacklistTable = {},
 
 	FOVCircleOutline = Drawingnew("Circle"),
 	FOVCircle = Drawingnew("Circle"),
@@ -85,6 +85,12 @@ local Environment = {
 	SnaplineOutline = Drawingnew("Line"),
 	Snapline = Drawingnew("Line"),
 }
+
+function Environment.AddToIgnoreQuery(Part)
+	if not tablefind(Environment.IgnoredParts, Part) then
+		table.insert(Environment.IgnoredParts, Part)
+	end
+end
 
 function Environment.SilentAim.SetState(State: boolean)
 	Running = State
@@ -106,7 +112,7 @@ local function GetClosestPlayer()
 			local Humanoid = Character and FindFirstChildOfClass(Character, "Humanoid")
 			if
 				Value ~= LocalPlayer
-				and not tablefind(Environment.Blacklisted, __index(Value, "Name"))
+				and __index(LocalPlayer, "Character")
 				and Character
 				and FindFirstChild(Character, LockPart)
 				and Humanoid
@@ -134,11 +140,16 @@ local function GetClosestPlayer()
 				end
 
 				if Settings.WallCheck then
-					local BlacklistTable = GetDescendants(__index(LocalPlayer, "Character"))
-					for _, Value in next, GetDescendants(Character) do
-						BlacklistTable[#BlacklistTable + 1] = Value
+					table.clear(Environment.BlacklistTable)
+
+					table.insert(Environment.BlacklistTable, LocalPlayer.Character)
+					table.insert(Environment.BlacklistTable, Character)
+
+					for i = 1, #Environment.IgnoredParts do
+						Environment.BlacklistTable[#Environment.BlacklistTable + 1] = Environment.IgnoredParts[i]
 					end
-					if #GetPartsObscuringTarget(Camera, { PartPosition }, BlacklistTable) > 0 then
+
+					if #GetPartsObscuringTarget(Camera, { PartPosition }, Environment.BlacklistTable) > 0 then
 						continue
 					end
 				end
@@ -159,7 +170,7 @@ local function GetClosestPlayer()
 		local LockedCharacter = __index(Environment.Locked, "Character")
 		local RequiredDistance = Settings.FOVSettings.Enabled and Settings.FOVSettings.Radius or 2000
 
-		if LockedCharacter then
+		if LockedCharacter and __index(LocalPlayer, "Character") then
 			local LockPartInCharacter = FindFirstChild(LockedCharacter, LockPart)
 			if not LockPartInCharacter then
 				Settings.Locked = nil
@@ -174,12 +185,16 @@ local function GetClosestPlayer()
 			end
 
 			if Settings.WallCheck then
-				local BlacklistTable = GetDescendants(__index(LocalPlayer, "Character"))
-				for _, Value in next, GetDescendants(LockedCharacter) do
-					BlacklistTable[#BlacklistTable + 1] = Value
+				table.clear(Environment.BlacklistTable)
+				
+				table.insert(Environment.BlacklistTable, LocalPlayer.Character)
+				table.insert(Environment.BlacklistTable, LockedCharacter)
+
+				for i = 1, #Environment.IgnoredParts do
+					Environment.BlacklistTable[#Environment.BlacklistTable + 1] = Environment.IgnoredParts[i]
 				end
 
-				if #GetPartsObscuringTarget(Camera, { PartPosition }, BlacklistTable) > 0 then
+				if #GetPartsObscuringTarget(Camera, { PartPosition }, Environment.BlacklistTable) > 0 then
 					Settings.Locked = nil
 					return nil
 				end
@@ -297,10 +312,10 @@ Old = hookmetamethod(
 			and Method == "CoordinateFrame"
 			and string.match(debug.info(3, "s"), "Client.Functions.Weapons")
 			and debug.info(debug.info(3, "f"), "n") ~= "RotCamera"
+			and math.random(1, 100) <= Environment.SilentAim.HitChance
+			and HitCache
 		then
-			if math.random(1, 100) <= Environment.SilentAim.HitChance and HitCache then
-				return CFrame.new(Camera.CFrame.Position, HitCache.Position)
-			end			
+			return CFrame.new(Camera.CFrame.Position, HitCache.Position)
 		end
 
 		return Old(self, Method)

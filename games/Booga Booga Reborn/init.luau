@@ -89,15 +89,6 @@ return function(self)
 					end,
 				})
 
-				AimbotSettingsSection:Toggle({
-					Name = "Alive Check",
-					Description = "whether to ignore corpses",
-					State = true,
-					Callback = function(self, value)
-						AimbotSettings.AliveCheck = value
-					end,
-				}):Continue()
-
 				AimbotSettingsSection:Slider({
 					Name = "Smoothing",
 					Description = "aimbot smoothness",
@@ -116,12 +107,11 @@ return function(self)
 					Name = "Bone",
 					Description = "selects the bone to aim at",
 					Options = { "Head", "Torso" },
-					Value = { "Torso" },
+					Value = { "Head" },
 					Limit = 1,
 					Minimum = 1,
-					Callback = function(self, value)
-						local Part = value[1] == "Torso" and "HumanoidRootPart" or value[1]
-						AimbotSettings.LockPart = Part
+					Callback = function(self, Value)
+						AimbotSettings.LockPart = Value[1] == "Torso" and "HumanoidRootPart" or Value[1]
 					end,
 				})
 
@@ -184,7 +174,7 @@ return function(self)
 							{ Color3.fromRGB(255, 197, 100) },
 							{ Color3.fromRGB(49, 220, 195) },
 						},
-						Callback = function(color)
+						Callback = function(self, color)
 							AimbotFOVSettings.Color = color
 						end,
 					})
@@ -200,7 +190,7 @@ return function(self)
 							{ Color3.fromRGB(255, 197, 100) },
 							{ Color3.fromRGB(49, 220, 195) },
 						},
-						Callback = function(color)
+						Callback = function(self, color)
 							AimbotFOVSettings.LockedColor = color
 						end,
 					})
@@ -266,15 +256,6 @@ return function(self)
 				Callback = function(self, value)
 					TriggerbotSettings.TeamCheck = value
 				end,
-			})
-
-			TriggerbotSection:Toggle({
-				Name = "Alive Check",
-				Description = "whether to ignore corpses",
-				State = true,
-				Callback = function(self, value)
-					AimbotSettings.AliveCheck = value
-				end,
 			}):Continue()
 		end
 	end
@@ -295,8 +276,8 @@ return function(self)
 				Maximum = 3,
 				Step = 1,
 				Precision = 0,
-				Callback = function(self, value)
-					ESPShared.TextFont = value
+				Callback = function(self, Value)
+					ESPShared.TextFont = Value
 				end,
 			})
 			ESPSection:Slider({
@@ -307,8 +288,8 @@ return function(self)
 				Maximum = 20,
 				Step = 1,
 				Precision = 0,
-				Callback = function(self, value)
-					ESPShared.TextSize = value
+				Callback = function(self, Value)
+					ESPShared.TextSize = Value
 				end,
 			})
 
@@ -316,8 +297,8 @@ return function(self)
 				Name = "Use Team Color",
 				Description = "enables ESP team color",
 				State = false,
-				Callback = function(self, value)
-					ESPShared.UseTeamColor = value
+				Callback = function(self, Value)
+					ESPShared.UseTeamColor = Value
 				end,
 			})
 
@@ -325,8 +306,8 @@ return function(self)
 				Name = "Limit Enabled",
 				Description = "enables distance limit",
 				State = false,
-				Callback = function(self, value)
-					ESPShared.LimitDistance = value
+				Callback = function(self, Value)
+					ESPShared.LimitDistance = Value
 				end,
 			}):Continue()
 			ESPSection:Slider({
@@ -337,8 +318,8 @@ return function(self)
 				Maximum = 2000,
 				Step = 1,
 				Precision = 0,
-				Callback = function(self, value)
-					ESPShared.MaxDistance = value
+				Callback = function(self, Value)
+					ESPShared.MaxDistance = Value
 				end,
 			}):Continue()
 
@@ -391,8 +372,8 @@ return function(self)
 					Name = "Enabled",
 					Description = "enables ESP",
 					State = false,
-					Callback = function(self, value)
-						ESPTarg.Enabled = value
+					Callback = function(self, Value)
+						ESPTarg.Enabled = Value
 					end,
 				})
 
@@ -401,8 +382,8 @@ return function(self)
 					Name = "Bounding Box",
 					Description = "enables bounding box ESP",
 					State = false,
-					Callback = function(self, value)
-						ESPTarg.Box = value
+					Callback = function(self, Value)
+						ESPTarg.Box = Value
 
 						UpdateVisualPreview(ESPTarg)
 					end,
@@ -417,9 +398,9 @@ return function(self)
 							{ Color3.fromRGB(255, 197, 100) },
 							{ Color3.fromRGB(49, 220, 195) },
 						},
-						Callback = function(color, transparency)
-							ESPTarg.BoxColor[1], ESPTarg.BoxColor[2] = color, 1 - transparency
-							ESPTarg.BoxOutlineColor[2] = 1 - transparency
+						Callback = function(self, Color, Transparency)
+							ESPTarg.BoxColor[1], ESPTarg.BoxColor[2] = Color, 1 - Transparency
+							ESPTarg.BoxOutlineColor[2] = 1 - Transparency
 
 							UpdateVisualPreview(ESPTarg)
 						end,
@@ -430,8 +411,8 @@ return function(self)
 					Name = "Box Fill",
 					Description = "enables box fill ESP",
 					State = false,
-					Callback = function(self, value)
-						ESPTarg.BoxFill = value
+					Callback = function(self, Value)
+						ESPTarg.BoxFill = Value
 
 						UpdateVisualPreview(ESPTarg)
 					end,
@@ -446,8 +427,8 @@ return function(self)
 							{ Color3.fromRGB(255, 197, 100) },
 							{ Color3.fromRGB(49, 220, 195) },
 						},
-						Callback = function(color, transparency)
-							ESPTarg.BoxFillColor[1], ESPTarg.BoxFillColor[2] = color, 1 - transparency
+						Callback = function(self, Color, Transparency)
+							ESPTarg.BoxFillColor[1], ESPTarg.BoxFillColor[2] = Color, 1 - Transparency
 
 							UpdateVisualPreview(ESPTarg)
 						end,
@@ -458,8 +439,8 @@ return function(self)
 					Name = "Corner Box",
 					Description = "enables corner box ESP",
 					State = false,
-					Callback = function(self, value)
-						ESPTarg.CornerBox = value
+					Callback = function(self, Value)
+						ESPTarg.CornerBox = Value
 
 						UpdateVisualPreview(ESPTarg)
 					end,
@@ -474,19 +455,20 @@ return function(self)
 							{ Color3.fromRGB(255, 197, 100) },
 							{ Color3.fromRGB(49, 220, 195) },
 						},
-						Callback = function(color, transparency)
-							ESPTarg.CornerBoxColor[1], ESPTarg.CornerBoxColor[2] = color, 1 - transparency
+						Callback = function(self, Color, Transparency)
+							ESPTarg.CornerBoxColor[1], ESPTarg.CornerBoxColor[2] = Color, 1 - Transparency
 
 							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 
+				-- Bounding Box
 				Header:Toggle({
 					Name = "3D Bounding Box",
 					Description = "enables 3d bounding box ESP",
 					State = false,
-					Callback = function(self, value)
-						ESPTarg.Box3d = value
+					Callback = function(self, Value)
+						ESPTarg.Box3d = Value
 
 						UpdateVisualPreview(ESPTarg)
 					end,
@@ -501,8 +483,8 @@ return function(self)
 							{ Color3.fromRGB(255, 197, 100) },
 							{ Color3.fromRGB(49, 220, 195) },
 						},
-						Callback = function(color, transparency)
-							ESPTarg.Box3dColor[1], ESPTarg.Box3dColor[2] = color, 1 - transparency
+						Callback = function(self, Color, Transparency)
+							ESPTarg.Box3dColor[1], ESPTarg.Box3dColor[2] = Color, 1 - Transparency
 
 							UpdateVisualPreview(ESPTarg)
 						end,
@@ -513,8 +495,8 @@ return function(self)
 					Name = "Chams",
 					Description = "enables player chams ESP",
 					State = false,
-					Callback = function(self, value)
-						ESPTarg.Chams = value
+					Callback = function(self, Value)
+						ESPTarg.Chams = Value
 					end,
 				})
 					:Continue()
@@ -528,8 +510,8 @@ return function(self)
 							{ Color3.fromRGB(255, 197, 100) },
 							{ Color3.fromRGB(49, 220, 195) },
 						},
-						Callback = function(color, transparency)
-							ESPTarg.ChamsFillColor[1], ESPTarg.ChamsFillColor[2] = color, transparency
+						Callback = function(self, Color, Transparency)
+							ESPTarg.ChamsFillColor[1], ESPTarg.ChamsFillColor[2] = Color, Transparency
 
 							UpdateVisualPreview(ESPTarg)
 						end,
@@ -545,8 +527,8 @@ return function(self)
 							{ Color3.fromRGB(255, 197, 100) },
 							{ Color3.fromRGB(49, 220, 195) },
 						},
-						Callback = function(color, transparency)
-							ESPTarg.ChamsOutlineColor[1], ESPTarg.ChamsOutlineColor[2] = color, transparency
+						Callback = function(self, Color, Transparency)
+							ESPTarg.ChamsOutlineColor[1], ESPTarg.ChamsOutlineColor[2] = Color, Transparency
 
 							UpdateVisualPreview(ESPTarg)
 						end,
@@ -554,11 +536,11 @@ return function(self)
 
 				-- Tracers
 				Header:Toggle({
-					Name = "Tracers",
-					Description = "enables tracers ESP",
+					Name = "Skeletons",
+					Description = "enables skeleton/bone ESP",
 					State = false,
-					Callback = function(self, value)
-						ESPTarg.Tracer = value
+					Callback = function(self, Value)
+						ESPTarg.Skeleton = Value
 					end,
 				})
 					:Continue()
@@ -571,13 +553,52 @@ return function(self)
 							{ Color3.fromRGB(255, 197, 100) },
 							{ Color3.fromRGB(49, 220, 195) },
 						},
-						Callback = function(color, transparency)
-							ESPTarg.TracerColor[1], ESPTarg.TracerColor[2] = color, 1 - transparency
-							ESPTarg.TracerOutlineColor[2] = 1 - transparency
+						Callback = function(self, Color, Transparency)
+							ESPTarg.SkeletonColor[1], ESPTarg.SkeletonColor[2] = Color, 1 - Transparency
 
 							UpdateVisualPreview(ESPTarg)
 						end,
+					}):Continue()
+
+					Header:Slider({
+						Name = "Thickness",
+						Description = "the thickness of skeleton lines",
+						Value = 1,
+						Minimum = 1,
+						Maximum = 4,
+						Step = 1,
+						Precision = 0,
+						Callback = function(self, Value)
+							ESPTarg.SkeletonThickness = Value
+						end,
 					})
+
+				-- Tracers
+				Header:Toggle({
+					Name = "Tracers",
+					Description = "enables tracers ESP",
+					State = false,
+					Callback = function(self, Value)
+						ESPTarg.Tracer = Value
+					end,
+				})
+					:Continue()
+					:Colorpicker({
+						Color = { Color3.fromRGB(123, 124, 243), 0 },
+						SuggestionColors = {
+							{ Color3.fromRGB(171, 81, 83) },
+							{ Color3.fromRGB(123, 124, 243) },
+							{ Color3.fromRGB(208, 246, 111) },
+							{ Color3.fromRGB(255, 197, 100) },
+							{ Color3.fromRGB(49, 220, 195) },
+						},
+						Callback = function(self, Color, Transparency)
+							ESPTarg.TracerColor[1], ESPTarg.TracerColor[2] = Color, 1 - Transparency
+							ESPTarg.TracerOutlineColor[2] = 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
+						end,
+					}):Continue()
 
 				Header:Dropdown({
 					Name = "Tracers Origin",
@@ -586,8 +607,8 @@ return function(self)
 					Value = { "Top" },
 					Limit = 1,
 					Minimum = 1,
-					Callback = function(self, value)
-						ESPTarg.TracerOrigin = value[1]
+					Callback = function(self, Value)
+						ESPTarg.TracerOrigin = Value[1]
 					end,
 				})
 
@@ -596,8 +617,8 @@ return function(self)
 					Name = "Health Bar",
 					Description = "enables health bar ESP",
 					State = false,
-					Callback = function(self, value)
-						ESPTarg.HealthBar = value
+					Callback = function(self, Value)
+						ESPTarg.HealthBar = Value
 
 						UpdateVisualPreview(ESPTarg)
 					end,
@@ -614,8 +635,8 @@ return function(self)
 							{ Color3.fromRGB(255, 197, 100) },
 							{ Color3.fromRGB(49, 220, 195) },
 						},
-						Callback = function(color)
-							ESPTarg.HealthyColor = color
+						Callback = function(self, Color)
+							ESPTarg.HealthyColor = Color
 
 							UpdateVisualPreview(ESPTarg)
 						end,
@@ -632,8 +653,8 @@ return function(self)
 							{ Color3.fromRGB(255, 197, 100) },
 							{ Color3.fromRGB(49, 220, 195) },
 						},
-						Callback = function(color)
-							ESPTarg.DyingColor = color
+						Callback = function(self, Color)
+							ESPTarg.DyingColor = Color
 
 							UpdateVisualPreview(ESPTarg)
 						end,
@@ -644,8 +665,8 @@ return function(self)
 					Name = "Off Screen Arrows",
 					Description = "enables off screen arrow ESP",
 					State = false,
-					Callback = function(self, value)
-						ESPTarg.OffScreenArrow = value
+					Callback = function(self, Value)
+						ESPTarg.OffScreenArrow = Value
 					end,
 				})
 					:Continue()
@@ -658,9 +679,9 @@ return function(self)
 							{ Color3.fromRGB(255, 197, 100) },
 							{ Color3.fromRGB(49, 220, 195) },
 						},
-						Callback = function(color, transparency)
-							ESPTarg.OffScreenArrowColor[1], ESPTarg.OffScreenArrowColor[2] = color, 1 - transparency
-							ESPTarg.OffScreenArrowOutlineColor[2] = 1 - transparency
+						Callback = function(self, Color, Transparency)
+							ESPTarg.OffScreenArrowColor[1], ESPTarg.OffScreenArrowColor[2] = Color, 1 - Transparency
+							ESPTarg.OffScreenArrowOutlineColor[2] = 1 - Transparency
 
 							UpdateVisualPreview(ESPTarg)
 						end,
@@ -675,8 +696,8 @@ return function(self)
 					Maximum = 50,
 					Step = 1,
 					Precision = 0,
-					Callback = function(self, value)
-						ESPShared.OffScreenArrowSize = value
+					Callback = function(self, Value)
+						ESPShared.OffScreenArrowSize = Value
 					end,
 				}):Continue()
 
@@ -688,8 +709,8 @@ return function(self)
 					Maximum = 500,
 					Step = 1,
 					Precision = 0,
-					Callback = function(self, value)
-						ESPShared.OffScreenArrowRadius = value
+					Callback = function(self, Value)
+						ESPShared.OffScreenArrowRadius = Value
 					end,
 				})
 
@@ -698,8 +719,8 @@ return function(self)
 					Name = "Name",
 					Description = "enables name text ESP",
 					State = false,
-					Callback = function(self, value)
-						ESPTarg.Name = value
+					Callback = function(self, Value)
+						ESPTarg.Name = Value
 
 						UpdateVisualPreview(ESPTarg)
 					end,
@@ -714,8 +735,8 @@ return function(self)
 							{ Color3.fromRGB(255, 197, 100) },
 							{ Color3.fromRGB(49, 220, 195) },
 						},
-						Callback = function(color, transparency)
-							ESPTarg.NameColor[1], ESPTarg.NameColor[2] = color, 1 - transparency
+						Callback = function(self, Color, Transparency)
+							ESPTarg.NameColor[1], ESPTarg.NameColor[2] = Color, 1 - Transparency
 
 							UpdateVisualPreview(ESPTarg)
 						end,
@@ -726,8 +747,8 @@ return function(self)
 					Name = "Distance",
 					Description = "enables distance text ESP",
 					State = false,
-					Callback = function(self, value)
-						ESPTarg.Distance = value
+					Callback = function(self, Value)
+						ESPTarg.Distance = Value
 
 						UpdateVisualPreview(ESPTarg)
 					end,
@@ -742,8 +763,8 @@ return function(self)
 							{ Color3.fromRGB(255, 197, 100) },
 							{ Color3.fromRGB(49, 220, 195) },
 						},
-						Callback = function(color, transparency)
-							ESPTarg.DistanceColor[1], ESPTarg.DistanceColor[2] = color, 1 - transparency
+						Callback = function(self, Color, Transparency)
+							ESPTarg.DistanceColor[1], ESPTarg.DistanceColor[2] = Color, 1 - Transparency
 
 							UpdateVisualPreview(ESPTarg)
 						end,
@@ -754,8 +775,8 @@ return function(self)
 					Name = "Weapon",
 					Description = "enables weapon text ESP",
 					State = false,
-					Callback = function(self, value)
-						ESPTarg.Weapon = value
+					Callback = function(self, Value)
+						ESPTarg.Weapon = Value
 
 						UpdateVisualPreview(ESPTarg)
 					end,
@@ -770,8 +791,8 @@ return function(self)
 							{ Color3.fromRGB(255, 197, 100) },
 							{ Color3.fromRGB(49, 220, 195) },
 						},
-						Callback = function(color, transparency)
-							ESPTarg.WeaponColor[1], ESPTarg.WeaponColor[2] = color, 1 - transparency
+						Callback = function(self, Color, Transparency)
+							ESPTarg.WeaponColor[1], ESPTarg.WeaponColor[2] = Color, 1 - Transparency
 
 							UpdateVisualPreview(ESPTarg)
 						end,
@@ -782,8 +803,8 @@ return function(self)
 					Name = "Health",
 					Description = "enables health text ESP",
 					State = false,
-					Callback = function(self, value)
-						ESPTarg.HealthText = value
+					Callback = function(self, Value)
+						ESPTarg.HealthText = Value
 
 						UpdateVisualPreview(ESPTarg)
 					end,
@@ -798,8 +819,8 @@ return function(self)
 							{ Color3.fromRGB(255, 197, 100) },
 							{ Color3.fromRGB(49, 220, 195) },
 						},
-						Callback = function(color, transparency)
-							ESPTarg.HealthTextColor[1], ESPTarg.HealthTextColor[2] = color, 1 - transparency
+						Callback = function(self, Color, Transparency)
+							ESPTarg.HealthTextColor[1], ESPTarg.HealthTextColor[2] = Color, 1 - Transparency
 
 							UpdateVisualPreview(ESPTarg)
 						end,
@@ -850,9 +871,8 @@ return function(self)
 	end
 
 	--// Initialize
-	Tabs.Combat:Select()
 
-	-- Esp Init
+	-- ESP
 	do
 		ESP.IsFriendly = function(Player)
 			return Player and Player.Team and Player.Team == LocalPlayer.Team and Player.Team.Name ~= "NoTribe"
@@ -860,15 +880,26 @@ return function(self)
 		ESP.Load()
 	end
 
-	-- Aiming Init
+	-- Aiming
 	do
-		Aiming.IsFriendly = ESP.IsFriendly
+		Aiming.IsFriendly = function(Player)
+			return Player and Player.Team and Player.Team == LocalPlayer.Team and Player.Team.Name ~= "NoTribe"
+		end
 		Aiming.Load()
 	end
 
-	Interface:Notification({
-		Title = `RIOT V2 - {self.Name} | getriot.cc`,
-		Description = `RIOT V2 Loaded!`,
-		Lifetime = 5,
-	})
+	-- Interface
+	do
+		Tabs.Combat:Select()
+		Interface:Notification({
+			Title = `RIOT {RIOT.VERSION} - getriot.cc`,
+			Description = `RIOT for {self.Name} loaded!`,
+			Lifetime = 5,
+		})
+	end
+
+	-- Hooks
+	do
+		
+	end
 end

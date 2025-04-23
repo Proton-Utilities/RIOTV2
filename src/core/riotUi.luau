@@ -2365,7 +2365,7 @@ function CreateColorpicker(Parent, Settings, Flag)
 		customColor_Transparency.ImageTransparency = 1 - finalAlpha
 
 		if _colorpicker.Settings.Callback then
-			utilities.callback(_colorpicker.Settings.Callback, color, finalAlpha)
+			utilities.callback(_colorpicker.Settings.Callback, _colorpicker, color, finalAlpha)
 		end
 
 		return _colorpicker
