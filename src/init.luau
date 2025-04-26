@@ -1,117 +1,136 @@
 --!nocheck
 --!nolint
 
-if not cloneref or not hookfunction then
+if not hookfunction or not getrenv() then
 	game.Player.LocalPlayer:Kick("Your executor is not supported.")
 	return
 end
 
+--// Imports
+local Functions = require("core/functions.luau")
+
+--// Methods
+local GetService = Functions.SecureService
+
+--// Services
+local CoreGui = GetService("CoreGui")
+
 --// Functions
-local function JmpFck(pmo)
-	game.Players.LocalPlayer:Kick(pmo or "RI_JMPFCK")
+local function JmpFck(...)
+	getrenv().game.Players.LocalPlayer:Kick(`:{table.concat({ ... }, ", ")}`)
 
 	coroutine.wrap(function()
-		for _, Object in ipairs(game:GetDescendants()) do
+		for _, Object in ipairs(getrenv().game:GetDescendants()) do
 			pcall(function()
 				Object:Destroy()
 			end)
 		end
 	end)()
 
-	game:Shutdown()
+	getrenv().game:Shutdown()
 
-	task.wait(0.2)
+	task.delay(0.2, function()
+		coroutine.wrap(function()
+			repeat
+				coroutine.wrap(function()
+					for i = 1, 0, 0 do
+					end
+				end)()
+			until false
+		end)()
 
-	coroutine.wrap(function()
-		repeat
-			coroutine.wrap(function()
-				for i = 1, 0, 0 do
-				end
-			end)()
-		until false
-	end)()
-
-	game.Sandboxed = true
+		getrenv().game.Sandboxed = true
+	end)
 end
 
---// Initialize
+--// Initialize Anti Reversal
+pcall(function()
+	local DTC_A_RT = false
+
+	local function Check()
+		local Count = 0
+
+		for _, Object in pairs(gethui():GetChildren()) do
+			if Object:IsA("ScreenGui") then
+				Count += 1
+				if Count > 1 then
+					return "illegal object 1", Object
+				end
+			end
+		end
+
+		for _, Object in pairs(CoreGui:GetChildren()) do
+			if
+				Object:IsA("ScreenGui")
+				and (Object.Name == "Window" or Object.Name == "Intro" or Object.Name == "ScreenGui")
+			then
+				return "illegal object 2", Object
+			end
+		end
+
+		return false
+	end
+
+	local DTC_GH_CLD_A_RT = gethui().ChildAdded:Connect(function()
+		local Result, Object = Check()
+		if Result and not DTC_A_RT then
+			DTC_A_RT = true
+			JmpFck(Result)
+			Object:Destroy()
+		end
+	end)
+	local DTC_CGUI_CLD_A_RT = CoreGui.ChildAdded:Connect(function()
+		local Result, Object = Check()
+		if Result and not DTC_A_RT then
+			DTC_A_RT = true
+			JmpFck(Result)
+			Object:Destroy()
+		end
+	end)
+
+	task.spawn(function()
+		while true do
+			if not (DTC_GH_CLD_A_RT.Connected and DTC_CGUI_CLD_A_RT.Connected) then
+				JmpFck("bypass 1")
+			end
+
+			local Result, Object = Check()
+			if Result and not DTC_A_RT then
+				JmpFck("bypass 2", Result)
+				Object:Destroy()
+			end
+
+			task.wait(0.5)
+		end
+	end)
+end)
+
+-- Hooks
+do
+	local OriginalLoadstring = loadstring
+	hookfunction(loadstring, function(...)
+		if checkcaller() then
+			JmpFck("illegal chunk 1")
+			return
+		end
+		return OriginalLoadstring(...)
+	end)
+end
+
+--// Initialize Anti Debugging
 if RIOT.BUILD == "Release" and not RIOT.VERSION:find("-") then
 	if getgenv().__RIOT_LOADED then
 		return
 	end
 	getgenv().__RIOT_LOADED = true
 
-	-- Anti-debugging
 	debug.traceback = function()
 		return ""
 	end
 	getgenv().print, getgenv().warn, getgenv().error = function() end, function() end, function() end
-
-	-- Anti-reversal
-	pcall(function()
-		local CGUI = cloneref and cloneref(game:GetService("CoreGui")) or game:GetService("CoreGui")
-		local function Check()
-			local Count = 0
-
-			for _, v in pairs(gethui():GetChildren()) do
-				if v:IsA("ScreenGui") then
-					Count += 1
-					if Count > 1 then
-						JmpFck(":illegal instance 1")
-					end
-				end
-			end
-
-			for _, v in pairs(CGUI:GetChildren()) do
-				if v:IsA("ScreenGui") and (v.Name == "Window" or v.Name == "Intro") then
-					JmpFck(":illegal instance 2")
-				end
-			end
-		end
-
-		gethui().ChildAdded:Connect(Check)
-		CGUI.ChildAdded:Connect(Check)
-		Check()
-	end)
-
-	do
-		local Original 
-		Original = hookfunction(loadstring, function(Source, Chunk)
-			if checkcaller() then
-				JmpFck(":illegal chunk 1")
-			end
-		
-			return Original(Source, Chunk)
-		end)		
-	end
-
-	--[[ pcall(function()
-		while ({ x = "y" })["x"] == "y" do
-			if rawget(_G, "moduleData") or rawget(_G, "DebugLoadModule") then
-				JmpFck("(dex) 2")
-			end
-
-			for i, v in pairs(getgenv()) do
-				if i:lower():find("dex") then
-					JmpFck("(dex) 3")
-				end
-			end
-
-			task.wait(0.5)
-		end
-	end) ]]
-
-	--[[ local HttpService = game:GetService("HttpService")
-	hookfunction(HttpService.JSONDecode, function(self, json)
-		local decoded = getfenv(1).HttpService:JSONDecode(json)
-		local str = HttpService:JSONEncode(decoded)
-		if str:lower():find("hydroxide") then
-			JmpFck("(hydroxide) 1")
-		end
-		return decoded
-	end) ]]
 end
 
+--// Initialize Loader
 local Files = {
 	["Universal"] = {
 		Name = "Universal",
@@ -122,6 +141,12 @@ local Files = {
 		Name = "Arsenal",
 		Load = require("games/Arsenal/init.luau"),
 		UniverseId = 111958650,
+	},
+
+	["Operations: Siege"] = {
+		Name = "Operations: Siege",
+		Load = require("games/Operations Siege/init.luau"),
+		UniverseId = 4849157113,
 	},
 
 	["Frontlines"] = {

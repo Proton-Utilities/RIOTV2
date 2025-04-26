@@ -4,14 +4,11 @@
 
 return function(self)
 	--// Imports
-	local InternalHandler = require("./internalHandler.luau")
-
 	local Functions = require("core/functions.luau")
 	local Interface = require("core/riotUi.luau")
 
 	local Esp = require("modules/esp.luau")
 	local Aiming = require("modules/aiming.luau")
-	local SilentAim = require("./silentAim.luau")
 
 	--// Methods
 	local GetService = Functions.SecureService
@@ -19,8 +16,8 @@ return function(self)
 	--// Services
 	local Workspace: Workspace = GetService("Workspace")
 	local Lighting: Lighting = GetService("Lighting")
+    local RunService: RunService = GetService("RunService")
 	local ReplicatedStorage: ReplicatedStorage = GetService("ReplicatedStorage")
-	local RunService: RunService = GetService("RunService")
 
 	--// References
 	local LocalPlayer: Player = Functions.GetPlayer()
@@ -38,19 +35,6 @@ return function(self)
 	local AimbotSettings = Aiming.Aimbot
 	local TriggerbotSettings = Aiming.Triggerbot
 	local AimbotFOVSettings = Aiming.FOVSettings
-
-	local SilentAimSettings = SilentAim.SilentAim
-	local SilentAimFOVSettings = SilentAimSettings.FOVSettings
-	local SilentAimSnaplineSettings = SilentAimSettings.SnaplineSettings
-
-	local Utility = {
-		GetClient = function(): (ScreenGui, Script)
-			local Gui = LocalPlayer:FindFirstChild("PlayerGui") and LocalPlayer["PlayerGui"]:FindFirstChild("GUI")
-			local Client = Gui and Gui:FindFirstChild("Client")
-
-			return Client, getsenv(Client)
-		end,
-	}
 
 	--// UI Begin
 	local Window = Interface:Window({
@@ -293,454 +277,7 @@ return function(self)
 	do
 		local Tab = Tabs.Rage
 
-		-- Silent Aim
-		do
-			local SilentAimSection = Tab:Section({ Name = "Silent Aim" })
 
-			-- Settings
-			do
-				local SilentAimSettingsSection = SilentAimSection:Section({ Name = "Settings" })
-
-				SilentAimSettingsSection:Toggle({
-					Name = "Enabled",
-					Description = "enables silent aim",
-					State = false,
-					Callback = function(self, Value)
-						SilentAimSettings.Enabled = Value
-						SilentAimSettings.SetState(Value)
-					end,
-				})
-
-				SilentAimSettingsSection:Toggle({
-					Name = "Auto Fire",
-					Description = "enabled automatic fire when a target is in bounds",
-					State = false,
-					Callback = function(self, Value)
-						if Value then
-							SilentAimSettings.LockContinueTrigger = function()
-								TriggerbotSettings.Trigger()
-							end
-						else
-							SilentAimSettings.LockContinueTrigger = nil
-						end
-					end,
-				})
-
-				SilentAimSettingsSection:Toggle({
-					Name = "Wall Check",
-					Description = "enables wall check",
-					State = true,
-					Callback = function(self, Value)
-						SilentAimSettings.WallCheck = Value
-					end,
-				})
-
-				SilentAimSettingsSection:Toggle({
-					Name = "Team Check",
-					Description = "enables team check",
-					State = true,
-					Callback = function(self, Value)
-						SilentAimSettings.TeamCheck = Value
-					end,
-				})
-
-				SilentAimSettingsSection:Dropdown({
-					Name = "Bone",
-					Description = "selects the bone bullets redirect to",
-					Options = { "Head", "Torso" },
-					Value = { "Head" },
-					Limit = 1,
-					Minimum = 1,
-					Callback = function(self, Value)
-						local Part = Value[1] == "Torso" and "HumanoidRootPart" or Value[1]
-						SilentAimSettings.LockPart = Part
-					end,
-				})
-
-				SilentAimSettingsSection:Slider({
-					Name = "Hit Chance",
-					Description = "the chance bullets will hit when shot with silent aim",
-					Value = 100,
-					Minimum = 0,
-					Maximum = 100,
-					Step = 1,
-					Precision = 0,
-					Filter = function(Value)
-						return tostring(Value) .. "%"
-					end,
-					Callback = function(self, Value)
-						SilentAimSettings.HitChance = Value
-					end,
-				})
-
-				SilentAimSettingsSection:Slider({
-					Name = "Max Distance",
-					Description = "the distance silent aim stops redirecting bullets",
-					Value = 500,
-					Minimum = 1,
-					Maximum = 2000,
-					Step = 1,
-					Precision = 0,
-					Callback = function(self, Value)
-						SilentAimSettings.MaxDistance = Value
-					end,
-				}):Continue()
-			end
-
-			-- FOV Settings
-			do
-				local FOVSettingsSection = SilentAimSection:Section({ Name = "FOV" })
-
-				FOVSettingsSection:Toggle({
-					Name = "Enabled",
-					Description = "whether the silent aim radius limit is active",
-					State = true,
-					Callback = function(self, Value)
-						SilentAimFOVSettings.Enabled = Value
-					end,
-				})
-
-				FOVSettingsSection:Toggle({
-					Name = "Visible",
-					Description = "draws a circle representing the silent aim FOV radius",
-					State = true,
-					Callback = function(self, Value)
-						SilentAimFOVSettings.Visible = Value
-					end,
-				})
-					:Continue()
-					:Colorpicker({
-						Color = { Color3.fromRGB(100, 50, 255), 0 },
-						SuggestionColors = {
-							{ Color3.fromRGB(171, 81, 83) },
-							{ Color3.fromRGB(123, 124, 243) },
-							{ Color3.fromRGB(208, 246, 111) },
-							{ Color3.fromRGB(255, 197, 100) },
-							{ Color3.fromRGB(49, 220, 195) },
-						},
-						Callback = function(self, Color, Transparency)
-							SilentAimFOVSettings.Color[1], SilentAimFOVSettings.Color[2] = Color, 1 - Transparency
-							SilentAimFOVSettings.OutlineColor[2] = 1 - Transparency
-						end,
-					})
-
-				FOVSettingsSection:Slider({
-					Name = "Radius",
-					Description = "silent aim FOV limit radius",
-					Value = 120,
-					Minimum = 1,
-					Maximum = 500,
-					Step = 1,
-					Precision = 0,
-					Callback = function(self, Value)
-						SilentAimFOVSettings.Radius = Value
-					end,
-				})
-
-				FOVSettingsSection:Slider({
-					Name = "Circle Sides",
-					Description = "the amount of points the drawn circle has",
-					Value = 45,
-					Minimum = 3,
-					Maximum = 80,
-					Step = 1,
-					Precision = 0,
-					Callback = function(self, Value)
-						SilentAimFOVSettings.NumSides = Value
-					end,
-				}):Continue()
-			end
-
-			-- Snapline Settings
-			do
-				local SnaplinesSettingsSection = SilentAimSection:Section({ Name = "Snaplines" })
-
-				SnaplinesSettingsSection:Toggle({
-					Name = "Enabled",
-					Description = "whether snapping point lines are enabled",
-					State = true,
-					Callback = function(self, Value)
-						SilentAimSnaplineSettings.Enabled = Value
-					end,
-				})
-					:Continue()
-					:Colorpicker({
-						Color = { Color3.fromRGB(200, 230, 255), 0 },
-						SuggestionColors = {
-							{ Color3.fromRGB(171, 81, 83) },
-							{ Color3.fromRGB(123, 124, 243) },
-							{ Color3.fromRGB(208, 246, 111) },
-							{ Color3.fromRGB(255, 197, 100) },
-							{ Color3.fromRGB(49, 220, 195) },
-						},
-						Callback = function(self, Color, Transparency)
-							SilentAimSnaplineSettings.Color[1], SilentAimSnaplineSettings.Color[2] = Color, 1 - Transparency
-							SilentAimSnaplineSettings.OutlineColor[2] = 1 - Transparency
-						end,
-					})
-
-				SnaplinesSettingsSection:Slider({
-					Name = "Thickness",
-					Description = "how thick the snapping point line is",
-					Value = 2,
-					Minimum = 1,
-					Maximum = 6,
-					Step = 1,
-					Precision = 0,
-					Callback = function(self, Value)
-						SilentAimSnaplineSettings.Thickness = Value
-					end,
-				}):Continue()
-			end
-		end
-
-		-- Gun Modifications
-		do
-			local GunModificationsSection = Tab:Section({ Name = "Gun Modifications" })
-
-			local OriginalValues = {}
-			local OriginalEnvValues = {}
-
-			local function UpdateWeaponValue(Name, NewValue, UseSEnv)
-				local Client = Utility.GetClient()
-				local Weapons_Env = Client.Functions.Weapons
-				local Weapons = ReplicatedStorage:FindFirstChild("Weapons")
-
-				if UseSEnv then
-					if Weapons_Env and getsenv(Weapons_Env)[Name] then
-						OriginalEnvValues[Name] = getsenv(Weapons_Env)[Name]
-						getsenv(Weapons_Env)[Name] = NewValue
-					end
-				else
-					if Weapons then
-						for _, Modifier in pairs(Weapons:GetDescendants()) do
-							if
-								Modifier.Name == Name
-								and Modifier.Parent.Parent == Weapons
-								and Modifier:IsA("ValueBase")
-							then
-								if OriginalValues[Modifier] == nil then
-									OriginalValues[Modifier] = Modifier.Value
-								end
-
-								if typeof(NewValue) == "function" then
-									Modifier.Value = NewValue(typeof(Modifier.Value), OriginalValues[Modifier])
-								else
-									Modifier.Value = NewValue
-								end
-							end
-						end
-					end
-				end
-			end
-
-			local function RestoreWeaponValue(Name, UseSEnv)
-				local Client = Utility.GetClient()
-				local Weapons_Env = Client.Functions.Weapons
-				local Weapons = ReplicatedStorage:FindFirstChild("Weapons")
-
-				if UseSEnv then
-					if Weapons_Env and OriginalEnvValues[Name] then
-						getsenv(Weapons_Env)[Name] = OriginalEnvValues[Name]
-					end
-				else
-					if Weapons then
-						for _, Modifier in pairs(Weapons:GetDescendants()) do
-							if Modifier.Name == Name and OriginalValues[Modifier] ~= nil then
-								Modifier.Value = OriginalValues[Modifier]
-								OriginalValues[Modifier] = nil
-							end
-						end
-					end
-				end
-			end
-
-			GunModificationsSection:Slider({
-				Name = "Bullet Multiplier",
-				Description = "Multiplies the bullets fired per shot\n⚠️ This can lag your game with high values⚠️",
-				Value = 1,
-				Minimum = 1,
-				Maximum = 8,
-				Step = 1,
-				Precision = 0,
-				Callback = function(self, Value)
-					UpdateWeaponValue("Bullets", function(Type, Old)
-						return Type == "number" and Old * Value or Old
-					end)
-				end,
-			})
-
-			GunModificationsSection:Slider({
-				Name = "Critical Multiplier",
-				Description = "Multiplies the crit multiplier for your gun",
-				Value = 1,
-				Minimum = 1,
-				Maximum = 100,
-				Step = 1,
-				Precision = 0,
-				Callback = function(self, Value)
-					UpdateWeaponValue("Crit", function(Type, Old)
-						return Type == "number" and Old * Value or Old
-					end)
-				end,
-			})
-
-			GunModificationsSection:Toggle({
-				Name = "Automatics",
-				Description = "makes all guns automatic",
-				State = false,
-				Callback = function(self, Value)
-					if Value then
-						UpdateWeaponValue("mode", "automatic", true)
-						UpdateWeaponValue("Auto", true)
-					else
-						RestoreWeaponValue("automatic", true)
-						RestoreWeaponValue("Auto")
-					end
-				end,
-			})
-
-			GunModificationsSection:Toggle({
-				Name = "Infinite Ammo",
-				Description = "enables infinite ammo",
-				State = false,
-				Callback = function(self, Value)
-					local Wkspc = ReplicatedStorage:FindFirstChild("wkspc")
-					local CurrentCurse = Wkspc and Wkspc.CurrentCurse
-
-					if CurrentCurse and CurrentCurse.Value and Value then
-						CurrentCurse.Value = "Infinite Ammo" -- Use the method in Client > Weapons module if this gets patched
-					elseif not Value then
-						CurrentCurse.Value = ""
-					end
-				end,
-			})
-
-			GunModificationsSection:Toggle({
-				Name = "Rapid Fire",
-				Description = "enables rapid fire rate",
-				State = false,
-				Callback = function(self, Value)
-					if Value then
-						UpdateWeaponValue("FireRate", 0.02)
-					else
-						RestoreWeaponValue("FireRate")
-					end
-				end,
-			})
-
-			GunModificationsSection:Toggle({
-				Name = "No Equip Timer",
-				Description = "removes the delay from equipping to shooting",
-				State = false,
-				Callback = function(self, Value)
-					if Value then
-						UpdateWeaponValue("EquipTime", 0)
-					else
-						RestoreWeaponValue("EquipTime")
-					end
-				end,
-			})
-
-			GunModificationsSection:Toggle({
-				Name = "Instant Reload",
-				Description = "removes reload timer",
-				State = false,
-				Callback = function(self, Value)
-					if Value then
-						UpdateWeaponValue("ReloadTime", 0)
-					else
-						RestoreWeaponValue("ReloadTime")
-					end
-				end,
-			})
-
-			GunModificationsSection:Toggle({
-				Name = "No Spread",
-				Description = "removes gun spread",
-				State = false,
-				Callback = function(self, Value)
-					if Value then
-						UpdateWeaponValue("MaxSpread", 0)
-						UpdateWeaponValue("Spread", 0)
-					else
-						RestoreWeaponValue("MaxSpread")
-						RestoreWeaponValue("Spread")
-					end
-				end,
-			})
-
-			GunModificationsSection:Toggle({
-				Name = "No Recoil",
-				Description = "removes gun recoil",
-				State = false,
-				Callback = function(self, Value)
-					if Value then
-						UpdateWeaponValue("recoil", 0, true)
-						UpdateWeaponValue("RecoilControl", 0)
-					else
-						RestoreWeaponValue("recoil", true)
-						RestoreWeaponValue("RecoilControl")
-					end
-				end,
-			})
-
-			GunModificationsSection:Toggle({
-				Name = "No Overheating",
-				Description = "removes overheating for the Z80",
-				State = false,
-				Callback = function(self, Value)
-					local Client = Utility.GetClient()
-					local Variables = Client and Client:FindFirstChild("Variables")
-					local Overheat = Variables and Variables:FindFirstChild("overheat")
-
-					if not Overheat then
-						return
-					end
-
-					if self._OverheatConn then
-						self._OverheatConn:Disconnect()
-						self._OverheatConn = nil
-					end
-
-					if Value then
-						self._OverheatConn = Overheat:GetPropertyChangedSignal("Value"):Connect(function()
-							if Overheat.Value > 0 then
-								Overheat.Value = 0
-							end
-						end)
-					end
-				end,
-			})
-
-			GunModificationsSection:Toggle({
-				Name = "No Projectile Charging",
-				Description = "removes charge timer for projectiles",
-				State = false,
-				Callback = function(self, Value)
-					if Value then
-						UpdateWeaponValue("ChargeTime", 0)
-					else
-						RestoreWeaponValue("ChargeTime")
-					end
-				end,
-			})
-
-			GunModificationsSection:Toggle({
-				Name = "No Slow",
-				Description = "removes gun slowdown",
-				State = false,
-				Callback = function(self, Value)
-					if Value then
-						UpdateWeaponValue("Speed%", function(Type, Old)
-							return Type == "number" and Old > 0 and 0
-						end)
-					else
-						RestoreWeaponValue("Speed%")
-					end
-				end,
-			}):Continue()
-		end
 	end
 
 	-- Visuals
@@ -850,22 +387,13 @@ return function(self)
 				})
 			end
 
-			local function CreateTeamSettings(Team, Header)
-				Team = setmetatable({}, {
-					__index = Team,
-					__newindex = function(self, Key, Value)
-						if Key ~= "Enabled" then
-							UpdateVisualPreview(Team)
-						end
-					end,
-				})
-
+			local function AddTeamSettings(ESPTarg, Header)
 				Header:Toggle({
 					Name = "Enabled",
 					Description = "enables ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.Enabled = Value
+						ESPTarg.Enabled = Value
 					end,
 				})
 
@@ -875,7 +403,9 @@ return function(self)
 					Description = "enables bounding box ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.Box = Value
+						ESPTarg.Box = Value
+
+						UpdateVisualPreview(ESPTarg)
 					end,
 				})
 					:Continue()
@@ -889,8 +419,10 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.BoxColor[1], Team.BoxColor[2] = Color, 1 - Transparency
-							Team.BoxOutlineColor[2] = 1 - Transparency
+							ESPTarg.BoxColor[1], ESPTarg.BoxColor[2] = Color, 1 - Transparency
+							ESPTarg.BoxOutlineColor[2] = 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 
@@ -900,7 +432,9 @@ return function(self)
 					Description = "enables box fill ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.BoxFill = Value
+						ESPTarg.BoxFill = Value
+
+						UpdateVisualPreview(ESPTarg)
 					end,
 				})
 					:Continue()
@@ -914,7 +448,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.BoxFillColor[1], Team.BoxFillColor[2] = Color, 1 - Transparency
+							ESPTarg.BoxFillColor[1], ESPTarg.BoxFillColor[2] = Color, 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 
@@ -924,7 +460,9 @@ return function(self)
 					Description = "enables corner box ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.CornerBox = Value
+						ESPTarg.CornerBox = Value
+
+						UpdateVisualPreview(ESPTarg)
 					end,
 				})
 					:Continue()
@@ -938,7 +476,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.CornerBoxColor[1], Team.CornerBoxColor[2] = Color, 1 - Transparency
+							ESPTarg.CornerBoxColor[1], ESPTarg.CornerBoxColor[2] = Color, 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 
@@ -948,7 +488,9 @@ return function(self)
 					Description = "enables 3d bounding box ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.Box3d = Value
+						ESPTarg.Box3d = Value
+
+						UpdateVisualPreview(ESPTarg)
 					end,
 				})
 					:Continue()
@@ -962,7 +504,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.Box3dColor[1], Team.Box3dColor[2] = Color, 1 - Transparency
+							ESPTarg.Box3dColor[1], ESPTarg.Box3dColor[2] = Color, 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 
@@ -972,7 +516,7 @@ return function(self)
 					Description = "enables player chams ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.Chams = Value
+						ESPTarg.Chams = Value
 					end,
 				})
 					:Continue()
@@ -987,7 +531,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.ChamsFillColor[1], Team.ChamsFillColor[2] = Color, Transparency
+							ESPTarg.ChamsFillColor[1], ESPTarg.ChamsFillColor[2] = Color, Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 					:Continue()
@@ -1002,17 +548,19 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.ChamsOutlineColor[1], Team.ChamsOutlineColor[2] = Color, Transparency
+							ESPTarg.ChamsOutlineColor[1], ESPTarg.ChamsOutlineColor[2] = Color, Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 
-				-- Skeletons
+				-- Tracers
 				Header:Toggle({
 					Name = "Skeletons",
 					Description = "enables skeleton/bone ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.Skeleton = Value
+						ESPTarg.Skeleton = Value
 					end,
 				})
 					:Continue()
@@ -1026,7 +574,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.SkeletonColor[1], Team.SkeletonColor[2] = Color, 1 - Transparency
+							ESPTarg.SkeletonColor[1], ESPTarg.SkeletonColor[2] = Color, 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 					:Continue()
@@ -1040,7 +590,7 @@ return function(self)
 					Step = 1,
 					Precision = 0,
 					Callback = function(self, Value)
-						Team.SkeletonThickness = Value
+						ESPTarg.SkeletonThickness = Value
 					end,
 				}):Continue()
 
@@ -1050,7 +600,7 @@ return function(self)
 					Description = "enables tracers ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.Tracer = Value
+						ESPTarg.Tracer = Value
 					end,
 				})
 					:Continue()
@@ -1064,8 +614,10 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.TracerColor[1], Team.TracerColor[2] = Color, 1 - Transparency
-							Team.TracerOutlineColor[2] = 1 - Transparency
+							ESPTarg.TracerColor[1], ESPTarg.TracerColor[2] = Color, 1 - Transparency
+							ESPTarg.TracerOutlineColor[2] = 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 					:Continue()
@@ -1078,7 +630,7 @@ return function(self)
 					Limit = 1,
 					Minimum = 1,
 					Callback = function(self, Value)
-						Team.TracerOrigin = Value[1]
+						ESPTarg.TracerOrigin = Value[1]
 					end,
 				})
 
@@ -1088,7 +640,9 @@ return function(self)
 					Description = "enables health bar ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.HealthBar = Value
+						ESPTarg.HealthBar = Value
+
+						UpdateVisualPreview(ESPTarg)
 					end,
 				})
 					:Continue()
@@ -1104,7 +658,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color)
-							Team.HealthyColor = Color
+							ESPTarg.HealthyColor = Color
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 					:Continue()
@@ -1120,7 +676,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color)
-							Team.DyingColor = Color
+							ESPTarg.DyingColor = Color
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 
@@ -1130,7 +688,7 @@ return function(self)
 					Description = "enables off screen arrow ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.OffScreenArrow = Value
+						ESPTarg.OffScreenArrow = Value
 					end,
 				})
 					:Continue()
@@ -1144,8 +702,10 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.OffScreenArrowColor[1], Team.OffScreenArrowColor[2] = Color, 1 - Transparency
-							Team.OffScreenArrowOutlineColor[2] = 1 - Transparency
+							ESPTarg.OffScreenArrowColor[1], ESPTarg.OffScreenArrowColor[2] = Color, 1 - Transparency
+							ESPTarg.OffScreenArrowOutlineColor[2] = 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 					:Continue()
@@ -1182,7 +742,9 @@ return function(self)
 					Description = "enables name text ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.Name = Value
+						ESPTarg.Name = Value
+
+						UpdateVisualPreview(ESPTarg)
 					end,
 				})
 					:Continue()
@@ -1196,7 +758,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.NameColor[1], Team.NameColor[2] = Color, 1 - Transparency
+							ESPTarg.NameColor[1], ESPTarg.NameColor[2] = Color, 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 
@@ -1206,7 +770,9 @@ return function(self)
 					Description = "enables distance text ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.Distance = Value
+						ESPTarg.Distance = Value
+
+						UpdateVisualPreview(ESPTarg)
 					end,
 				})
 					:Continue()
@@ -1220,7 +786,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.DistanceColor[1], Team.DistanceColor[2] = Color, 1 - Transparency
+							ESPTarg.DistanceColor[1], ESPTarg.DistanceColor[2] = Color, 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 
@@ -1230,7 +798,9 @@ return function(self)
 					Description = "enables weapon text ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.Weapon = Value
+						ESPTarg.Weapon = Value
+
+						UpdateVisualPreview(ESPTarg)
 					end,
 				})
 					:Continue()
@@ -1244,7 +814,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.WeaponColor[1], Team.WeaponColor[2] = Color, 1 - Transparency
+							ESPTarg.WeaponColor[1], ESPTarg.WeaponColor[2] = Color, 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 
@@ -1254,7 +826,9 @@ return function(self)
 					Description = "enables health text ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.HealthText = Value
+						ESPTarg.HealthText = Value
+
+						UpdateVisualPreview(ESPTarg)
 					end,
 				})
 					:Continue()
@@ -1268,17 +842,19 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.HealthTextColor[1], Team.HealthTextColor[2] = Color, 1 - Transparency
+							ESPTarg.HealthTextColor[1], ESPTarg.HealthTextColor[2] = Color, 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 					:Continue()
 			end
 
 			local EnemiesSection = ESPSection:Section({ Name = "Enemies" })
-			CreateTeamSettings(ESPEnemy, EnemiesSection)
+			AddTeamSettings(ESPEnemy, EnemiesSection)
 
 			local FriendliesSection = ESPSection:Section({ Name = "Friendlies" })
-			CreateTeamSettings(ESPFriendly, FriendliesSection)
+			AddTeamSettings(ESPFriendly, FriendliesSection)
 		end
 
 		-- World
@@ -1384,71 +960,6 @@ return function(self)
 				})
 			end
 		end
-
-		--[[ -- Effects
-		do
-			local EffectsSection = Tab:Section({ Name = "Effects" })
-
-			-- Bullet Tracers
-			do
-				local BulletTracersSection = EffectsSection:Section({ Name = "Bullet Tracers" })
-
-				BulletTracersSection:Toggle({
-					Name = "Enabled",
-					Description = "enables bullet tracers",
-					State = false,
-				}, "Visuals/Effects/BulletTracers/Enabled")
-					:Continue()
-					:Colorpicker({
-						Description = "Gradient Start",
-						Color = { Color3.fromRGB(161, 188, 229) },
-						SuggestionColors = {
-							{ Color3.fromRGB(171, 81, 83) },
-							{ Color3.fromRGB(123, 124, 243) },
-							{ Color3.fromRGB(208, 246, 111) },
-							{ Color3.fromRGB(255, 197, 100) },
-							{ Color3.fromRGB(49, 220, 195) },
-						},
-					}, "Visuals/Effects/BulletTracers/Gradient Start")
-					:Continue()
-					:Colorpicker({
-						Description = "Gradient End",
-						Color = { Color3.fromRGB(221, 224, 136) },
-						SuggestionColors = {
-							{ Color3.fromRGB(171, 81, 83) },
-							{ Color3.fromRGB(123, 124, 243) },
-							{ Color3.fromRGB(208, 246, 111) },
-							{ Color3.fromRGB(255, 197, 100) },
-							{ Color3.fromRGB(49, 220, 195) },
-						},
-					}, "Visuals/Effects/BulletTracers/Gradient End")
-
-				BulletTracersSection:Slider({
-					Name = "Duration",
-					Description = "how long bullet tracers will last for",
-					Value = 2,
-					Minimum = 1,
-					Maximum = 50,
-					Step = 1,
-					Precision = 0,
-				})
-
-				BulletTracersSection:Slider({
-					Name = "Fade Duration",
-					Description = "how long bullet tracers will take to fade out when they expire",
-					Value = 1,
-					Minimum = 0,
-					Maximum = 10,
-					Step = 1,
-					Precision = 0,
-				})
-			end
-
-			-- Hitmarkers
-			do
-				local HitmarkersSection = EffectsSection:Section({ Name = "Hitmarkers" })
-			end
-		end ]]
 	end
 
 	-- Misc
@@ -1513,6 +1024,34 @@ return function(self)
 				end,
 			}):Continue()
 		end
+
+        -- Fun
+		do
+			local FunSection = Tab:Section({ Name = "Fun" })
+
+			FunSection:Toggle({
+				Name = "Spam Reload (SERVER)",
+				Description = "spams reload noise, only heard on the server.",
+				State = false,
+				Callback = function(self, Value)
+					if self._SpamReloadConn then
+						self._SpamReloadConn:Disconnect()
+						self._SpamReloadConn = nil
+					end
+
+					if Value then
+						self._SpamReloadConn = RunService.Heartbeat:Connect(function()
+							local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+                            local Skorpio_Engine = ReplicatedStorage:WaitForChild("Skorpio_Engine")
+                            local reloadEvent = Skorpio_Engine:WaitForChild("Events"):WaitForChild("ReloadSound")
+                            
+                            reloadEvent:FireServer("AR")
+						end)
+					end
+				end,
+			}):Continue()
+		end
 	end
 
 	-- Cfg
@@ -1550,141 +1089,31 @@ return function(self)
 	end
 
 	--// Initialize
-	InternalHandler.Load()
 
 	-- ESP
 	do
-		Esp.GetWeapon = function(Player)
-			if not Player then
-				return "NONE"
-			end
-
-			local NRPBS = Player:FindFirstChild("NRPBS")
-			if not NRPBS then
-				return "NONE"
-			end
-
-			local EquippedTool = NRPBS:FindFirstChild("EquippedTool")
-			if not EquippedTool or not EquippedTool.Value then
-				return "NONE"
-			end
-
-			return string.upper(EquippedTool.Value)
-		end
-
-		Esp.GetHealth = function(Player)
-			if not Player then
-				return 100, 100
-			end
-
-			local NRPBS = Player:FindFirstChild("NRPBS")
-			if not NRPBS then
-				return 100, 100
-			end
-
-			local Health = NRPBS:FindFirstChild("Health")
-			local MaxHealth = NRPBS:FindFirstChild("MaxHealth")
-
-			if not Health or not MaxHealth then
-				return 100, 100
-			end
-
-			return Health.Value, MaxHealth.Value
-		end
+        Esp.GetWeapon = function(Player)
+            local Weapon = "None"
+            local Character = Functions.GetCharacter(Player)
+        
+            if Player and Character then
+                local Tool: Model = Character:FindFirstChildOfClass("Model")
+                local ToolName = Tool and string.sub(Tool.Name, 2)
+    
+                if Tool and Models and Models:FindFirstChild(ToolName) then
+                    Weapon = ToolName
+                end
+            end
+        
+            return string.upper(Weapon)
+        end
 
 		Esp.Load()
 	end
 
 	-- Aiming
 	do
-		Aiming.GetHealth = function(Player)
-			if not Player then
-				return 0
-			end
-
-			local NRPBS = Player:FindFirstChild("NRPBS")
-			if not NRPBS then
-				return 0
-			end
-
-			local Health = NRPBS:FindFirstChild("Health")
-			if not Health then
-				return 0
-			end
-
-			return Health.Value
-		end
-
-		TriggerbotSettings.Trigger = function()
-			local _, Client = Utility.GetClient()
-			local Deployed = Client and Client.deployed
-			--[[ local Equipped = Client and Client.equipped
-			local Primary = Client and Client.primary ]]
-
-			if Deployed then
-				--[[ if Equipped.Value == "primary" and Primary.Value == "Minigun" then
-					mouse1press()
-					return
-				end ]]
-				mouse1press()
-				wait()
-				mouse1release()
-			end
-		end
-
-		--[[ TriggerbotSettings.TargetChanged = function()
-			mouse1release()
-		end ]]
-
-		--[[ TriggerbotSettings.Trigger = function()
-			local Gui = LocalPlayer:FindFirstChild("PlayerGui") and LocalPlayer.PlayerGui:FindFirstChild("GUI")
-			local Client = Gui and Gui:FindFirstChild("Client")
-			local Weapon = Client and getsenv(Client).wep
-			local Equipped = Client and getsenv(Client).equipped
-			local Primary = Client and getsenv(Client).primary
-
-			if Weapon then
-				local PrevCheck = Equipped.Value == "melee"
-				Weapon.firebullet()
-				task.wait() -- firebullet is too fast it's gotta be nerfed
-				if not PrevCheck and Equipped.Value == "" or Equipped.Value == "melee" and Primary == "Railgun" then
-					Weapon.autoequip()
-				end
-			end
-		end ]]
-
 		Aiming.Load()
-
-		local function AddToIgnoreQuery(IgnoreGroup)
-			if IgnoreGroup then
-				Aiming.AddToIgnoreQuery(IgnoreGroup)
-				SilentAim.AddToIgnoreQuery(IgnoreGroup)
-			end
-		end
-
-		Workspace.ChildAdded:Connect(function(Child)
-			if Child.Name == "Map" then
-				local MapIgnore = Child:FindFirstChild("Ignore")
-				if MapIgnore then
-					AddToIgnoreQuery(MapIgnore)
-				end
-			end
-		end)
-
-		local Map = Workspace:FindFirstChild("Map")
-		if Map then
-			local MapIgnore = Map:FindFirstChild("Ignore")
-			if MapIgnore then
-				AddToIgnoreQuery(MapIgnore)
-			end
-		end
-
-		for _, Name in ipairs({ "Ray_Ignore", "Debris" }) do
-			local Folder = Workspace:FindFirstChild(Name)
-			if Folder then
-				AddToIgnoreQuery(Folder)
-			end
-		end
 	end
 
 	-- Interface
@@ -1697,7 +1126,7 @@ return function(self)
 		})
 	end
 
-	-- Hooks
+    -- Hooks
 	do
 		-- __newindex
 		do

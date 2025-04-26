@@ -84,7 +84,7 @@ function Extract {
         [string]$splitFile
     )
 
-    $lines = Get-Content $splitFile | Where-Object { $_ -notmatch '^\s*--!' }
+    $lines = Get-Content $splitFile
     $pre = [System.Collections.ArrayList]::new()
     $post = [System.Collections.ArrayList]::new()
     $isMarker = $false
@@ -99,15 +99,6 @@ function Extract {
         }
         if ($line -match '\]\]') {
             $inMLComment = $false
-            if (-not $isMarker) {
-                $pre.Add($line) | Out-Null
-            } else {
-                $post.Add($line) | Out-Null
-            }
-            continue
-        }
-
-        if ($line -match '^\s*--' -or $inMLComment) {
             if (-not $isMarker) {
                 $pre.Add($line) | Out-Null
             } else {
@@ -273,13 +264,12 @@ $splitMarker = $script:Markers["SPLIT"]
 darklua process ../src/init.luau $tempDist -c .darklua.json > $null
 
 Write-Host "[PROCESSING] Extracting splitter..."
-$splitSegments = Extract -marker $splitMarker -splitFile "split.luau"
+$splitSegments = Extract -marker $splitMarker -splitFile "header.luau"
 
 Write-Host "[PROCESSING] Composing output..."
 
 $distContent = Get-Content $tempDist | ForEach-Object { "$($splitSegments[2])$_" }
 $rawContent = @()
-$rawContent += Get-Content header.luau
 $rawContent += $splitSegments[0]
 $rawContent += $distContent
 $rawContent += $splitSegments[1]

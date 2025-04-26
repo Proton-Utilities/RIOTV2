@@ -531,7 +531,7 @@ return function(self)
 						end,
 					})
 
-				-- Tracers
+				-- Skeletons
 				Header:Toggle({
 					Name = "Skeletons",
 					Description = "enables skeleton/bone ESP",
@@ -555,20 +555,21 @@ return function(self)
 
 							UpdateVisualPreview(ESPTarg)
 						end,
-					}):Continue()
-
-					Header:Slider({
-						Name = "Thickness",
-						Description = "the thickness of skeleton lines",
-						Value = 1,
-						Minimum = 1,
-						Maximum = 4,
-						Step = 1,
-						Precision = 0,
-						Callback = function(self, Value)
-							ESPTarg.SkeletonThickness = Value
-						end,
 					})
+					:Continue()
+
+				Header:Slider({
+					Name = "Thickness",
+					Description = "the thickness of skeleton lines",
+					Value = 1,
+					Minimum = 1,
+					Maximum = 4,
+					Step = 1,
+					Precision = 0,
+					Callback = function(self, Value)
+						ESPTarg.SkeletonThickness = Value
+					end,
+				})
 
 				-- Tracers
 				Header:Toggle({
@@ -595,7 +596,8 @@ return function(self)
 
 							UpdateVisualPreview(ESPTarg)
 						end,
-					}):Continue()
+					})
+					:Continue()
 
 				Header:Dropdown({
 					Name = "Tracers Origin",
@@ -868,7 +870,7 @@ return function(self)
 	end
 
 	--// Initialize
-	
+
 	-- ESP
 	do
 		ESP.Load()

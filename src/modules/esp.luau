@@ -410,7 +410,7 @@ function EspObject:Render()
 	Visible.HealthText.Visible = Enabled and OnScreen and Options.HealthText
 	if Visible.HealthText.Visible then
 		local HealthText = Visible.HealthText
-		HealthText.Text = Round(self.Health) .. "HP"
+		HealthText.Text = (self.Health >= (2 ^ 31 - 1) and "INF " or Round(self.Health)) .. "HP"
 		HealthText.Size = Interface.Shared.TextSize
 		HealthText.Font = Interface.Shared.TextFont
 		HealthText.Color = ParseColor(self, Options.HealthTextColor[1])
