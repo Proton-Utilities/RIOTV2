@@ -12,4 +12,5 @@
     "[luau]": {
         "editor.defaultFormatter": "JohnnyMorganz.stylua"
     },
+    "stylua.targetReleaseVersion": "latest",
 }
