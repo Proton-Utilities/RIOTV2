@@ -43,7 +43,6 @@ local Min3 = Vector3.zero.Min
 local Max3 = Vector3.zero.Max
 
 -- constants
-local HEALTH_BAR_OFFSET = Vector2.new(7, 0)
 local HEALTH_BAR_OUTLINE_OFFSET = Vector2.new(0, 1)
 local NAME_OFFSET = Vector2.new(0, 2)
 local DISTANCE_OFFSET = Vector2.new(5, 0)
@@ -340,19 +339,23 @@ function EspObject:Render()
 	Visible.HealthBar.Visible = Enabled and OnScreen and Options.HealthBar
 	Visible.HealthBarOutline.Visible = Visible.HealthBar.Visible and Options.HealthBarOutline
 	if Visible.HealthBar.Visible then
-		local BarFrom = Corners.TopLeft - HEALTH_BAR_OFFSET
-		local BarTo = Corners.BottomLeft - HEALTH_BAR_OFFSET
+		local ScaledThickness = math.clamp((Corners.TopRight.X - Corners.TopLeft.X) * 0.03, 1, 10)
+		local Offset = Vector2.new((ScaledThickness + 3), 0)
+		local BarFrom = Corners.TopLeft - Offset
+		local BarTo = Corners.BottomLeft - Offset
 
 		local HealthBar = Visible.HealthBar
 		HealthBar.To = BarTo
 		HealthBar.From = Lerp2(BarTo, BarFrom, self.Health / self.MaxHealth)
 		HealthBar.Color = LerpColor(Options.DyingColor, Options.HealthyColor, self.Health / self.MaxHealth)
+		HealthBar.Thickness = ScaledThickness
 
 		local HealthBarOutline = Visible.HealthBarOutline
 		HealthBarOutline.To = BarTo + HEALTH_BAR_OUTLINE_OFFSET
 		HealthBarOutline.From = BarFrom - HEALTH_BAR_OUTLINE_OFFSET
 		HealthBarOutline.Color = ParseColor(self, Options.HealthBarOutlineColor[1], true)
 		HealthBarOutline.Transparency = Options.HealthBarOutlineColor[2]
+		HealthBarOutline.Thickness = HealthBar.Thickness + 2
 	end
 
 	Visible.Name.Visible = Enabled and OnScreen and Options.Name
@@ -501,7 +504,7 @@ function EspObject:Render()
 			if HeadVisible then
 				HeadCircle.Visible = true
 				HeadCircle.Position = HeadPos
-				HeadCircle.Radius = math.clamp((Corners.TopRight.X - Corners.TopLeft.X) * 0.1, 2, 15)
+				HeadCircle.Radius = math.clamp((Corners.TopRight.X - Corners.TopLeft.X) * 0.1, 2, 50)
 				HeadCircle.Thickness = Options.SkeletonThickness
 				HeadCircle.Color = ParseColor(self, Options.SkeletonColor[1])
 				HeadCircle.Transparency = Options.SkeletonColor[2]
