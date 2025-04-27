@@ -67,5 +67,7 @@ local Self = [=====[
     end)
 ]=====]
 
-queue_on_teleport(Self)
 loadstring(Self)()
+if queue_on_teleport then
+    queue_on_teleport(Self)
+end
