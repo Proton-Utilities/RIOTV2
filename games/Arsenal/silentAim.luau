@@ -17,7 +17,8 @@ local GameMetatable = getrawmetatable and getrawmetatable(game)
 	}
 
 local __index = GameMetatable.__index
-local GetService = __index(game, "GetService")
+local Functions = require("core/functions.luau")
+local GetService = Functions.SecureService
 
 local RunService = GetService(game, "RunService")
 local UserInputService = GetService(game, "UserInputService")
@@ -315,6 +316,9 @@ Old = hookmetamethod(
 			and math.random(1, 100) <= Environment.SilentAim.HitChance
 			and HitCache
 		then
+			if Environment.HitListener then
+				task.spawn(Environment.HitListener, HitCache)
+			end
 			return CFrame.new(Camera.CFrame.Position, HitCache.Position)
 		end
 

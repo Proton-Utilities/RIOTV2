@@ -3,11 +3,13 @@
 --!nolint UnknownGlobal
 
 return function(self)
-	--// Imports
-	local InternalHandler = require("./internalHandler.luau")
+	repeat
+		task.wait()
+	until getrenv()._G.ClientLoaded
 
+	--// Imports
 	local Functions = require("core/functions.luau")
-	local Interface = require("core/riotUi.luau")
+	local Interface = require("riotLib/library.luau")
 
 	local Esp = require("modules/esp.luau")
 	local Aiming = require("modules/aiming.luau")
@@ -474,7 +476,8 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							SilentAimSnaplineSettings.Color[1], SilentAimSnaplineSettings.Color[2] = Color, 1 - Transparency
+							SilentAimSnaplineSettings.Color[1], SilentAimSnaplineSettings.Color[2] =
+								Color, 1 - Transparency
 							SilentAimSnaplineSettings.OutlineColor[2] = 1 - Transparency
 						end,
 					})
@@ -850,22 +853,13 @@ return function(self)
 				})
 			end
 
-			local function CreateTeamSettings(Team, Header)
-				Team = setmetatable({}, {
-					__index = Team,
-					__newindex = function(self, Key, Value)
-						if Key ~= "Enabled" then
-							UpdateVisualPreview(Team)
-						end
-					end,
-				})
-
+			local function AddTeamSettings(ESPTarg, Header)
 				Header:Toggle({
 					Name = "Enabled",
 					Description = "enables ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.Enabled = Value
+						ESPTarg.Enabled = Value
 					end,
 				})
 
@@ -875,7 +869,9 @@ return function(self)
 					Description = "enables bounding box ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.Box = Value
+						ESPTarg.Box = Value
+
+						UpdateVisualPreview(ESPTarg)
 					end,
 				})
 					:Continue()
@@ -889,8 +885,10 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.BoxColor[1], Team.BoxColor[2] = Color, 1 - Transparency
-							Team.BoxOutlineColor[2] = 1 - Transparency
+							ESPTarg.BoxColor[1], ESPTarg.BoxColor[2] = Color, 1 - Transparency
+							ESPTarg.BoxOutlineColor[2] = 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 
@@ -900,7 +898,9 @@ return function(self)
 					Description = "enables box fill ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.BoxFill = Value
+						ESPTarg.BoxFill = Value
+
+						UpdateVisualPreview(ESPTarg)
 					end,
 				})
 					:Continue()
@@ -914,7 +914,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.BoxFillColor[1], Team.BoxFillColor[2] = Color, 1 - Transparency
+							ESPTarg.BoxFillColor[1], ESPTarg.BoxFillColor[2] = Color, 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 
@@ -924,7 +926,9 @@ return function(self)
 					Description = "enables corner box ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.CornerBox = Value
+						ESPTarg.CornerBox = Value
+
+						UpdateVisualPreview(ESPTarg)
 					end,
 				})
 					:Continue()
@@ -938,7 +942,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.CornerBoxColor[1], Team.CornerBoxColor[2] = Color, 1 - Transparency
+							ESPTarg.CornerBoxColor[1], ESPTarg.CornerBoxColor[2] = Color, 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 
@@ -948,7 +954,9 @@ return function(self)
 					Description = "enables 3d bounding box ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.Box3d = Value
+						ESPTarg.Box3d = Value
+
+						UpdateVisualPreview(ESPTarg)
 					end,
 				})
 					:Continue()
@@ -962,7 +970,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.Box3dColor[1], Team.Box3dColor[2] = Color, 1 - Transparency
+							ESPTarg.Box3dColor[1], ESPTarg.Box3dColor[2] = Color, 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 
@@ -972,7 +982,7 @@ return function(self)
 					Description = "enables player chams ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.Chams = Value
+						ESPTarg.Chams = Value
 					end,
 				})
 					:Continue()
@@ -987,7 +997,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.ChamsFillColor[1], Team.ChamsFillColor[2] = Color, Transparency
+							ESPTarg.ChamsFillColor[1], ESPTarg.ChamsFillColor[2] = Color, Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 					:Continue()
@@ -1002,7 +1014,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.ChamsOutlineColor[1], Team.ChamsOutlineColor[2] = Color, Transparency
+							ESPTarg.ChamsOutlineColor[1], ESPTarg.ChamsOutlineColor[2] = Color, Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 
@@ -1012,7 +1026,7 @@ return function(self)
 					Description = "enables skeleton/bone ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.Skeleton = Value
+						ESPTarg.Skeleton = Value
 					end,
 				})
 					:Continue()
@@ -1026,7 +1040,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.SkeletonColor[1], Team.SkeletonColor[2] = Color, 1 - Transparency
+							ESPTarg.SkeletonColor[1], ESPTarg.SkeletonColor[2] = Color, 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 					:Continue()
@@ -1040,9 +1056,9 @@ return function(self)
 					Step = 1,
 					Precision = 0,
 					Callback = function(self, Value)
-						Team.SkeletonThickness = Value
+						ESPTarg.SkeletonThickness = Value
 					end,
-				}):Continue()
+				})
 
 				-- Tracers
 				Header:Toggle({
@@ -1050,7 +1066,7 @@ return function(self)
 					Description = "enables tracers ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.Tracer = Value
+						ESPTarg.Tracer = Value
 					end,
 				})
 					:Continue()
@@ -1064,8 +1080,10 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.TracerColor[1], Team.TracerColor[2] = Color, 1 - Transparency
-							Team.TracerOutlineColor[2] = 1 - Transparency
+							ESPTarg.TracerColor[1], ESPTarg.TracerColor[2] = Color, 1 - Transparency
+							ESPTarg.TracerOutlineColor[2] = 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 					:Continue()
@@ -1078,7 +1096,7 @@ return function(self)
 					Limit = 1,
 					Minimum = 1,
 					Callback = function(self, Value)
-						Team.TracerOrigin = Value[1]
+						ESPTarg.TracerOrigin = Value[1]
 					end,
 				})
 
@@ -1088,7 +1106,9 @@ return function(self)
 					Description = "enables health bar ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.HealthBar = Value
+						ESPTarg.HealthBar = Value
+
+						UpdateVisualPreview(ESPTarg)
 					end,
 				})
 					:Continue()
@@ -1104,7 +1124,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color)
-							Team.HealthyColor = Color
+							ESPTarg.HealthyColor = Color
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 					:Continue()
@@ -1120,7 +1142,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color)
-							Team.DyingColor = Color
+							ESPTarg.DyingColor = Color
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 
@@ -1130,7 +1154,7 @@ return function(self)
 					Description = "enables off screen arrow ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.OffScreenArrow = Value
+						ESPTarg.OffScreenArrow = Value
 					end,
 				})
 					:Continue()
@@ -1144,8 +1168,10 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.OffScreenArrowColor[1], Team.OffScreenArrowColor[2] = Color, 1 - Transparency
-							Team.OffScreenArrowOutlineColor[2] = 1 - Transparency
+							ESPTarg.OffScreenArrowColor[1], ESPTarg.OffScreenArrowColor[2] = Color, 1 - Transparency
+							ESPTarg.OffScreenArrowOutlineColor[2] = 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 					:Continue()
@@ -1182,7 +1208,9 @@ return function(self)
 					Description = "enables name text ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.Name = Value
+						ESPTarg.Name = Value
+
+						UpdateVisualPreview(ESPTarg)
 					end,
 				})
 					:Continue()
@@ -1196,7 +1224,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.NameColor[1], Team.NameColor[2] = Color, 1 - Transparency
+							ESPTarg.NameColor[1], ESPTarg.NameColor[2] = Color, 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 
@@ -1206,7 +1236,9 @@ return function(self)
 					Description = "enables distance text ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.Distance = Value
+						ESPTarg.Distance = Value
+
+						UpdateVisualPreview(ESPTarg)
 					end,
 				})
 					:Continue()
@@ -1220,7 +1252,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.DistanceColor[1], Team.DistanceColor[2] = Color, 1 - Transparency
+							ESPTarg.DistanceColor[1], ESPTarg.DistanceColor[2] = Color, 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 
@@ -1230,7 +1264,9 @@ return function(self)
 					Description = "enables weapon text ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.Weapon = Value
+						ESPTarg.Weapon = Value
+
+						UpdateVisualPreview(ESPTarg)
 					end,
 				})
 					:Continue()
@@ -1244,7 +1280,9 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.WeaponColor[1], Team.WeaponColor[2] = Color, 1 - Transparency
+							ESPTarg.WeaponColor[1], ESPTarg.WeaponColor[2] = Color, 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 
@@ -1254,7 +1292,9 @@ return function(self)
 					Description = "enables health text ESP",
 					State = false,
 					Callback = function(self, Value)
-						Team.HealthText = Value
+						ESPTarg.HealthText = Value
+
+						UpdateVisualPreview(ESPTarg)
 					end,
 				})
 					:Continue()
@@ -1268,17 +1308,19 @@ return function(self)
 							{ Color3.fromRGB(49, 220, 195) },
 						},
 						Callback = function(self, Color, Transparency)
-							Team.HealthTextColor[1], Team.HealthTextColor[2] = Color, 1 - Transparency
+							ESPTarg.HealthTextColor[1], ESPTarg.HealthTextColor[2] = Color, 1 - Transparency
+
+							UpdateVisualPreview(ESPTarg)
 						end,
 					})
 					:Continue()
 			end
 
 			local EnemiesSection = ESPSection:Section({ Name = "Enemies" })
-			CreateTeamSettings(ESPEnemy, EnemiesSection)
+			AddTeamSettings(ESPEnemy, EnemiesSection)
 
 			local FriendliesSection = ESPSection:Section({ Name = "Friendlies" })
-			CreateTeamSettings(ESPFriendly, FriendliesSection)
+			AddTeamSettings(ESPFriendly, FriendliesSection)
 		end
 
 		-- World
@@ -1550,8 +1592,6 @@ return function(self)
 	end
 
 	--// Initialize
-	InternalHandler.Load()
-
 	-- ESP
 	do
 		Esp.GetWeapon = function(Player)
@@ -1615,17 +1655,23 @@ return function(self)
 			return Health.Value
 		end
 
+		local WasMingiun = false
 		TriggerbotSettings.Trigger = function()
 			local _, Client = Utility.GetClient()
 			local Deployed = Client and Client.deployed
-			--[[ local Equipped = Client and Client.equipped
-			local Primary = Client and Client.primary ]]
+			local Equipped = Client and Client.equipped
+			local Primary = Client and Client.primary
 
 			if Deployed then
-				--[[ if Equipped.Value == "primary" and Primary.Value == "Minigun" then
+				if Equipped.Value == "primary" and Primary.Value == "Minigun" then
 					mouse1press()
+					WasMingiun = true
 					return
-				end ]]
+				elseif WasMingiun then
+					mouse1release()
+					WasMingiun = false
+				end
+
 				mouse1press()
 				wait()
 				mouse1release()

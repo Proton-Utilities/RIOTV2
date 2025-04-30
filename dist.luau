@@ -16,7 +16,6 @@ local Self = [=====[
     local Resolution = game:GetService("GuiService"):GetScreenResolution()
 
     local Loading = Drawing.new("Text")
-    Loading.Text = "Loading RIOT - Waiting on game..."
     Loading.Size = 30
     Loading.Color = Color3.fromRGB(255, 80, 0)
     Loading.Center = true
@@ -27,7 +26,7 @@ local Self = [=====[
     Loading.Position = Vector2.new(Resolution.X / 2, Resolution.Y / 2)
 
     repeat
-        task.wait()
+        Loading.Text = "Loading RIOT - Waiting on game..."; task.wait()
     until game:IsLoaded()
 
     local ROA_Id = {
@@ -52,26 +51,29 @@ local Self = [=====[
 
     Push([====[
             getgenv().RIOT = {
-                BUILD = 'Debug',
-                VERSION = nil or 'v0.0.0'
+                BUILD = 'Release',
+                VERSION = 'v2.0.0' or 'v0.0.0'
             }
 
             local a a={cache={},load=function(b)if not a.cache[b]then a.cache[b]={c=a[b]()}
-            end return a.cache[b].c end}do function a.a()local b={}b.ProtectGui=function(c)
-            local d=cloneref and cloneref(game)or game local e,f=pcall(function()c.Parent=
-            gethui and gethui()or cloneref and cloneref(d:GetService'CoreGui')or d:
-            GetService'CoreGui'end)return e and c or error('Failed to protect GUI: '..
-            tostring(f))end b.ProtectGui=newcclosure and newcclosure(b.ProtectGui)or b.
-            ProtectGui b.SecureService=function(c)local d=cloneref and cloneref(game)or game
-            local e,f=pcall(function()return cloneref and cloneref(d:GetService(c))or d:
-            GetService(c)end)return e and f or error('Unable to retrieve service: '..c)end b
-            .SecureService=newcclosure and newcclosure(b.SecureService)or b.SecureService
-            function b.GetPlayer()local c,d=pcall(function()return(b.SecureService'Players')
-            end)return c and(d).LocalPlayer or nil end function b.GetCharacter(c)local d,e=
-            pcall(function()return c and c.Character or nil end)return d and e or nil end
-            function b.GetHumanoid(c)local d,e=pcall(function()local d=b.GetCharacter(c)
-            return d and d:FindFirstChildOfClass'Humanoid'or nil end)return d and e or nil
-            end return b end function a.b()local b,c={Components={},Assets={DefaultImage=
+            end return a.cache[b].c end}do function a.a()local b={}b.Clone=function(c)local
+            d,e,f=cloneref and cloneref(game)or game,pcall(function()return cloneref and
+            cloneref(c)or c:Clone()end)return e and f or error('Failed to clone object: '..
+            tostring(c))end b.ProtectGui=function(c)local d=cloneref and cloneref(game)or
+            game local e,f=pcall(function()c.Parent=gethui and gethui()or cloneref and
+            cloneref(d:GetService'CoreGui')or d:GetService'CoreGui'end)return e and c or
+            error('Failed to protect GUI: '..tostring(f))end b.ProtectGui=newcclosure and
+            newcclosure(b.ProtectGui)or b.ProtectGui b.SecureService=function(c)local d=
+            cloneref and cloneref(game)or game local e,f=pcall(function()return cloneref and
+            cloneref(d:GetService(c))or d:GetService(c)end)return e and f or error(
+            'Unable to retrieve service: '..c)end b.SecureService=newcclosure and
+            newcclosure(b.SecureService)or b.SecureService function b.GetPlayer()local c,d=
+            pcall(function()return(b.SecureService'Players')end)return c and(d).LocalPlayer
+            or nil end function b.GetCharacter(c)local d,e=pcall(function()return c and c.
+            Character or nil end)return d and e or nil end function b.GetHumanoid(c)local d,
+            e=pcall(function()local d=b.GetCharacter(c)return d and d:FindFirstChildOfClass
+            'Humanoid'or nil end)return d and e or nil end return b end function a.b()local
+            b=a.load'a'local c,d,e=b.SecureService,{Components={},Assets={DefaultImage=
             'rbxassetid://134552883719543',ShieldCheck='rbxassetid://72905476505849',Shield=
             'rbxassetid://125424227377940',Archive='rbxassetid://86530498402003',Folder=
             'rbxassetid://134156031333431',Bolt='rbxassetid://99791134265440',Globe=
@@ -85,777 +87,774 @@ local Self = [=====[
             ='VK_MBUTTON',[Enum.KeyCode.Return]='VK_RETURN',[Enum.KeyCode.CapsLock]=
             'VK_CAPITAL',[Enum.KeyCode.PageUp]='VK_PRIOR',[Enum.KeyCode.PageDown]='VK_NEXT',
             [Enum.KeyCode.Escape]='VK_ESCAPE',[Enum.KeyCode.Backspace]='VK_BACK',[Enum.
-            KeyCode.Space]='VK_SPACE'},GetService=function(b)return cloneref and cloneref(
-            game:GetService(b))or game:GetService(b)end}local d={_players=c.GetService
-            'Players',_runService=c.GetService'RunService',_userInputService=c.GetService
-            'UserInputService',_tweenService=c.GetService'TweenService',_workspace=c.
-            GetService'Workspace'}local e={tween=function(e,f,g)return d._tweenService:
-            Create(e,f,g)end,callback=function(e,...)local f={...}task.spawn(function()e(
-            table.unpack(f))end)end,parseKeyCode=function(e)if c.KeyMap_Spec[e]then return c
-            .KeyMap_Spec[e]end if e.Name then return'VK_'..e.Name:upper()end return
-            'VK_UNKNOWN'end,secureGui=function(e)local f=Instance.new'ScreenGui'for g,h in
-            pairs(e)do if g~='Parent'then pcall(function()f[g]=h end)end end f.Parent=(d.
-            _runService:IsStudio()and c.localPlayer:FindFirstChild'PlayerGui'or gethui and
-            gethui()or c.GetService'CoreGui')return f end,mouseInFrame=function(e)local f,g,
-            h=d._userInputService:GetMouseLocation(),e.AbsolutePosition,e.AbsoluteSize
-            return f.X>=g.X and f.X<=g.X+h.X and f.Y>=g.Y and f.Y<=g.Y+h.Y end,makeDraggable
-            =function(e,f)assert(e,'Expected a base frame for makeDraggable')f=f or e local
-            g,h,i,j=false local k=function(k)local l=k.Position-h e.Position=UDim2.new(i.X.
-            Scale,i.X.Offset+l.X,i.Y.Scale,i.Y.Offset+l.Y)end f.InputBegan:Connect(function(
-            l)if l.UserInputType==Enum.UserInputType.MouseButton1 or l.UserInputType==Enum.
-            UserInputType.Touch then g=true h=l.Position i=e.Position l.Changed:Connect(
-            function()if l.UserInputState==Enum.UserInputState.End then g=false end end)end
-            end)f.InputChanged:Connect(function(l)if l.UserInputType==Enum.UserInputType.
-            MouseMovement or l.UserInputType==Enum.UserInputType.Touch then j=l end end)d.
-            _userInputService.InputChanged:Connect(function(l)if g and l==j and e.Visible
-            then k(l)end end)end,subParser={None=function(e)return e end,Numeric=function(e)
-            return e:gsub('%D','')end,Alphabetic=function(e)return e:gsub('[^a-zA-Z ]','')
-            end,Alphanumeric=function(e)return e:gsub('[^a-zA-Z0-9]','')end,FloatNumeric=
-            function(e)return e:gsub('[^-%.%d]',''):gsub('^(%-?)0+','%1'):gsub('(%-?)%.',
-            '%10.'):gsub('(%..*)%.','%1'):gsub('(%-.)','%1')end,Mathematic=function(e)e=e:
-            gsub('[^%d%.%+%-%*/%^%%%(%)]','')local f,g=function(f)local g,h={},''for i in f:
-            gmatch'.'do if i:match'[%d%.]'then h=h..i else if h~=''then table.insert(g,h)h=
-            ''end table.insert(g,i)end end if h~=''then table.insert(g,h)end return g end,{[
-            '+']=1,['-']=1,['*']=2,['/']=2,['%']=2,['^']=3}local h,i=function(h)local i,j={}
-            ,{}for k,l in ipairs(h)do if tonumber(l)then table.insert(i,l)elseif l=='('then
-            table.insert(j,l)elseif l==')'then while#j>0 and j[#j]~='('do table.insert(i,
-            table.remove(j))end table.remove(j)else while#j>0 and g[j[#j] ]and g[j[#j] ]>=g[
-            l]do table.insert(i,table.remove(j))end table.insert(j,l)end end while#j>0 do
-            table.insert(i,table.remove(j))end return i end,function(h)local i={}for j,k in
-            ipairs(h)do if tonumber(k)then table.insert(i,tonumber(k))else local l,m=table.
-            remove(i),table.remove(i)if not m or not l then return e end if k=='+'then table
-            .insert(i,m+l)elseif k=='-'then table.insert(i,m-l)elseif k=='*'then table.
-            insert(i,m*l)elseif k=='/'then table.insert(i,m/l)elseif k=='%'then table.
-            insert(i,m%l)elseif k=='^'then table.insert(i,m^l)end end end return tostring(i[
-            1]or e)end return i(h(f(e)))end}}function CreateSection(f,g,h)local i,j={
-            Settings=g},Instance.new'Frame'j.Name='Section'j.AutomaticSize=Enum.
-            AutomaticSize.Y j.BackgroundColor3=Color3.fromRGB(255,255,255)j.
-            BackgroundTransparency=1 j.BorderColor3=Color3.fromRGB(0,0,0)j.BorderSizePixel=0
-            j.Size=UDim2.fromScale(1,0)local k=Instance.new'TextButton'k.Name='Leading'k.
-            AutoButtonColor=false k.AutomaticSize=Enum.AutomaticSize.Y k.BackgroundColor3=
-            Color3.fromRGB(255,255,255)k.BackgroundTransparency=1 k.BorderColor3=Color3.
-            fromRGB(0,0,0)k.BorderSizePixel=0 k.LayoutOrder=-1 k.Selectable=false k.Size=
-            UDim2.fromScale(1,0)k.Text=''local l=Instance.new'TextLabel'l.Name='Name'l.
-            AutomaticSize=Enum.AutomaticSize.XY l.BackgroundColor3=Color3.fromRGB(255,255,
-            255)l.BackgroundTransparency=1 l.BorderColor3=Color3.fromRGB(0,0,0)l.
-            BorderSizePixel=0 l.FontFace=Font.new('rbxassetid://16658237174',Enum.FontWeight
-            .Bold,Enum.FontStyle.Normal)l.LayoutOrder=1 l.Position=UDim2.fromOffset(28,0)l.
-            RichText=true l.TextColor3=Color3.fromRGB(225,225,225)l.TextSize=20 l.
-            TextWrapped=true l.TextXAlignment=Enum.TextXAlignment.Left l.Parent=k local m=
-            Instance.new'ImageButton'm.Name='Chevron'm.AnchorPoint=Vector2.new(0,0.5)m.
-            AutoButtonColor=false m.BackgroundColor3=Color3.fromRGB(30,34,47)m.
-            BackgroundTransparency=1 m.BorderColor3=Color3.fromRGB(0,0,0)m.BorderSizePixel=0
-            m.Image='rbxassetid://77136690433593'm.LayoutOrder=1 m.Position=UDim2.fromScale(
-            0,0.5)m.Selectable=false m.Active=false m.Interactable=false m.Size=UDim2.
-            fromOffset(18,18)m.Parent=k k.Parent=j local n=Instance.new'Frame'n.Name=
-            'Trailing'n.BackgroundColor3=Color3.fromRGB(255,255,255)n.BackgroundTransparency
-            =1 n.BorderColor3=Color3.fromRGB(0,0,0)n.BorderSizePixel=0 n.ClipsDescendants=
-            true n.Size=UDim2.fromScale(1,0)local o=Instance.new'UIListLayout'o.Name=
-            'UIListLayout'o.Padding=UDim.new(0,10)o.SortOrder=Enum.SortOrder.LayoutOrder o.
-            Parent=n local p=Instance.new'UIPadding'p.Name='UIPadding'p.PaddingLeft=UDim.
-            new(0,12)p.Parent=n local q=Instance.new'Folder'q.Name='Folder'local r=Instance.
-            new'Frame'r.Name='Frame'r.AnchorPoint=Vector2.new(0,1)r.BackgroundColor3=Color3.
-            fromRGB(30,30,30)r.BorderColor3=Color3.fromRGB(0,0,0)r.BorderSizePixel=0 r.
-            Position=UDim2.new(0,-12,1,0)r.Size=UDim2.new(0,1,1,0)r.Parent=q q.Parent=n n.
-            Parent=j local s=Instance.new'UIListLayout's.Name='UIListLayout's.Padding=UDim.
-            new(0,10)s.SortOrder=Enum.SortOrder.LayoutOrder s.Parent=j local t=Instance.new
-            'UIPadding't.Name='UIPadding't.PaddingBottom=UDim.new(0,8)t.PaddingTop=UDim.new(
-            0,8)t.Parent=j j.Parent=f local u=function(u)if u then local v,w={},0 for x,y in
-            pairs(n:GetChildren())do if y:IsA'GuiObject'and y.Visible then table.insert(v,y)
-            w+=y.AbsoluteSize.Y end end if#v>1 then w+=(#v-1)*o.Padding.Offset end e.tween(n
-            ,TweenInfo.new(0.15,Enum.EasingStyle.Sine),{Size=UDim2.new(1,0,0,w)}):Play()e.
-            tween(m,TweenInfo.new(0.15,Enum.EasingStyle.Sine),{Rotation=-180}):Play()else e.
-            tween(n,TweenInfo.new(0.15,Enum.EasingStyle.Sine),{Size=UDim2.new(1,0,0,0)}):
-            Play()e.tween(m,TweenInfo.new(0.15,Enum.EasingStyle.Sine),{Rotation=0}):Play()
-            end end k.MouseButton1Click:Connect(function()i.Settings.Opened=not i.Settings.
-            Opened u(i.Settings.Opened)end)local v=function(v)if not v:IsA'GuiObject'then
-            return end v:GetPropertyChangedSignal'Visible':Connect(function()if i.Settings.
-            Opened then u(true)end end)v:GetPropertyChangedSignal'AbsoluteSize':Connect(
-            function()if i.Settings.Opened then u(true)end end)end for w,x in pairs(n:
-            GetChildren())do v(x)end n.ChildAdded:Connect(function(w)v(w)if i.Settings.
-            Opened then u(true)end end)n.ChildRemoved:Connect(function()if i.Settings.Opened
-            then u(true)end end)function i:UpdateSettings(w)if w.Visible~=nil then i.
-            Settings.Visible=w.Visible j.Visible=w.Visible end if w.Opened~=nil then i.
-            Settings.Opened=w.Opened u(w.Opened)end if w.Name then i.Settings.Name=w.Name l.
-            Text=w.Name end end if i.Settings.Closed==nil then i.Settings.Closed=true end i:
-            UpdateSettings(i.Settings)if h then b.Components[h]=i end i.Content=n
-            injectComponents(i)return i end function CreateButton(f,g,h)local i={Settings=g}
-            assert(i.Settings.Name and type(i.Settings.Name)=='string',
-            'Missing button name or wrong type')local j=Instance.new'Frame'j.AutomaticSize=
-            Enum.AutomaticSize.Y j.BackgroundColor3=i.Settings.Color or Color3.fromRGB(30,30
-            ,30)j.BorderColor3=Color3.fromRGB(0,0,0)j.BorderSizePixel=0 j.Size=UDim2.new(1,0
-            ,0,40)j.Visible=i.Settings.Visible==nil and true or i.Settings.Visible j.Parent=
-            f local k=Instance.new'UICorner'k.CornerRadius=UDim.new(0,5)k.Parent=j local l=
-            Instance.new'TextButton'l.AutoButtonColor=false l.AutomaticSize=Enum.
+            KeyCode.Space]='VK_SPACE'}}local f={_players=c'Players',_runService=c
+            'RunService',_userInputService=c'UserInputService',_tweenService=c'TweenService'
+            ,_workspace=c'Workspace'}local g={tween=function(g,h,i)return f._tweenService:
+            Create(g,h,i)end,callback=function(g,...)local h={...}task.spawn(function()g(
+            table.unpack(h))end)end,parseKeyCode=function(g)if e.KeyMap_Spec[g]then return e
+            .KeyMap_Spec[g]end if g.Name then return'VK_'..g.Name:upper()end return
+            'VK_UNKNOWN'end,secureGui=function(g)local h=b.ProtectGui(Instance.new
+            'ScreenGui')for i,j in pairs(g)do if i~='Parent'then pcall(function()h[i]=j end)
+            end end return h end,mouseInFrame=function(g)local h,i,j=f._userInputService:
+            GetMouseLocation(),g.AbsolutePosition,g.AbsoluteSize return h.X>=i.X and h.X<=i.
+            X+j.X and h.Y>=i.Y and h.Y<=i.Y+j.Y end,makeDraggable=function(g,h)assert(g,
+            'Expected a base frame for makeDraggable')h=h or g local i,j,k,l=false local m=
+            function(m)local n=m.Position-j g.Position=UDim2.new(k.X.Scale,k.X.Offset+n.X,k.
+            Y.Scale,k.Y.Offset+n.Y)end h.InputBegan:Connect(function(n)if n.UserInputType==
+            Enum.UserInputType.MouseButton1 or n.UserInputType==Enum.UserInputType.Touch
+            then i=true j=n.Position k=g.Position n.Changed:Connect(function()if n.
+            UserInputState==Enum.UserInputState.End then i=false end end)end end)h.
+            InputChanged:Connect(function(n)if n.UserInputType==Enum.UserInputType.
+            MouseMovement or n.UserInputType==Enum.UserInputType.Touch then l=n end end)f.
+            _userInputService.InputChanged:Connect(function(n)if i and n==l and g.Visible
+            then m(n)end end)end,subParser={None=function(g)return g end,Numeric=function(g)
+            return g:gsub('%D','')end,Alphabetic=function(g)return g:gsub('[^a-zA-Z ]','')
+            end,Alphanumeric=function(g)return g:gsub('[^a-zA-Z0-9]','')end,FloatNumeric=
+            function(g)return g:gsub('[^-%.%d]',''):gsub('^(%-?)0+','%1'):gsub('(%-?)%.',
+            '%10.'):gsub('(%..*)%.','%1'):gsub('(%-.)','%1')end,Mathematic=function(g)g=g:
+            gsub('[^%d%.%+%-%*/%^%%%(%)]','')local h,i=function(h)local i,j={},''for k in h:
+            gmatch'.'do if k:match'[%d%.]'then j=j..k else if j~=''then table.insert(i,j)j=
+            ''end table.insert(i,k)end end if j~=''then table.insert(i,j)end return i end,{[
+            '+']=1,['-']=1,['*']=2,['/']=2,['%']=2,['^']=3}local j,k=function(j)local k,l={}
+            ,{}for m,n in ipairs(j)do if tonumber(n)then table.insert(k,n)elseif n=='('then
+            table.insert(l,n)elseif n==')'then while#l>0 and l[#l]~='('do table.insert(k,
+            table.remove(l))end table.remove(l)else while#l>0 and i[l[#l] ]and i[l[#l] ]>=i[
+            n]do table.insert(k,table.remove(l))end table.insert(l,n)end end while#l>0 do
+            table.insert(k,table.remove(l))end return k end,function(j)local k={}for l,m in
+            ipairs(j)do if tonumber(m)then table.insert(k,tonumber(m))else local n,o=table.
+            remove(k),table.remove(k)if not o or not n then return g end if m=='+'then table
+            .insert(k,o+n)elseif m=='-'then table.insert(k,o-n)elseif m=='*'then table.
+            insert(k,o*n)elseif m=='/'then table.insert(k,o/n)elseif m=='%'then table.
+            insert(k,o%n)elseif m=='^'then table.insert(k,o^n)end end end return tostring(k[
+            1]or g)end return k(j(h(g)))end}}function CreateSection(h,i,j)local k,l={
+            Settings=i},Instance.new'Frame'l.Name='Section'l.AutomaticSize=Enum.
             AutomaticSize.Y l.BackgroundColor3=Color3.fromRGB(255,255,255)l.
             BackgroundTransparency=1 l.BorderColor3=Color3.fromRGB(0,0,0)l.BorderSizePixel=0
-            l.FontFace=Font.new('rbxassetid://12187365364',Enum.FontWeight.SemiBold,Enum.
-            FontStyle.Normal)l.RichText=true l.Size=UDim2.new(1,0,0,40)l.Text=i.Settings.
-            Name l.TextColor3=Color3.fromRGB(156,156,156)l.TextSize=15 l.TextWrapped=true l.
-            TextXAlignment=Enum.TextXAlignment.Center local m=Instance.new'UIPadding'm.
-            PaddingBottom=UDim.new(0,12)m.PaddingLeft=UDim.new(0,15)m.PaddingRight=UDim.new(
-            0,15)m.PaddingTop=UDim.new(0,12)m.Parent=l l.Parent=j function i:UpdateSettings(
-            n)if n.Name then i.Settings.Name=n.Name l.Text=n.Name end if n.Color then i.
-            Settings.Color=n.Color j.BackgroundColor3=n.Color end if n.Callback then i.
-            Settings.Callback=n.Callback end if n.Visible~=nil then i.Settings.Visible=n.
-            Visible j.Visible=n.Visible end return i end local n=Instance.new'Frame'n.
-            BackgroundColor3=Color3.fromRGB(30,30,30)n.BorderColor3=Color3.fromRGB(0,0,0)n.
-            BorderSizePixel=0 n.Size=UDim2.new(1,0,0,1)n.Parent=f function i:Continue()n.
-            Visible=false return i end function i:End()n.Visible=true return i end local o=
-            function()if i.Settings.Callback then e.callback(i.Settings.Callback)end end l.
-            MouseButton1Click:Connect(o)if h then b.Components[h]=i end return i:End()end
-            function CreateToggle(f,g,h)local i={Settings=g,Type='Toggle'}assert(i.Settings.
-            Name and type(i.Settings.Name)=='string','Missing name or wrong type')local j=
-            Instance.new'Frame'j.AutomaticSize=Enum.AutomaticSize.Y j.BackgroundColor3=
-            Color3.fromRGB(255,255,255)j.BackgroundTransparency=1 j.BorderColor3=Color3.
-            fromRGB(0,0,0)j.BorderSizePixel=0 j.Size=UDim2.fromScale(1,0)j.Parent=f j.
-            Visible=i.Settings.Visible==nil and true or i.Settings.Visible local k=Instance.
-            new'Frame'k.AutomaticSize=Enum.AutomaticSize.Y k.BackgroundColor3=Color3.
-            fromRGB(255,255,255)k.BackgroundTransparency=1 k.BorderColor3=Color3.fromRGB(0,0
-            ,0)k.BorderSizePixel=0 k.Size=UDim2.new(1,-50,0,33)local l=Instance.new
-            'TextLabel'l.AutomaticSize=Enum.AutomaticSize.XY l.BackgroundColor3=Color3.
-            fromRGB(255,255,255)l.BackgroundTransparency=1 l.BorderColor3=Color3.fromRGB(0,0
-            ,0)l.BorderSizePixel=0 l.FontFace=Font.new('rbxassetid://12187365364',Enum.
-            FontWeight.SemiBold,Enum.FontStyle.Normal)l.RichText=true l.TextColor3=Color3.
-            fromRGB(225,225,225)l.TextSize=16 l.TextWrapped=true l.TextXAlignment=Enum.
-            TextXAlignment.Left l.Parent=k l.Text=i.Settings.Name local m=Instance.new
-            'UIListLayout'm.Name='UIListLayout'm.Padding=UDim.new(0,5)m.SortOrder=Enum.
-            SortOrder.LayoutOrder m.VerticalAlignment=Enum.VerticalAlignment.Center m.Parent
-            =k local n=Instance.new'TextLabel'n.AutomaticSize=Enum.AutomaticSize.XY n.
-            BackgroundColor3=Color3.fromRGB(255,255,255)n.BackgroundTransparency=1 n.
-            BorderColor3=Color3.fromRGB(0,0,0)n.BorderSizePixel=0 n.FontFace=Font.new(
-            'rbxassetid://12187365364',Enum.FontWeight.SemiBold,Enum.FontStyle.Normal)n.
-            LayoutOrder=1 n.RichText=true n.Text=i.Settings.Description or''n.TextColor3=
-            Color3.fromRGB(80,80,80)n.TextSize=12 n.TextWrapped=true n.TextXAlignment=Enum.
-            TextXAlignment.Left n.Parent=k n.Visible=i.Settings.Description and true or
-            false k.Parent=j local o=Instance.new'ImageLabel'o.AnchorPoint=Vector2.new(1,0.5
-            )o.BackgroundColor3=Color3.fromRGB(37,37,46)o.BackgroundTransparency=1 o.
-            BorderColor3=Color3.fromRGB(0,0,0)o.BorderSizePixel=0 o.Image=
-            'rbxassetid://86699956318312'o.ImageColor3=Color3.fromRGB(33,36,45)o.Position=
-            UDim2.fromScale(1,0.5)o.Size=UDim2.fromOffset(35,10)local p=Instance.new
-            'UIPadding'p.Name='ToggleUIPadding'p.PaddingBottom=UDim.new(0,1)p.PaddingLeft=
-            UDim.new(0,-8)p.PaddingTop=UDim.new(0,1)p.Parent=o local q=Instance.new
-            'ImageLabel'q.AnchorPoint=Vector2.new(1,0.5)q.BackgroundColor3=Color3.fromRGB(30
-            ,34,47)q.BackgroundTransparency=1 q.BorderColor3=Color3.fromRGB(0,0,0)q.
-            BorderSizePixel=0 q.Image='rbxassetid://83379579183005'q.ImageColor3=Color3.
-            fromRGB(156,156,156)q.Position=UDim2.fromScale(0.5,0.5)q.Size=UDim2.fromOffset(
-            14,14)q.Parent=o o.Parent=j local r=Instance.new'UIPadding'r.PaddingBottom=UDim.
-            new(0,8)r.PaddingTop=UDim.new(0,8)r.Parent=j local s=Instance.new'TextButton's.
-            AutoButtonColor=false s.BackgroundTransparency=1 s.Size=UDim2.fromScale(1,1)s.
-            Text=''s.Parent=j i.Settings.State=i.Settings.State or false local t=function()e
-            .tween(q,TweenInfo.new(0.2,Enum.EasingStyle.Exponential),{Position=UDim2.
-            fromScale(i.Settings.State and 1 or 0.5,0.5),ImageColor3=i.Settings.State and
-            Color3.fromRGB(138,193,227)or Color3.fromRGB(156,156,156)}):Play()if i.Settings.
-            Callback then e.callback(i.Settings.Callback,i,i.Settings.State)end end s.
-            MouseButton1Click:Connect(function()i.Settings.State=not i.Settings.State t()end
-            )function i:UpdateSettings(u)if u.Name then i.Settings.Name=u.Name l.Text=u.Name
-            end if u.Description~=nil then i.Settings.Description=u.Description n.Text=u.
-            Description or''n.Visible=u.Description and true or false end if u.State~=nil
-            then i.Settings.State=u.State t()end if u.Callback then i.Settings.Callback=u.
-            Callback end if u.Visible~=nil then i.Settings.Visible=u.Visible j.Visible=u.
-            Visible end end local u=Instance.new'Frame'u.BackgroundColor3=Color3.fromRGB(30,
-            30,30)u.BorderColor3=Color3.fromRGB(0,0,0)u.BorderSizePixel=0 u.Size=UDim2.new(1
-            ,0,0,1)u.Parent=f function i:Continue()u.Visible=false return i end function i:
-            End()u.Visible=true return i end t()if h then b.Components[h]=i end i.Content=f
-            injectComponents(i,'Colorpicker')return i:End()end function CreateSlider(f,g,h)
-            local i={Settings=g,Type='Slider'}assert(i.Settings.Name and type(i.Settings.
-            Name)=='string','Missing name or wrong type')assert(i.Settings.Value and type(i.
-            Settings.Value)=='number','Missing value or wrong type')assert(i.Settings.
-            Minimum and type(i.Settings.Minimum)=='number','Missing minimum or wrong type')
-            assert(i.Settings.Maximum and type(i.Settings.Maximum)=='number',
-            'Missing maximum or wrong type')assert(i.Settings.Minimum<=i.Settings.Maximum,
-            'Minimum should be less than Maximum')assert(i.Settings.Maximum>=i.Settings.
-            Minimum,'Maximum should be greater than Minimum')local j=Instance.new'Frame'j.
-            AutomaticSize=Enum.AutomaticSize.Y j.BackgroundColor3=Color3.fromRGB(255,255,255
-            )j.BackgroundTransparency=1 j.BorderColor3=Color3.fromRGB(0,0,0)j.
-            BorderSizePixel=0 j.Size=UDim2.fromScale(1,0)j.Visible=i.Settings.Visible==nil
-            and true or i.Settings.Visible j.Parent=f local k=Instance.new'UIPadding'k.
-            PaddingBottom=UDim.new(0,8)k.PaddingTop=UDim.new(0,8)k.Parent=j local l=Instance
-            .new'Frame'l.AutomaticSize=Enum.AutomaticSize.Y l.BackgroundColor3=Color3.
-            fromRGB(255,255,255)l.BackgroundTransparency=1 l.BorderColor3=Color3.fromRGB(0,0
-            ,0)l.BorderSizePixel=0 l.Size=UDim2.fromScale(1,0)local m=Instance.new'Frame'm.
-            AnchorPoint=Vector2.new(1,0.5)m.AutomaticSize=Enum.AutomaticSize.XY m.
-            BackgroundColor3=Color3.fromRGB(255,255,255)m.BackgroundTransparency=1 m.
-            BorderColor3=Color3.fromRGB(0,0,0)m.BorderSizePixel=0 m.LayoutOrder=1 m.Position
-            =UDim2.fromScale(1,0.5)local n=Instance.new'ImageLabel'n.AnchorPoint=Vector2.
-            new(1,0.5)n.BackgroundColor3=Color3.fromRGB(30,34,47)n.BackgroundTransparency=1
-            n.BorderColor3=Color3.fromRGB(0,0,0)n.BorderSizePixel=0 n.Image=
-            'rbxassetid://82545477110166'n.ImageColor3=Color3.fromRGB(150,150,150)n.Position
-            =UDim2.fromScale(1,0.5)n.Size=UDim2.fromOffset(20,20)n.Parent=m local o=Instance
-            .new'UIListLayout'o.FillDirection=Enum.FillDirection.Horizontal o.
-            HorizontalAlignment=Enum.HorizontalAlignment.Right o.Padding=UDim.new(0,6)o.
-            SortOrder=Enum.SortOrder.LayoutOrder o.VerticalAlignment=Enum.VerticalAlignment.
-            Center o.Parent=m local p=Instance.new'TextLabel'p.AnchorPoint=Vector2.new(0,0.5
-            )p.AutomaticSize=Enum.AutomaticSize.XY p.BackgroundColor3=Color3.fromRGB(255,255
-            ,255)p.BackgroundTransparency=1 p.BorderColor3=Color3.fromRGB(0,0,0)p.
-            BorderSizePixel=0 p.FontFace=Font.new('rbxassetid://12187365364',Enum.FontWeight
-            .SemiBold,Enum.FontStyle.Normal)p.LayoutOrder=1 p.Position=UDim2.fromScale(0,0.5
-            )p.RichText=true p.Text='0'p.TextColor3=Color3.fromRGB(150,150,150)p.TextSize=16
-            p.TextWrapped=true p.TextXAlignment=Enum.TextXAlignment.Left p.Parent=m m.Parent
-            =l local q=Instance.new'Frame'q.AutomaticSize=Enum.AutomaticSize.Y q.
-            BackgroundColor3=Color3.fromRGB(255,255,255)q.BackgroundTransparency=1 q.
-            BorderColor3=Color3.fromRGB(0,0,0)q.BorderSizePixel=0 q.Size=UDim2.new(1,-80,0,0
-            )local r=Instance.new'TextLabel'r.AutomaticSize=Enum.AutomaticSize.XY r.
-            BackgroundColor3=Color3.fromRGB(255,255,255)r.BackgroundTransparency=1 r.
-            BorderColor3=Color3.fromRGB(0,0,0)r.BorderSizePixel=0 r.FontFace=Font.new(
-            'rbxassetid://12187365364',Enum.FontWeight.SemiBold,Enum.FontStyle.Normal)r.
-            RichText=true r.Text=i.Settings.Name r.TextColor3=Color3.fromRGB(225,225,225)r.
-            TextSize=16 r.TextWrapped=true r.TextXAlignment=Enum.TextXAlignment.Left r.
-            Parent=q local s=Instance.new'UIListLayout's.Name='UIListLayout's.Padding=UDim.
-            new(0,5)s.SortOrder=Enum.SortOrder.LayoutOrder s.VerticalAlignment=Enum.
-            VerticalAlignment.Center s.Parent=q local t=Instance.new'TextLabel't.
-            AutomaticSize=Enum.AutomaticSize.XY t.BackgroundColor3=Color3.fromRGB(255,255,
-            255)t.BackgroundTransparency=1 t.BorderColor3=Color3.fromRGB(0,0,0)t.
-            BorderSizePixel=0 t.FontFace=Font.new('rbxassetid://12187365364',Enum.FontWeight
-            .SemiBold,Enum.FontStyle.Normal)t.LayoutOrder=1 t.RichText=true t.Text=i.
-            Settings.Description or''t.TextColor3=Color3.fromRGB(80,80,80)t.TextSize=12 t.
-            TextWrapped=true t.TextXAlignment=Enum.TextXAlignment.Left t.Parent=q t.Visible=
-            i.Settings.Description and true or false q.Parent=l local u=Instance.new
-            'UIListLayout'u.Name='UIListLayout'u.FillDirection=Enum.FillDirection.Horizontal
-            u.HorizontalAlignment=Enum.HorizontalAlignment.Center u.HorizontalFlex=Enum.
-            UIFlexAlignment.Fill u.Padding=UDim.new(0,5)u.SortOrder=Enum.SortOrder.
-            LayoutOrder u.VerticalAlignment=Enum.VerticalAlignment.Center u.Parent=l l.
-            Parent=j local v=Instance.new'UIListLayout'v.Name='UIListLayout'v.Padding=UDim.
-            new(0,15)v.SortOrder=Enum.SortOrder.LayoutOrder v.Parent=j local w=Instance.new
-            'TextButton'w.BackgroundColor3=Color3.fromRGB(37,37,46)w.BorderColor3=Color3.
-            fromRGB(0,0,0)w.BorderSizePixel=0 w.Size=UDim2.new(1,0,0,10)w.Text=''w.
-            AutoButtonColor=false w.LayoutOrder=1 local x=Instance.new'UICorner'x.Name=
-            'UICorner'x.CornerRadius=UDim.new(0,15)x.Parent=w local y=Instance.new'Frame'y.
-            BackgroundColor3=Color3.fromRGB(138,193,227)y.BorderColor3=Color3.fromRGB(0,0,0)
-            y.BorderSizePixel=0 y.Size=UDim2.new(0,0,0,10)local z=Instance.new'UICorner'z.
-            Name='UICorner'z.CornerRadius=UDim.new(0,15)z.Parent=y local A=Instance.new
-            'ImageLabel'A.AnchorPoint=Vector2.new(0.5,0.5)A.BackgroundColor3=Color3.fromRGB(
-            255,255,255)A.BackgroundTransparency=1 A.BorderColor3=Color3.fromRGB(0,0,0)A.
-            BorderSizePixel=0 A.Image='rbxassetid://127947626656649'A.ImageColor3=Color3.
-            fromRGB(20,20,20)A.Position=UDim2.fromScale(1,0.5)A.Size=UDim2.fromOffset(26,20)
-            A.ZIndex=2 local B=Instance.new'ImageLabel'B.AnchorPoint=Vector2.new(0.5,0.5)B.
-            BackgroundColor3=Color3.fromRGB(255,255,255)B.BackgroundTransparency=1 B.
-            BorderColor3=Color3.fromRGB(0,0,0)B.BorderSizePixel=0 B.Image=
-            'rbxassetid://98639906538385'B.ImageColor3=Color3.fromRGB(225,225,225)B.Position
-            =UDim2.fromScale(0.5,0.5)B.Size=UDim2.fromOffset(18,18)B.Parent=A A.Parent=w y.
-            Parent=w w.Parent=j local C=function()local C,D,E=10,10,w.AbsoluteSize.X local F
-            ,G,H=E-(C+D),i.Settings.Minimum,i.Settings.Maximum local I=i.Settings.Value or(G
-            +H)/2 local J,K=(I-G)/(H-G),A.AbsoluteSize.X/2 y.Size=UDim2.new(0,F*J,0,10)A.
-            Position=UDim2.new(0,C+(F*J),0.5,0)local L=tonumber(string.format('%.'..(i.
-            Settings.Precision or 0)..'f',I))local M=i.Settings.Filter and i.Settings.
-            Filter(L,G,H)p.Text=M or L end local D,E=function(D)local E,F,G,H=10,10,D.
-            Position.X,B.AbsoluteSize.X/2 local I,J,K=G-(H*0.5),w.AbsolutePosition.X+E,w.
-            AbsoluteSize.X-(E+F)I=math.clamp(I-J,0,K)local L=I/K L=i.Settings.Minimum+L*(i.
-            Settings.Maximum-i.Settings.Minimum)local M=i.Settings.Step or 0 i.Settings.
-            Value=M>0 and math.round(L/M)*M or L C()if i.Settings.Callback then e.callback(i
-            .Settings.Callback,i,i.Settings.Value)end end,false local F=function(F)if F.
-            UserInputType==Enum.UserInputType.MouseButton1 then E=true D(F)if i.Settings.
-            inputChanged then e.callback(i.Settings.inputChanged,i,i.Settings.Value,E)end
-            end end w.InputBegan:Connect(F)w.InputEnded:Connect(function(G)if G.
-            UserInputType==Enum.UserInputType.MouseButton1 then E=false if i.Settings.
-            inputChanged then e.callback(i.Settings.inputChanged,i,i.Settings.Value,E)end
-            end end)w:GetPropertyChangedSignal'AbsoluteSize':Connect(C)C()d.
-            _userInputService.InputChanged:Connect(function(G)if E and G.UserInputType==Enum
-            .UserInputType.MouseMovement then D(G)end end)function i:UpdateSettings(G)if G.
-            Visible~=nil then i.Settings.Visible=G.Visible j.Visible=G.Visible end if G.Name
-            then i.Settings.Name=G.Name r.Text=G.Name end if G.Description~=nil then i.
-            Settings.Description=G.Description t.Text=G.Description or''t.Visible=G.
-            Description and true or false end if G.Minimum then i.Settings.Minimum=G.Minimum
-            end if G.Maximum then i.Settings.Maximum=G.Maximum end if G.Step~=nil then i.
-            Settings.Step=G.Step end if G.Precision~=nil then i.Settings.Precision=G.
-            Precision end if G.Filter then i.Settings.Filter=G.Filter end if G.Callback then
-            i.Settings.Callback=G.Callback end if G.inputChanged then i.Settings.
-            inputChanged=G.inputChanged end if G.Value then local H,I=i.Settings.Minimum,i.
-            Settings.Maximum local J,K=math.clamp(G.Value,H,I),i.Settings.Step or 0 if K>0
-            then J=math.round(J/K)*K end i.Settings.Value=J task.defer(function()if w.
-            AbsoluteSize.X==0 then w:GetPropertyChangedSignal'AbsoluteSize':Wait()end C()if
-            i.Settings.Callback then e.callback(i.Settings.Callback,i,i.Settings.Value)end
-            end)end end local G=Instance.new'Frame'G.BackgroundColor3=Color3.fromRGB(30,30,
-            30)G.BorderColor3=Color3.fromRGB(0,0,0)G.BorderSizePixel=0 G.Size=UDim2.new(1,0,
-            0,1)G.Parent=f function i:Continue()G.Visible=false return i end function i:End(
-            )G.Visible=true return i end i:UpdateSettings(i.Settings)if h then b.Components[
-            h]=i end return i:End()end function CreateInput(f,g,h)local i,j={Settings=g,Type
-            ='Input'},Instance.new'Frame'j.BackgroundColor3=Color3.fromRGB(30,30,30)j.
-            BorderColor3=Color3.fromRGB(0,0,0)j.BorderSizePixel=0 j.Size=UDim2.new(1,0,0,40)
-            j.Visible=i.Settings.Visible==nil and true or i.Settings.Visible j.Parent=f
-            local k=Instance.new'UICorner'k.CornerRadius=UDim.new(0,5)k.Parent=j local l=
-            Instance.new'UIListLayout'l.FillDirection=Enum.FillDirection.Horizontal l.
-            Padding=UDim.new(0,15)l.SortOrder=Enum.SortOrder.LayoutOrder l.VerticalAlignment
-            =Enum.VerticalAlignment.Center l.Parent=j local m=Instance.new'UIPadding'm.
-            PaddingLeft=UDim.new(0,15)m.Parent=j local n=Instance.new'TextBox'n.AnchorPoint=
-            Vector2.new(0,0.5)n.BackgroundColor3=Color3.fromRGB(255,255,255)n.
-            BackgroundTransparency=1 n.BorderColor3=Color3.fromRGB(0,0,0)n.BorderSizePixel=0
-            n.ClearTextOnFocus=false n.ClipsDescendants=true n.CursorPosition=-1 n.FontFace=
-            Font.new('rbxassetid://12187365364',Enum.FontWeight.SemiBold,Enum.FontStyle.
-            Normal)n.LayoutOrder=1 n.PlaceholderColor3=Color3.fromRGB(120,120,120)n.
-            PlaceholderText=i.Settings.Placeholder or'...'n.Size=UDim2.new(1,-50,1,0)n.Text=
-            i.Settings.Text or''n.TextColor3=Color3.fromRGB(156,156,156)n.TextSize=15 n.
-            TextXAlignment=Enum.TextXAlignment.Left n.Parent=j local o=Instance.new
-            'ImageLabel'o.BackgroundColor3=Color3.fromRGB(255,255,255)o.
+            l.Size=UDim2.fromScale(1,0)local m=Instance.new'TextButton'm.Name='Leading'm.
+            AutoButtonColor=false m.AutomaticSize=Enum.AutomaticSize.Y m.BackgroundColor3=
+            Color3.fromRGB(255,255,255)m.BackgroundTransparency=1 m.BorderColor3=Color3.
+            fromRGB(0,0,0)m.BorderSizePixel=0 m.LayoutOrder=-1 m.Selectable=false m.Size=
+            UDim2.fromScale(1,0)m.Text=''local n=Instance.new'TextLabel'n.Name='Name'n.
+            AutomaticSize=Enum.AutomaticSize.XY n.BackgroundColor3=Color3.fromRGB(255,255,
+            255)n.BackgroundTransparency=1 n.BorderColor3=Color3.fromRGB(0,0,0)n.
+            BorderSizePixel=0 n.FontFace=Font.new('rbxassetid://16658237174',Enum.FontWeight
+            .Bold,Enum.FontStyle.Normal)n.LayoutOrder=1 n.Position=UDim2.fromOffset(28,0)n.
+            RichText=true n.TextColor3=Color3.fromRGB(225,225,225)n.TextSize=20 n.
+            TextWrapped=true n.TextXAlignment=Enum.TextXAlignment.Left n.Parent=m local o=
+            Instance.new'ImageButton'o.Name='Chevron'o.AnchorPoint=Vector2.new(0,0.5)o.
+            AutoButtonColor=false o.BackgroundColor3=Color3.fromRGB(30,34,47)o.
             BackgroundTransparency=1 o.BorderColor3=Color3.fromRGB(0,0,0)o.BorderSizePixel=0
-            o.Image='rbxassetid://98129527229953'o.ImageColor3=Color3.fromRGB(156,156,156)o.
-            Size=UDim2.fromOffset(20,20)o.Parent=j n.FocusLost:Connect(function()if i.
-            Settings.CharacterSub=='Mathematic'then n.Text=e.subParser[i.Settings.
-            CharacterSub](n.Text)end if i.Settings.Callback then e.callback(i.Settings.
-            Callback,i,n.Text)end end)n:GetPropertyChangedSignal'Text':Connect(function()if
-            i.Settings.CharacterSub and i.Settings.CharacterSub~='Mathematic'and e.subParser
-            [i.Settings.CharacterSub]then n.Text=e.subParser[i.Settings.CharacterSub](n.Text
-            )elseif type(i.Settings.CharacterSub)=='function'then n.Text=i.Settings.
-            CharacterSub(n.Text)end if i.Settings.CharacterLimit then if string.len(n.Text)>
-            i.Settings.CharacterLimit then n.Text=string.sub(n.Text,1,i.Settings.
-            CharacterLimit)end end i.Settings.Text=n.Text if i.Settings.onTextChanged then e
-            .callback(i.Settings.onTextChanged,i,n.Text)end end)function i:UpdateSettings(p)
-            if p.Text then i.Settings.Text=p.Text n.Text=p.Text if i.Settings.Callback then
-            e.callback(i.Settings.Callback,i,n.Text)end end if p.Placeholder then i.Settings
-            .Placeholder=p.Placeholder n.PlaceholderText=p.Placeholder end if p.Callback
-            then i.Settings.Callback=p.Callback end if p.onTextChanged then i.Settings.
-            onTextChanged=p.onTextChanged end if p.Visible~=nil then i.Settings.Visible=p.
-            Visible j.Visible=p.Visible end end local p=Instance.new'Frame'p.
+            o.Image='rbxassetid://77136690433593'o.LayoutOrder=1 o.Position=UDim2.fromScale(
+            0,0.5)o.Selectable=false o.Active=false o.Interactable=false o.Size=UDim2.
+            fromOffset(18,18)o.Parent=m m.Parent=l local p=Instance.new'Frame'p.Name=
+            'Trailing'p.BackgroundColor3=Color3.fromRGB(255,255,255)p.BackgroundTransparency
+            =1 p.BorderColor3=Color3.fromRGB(0,0,0)p.BorderSizePixel=0 p.ClipsDescendants=
+            true p.Size=UDim2.fromScale(1,0)local q=Instance.new'UIListLayout'q.Name=
+            'UIListLayout'q.Padding=UDim.new(0,10)q.SortOrder=Enum.SortOrder.LayoutOrder q.
+            Parent=p local r=Instance.new'UIPadding'r.Name='UIPadding'r.PaddingLeft=UDim.
+            new(0,12)r.Parent=p local s=Instance.new'Folder's.Name='Folder'local t=Instance.
+            new'Frame't.Name='Frame't.AnchorPoint=Vector2.new(0,1)t.BackgroundColor3=Color3.
+            fromRGB(30,30,30)t.BorderColor3=Color3.fromRGB(0,0,0)t.BorderSizePixel=0 t.
+            Position=UDim2.new(0,-12,1,0)t.Size=UDim2.new(0,1,1,0)t.Parent=s s.Parent=p p.
+            Parent=l local u=Instance.new'UIListLayout'u.Name='UIListLayout'u.Padding=UDim.
+            new(0,10)u.SortOrder=Enum.SortOrder.LayoutOrder u.Parent=l local v=Instance.new
+            'UIPadding'v.Name='UIPadding'v.PaddingBottom=UDim.new(0,8)v.PaddingTop=UDim.new(
+            0,8)v.Parent=l l.Parent=h local w=function(w)if w then local x,y={},0 for z,A in
+            pairs(p:GetChildren())do if A:IsA'GuiObject'and A.Visible then table.insert(x,A)
+            y+=A.AbsoluteSize.Y end end if#x>1 then y+=(#x-1)*q.Padding.Offset end g.tween(p
+            ,TweenInfo.new(0.15,Enum.EasingStyle.Sine),{Size=UDim2.new(1,0,0,y)}):Play()g.
+            tween(o,TweenInfo.new(0.15,Enum.EasingStyle.Sine),{Rotation=-180}):Play()else g.
+            tween(p,TweenInfo.new(0.15,Enum.EasingStyle.Sine),{Size=UDim2.new(1,0,0,0)}):
+            Play()g.tween(o,TweenInfo.new(0.15,Enum.EasingStyle.Sine),{Rotation=0}):Play()
+            end end m.MouseButton1Click:Connect(function()k.Settings.Opened=not k.Settings.
+            Opened w(k.Settings.Opened)end)local x=function(x)if not x:IsA'GuiObject'then
+            return end x:GetPropertyChangedSignal'Visible':Connect(function()if k.Settings.
+            Opened then w(true)end end)x:GetPropertyChangedSignal'AbsoluteSize':Connect(
+            function()if k.Settings.Opened then w(true)end end)end for y,z in pairs(p:
+            GetChildren())do x(z)end p.ChildAdded:Connect(function(y)x(y)if k.Settings.
+            Opened then w(true)end end)p.ChildRemoved:Connect(function()if k.Settings.Opened
+            then w(true)end end)function k:UpdateSettings(y)if y.Visible~=nil then k.
+            Settings.Visible=y.Visible l.Visible=y.Visible end if y.Opened~=nil then k.
+            Settings.Opened=y.Opened w(y.Opened)end if y.Name then k.Settings.Name=y.Name n.
+            Text=y.Name end end if k.Settings.Closed==nil then k.Settings.Closed=true end k:
+            UpdateSettings(k.Settings)if j then d.Components[j]=k end k.Content=p
+            injectComponents(k)return k end function CreateButton(h,i,j)local k={Settings=i}
+            assert(k.Settings.Name and type(k.Settings.Name)=='string',
+            'Missing button name or wrong type')local l=Instance.new'Frame'l.AutomaticSize=
+            Enum.AutomaticSize.Y l.BackgroundColor3=k.Settings.Color or Color3.fromRGB(30,30
+            ,30)l.BorderColor3=Color3.fromRGB(0,0,0)l.BorderSizePixel=0 l.Size=UDim2.new(1,0
+            ,0,40)l.Visible=k.Settings.Visible==nil and true or k.Settings.Visible l.Parent=
+            h local m=Instance.new'UICorner'm.CornerRadius=UDim.new(0,5)m.Parent=l local n=
+            Instance.new'TextButton'n.AutoButtonColor=false n.AutomaticSize=Enum.
+            AutomaticSize.Y n.BackgroundColor3=Color3.fromRGB(255,255,255)n.
+            BackgroundTransparency=1 n.BorderColor3=Color3.fromRGB(0,0,0)n.BorderSizePixel=0
+            n.FontFace=Font.new('rbxassetid://12187365364',Enum.FontWeight.SemiBold,Enum.
+            FontStyle.Normal)n.RichText=true n.Size=UDim2.new(1,0,0,40)n.Text=k.Settings.
+            Name n.TextColor3=Color3.fromRGB(156,156,156)n.TextSize=15 n.TextWrapped=true n.
+            TextXAlignment=Enum.TextXAlignment.Center local o=Instance.new'UIPadding'o.
+            PaddingBottom=UDim.new(0,12)o.PaddingLeft=UDim.new(0,15)o.PaddingRight=UDim.new(
+            0,15)o.PaddingTop=UDim.new(0,12)o.Parent=n n.Parent=l function k:UpdateSettings(
+            p)if p.Name then k.Settings.Name=p.Name n.Text=p.Name end if p.Color then k.
+            Settings.Color=p.Color l.BackgroundColor3=p.Color end if p.Callback then k.
+            Settings.Callback=p.Callback end if p.Visible~=nil then k.Settings.Visible=p.
+            Visible l.Visible=p.Visible end return k end local p=Instance.new'Frame'p.
             BackgroundColor3=Color3.fromRGB(30,30,30)p.BorderColor3=Color3.fromRGB(0,0,0)p.
-            BorderSizePixel=0 p.Size=UDim2.new(1,0,0,1)p.Parent=f function i:Continue()p.
-            Visible=false return i end function i:End()p.Visible=true return i end i:
-            UpdateSettings(i.Settings)if h then b.Components[h]=i end return i:End()end
-            function CreateMultiInput(f,g,h)local i,j={Settings=g,Type='MultiInput'},
-            Instance.new'Frame'j.BackgroundColor3=Color3.fromRGB(30,30,30)j.
-            BackgroundTransparency=1 j.BorderColor3=Color3.fromRGB(0,0,0)j.BorderSizePixel=0
-            j.Size=UDim2.new(1,0,0,40)j.Parent=f local k=Instance.new'UIListLayout'k.
-            FillDirection=Enum.FillDirection.Horizontal k.HorizontalFlex=Enum.
-            UIFlexAlignment.Fill k.Padding=UDim.new(0,5)k.SortOrder=Enum.SortOrder.
-            LayoutOrder k.VerticalAlignment=Enum.VerticalAlignment.Center k.Parent=j local l
-            ={}for m,n in ipairs(i.Settings.Inputs)do local o=Instance.new'TextBox'o.
-            BackgroundColor3=Color3.fromRGB(30,30,30)o.BorderColor3=Color3.fromRGB(0,0,0)o.
-            BorderSizePixel=0 o.ClearTextOnFocus=false o.ClipsDescendants=true o.FontFace=
+            BorderSizePixel=0 p.Size=UDim2.new(1,0,0,1)p.Parent=h function k:Continue()p.
+            Visible=false return k end function k:End()p.Visible=true return k end local q=
+            function()if k.Settings.Callback then g.callback(k.Settings.Callback)end end n.
+            MouseButton1Click:Connect(q)if j then d.Components[j]=k end return k:End()end
+            function CreateToggle(h,i,j)local k={Settings=i,Type='Toggle'}assert(k.Settings.
+            Name and type(k.Settings.Name)=='string','Missing name or wrong type')local l=
+            Instance.new'Frame'l.AutomaticSize=Enum.AutomaticSize.Y l.BackgroundColor3=
+            Color3.fromRGB(255,255,255)l.BackgroundTransparency=1 l.BorderColor3=Color3.
+            fromRGB(0,0,0)l.BorderSizePixel=0 l.Size=UDim2.fromScale(1,0)l.Parent=h l.
+            Visible=k.Settings.Visible==nil and true or k.Settings.Visible local m=Instance.
+            new'Frame'm.AutomaticSize=Enum.AutomaticSize.Y m.BackgroundColor3=Color3.
+            fromRGB(255,255,255)m.BackgroundTransparency=1 m.BorderColor3=Color3.fromRGB(0,0
+            ,0)m.BorderSizePixel=0 m.Size=UDim2.new(1,-50,0,33)local n=Instance.new
+            'TextLabel'n.AutomaticSize=Enum.AutomaticSize.XY n.BackgroundColor3=Color3.
+            fromRGB(255,255,255)n.BackgroundTransparency=1 n.BorderColor3=Color3.fromRGB(0,0
+            ,0)n.BorderSizePixel=0 n.FontFace=Font.new('rbxassetid://12187365364',Enum.
+            FontWeight.SemiBold,Enum.FontStyle.Normal)n.RichText=true n.TextColor3=Color3.
+            fromRGB(225,225,225)n.TextSize=16 n.TextWrapped=true n.TextXAlignment=Enum.
+            TextXAlignment.Left n.Parent=m n.Text=k.Settings.Name local o=Instance.new
+            'UIListLayout'o.Name='UIListLayout'o.Padding=UDim.new(0,5)o.SortOrder=Enum.
+            SortOrder.LayoutOrder o.VerticalAlignment=Enum.VerticalAlignment.Center o.Parent
+            =m local p=Instance.new'TextLabel'p.AutomaticSize=Enum.AutomaticSize.XY p.
+            BackgroundColor3=Color3.fromRGB(255,255,255)p.BackgroundTransparency=1 p.
+            BorderColor3=Color3.fromRGB(0,0,0)p.BorderSizePixel=0 p.FontFace=Font.new(
+            'rbxassetid://12187365364',Enum.FontWeight.SemiBold,Enum.FontStyle.Normal)p.
+            LayoutOrder=1 p.RichText=true p.Text=k.Settings.Description or''p.TextColor3=
+            Color3.fromRGB(80,80,80)p.TextSize=12 p.TextWrapped=true p.TextXAlignment=Enum.
+            TextXAlignment.Left p.Parent=m p.Visible=k.Settings.Description and true or
+            false m.Parent=l local q=Instance.new'ImageLabel'q.AnchorPoint=Vector2.new(1,0.5
+            )q.BackgroundColor3=Color3.fromRGB(37,37,46)q.BackgroundTransparency=1 q.
+            BorderColor3=Color3.fromRGB(0,0,0)q.BorderSizePixel=0 q.Image=
+            'rbxassetid://86699956318312'q.ImageColor3=Color3.fromRGB(33,36,45)q.Position=
+            UDim2.fromScale(1,0.5)q.Size=UDim2.fromOffset(35,10)local r=Instance.new
+            'UIPadding'r.Name='ToggleUIPadding'r.PaddingBottom=UDim.new(0,1)r.PaddingLeft=
+            UDim.new(0,-8)r.PaddingTop=UDim.new(0,1)r.Parent=q local s=Instance.new
+            'ImageLabel's.AnchorPoint=Vector2.new(1,0.5)s.BackgroundColor3=Color3.fromRGB(30
+            ,34,47)s.BackgroundTransparency=1 s.BorderColor3=Color3.fromRGB(0,0,0)s.
+            BorderSizePixel=0 s.Image='rbxassetid://83379579183005's.ImageColor3=Color3.
+            fromRGB(156,156,156)s.Position=UDim2.fromScale(0.5,0.5)s.Size=UDim2.fromOffset(
+            14,14)s.Parent=q q.Parent=l local t=Instance.new'UIPadding't.PaddingBottom=UDim.
+            new(0,8)t.PaddingTop=UDim.new(0,8)t.Parent=l local u=Instance.new'TextButton'u.
+            AutoButtonColor=false u.BackgroundTransparency=1 u.Size=UDim2.fromScale(1,1)u.
+            Text=''u.Parent=l k.Settings.State=k.Settings.State or false local v=function()g
+            .tween(s,TweenInfo.new(0.2,Enum.EasingStyle.Exponential),{Position=UDim2.
+            fromScale(k.Settings.State and 1 or 0.5,0.5),ImageColor3=k.Settings.State and
+            Color3.fromRGB(138,193,227)or Color3.fromRGB(156,156,156)}):Play()if k.Settings.
+            Callback then g.callback(k.Settings.Callback,k,k.Settings.State)end end u.
+            MouseButton1Click:Connect(function()k.Settings.State=not k.Settings.State v()end
+            )function k:UpdateSettings(w)if w.Name then k.Settings.Name=w.Name n.Text=w.Name
+            end if w.Description~=nil then k.Settings.Description=w.Description p.Text=w.
+            Description or''p.Visible=w.Description and true or false end if w.State~=nil
+            then k.Settings.State=w.State v()end if w.Callback then k.Settings.Callback=w.
+            Callback end if w.Visible~=nil then k.Settings.Visible=w.Visible l.Visible=w.
+            Visible end end local w=Instance.new'Frame'w.BackgroundColor3=Color3.fromRGB(30,
+            30,30)w.BorderColor3=Color3.fromRGB(0,0,0)w.BorderSizePixel=0 w.Size=UDim2.new(1
+            ,0,0,1)w.Parent=h function k:Continue()w.Visible=false return k end function k:
+            End()w.Visible=true return k end v()if j then d.Components[j]=k end k.Content=h
+            injectComponents(k,'Colorpicker')return k:End()end function CreateSlider(h,i,j)
+            local k={Settings=i,Type='Slider'}assert(k.Settings.Name and type(k.Settings.
+            Name)=='string','Missing name or wrong type')assert(k.Settings.Value and type(k.
+            Settings.Value)=='number','Missing value or wrong type')assert(k.Settings.
+            Minimum and type(k.Settings.Minimum)=='number','Missing minimum or wrong type')
+            assert(k.Settings.Maximum and type(k.Settings.Maximum)=='number',
+            'Missing maximum or wrong type')assert(k.Settings.Minimum<=k.Settings.Maximum,
+            'Minimum should be less than Maximum')assert(k.Settings.Maximum>=k.Settings.
+            Minimum,'Maximum should be greater than Minimum')local l=Instance.new'Frame'l.
+            AutomaticSize=Enum.AutomaticSize.Y l.BackgroundColor3=Color3.fromRGB(255,255,255
+            )l.BackgroundTransparency=1 l.BorderColor3=Color3.fromRGB(0,0,0)l.
+            BorderSizePixel=0 l.Size=UDim2.fromScale(1,0)l.Visible=k.Settings.Visible==nil
+            and true or k.Settings.Visible l.Parent=h local m=Instance.new'UIPadding'm.
+            PaddingBottom=UDim.new(0,8)m.PaddingTop=UDim.new(0,8)m.Parent=l local n=Instance
+            .new'Frame'n.AutomaticSize=Enum.AutomaticSize.Y n.BackgroundColor3=Color3.
+            fromRGB(255,255,255)n.BackgroundTransparency=1 n.BorderColor3=Color3.fromRGB(0,0
+            ,0)n.BorderSizePixel=0 n.Size=UDim2.fromScale(1,0)local o=Instance.new'Frame'o.
+            AnchorPoint=Vector2.new(1,0.5)o.AutomaticSize=Enum.AutomaticSize.XY o.
+            BackgroundColor3=Color3.fromRGB(255,255,255)o.BackgroundTransparency=1 o.
+            BorderColor3=Color3.fromRGB(0,0,0)o.BorderSizePixel=0 o.LayoutOrder=1 o.Position
+            =UDim2.fromScale(1,0.5)local p=Instance.new'ImageLabel'p.AnchorPoint=Vector2.
+            new(1,0.5)p.BackgroundColor3=Color3.fromRGB(30,34,47)p.BackgroundTransparency=1
+            p.BorderColor3=Color3.fromRGB(0,0,0)p.BorderSizePixel=0 p.Image=
+            'rbxassetid://82545477110166'p.ImageColor3=Color3.fromRGB(150,150,150)p.Position
+            =UDim2.fromScale(1,0.5)p.Size=UDim2.fromOffset(20,20)p.Parent=o local q=Instance
+            .new'UIListLayout'q.FillDirection=Enum.FillDirection.Horizontal q.
+            HorizontalAlignment=Enum.HorizontalAlignment.Right q.Padding=UDim.new(0,6)q.
+            SortOrder=Enum.SortOrder.LayoutOrder q.VerticalAlignment=Enum.VerticalAlignment.
+            Center q.Parent=o local r=Instance.new'TextLabel'r.AnchorPoint=Vector2.new(0,0.5
+            )r.AutomaticSize=Enum.AutomaticSize.XY r.BackgroundColor3=Color3.fromRGB(255,255
+            ,255)r.BackgroundTransparency=1 r.BorderColor3=Color3.fromRGB(0,0,0)r.
+            BorderSizePixel=0 r.FontFace=Font.new('rbxassetid://12187365364',Enum.FontWeight
+            .SemiBold,Enum.FontStyle.Normal)r.LayoutOrder=1 r.Position=UDim2.fromScale(0,0.5
+            )r.RichText=true r.Text='0'r.TextColor3=Color3.fromRGB(150,150,150)r.TextSize=16
+            r.TextWrapped=true r.TextXAlignment=Enum.TextXAlignment.Left r.Parent=o o.Parent
+            =n local s=Instance.new'Frame's.AutomaticSize=Enum.AutomaticSize.Y s.
+            BackgroundColor3=Color3.fromRGB(255,255,255)s.BackgroundTransparency=1 s.
+            BorderColor3=Color3.fromRGB(0,0,0)s.BorderSizePixel=0 s.Size=UDim2.new(1,-80,0,0
+            )local t=Instance.new'TextLabel't.AutomaticSize=Enum.AutomaticSize.XY t.
+            BackgroundColor3=Color3.fromRGB(255,255,255)t.BackgroundTransparency=1 t.
+            BorderColor3=Color3.fromRGB(0,0,0)t.BorderSizePixel=0 t.FontFace=Font.new(
+            'rbxassetid://12187365364',Enum.FontWeight.SemiBold,Enum.FontStyle.Normal)t.
+            RichText=true t.Text=k.Settings.Name t.TextColor3=Color3.fromRGB(225,225,225)t.
+            TextSize=16 t.TextWrapped=true t.TextXAlignment=Enum.TextXAlignment.Left t.
+            Parent=s local u=Instance.new'UIListLayout'u.Name='UIListLayout'u.Padding=UDim.
+            new(0,5)u.SortOrder=Enum.SortOrder.LayoutOrder u.VerticalAlignment=Enum.
+            VerticalAlignment.Center u.Parent=s local v=Instance.new'TextLabel'v.
+            AutomaticSize=Enum.AutomaticSize.XY v.BackgroundColor3=Color3.fromRGB(255,255,
+            255)v.BackgroundTransparency=1 v.BorderColor3=Color3.fromRGB(0,0,0)v.
+            BorderSizePixel=0 v.FontFace=Font.new('rbxassetid://12187365364',Enum.FontWeight
+            .SemiBold,Enum.FontStyle.Normal)v.LayoutOrder=1 v.RichText=true v.Text=k.
+            Settings.Description or''v.TextColor3=Color3.fromRGB(80,80,80)v.TextSize=12 v.
+            TextWrapped=true v.TextXAlignment=Enum.TextXAlignment.Left v.Parent=s v.Visible=
+            k.Settings.Description and true or false s.Parent=n local w=Instance.new
+            'UIListLayout'w.Name='UIListLayout'w.FillDirection=Enum.FillDirection.Horizontal
+            w.HorizontalAlignment=Enum.HorizontalAlignment.Center w.HorizontalFlex=Enum.
+            UIFlexAlignment.Fill w.Padding=UDim.new(0,5)w.SortOrder=Enum.SortOrder.
+            LayoutOrder w.VerticalAlignment=Enum.VerticalAlignment.Center w.Parent=n n.
+            Parent=l local x=Instance.new'UIListLayout'x.Name='UIListLayout'x.Padding=UDim.
+            new(0,15)x.SortOrder=Enum.SortOrder.LayoutOrder x.Parent=l local y=Instance.new
+            'TextButton'y.BackgroundColor3=Color3.fromRGB(37,37,46)y.BorderColor3=Color3.
+            fromRGB(0,0,0)y.BorderSizePixel=0 y.Size=UDim2.new(1,0,0,10)y.Text=''y.
+            AutoButtonColor=false y.LayoutOrder=1 local z=Instance.new'UICorner'z.Name=
+            'UICorner'z.CornerRadius=UDim.new(0,15)z.Parent=y local A=Instance.new'Frame'A.
+            BackgroundColor3=Color3.fromRGB(138,193,227)A.BorderColor3=Color3.fromRGB(0,0,0)
+            A.BorderSizePixel=0 A.Size=UDim2.new(0,0,0,10)local B=Instance.new'UICorner'B.
+            Name='UICorner'B.CornerRadius=UDim.new(0,15)B.Parent=A local C=Instance.new
+            'ImageLabel'C.AnchorPoint=Vector2.new(0.5,0.5)C.BackgroundColor3=Color3.fromRGB(
+            255,255,255)C.BackgroundTransparency=1 C.BorderColor3=Color3.fromRGB(0,0,0)C.
+            BorderSizePixel=0 C.Image='rbxassetid://127947626656649'C.ImageColor3=Color3.
+            fromRGB(20,20,20)C.Position=UDim2.fromScale(1,0.5)C.Size=UDim2.fromOffset(26,20)
+            C.ZIndex=2 local D=Instance.new'ImageLabel'D.AnchorPoint=Vector2.new(0.5,0.5)D.
+            BackgroundColor3=Color3.fromRGB(255,255,255)D.BackgroundTransparency=1 D.
+            BorderColor3=Color3.fromRGB(0,0,0)D.BorderSizePixel=0 D.Image=
+            'rbxassetid://98639906538385'D.ImageColor3=Color3.fromRGB(225,225,225)D.Position
+            =UDim2.fromScale(0.5,0.5)D.Size=UDim2.fromOffset(18,18)D.Parent=C C.Parent=y A.
+            Parent=y y.Parent=l local E=function()local E,F,G=10,10,y.AbsoluteSize.X local H
+            ,I,J=G-(E+F),k.Settings.Minimum,k.Settings.Maximum local K=k.Settings.Value or(I
+            +J)/2 local L,M=(K-I)/(J-I),C.AbsoluteSize.X/2 A.Size=UDim2.new(0,H*L,0,10)C.
+            Position=UDim2.new(0,E+(H*L),0.5,0)local N=tonumber(string.format('%.'..(k.
+            Settings.Precision or 0)..'f',K))local O=k.Settings.Filter and k.Settings.
+            Filter(N,I,J)r.Text=O or N end local F,G=function(F)local G,H,I,J=10,10,F.
+            Position.X,D.AbsoluteSize.X/2 local K,L,M=I-(J*0.5),y.AbsolutePosition.X+G,y.
+            AbsoluteSize.X-(G+H)K=math.clamp(K-L,0,M)local N=K/M N=k.Settings.Minimum+N*(k.
+            Settings.Maximum-k.Settings.Minimum)local O=k.Settings.Step or 0 k.Settings.
+            Value=O>0 and math.round(N/O)*O or N E()if k.Settings.Callback then g.callback(k
+            .Settings.Callback,k,k.Settings.Value)end end,false local H=function(H)if H.
+            UserInputType==Enum.UserInputType.MouseButton1 then G=true F(H)if k.Settings.
+            inputChanged then g.callback(k.Settings.inputChanged,k,k.Settings.Value,G)end
+            end end y.InputBegan:Connect(H)y.InputEnded:Connect(function(I)if I.
+            UserInputType==Enum.UserInputType.MouseButton1 then G=false if k.Settings.
+            inputChanged then g.callback(k.Settings.inputChanged,k,k.Settings.Value,G)end
+            end end)y:GetPropertyChangedSignal'AbsoluteSize':Connect(E)E()f.
+            _userInputService.InputChanged:Connect(function(I)if G and I.UserInputType==Enum
+            .UserInputType.MouseMovement then F(I)end end)function k:UpdateSettings(I)if I.
+            Visible~=nil then k.Settings.Visible=I.Visible l.Visible=I.Visible end if I.Name
+            then k.Settings.Name=I.Name t.Text=I.Name end if I.Description~=nil then k.
+            Settings.Description=I.Description v.Text=I.Description or''v.Visible=I.
+            Description and true or false end if I.Minimum then k.Settings.Minimum=I.Minimum
+            end if I.Maximum then k.Settings.Maximum=I.Maximum end if I.Step~=nil then k.
+            Settings.Step=I.Step end if I.Precision~=nil then k.Settings.Precision=I.
+            Precision end if I.Filter then k.Settings.Filter=I.Filter end if I.Callback then
+            k.Settings.Callback=I.Callback end if I.inputChanged then k.Settings.
+            inputChanged=I.inputChanged end if I.Value then local J,K=k.Settings.Minimum,k.
+            Settings.Maximum local L,M=math.clamp(I.Value,J,K),k.Settings.Step or 0 if M>0
+            then L=math.round(L/M)*M end k.Settings.Value=L task.defer(function()if y.
+            AbsoluteSize.X==0 then y:GetPropertyChangedSignal'AbsoluteSize':Wait()end E()if
+            k.Settings.Callback then g.callback(k.Settings.Callback,k,k.Settings.Value)end
+            end)end end local I=Instance.new'Frame'I.BackgroundColor3=Color3.fromRGB(30,30,
+            30)I.BorderColor3=Color3.fromRGB(0,0,0)I.BorderSizePixel=0 I.Size=UDim2.new(1,0,
+            0,1)I.Parent=h function k:Continue()I.Visible=false return k end function k:End(
+            )I.Visible=true return k end k:UpdateSettings(k.Settings)if j then d.Components[
+            j]=k end return k:End()end function CreateInput(h,i,j)local k,l={Settings=i,Type
+            ='Input'},Instance.new'Frame'l.BackgroundColor3=Color3.fromRGB(30,30,30)l.
+            BorderColor3=Color3.fromRGB(0,0,0)l.BorderSizePixel=0 l.Size=UDim2.new(1,0,0,40)
+            l.Visible=k.Settings.Visible==nil and true or k.Settings.Visible l.Parent=h
+            local m=Instance.new'UICorner'm.CornerRadius=UDim.new(0,5)m.Parent=l local n=
+            Instance.new'UIListLayout'n.FillDirection=Enum.FillDirection.Horizontal n.
+            Padding=UDim.new(0,15)n.SortOrder=Enum.SortOrder.LayoutOrder n.VerticalAlignment
+            =Enum.VerticalAlignment.Center n.Parent=l local o=Instance.new'UIPadding'o.
+            PaddingLeft=UDim.new(0,15)o.Parent=l local p=Instance.new'TextBox'p.AnchorPoint=
+            Vector2.new(0,0.5)p.BackgroundColor3=Color3.fromRGB(255,255,255)p.
+            BackgroundTransparency=1 p.BorderColor3=Color3.fromRGB(0,0,0)p.BorderSizePixel=0
+            p.ClearTextOnFocus=false p.ClipsDescendants=true p.CursorPosition=-1 p.FontFace=
             Font.new('rbxassetid://12187365364',Enum.FontWeight.SemiBold,Enum.FontStyle.
-            Normal)o.LayoutOrder=1 o.PlaceholderColor3=Color3.fromRGB(120,120,120)o.
-            PlaceholderText=n.Placeholder or'...'o.Size=UDim2.fromScale(1,1)o.Text=n.Text or
-            ''o.TextColor3=Color3.fromRGB(156,156,156)o.TextSize=15 o.TextXAlignment=Enum.
-            TextXAlignment.Left o.Parent=j l[m]={inputBox=o}local p=Instance.new'UIPadding'p
-            .PaddingLeft=UDim.new(0,10)p.PaddingRight=UDim.new(0,10)p.Parent=o local q=
-            Instance.new'UICorner'q.CornerRadius=UDim.new(0,5)q.Parent=o local r=n.
-            CharacterSub or'None'o.FocusLost:Connect(function()if i.Settings.Callback then e
-            .callback(i.Settings.Callback,i,m,o.Text)end end)o:GetPropertyChangedSignal
-            'Text':Connect(function()if r and type(r)=='string'and e.subParser[r]then o.Text
-            =e.subParser[r](o.Text)elseif r and type(r)=='function'then o.Text=n.
-            CharacterSub(o.Text)end if n.CharacterLimit then if string.len(o.Text)>n.
-            CharacterLimit then o.Text=string.sub(o.Text,1,n.CharacterLimit)end end n.Text=o
-            .Text if i.Settings.onTextChanged then e.callback(i.Settings.onTextChanged,i,m,o
-            .Text)end end)end function i:UpdateSettings(m,n)local o,p=i.Settings.Inputs[m],l
-            [m]if o and p then if n.Text~=nil then o.Text=n.Text p.inputBox.Text=n.Text if i
-            .Settings.Callback then e.callback(i.Settings.Callback,i,m,n.Text)end end if n.
-            Placeholder~=nil then o.Placeholder=n.Placeholder p.inputBox.PlaceholderText=n.
-            Placeholder end end if n.Callback~=nil then i.Settings.Callback=n.Callback end
-            if n.onTextChanged~=nil then i.Settings.onTextChanged=n.onTextChanged end if n.
-            Visible~=nil then i.Settings.Visible=n.Visible j.Visible=n.Visible end end local
-            m=Instance.new'Frame'm.BackgroundColor3=Color3.fromRGB(30,30,30)m.BorderColor3=
-            Color3.fromRGB(0,0,0)m.BorderSizePixel=0 m.Size=UDim2.new(1,0,0,1)m.Parent=f
-            function i:Continue()m.Visible=false return i end function i:End()m.Visible=true
-            return i end for n,o in pairs(i.Settings.Inputs)do i:UpdateSettings(n,o)end if h
-            then b.Components[h]=i end return i:End()end function CreateDropdown(f,g,h)local
-            i={Settings=g,Type='Dropdown'}assert(i.Settings.Name and type(i.Settings.Name)==
-            'string','Missing name or wrong type')local j=Instance.new'Frame'j.AutomaticSize
-            =Enum.AutomaticSize.Y j.BackgroundColor3=Color3.fromRGB(255,255,255)j.
-            BackgroundTransparency=1 j.BorderColor3=Color3.fromRGB(0,0,0)j.BorderSizePixel=0
-            j.Size=UDim2.fromScale(1,0)j.Parent=f local k=Instance.new'UIPadding'k.
-            PaddingBottom=UDim.new(0,8)k.PaddingTop=UDim.new(0,8)k.Parent=j local l=Instance
-            .new'UIListLayout'l.Padding=UDim.new(0,15)l.SortOrder=Enum.SortOrder.LayoutOrder
-            l.Parent=j local m=Instance.new'TextButton'm.AutoButtonColor=false m.
-            AutomaticSize=Enum.AutomaticSize.Y m.BackgroundColor3=Color3.fromRGB(30,30,30)m.
-            BorderColor3=Color3.fromRGB(0,0,0)m.BorderSizePixel=0 m.ClipsDescendants=true m.
+            Normal)p.LayoutOrder=1 p.PlaceholderColor3=Color3.fromRGB(120,120,120)p.
+            PlaceholderText=k.Settings.Placeholder or'...'p.Size=UDim2.new(1,-50,1,0)p.Text=
+            k.Settings.Text or''p.TextColor3=Color3.fromRGB(156,156,156)p.TextSize=15 p.
+            TextXAlignment=Enum.TextXAlignment.Left p.Parent=l local q=Instance.new
+            'ImageLabel'q.BackgroundColor3=Color3.fromRGB(255,255,255)q.
+            BackgroundTransparency=1 q.BorderColor3=Color3.fromRGB(0,0,0)q.BorderSizePixel=0
+            q.Image='rbxassetid://98129527229953'q.ImageColor3=Color3.fromRGB(156,156,156)q.
+            Size=UDim2.fromOffset(20,20)q.Parent=l p.FocusLost:Connect(function()if k.
+            Settings.CharacterSub=='Mathematic'then p.Text=g.subParser[k.Settings.
+            CharacterSub](p.Text)end if k.Settings.Callback then g.callback(k.Settings.
+            Callback,k,p.Text)end end)p:GetPropertyChangedSignal'Text':Connect(function()if
+            k.Settings.CharacterSub and k.Settings.CharacterSub~='Mathematic'and g.subParser
+            [k.Settings.CharacterSub]then p.Text=g.subParser[k.Settings.CharacterSub](p.Text
+            )elseif type(k.Settings.CharacterSub)=='function'then p.Text=k.Settings.
+            CharacterSub(p.Text)end if k.Settings.CharacterLimit then if string.len(p.Text)>
+            k.Settings.CharacterLimit then p.Text=string.sub(p.Text,1,k.Settings.
+            CharacterLimit)end end k.Settings.Text=p.Text if k.Settings.onTextChanged then g
+            .callback(k.Settings.onTextChanged,k,p.Text)end end)function k:UpdateSettings(r)
+            if r.Text then k.Settings.Text=r.Text p.Text=r.Text if k.Settings.Callback then
+            g.callback(k.Settings.Callback,k,p.Text)end end if r.Placeholder then k.Settings
+            .Placeholder=r.Placeholder p.PlaceholderText=r.Placeholder end if r.Callback
+            then k.Settings.Callback=r.Callback end if r.onTextChanged then k.Settings.
+            onTextChanged=r.onTextChanged end if r.Visible~=nil then k.Settings.Visible=r.
+            Visible l.Visible=r.Visible end end local r=Instance.new'Frame'r.
+            BackgroundColor3=Color3.fromRGB(30,30,30)r.BorderColor3=Color3.fromRGB(0,0,0)r.
+            BorderSizePixel=0 r.Size=UDim2.new(1,0,0,1)r.Parent=h function k:Continue()r.
+            Visible=false return k end function k:End()r.Visible=true return k end k:
+            UpdateSettings(k.Settings)if j then d.Components[j]=k end return k:End()end
+            function CreateMultiInput(h,i,j)local k,l={Settings=i,Type='MultiInput'},
+            Instance.new'Frame'l.BackgroundColor3=Color3.fromRGB(30,30,30)l.
+            BackgroundTransparency=1 l.BorderColor3=Color3.fromRGB(0,0,0)l.BorderSizePixel=0
+            l.Size=UDim2.new(1,0,0,40)l.Parent=h local m=Instance.new'UIListLayout'm.
+            FillDirection=Enum.FillDirection.Horizontal m.HorizontalFlex=Enum.
+            UIFlexAlignment.Fill m.Padding=UDim.new(0,5)m.SortOrder=Enum.SortOrder.
+            LayoutOrder m.VerticalAlignment=Enum.VerticalAlignment.Center m.Parent=l local n
+            ={}for o,p in ipairs(k.Settings.Inputs)do local q=Instance.new'TextBox'q.
+            BackgroundColor3=Color3.fromRGB(30,30,30)q.BorderColor3=Color3.fromRGB(0,0,0)q.
+            BorderSizePixel=0 q.ClearTextOnFocus=false q.ClipsDescendants=true q.FontFace=
+            Font.new('rbxassetid://12187365364',Enum.FontWeight.SemiBold,Enum.FontStyle.
+            Normal)q.LayoutOrder=1 q.PlaceholderColor3=Color3.fromRGB(120,120,120)q.
+            PlaceholderText=p.Placeholder or'...'q.Size=UDim2.fromScale(1,1)q.Text=p.Text or
+            ''q.TextColor3=Color3.fromRGB(156,156,156)q.TextSize=15 q.TextXAlignment=Enum.
+            TextXAlignment.Left q.Parent=l n[o]={inputBox=q}local r=Instance.new'UIPadding'r
+            .PaddingLeft=UDim.new(0,10)r.PaddingRight=UDim.new(0,10)r.Parent=q local s=
+            Instance.new'UICorner's.CornerRadius=UDim.new(0,5)s.Parent=q local t=p.
+            CharacterSub or'None'q.FocusLost:Connect(function()if k.Settings.Callback then g
+            .callback(k.Settings.Callback,k,o,q.Text)end end)q:GetPropertyChangedSignal
+            'Text':Connect(function()if t and type(t)=='string'and g.subParser[t]then q.Text
+            =g.subParser[t](q.Text)elseif t and type(t)=='function'then q.Text=p.
+            CharacterSub(q.Text)end if p.CharacterLimit then if string.len(q.Text)>p.
+            CharacterLimit then q.Text=string.sub(q.Text,1,p.CharacterLimit)end end p.Text=q
+            .Text if k.Settings.onTextChanged then g.callback(k.Settings.onTextChanged,k,o,q
+            .Text)end end)end function k:UpdateSettings(o,p)local q,r=k.Settings.Inputs[o],n
+            [o]if q and r then if p.Text~=nil then q.Text=p.Text r.inputBox.Text=p.Text if k
+            .Settings.Callback then g.callback(k.Settings.Callback,k,o,p.Text)end end if p.
+            Placeholder~=nil then q.Placeholder=p.Placeholder r.inputBox.PlaceholderText=p.
+            Placeholder end end if p.Callback~=nil then k.Settings.Callback=p.Callback end
+            if p.onTextChanged~=nil then k.Settings.onTextChanged=p.onTextChanged end if p.
+            Visible~=nil then k.Settings.Visible=p.Visible l.Visible=p.Visible end end local
+            o=Instance.new'Frame'o.BackgroundColor3=Color3.fromRGB(30,30,30)o.BorderColor3=
+            Color3.fromRGB(0,0,0)o.BorderSizePixel=0 o.Size=UDim2.new(1,0,0,1)o.Parent=h
+            function k:Continue()o.Visible=false return k end function k:End()o.Visible=true
+            return k end for p,q in pairs(k.Settings.Inputs)do k:UpdateSettings(p,q)end if j
+            then d.Components[j]=k end return k:End()end function CreateDropdown(h,i,j)local
+            k={Settings=i,Type='Dropdown'}assert(k.Settings.Name and type(k.Settings.Name)==
+            'string','Missing name or wrong type')local l=Instance.new'Frame'l.AutomaticSize
+            =Enum.AutomaticSize.Y l.BackgroundColor3=Color3.fromRGB(255,255,255)l.
+            BackgroundTransparency=1 l.BorderColor3=Color3.fromRGB(0,0,0)l.BorderSizePixel=0
+            l.Size=UDim2.fromScale(1,0)l.Parent=h local m=Instance.new'UIPadding'm.
+            PaddingBottom=UDim.new(0,8)m.PaddingTop=UDim.new(0,8)m.Parent=l local n=Instance
+            .new'UIListLayout'n.Padding=UDim.new(0,15)n.SortOrder=Enum.SortOrder.LayoutOrder
+            n.Parent=l local o=Instance.new'TextButton'o.AutoButtonColor=false o.
+            AutomaticSize=Enum.AutomaticSize.Y o.BackgroundColor3=Color3.fromRGB(30,30,30)o.
+            BorderColor3=Color3.fromRGB(0,0,0)o.BorderSizePixel=0 o.ClipsDescendants=true o.
             FontFace=Font.new('rbxassetid://12187365364',Enum.FontWeight.Bold,Enum.FontStyle
-            .Normal)m.LayoutOrder=1 m.Position=UDim2.fromScale(0,0.16)m.Size=UDim2.new(1,0,0
-            ,40)m.Text=''m.TextColor3=Color3.fromRGB(156,156,156)m.TextSize=15 m.
-            TextXAlignment=Enum.TextXAlignment.Left m.TextYAlignment=Enum.TextYAlignment.Top
-            local n=Instance.new'UIPadding'n.PaddingBottom=UDim.new(0,10)n.PaddingLeft=UDim.
-            new(0,15)n.PaddingRight=UDim.new(0,15)n.PaddingTop=UDim.new(0,10)n.Parent=m
-            local o=Instance.new'UICorner'o.CornerRadius=UDim.new(0,5)o.Parent=m local p=
-            Instance.new'Frame'p.AutomaticSize=Enum.AutomaticSize.Y p.BackgroundColor3=
-            Color3.fromRGB(255,255,255)p.BackgroundTransparency=1 p.BorderColor3=Color3.
-            fromRGB(0,0,0)p.BorderSizePixel=0 p.Size=UDim2.fromScale(1,0)local q=Instance.
-            new'ImageLabel'q.AnchorPoint=Vector2.new(1,0.5)q.BackgroundColor3=Color3.
-            fromRGB(30,34,47)q.BackgroundTransparency=1 q.BorderColor3=Color3.fromRGB(0,0,0)
-            q.BorderSizePixel=0 q.Image='rbxassetid://77136690433593'q.ImageColor3=Color3.
-            fromRGB(150,150,150)q.LayoutOrder=1 q.Position=UDim2.fromScale(1,0.5)q.Size=
-            UDim2.fromOffset(18,18)q.Parent=p local r=Instance.new'TextLabel'r.AutomaticSize
-            =Enum.AutomaticSize.Y r.BackgroundColor3=Color3.fromRGB(255,255,255)r.
-            BackgroundTransparency=1 r.BorderColor3=Color3.fromRGB(0,0,0)r.BorderSizePixel=0
-            r.FontFace=Font.new('rbxassetid://12187365364',Enum.FontWeight.SemiBold,Enum.
-            FontStyle.Normal)r.RichText=true r.Size=UDim2.new(1,-35,0,20)r.Text='...'r.
-            TextColor3=Color3.fromRGB(156,156,156)r.TextSize=15 r.TextWrapped=true r.
-            TextXAlignment=Enum.TextXAlignment.Left r.Parent=p p.Parent=m m.Parent=j local s
-            =Instance.new'Frame's.AutomaticSize=Enum.AutomaticSize.Y s.BackgroundColor3=
-            Color3.fromRGB(255,255,255)s.BackgroundTransparency=1 s.BorderColor3=Color3.
-            fromRGB(0,0,0)s.BorderSizePixel=0 s.Size=UDim2.new(1,0,0,33)local t=Instance.new
-            'TextLabel't.AutomaticSize=Enum.AutomaticSize.XY t.BackgroundColor3=Color3.
-            fromRGB(255,255,255)t.BackgroundTransparency=1 t.BorderColor3=Color3.fromRGB(0,0
-            ,0)t.BorderSizePixel=0 t.FontFace=Font.new('rbxassetid://12187365364',Enum.
-            FontWeight.SemiBold,Enum.FontStyle.Normal)t.RichText=true t.Text='Name't.
-            TextColor3=Color3.fromRGB(225,225,225)t.TextSize=16 t.TextWrapped=true t.
-            TextXAlignment=Enum.TextXAlignment.Left t.Parent=s local u=Instance.new
-            'UIListLayout'u.Padding=UDim.new(0,5)u.SortOrder=Enum.SortOrder.LayoutOrder u.
-            VerticalAlignment=Enum.VerticalAlignment.Center u.Parent=s local v=Instance.new
+            .Normal)o.LayoutOrder=1 o.Position=UDim2.fromScale(0,0.16)o.Size=UDim2.new(1,0,0
+            ,40)o.Text=''o.TextColor3=Color3.fromRGB(156,156,156)o.TextSize=15 o.
+            TextXAlignment=Enum.TextXAlignment.Left o.TextYAlignment=Enum.TextYAlignment.Top
+            local p=Instance.new'UIPadding'p.PaddingBottom=UDim.new(0,10)p.PaddingLeft=UDim.
+            new(0,15)p.PaddingRight=UDim.new(0,15)p.PaddingTop=UDim.new(0,10)p.Parent=o
+            local q=Instance.new'UICorner'q.CornerRadius=UDim.new(0,5)q.Parent=o local r=
+            Instance.new'Frame'r.AutomaticSize=Enum.AutomaticSize.Y r.BackgroundColor3=
+            Color3.fromRGB(255,255,255)r.BackgroundTransparency=1 r.BorderColor3=Color3.
+            fromRGB(0,0,0)r.BorderSizePixel=0 r.Size=UDim2.fromScale(1,0)local s=Instance.
+            new'ImageLabel's.AnchorPoint=Vector2.new(1,0.5)s.BackgroundColor3=Color3.
+            fromRGB(30,34,47)s.BackgroundTransparency=1 s.BorderColor3=Color3.fromRGB(0,0,0)
+            s.BorderSizePixel=0 s.Image='rbxassetid://77136690433593's.ImageColor3=Color3.
+            fromRGB(150,150,150)s.LayoutOrder=1 s.Position=UDim2.fromScale(1,0.5)s.Size=
+            UDim2.fromOffset(18,18)s.Parent=r local t=Instance.new'TextLabel't.AutomaticSize
+            =Enum.AutomaticSize.Y t.BackgroundColor3=Color3.fromRGB(255,255,255)t.
+            BackgroundTransparency=1 t.BorderColor3=Color3.fromRGB(0,0,0)t.BorderSizePixel=0
+            t.FontFace=Font.new('rbxassetid://12187365364',Enum.FontWeight.SemiBold,Enum.
+            FontStyle.Normal)t.RichText=true t.Size=UDim2.new(1,-35,0,20)t.Text='...'t.
+            TextColor3=Color3.fromRGB(156,156,156)t.TextSize=15 t.TextWrapped=true t.
+            TextXAlignment=Enum.TextXAlignment.Left t.Parent=r r.Parent=o o.Parent=l local u
+            =Instance.new'Frame'u.AutomaticSize=Enum.AutomaticSize.Y u.BackgroundColor3=
+            Color3.fromRGB(255,255,255)u.BackgroundTransparency=1 u.BorderColor3=Color3.
+            fromRGB(0,0,0)u.BorderSizePixel=0 u.Size=UDim2.new(1,0,0,33)local v=Instance.new
             'TextLabel'v.AutomaticSize=Enum.AutomaticSize.XY v.BackgroundColor3=Color3.
             fromRGB(255,255,255)v.BackgroundTransparency=1 v.BorderColor3=Color3.fromRGB(0,0
             ,0)v.BorderSizePixel=0 v.FontFace=Font.new('rbxassetid://12187365364',Enum.
-            FontWeight.SemiBold,Enum.FontStyle.Normal)v.LayoutOrder=1 v.RichText=true v.Text
-            ='description'v.TextColor3=Color3.fromRGB(80,80,80)v.TextSize=12 v.TextWrapped=
-            true v.TextXAlignment=Enum.TextXAlignment.Left v.Parent=s v.Visible=i.Settings.
-            Description and true or false s.Parent=j local w=Instance.new'Frame'w.Name=
-            'dropdownFrame'w.BackgroundColor3=Color3.fromRGB(30,30,30)w.BorderColor3=Color3.
-            fromRGB(0,0,0)w.BorderSizePixel=0 w.Size=UDim2.fromOffset(350,150)local x=
-            Instance.new'ScrollingFrame'x.Name='dropdownContent'x.Active=true x.
-            AutomaticCanvasSize=Enum.AutomaticSize.Y x.BackgroundColor3=Color3.fromRGB(30,30
-            ,30)x.BackgroundTransparency=1 x.BorderColor3=Color3.fromRGB(0,0,0)x.
-            BorderSizePixel=0 x.CanvasSize=UDim2.new()x.ScrollBarImageTransparency=0.7 x.
-            ScrollBarThickness=3 x.Size=UDim2.fromScale(1,1)local y=Instance.new
-            'UIListLayout'y.Name='UIListLayout'y.SortOrder=Enum.SortOrder.LayoutOrder y.
-            Parent=x local z=Instance.new'UIPadding'z.Name='UIPadding'z.PaddingRight=UDim.
-            new(0,15)z.Parent=x x.Parent=w local A=Instance.new'UIPadding'A.Name='UIPadding'
-            A.PaddingBottom=UDim.new(0,10)A.PaddingLeft=UDim.new(0,15)A.PaddingTop=UDim.new(
-            0,3)A.Parent=w local B=Instance.new'UICorner'B.Name='UICorner'B.CornerRadius=
-            UDim.new(0,5)B.Parent=w local C,D,E,F,G,H=false,false,false,{},{},{Selected=
+            FontWeight.SemiBold,Enum.FontStyle.Normal)v.RichText=true v.Text='Name'v.
+            TextColor3=Color3.fromRGB(225,225,225)v.TextSize=16 v.TextWrapped=true v.
+            TextXAlignment=Enum.TextXAlignment.Left v.Parent=u local w=Instance.new
+            'UIListLayout'w.Padding=UDim.new(0,5)w.SortOrder=Enum.SortOrder.LayoutOrder w.
+            VerticalAlignment=Enum.VerticalAlignment.Center w.Parent=u local x=Instance.new
+            'TextLabel'x.AutomaticSize=Enum.AutomaticSize.XY x.BackgroundColor3=Color3.
+            fromRGB(255,255,255)x.BackgroundTransparency=1 x.BorderColor3=Color3.fromRGB(0,0
+            ,0)x.BorderSizePixel=0 x.FontFace=Font.new('rbxassetid://12187365364',Enum.
+            FontWeight.SemiBold,Enum.FontStyle.Normal)x.LayoutOrder=1 x.RichText=true x.Text
+            ='description'x.TextColor3=Color3.fromRGB(80,80,80)x.TextSize=12 x.TextWrapped=
+            true x.TextXAlignment=Enum.TextXAlignment.Left x.Parent=u x.Visible=k.Settings.
+            Description and true or false u.Parent=l local y=Instance.new'Frame'y.Name=
+            'dropdownFrame'y.BackgroundColor3=Color3.fromRGB(30,30,30)y.BorderColor3=Color3.
+            fromRGB(0,0,0)y.BorderSizePixel=0 y.Size=UDim2.fromOffset(350,150)local z=
+            Instance.new'ScrollingFrame'z.Name='dropdownContent'z.Active=true z.
+            AutomaticCanvasSize=Enum.AutomaticSize.Y z.BackgroundColor3=Color3.fromRGB(30,30
+            ,30)z.BackgroundTransparency=1 z.BorderColor3=Color3.fromRGB(0,0,0)z.
+            BorderSizePixel=0 z.CanvasSize=UDim2.new()z.ScrollBarImageTransparency=0.7 z.
+            ScrollBarThickness=3 z.Size=UDim2.fromScale(1,1)local A=Instance.new
+            'UIListLayout'A.Name='UIListLayout'A.SortOrder=Enum.SortOrder.LayoutOrder A.
+            Parent=z local B=Instance.new'UIPadding'B.Name='UIPadding'B.PaddingRight=UDim.
+            new(0,15)B.Parent=z z.Parent=y local C=Instance.new'UIPadding'C.Name='UIPadding'
+            C.PaddingBottom=UDim.new(0,10)C.PaddingLeft=UDim.new(0,15)C.PaddingTop=UDim.new(
+            0,3)C.Parent=y local D=Instance.new'UICorner'D.Name='UICorner'D.CornerRadius=
+            UDim.new(0,5)D.Parent=y local E,F,G,H,I,J=false,false,false,{},{},{Selected=
             Color3.fromRGB(225,225,225),Unselected=Color3.fromRGB(156,156,156)}table.insert(
-            c.dropdownFrames,w)local I=function(I)local J,K='...',{}for L,M in ipairs(F)do
-            local N=G[M].Text table.insert(K,N)end if#K==1 then J=K[1]elseif#K>1 then J=
-            table.concat(K,', ')end r.Text=J i.Settings.Value=K if I and i.Settings.Callback
-            then e.callback(i.Settings.Callback,i,K)end end local J=function(J)local K,L=i.
-            Settings.Limit,i.Settings.Minimum or 0 if table.find(F,J)then if#F-1<L then
-            return end table.remove(F,table.find(F,J))e.tween(G[J],TweenInfo.new(0.1,Enum.
-            EasingStyle.Sine),{TextColor3=H.Unselected}):Play()else if K and#F>=K then local
-            M=table.remove(F,1)e.tween(G[M],TweenInfo.new(0.1,Enum.EasingStyle.Sine),{
-            TextColor3=H.Unselected}):Play()end table.insert(F,J)e.tween(G[J],TweenInfo.new(
-            0.1,Enum.EasingStyle.Sine),{TextColor3=H.Selected}):Play()end I(true)end local K
-            ,L=function(K)for L,M in ipairs(K)do local N=Instance.new'TextButton'N.Name=
-            'Button'N.AutoButtonColor=false N.AutomaticSize=Enum.AutomaticSize.Y N.
-            BackgroundTransparency=1 N.BorderSizePixel=0 N.FontFace=Font.new(
-            'rbxassetid://12187365364',Enum.FontWeight.SemiBold,Enum.FontStyle.Normal)N.
-            RichText=true N.Size=UDim2.fromScale(1,0)N.Text=M N.TextColor3=Color3.fromRGB(
-            156,156,156)N.TextSize=15 N.TextWrapped=true N.TextXAlignment=Enum.
-            TextXAlignment.Left N.Parent=x N.LayoutOrder=L local O=Instance.new'UIPadding'O.
-            Name='UIPadding'O.PaddingBottom=UDim.new(0,15)O.PaddingTop=UDim.new(0,15)O.
-            Parent=N N.MouseButton1Click:Connect(function()J(M)end)G[M]=N end end,function()
-            w.Position=UDim2.new(0,m.AbsolutePosition.X,0,m.AbsolutePosition.Y+(m.
-            AbsoluteSize.Y*2)+25)end local M=function()if E then return end E=true if D then
-            e.tween(q,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{Rotation=0}):Play()local M=e
-            .tween(w,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{Size=UDim2.fromOffset(m.
-            AbsoluteSize.X,0)})M:Play()M.Completed:Wait()w.Parent=nil D=false else e.tween(q
-            ,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{Rotation=180}):Play()for M,N in
-            pairs(c.dropdownFrames)do if N==w then N.Size=UDim2.fromOffset(m.AbsoluteSize.X,
-            0)N.Parent=c.gui e.tween(N,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{Size=UDim2.
-            fromOffset(m.AbsoluteSize.X,150)}):Play()L()else local O=e.tween(N,TweenInfo.
-            new(0.1,Enum.EasingStyle.Sine),{Size=UDim2.fromOffset(m.AbsoluteSize.X,0)})O.
-            Completed:Connect(function()N.Parent=nil end)O:Play()end end D=true end E=false
-            end m.MouseButton1Click:Connect(M)m:GetPropertyChangedSignal'AbsolutePosition':
-            Connect(L)m:GetPropertyChangedSignal'AbsoluteSize':Connect(L)w.MouseEnter:
-            Connect(function()C=true end)w.MouseLeave:Connect(function()C=false end)d.
-            _userInputService.InputBegan:Connect(function(N)if N.UserInputType==Enum.
-            UserInputType.MouseButton1 and not C and w.Parent then M()end end)function i:
-            Insert(N)K(N)end function i:Remove(N)for O,P in ipairs(N)do for Q=#i.Settings.
-            Options,1,-1 do if i.Settings.Options[Q]==P then table.remove(i.Settings.Options
-            ,Q)end end if G[P]then G[P]:Destroy()G[P]=nil end for Q=#F,1,-1 do if F[Q]==P
-            then table.remove(F,Q)end end I()end end function i:UpdateSettings(N)if N.
-            Visible~=nil then j=N.Visible end if N.Name then i.Settings.Name=N.Name t.Text=N
-            .Name end if N.Description~=nil then i.Settings.Description=N.Description v.Text
-            =N.Description or''v.Visible=N.Description and true or false end if N.Limit~=nil
-            then i.Settings.Limit=N.Limit end if N.Minimum then i.Settings.Minimum=N.Minimum
-            end if N.Callback then i.Settings.Callback=N.Callback end if N.Options then i.
-            Settings.Options=N.Options for O,P in pairs(G)do P:Destroy()end G={}K(N.Options)
-            end if N.Value~=nil then if type(N.Value)=='string'then J(N.Value)elseif type(N.
-            Value)=='table'then for O,P in pairs(N.Value)do J(P)end end end end local N=
-            Instance.new'Frame'N.BackgroundColor3=Color3.fromRGB(30,30,30)N.BorderColor3=
-            Color3.fromRGB(0,0,0)N.BorderSizePixel=0 N.Size=UDim2.new(1,0,0,1)N.Parent=f
-            function i:Continue()N.Visible=false return i end function i:End()N.Visible=true
-            return i end i:UpdateSettings(i.Settings)if h then b.Components[h]=i end return
-            i:End()end function CreateColorpicker(f,g,h)local i,j={Settings=g,Type=
-            'Colorpicker'},Instance.new'Frame'j.Name='Colorpicker'j.AutomaticSize=Enum.
-            AutomaticSize.Y j.BackgroundColor3=Color3.fromRGB(255,255,255)j.
-            BackgroundTransparency=1 j.BorderColor3=Color3.fromRGB(0,0,0)j.BorderSizePixel=0
-            j.Size=UDim2.fromScale(1,0)local m=Instance.new'UIPadding'm.Name='UIPadding'm.
-            PaddingBottom=UDim.new(0,8)m.PaddingTop=UDim.new(0,8)m.Parent=j local p=Instance
-            .new'Frame'p.Name='ElementInfo'p.AutomaticSize=Enum.AutomaticSize.Y p.
-            BackgroundColor3=Color3.fromRGB(255,255,255)p.BackgroundTransparency=1 p.
-            BorderColor3=Color3.fromRGB(0,0,0)p.BorderSizePixel=0 p.Size=UDim2.fromScale(1,0
-            )local q=Instance.new'Frame'q.Name='Info'q.AutomaticSize=Enum.AutomaticSize.Y q.
-            BackgroundColor3=Color3.fromRGB(255,255,255)q.BackgroundTransparency=1 q.
-            BorderColor3=Color3.fromRGB(0,0,0)q.BorderSizePixel=0 q.Size=UDim2.new(1,-80,0,0
-            )local r=Instance.new'TextLabel'r.Name='Name'r.AutomaticSize=Enum.AutomaticSize.
-            XY r.BackgroundColor3=Color3.fromRGB(255,255,255)r.BackgroundTransparency=1 r.
-            BorderColor3=Color3.fromRGB(0,0,0)r.BorderSizePixel=0 r.FontFace=Font.new(
-            'rbxassetid://12187365364',Enum.FontWeight.SemiBold,Enum.FontStyle.Normal)r.
-            RichText=true r.Text='Name'r.TextColor3=Color3.fromRGB(225,225,225)r.TextSize=16
-            r.TextWrapped=true r.TextXAlignment=Enum.TextXAlignment.Left r.Parent=q r.
-            Visible=false local s=Instance.new'UIListLayout's.Name='UIListLayout's.Padding=
-            UDim.new(0,5)s.SortOrder=Enum.SortOrder.LayoutOrder s.VerticalAlignment=Enum.
-            VerticalAlignment.Center s.Parent=q local t=Instance.new'TextLabel't.Name=
-            'Description't.AutomaticSize=Enum.AutomaticSize.XY t.BackgroundColor3=Color3.
-            fromRGB(255,255,255)t.BackgroundTransparency=1 t.BorderColor3=Color3.fromRGB(0,0
-            ,0)t.BorderSizePixel=0 t.FontFace=Font.new('rbxassetid://12187365364',Enum.
-            FontWeight.SemiBold,Enum.FontStyle.Normal)t.LayoutOrder=1 t.RichText=true t.Text
-            ='Description't.TextColor3=Color3.fromRGB(80,80,80)t.TextSize=12 t.TextWrapped=
-            true t.TextXAlignment=Enum.TextXAlignment.Left t.Parent=q t.Visible=false q.
-            Parent=p p.Parent=j local u=Instance.new'UIListLayout'u.Name='UIListLayout'u.
-            Padding=UDim.new(0,15)u.SortOrder=Enum.SortOrder.LayoutOrder u.Parent=j local v=
-            Instance.new'Frame'v.Name='PickerColors'v.AutomaticSize=Enum.AutomaticSize.Y v.
-            BackgroundColor3=Color3.fromRGB(255,255,255)v.BackgroundTransparency=1 v.
-            BorderColor3=Color3.fromRGB(0,0,0)v.BorderSizePixel=0 v.LayoutOrder=1 v.Size=
-            UDim2.fromScale(1,0)local w=Instance.new'Frame'w.Name='SuggestedColors'w.
-            AutomaticSize=Enum.AutomaticSize.Y w.BackgroundColor3=Color3.fromRGB(255,255,255
-            )w.BackgroundTransparency=1 w.BorderColor3=Color3.fromRGB(0,0,0)w.
-            BorderSizePixel=0 w.Size=UDim2.fromScale(0.7,0)local x=Instance.new
-            'UIListLayout'x.Name='UIListLayout'x.FillDirection=Enum.FillDirection.Horizontal
-            x.Padding=UDim.new(0,8)x.SortOrder=Enum.SortOrder.LayoutOrder x.Parent=w w.
-            Parent=v local y=Instance.new'Frame'y.Name='CustomColor'y.AnchorPoint=Vector2.
-            new(1,0)y.AutomaticSize=Enum.AutomaticSize.Y y.BackgroundColor3=Color3.fromRGB(
-            255,255,255)y.BackgroundTransparency=1 y.BorderColor3=Color3.fromRGB(0,0,0)y.
-            BorderSizePixel=0 y.Position=UDim2.fromScale(1,0)y.Size=UDim2.fromScale(0.3,0)
-            local z=Instance.new'UIListLayout'z.Name='UIListLayout'z.FillDirection=Enum.
-            FillDirection.Horizontal z.HorizontalAlignment=Enum.HorizontalAlignment.Right z.
-            Padding=UDim.new(0,8)z.SortOrder=Enum.SortOrder.LayoutOrder z.VerticalAlignment=
-            Enum.VerticalAlignment.Center z.Parent=y local A=Instance.new'TextLabel'A.Name=
-            'Name'A.AutomaticSize=Enum.AutomaticSize.XY A.BackgroundColor3=Color3.fromRGB(
+            e.dropdownFrames,y)local K=function(K)local L,M='...',{}for N,O in ipairs(H)do
+            local P=I[O].Text table.insert(M,P)end if#M==1 then L=M[1]elseif#M>1 then L=
+            table.concat(M,', ')end t.Text=L k.Settings.Value=M if K and k.Settings.Callback
+            then g.callback(k.Settings.Callback,k,M)end end local L=function(L)local M,N=k.
+            Settings.Limit,k.Settings.Minimum or 0 if table.find(H,L)then if#H-1<N then
+            return end table.remove(H,table.find(H,L))g.tween(I[L],TweenInfo.new(0.1,Enum.
+            EasingStyle.Sine),{TextColor3=J.Unselected}):Play()else if M and#H>=M then local
+            O=table.remove(H,1)g.tween(I[O],TweenInfo.new(0.1,Enum.EasingStyle.Sine),{
+            TextColor3=J.Unselected}):Play()end table.insert(H,L)g.tween(I[L],TweenInfo.new(
+            0.1,Enum.EasingStyle.Sine),{TextColor3=J.Selected}):Play()end K(true)end local M
+            ,N=function(M)for N,O in ipairs(M)do local P=Instance.new'TextButton'P.Name=
+            'Button'P.AutoButtonColor=false P.AutomaticSize=Enum.AutomaticSize.Y P.
+            BackgroundTransparency=1 P.BorderSizePixel=0 P.FontFace=Font.new(
+            'rbxassetid://12187365364',Enum.FontWeight.SemiBold,Enum.FontStyle.Normal)P.
+            RichText=true P.Size=UDim2.fromScale(1,0)P.Text=O P.TextColor3=Color3.fromRGB(
+            156,156,156)P.TextSize=15 P.TextWrapped=true P.TextXAlignment=Enum.
+            TextXAlignment.Left P.Parent=z P.LayoutOrder=N local Q=Instance.new'UIPadding'Q.
+            Name='UIPadding'Q.PaddingBottom=UDim.new(0,15)Q.PaddingTop=UDim.new(0,15)Q.
+            Parent=P P.MouseButton1Click:Connect(function()L(O)end)I[O]=P end end,function()
+            y.Position=UDim2.new(0,o.AbsolutePosition.X,0,o.AbsolutePosition.Y+(o.
+            AbsoluteSize.Y*2)+25)end local O=function()if G then return end G=true if F then
+            g.tween(s,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{Rotation=0}):Play()local O=g
+            .tween(y,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{Size=UDim2.fromOffset(o.
+            AbsoluteSize.X,0)})O:Play()O.Completed:Wait()y.Parent=nil F=false else g.tween(s
+            ,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{Rotation=180}):Play()for O,P in
+            pairs(e.dropdownFrames)do if P==y then P.Size=UDim2.fromOffset(o.AbsoluteSize.X,
+            0)P.Parent=e.gui g.tween(P,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{Size=UDim2.
+            fromOffset(o.AbsoluteSize.X,150)}):Play()N()else local Q=g.tween(P,TweenInfo.
+            new(0.1,Enum.EasingStyle.Sine),{Size=UDim2.fromOffset(o.AbsoluteSize.X,0)})Q.
+            Completed:Connect(function()P.Parent=nil end)Q:Play()end end F=true end G=false
+            end o.MouseButton1Click:Connect(O)o:GetPropertyChangedSignal'AbsolutePosition':
+            Connect(N)o:GetPropertyChangedSignal'AbsoluteSize':Connect(N)y.MouseEnter:
+            Connect(function()E=true end)y.MouseLeave:Connect(function()E=false end)f.
+            _userInputService.InputBegan:Connect(function(P)if P.UserInputType==Enum.
+            UserInputType.MouseButton1 and not E and y.Parent then O()end end)function k:
+            Insert(P)M(P)end function k:Remove(P)for Q,R in ipairs(P)do for S=#k.Settings.
+            Options,1,-1 do if k.Settings.Options[S]==R then table.remove(k.Settings.Options
+            ,S)end end if I[R]then I[R]:Destroy()I[R]=nil end for S=#H,1,-1 do if H[S]==R
+            then table.remove(H,S)end end K()end end function k:UpdateSettings(P)if P.
+            Visible~=nil then l=P.Visible end if P.Name then k.Settings.Name=P.Name v.Text=P
+            .Name end if P.Description~=nil then k.Settings.Description=P.Description x.Text
+            =P.Description or''x.Visible=P.Description and true or false end if P.Limit~=nil
+            then k.Settings.Limit=P.Limit end if P.Minimum then k.Settings.Minimum=P.Minimum
+            end if P.Callback then k.Settings.Callback=P.Callback end if P.Options then k.
+            Settings.Options=P.Options for Q,R in pairs(I)do R:Destroy()end I={}M(P.Options)
+            end if P.Value~=nil then if type(P.Value)=='string'then L(P.Value)elseif type(P.
+            Value)=='table'then for Q,R in pairs(P.Value)do L(R)end end end end local P=
+            Instance.new'Frame'P.BackgroundColor3=Color3.fromRGB(30,30,30)P.BorderColor3=
+            Color3.fromRGB(0,0,0)P.BorderSizePixel=0 P.Size=UDim2.new(1,0,0,1)P.Parent=h
+            function k:Continue()P.Visible=false return k end function k:End()P.Visible=true
+            return k end k:UpdateSettings(k.Settings)if j then d.Components[j]=k end return
+            k:End()end function CreateColorpicker(h,i,j)local k,l={Settings=i,Type=
+            'Colorpicker'},Instance.new'Frame'l.Name='Colorpicker'l.AutomaticSize=Enum.
+            AutomaticSize.Y l.BackgroundColor3=Color3.fromRGB(255,255,255)l.
+            BackgroundTransparency=1 l.BorderColor3=Color3.fromRGB(0,0,0)l.BorderSizePixel=0
+            l.Size=UDim2.fromScale(1,0)local o=Instance.new'UIPadding'o.Name='UIPadding'o.
+            PaddingBottom=UDim.new(0,8)o.PaddingTop=UDim.new(0,8)o.Parent=l local r=Instance
+            .new'Frame'r.Name='ElementInfo'r.AutomaticSize=Enum.AutomaticSize.Y r.
+            BackgroundColor3=Color3.fromRGB(255,255,255)r.BackgroundTransparency=1 r.
+            BorderColor3=Color3.fromRGB(0,0,0)r.BorderSizePixel=0 r.Size=UDim2.fromScale(1,0
+            )local s=Instance.new'Frame's.Name='Info's.AutomaticSize=Enum.AutomaticSize.Y s.
+            BackgroundColor3=Color3.fromRGB(255,255,255)s.BackgroundTransparency=1 s.
+            BorderColor3=Color3.fromRGB(0,0,0)s.BorderSizePixel=0 s.Size=UDim2.new(1,-80,0,0
+            )local t=Instance.new'TextLabel't.Name='Name't.AutomaticSize=Enum.AutomaticSize.
+            XY t.BackgroundColor3=Color3.fromRGB(255,255,255)t.BackgroundTransparency=1 t.
+            BorderColor3=Color3.fromRGB(0,0,0)t.BorderSizePixel=0 t.FontFace=Font.new(
+            'rbxassetid://12187365364',Enum.FontWeight.SemiBold,Enum.FontStyle.Normal)t.
+            RichText=true t.Text='Name't.TextColor3=Color3.fromRGB(225,225,225)t.TextSize=16
+            t.TextWrapped=true t.TextXAlignment=Enum.TextXAlignment.Left t.Parent=s t.
+            Visible=false local u=Instance.new'UIListLayout'u.Name='UIListLayout'u.Padding=
+            UDim.new(0,5)u.SortOrder=Enum.SortOrder.LayoutOrder u.VerticalAlignment=Enum.
+            VerticalAlignment.Center u.Parent=s local v=Instance.new'TextLabel'v.Name=
+            'Description'v.AutomaticSize=Enum.AutomaticSize.XY v.BackgroundColor3=Color3.
+            fromRGB(255,255,255)v.BackgroundTransparency=1 v.BorderColor3=Color3.fromRGB(0,0
+            ,0)v.BorderSizePixel=0 v.FontFace=Font.new('rbxassetid://12187365364',Enum.
+            FontWeight.SemiBold,Enum.FontStyle.Normal)v.LayoutOrder=1 v.RichText=true v.Text
+            ='Description'v.TextColor3=Color3.fromRGB(80,80,80)v.TextSize=12 v.TextWrapped=
+            true v.TextXAlignment=Enum.TextXAlignment.Left v.Parent=s v.Visible=false s.
+            Parent=r r.Parent=l local w=Instance.new'UIListLayout'w.Name='UIListLayout'w.
+            Padding=UDim.new(0,15)w.SortOrder=Enum.SortOrder.LayoutOrder w.Parent=l local x=
+            Instance.new'Frame'x.Name='PickerColors'x.AutomaticSize=Enum.AutomaticSize.Y x.
+            BackgroundColor3=Color3.fromRGB(255,255,255)x.BackgroundTransparency=1 x.
+            BorderColor3=Color3.fromRGB(0,0,0)x.BorderSizePixel=0 x.LayoutOrder=1 x.Size=
+            UDim2.fromScale(1,0)local y=Instance.new'Frame'y.Name='SuggestedColors'y.
+            AutomaticSize=Enum.AutomaticSize.Y y.BackgroundColor3=Color3.fromRGB(255,255,255
+            )y.BackgroundTransparency=1 y.BorderColor3=Color3.fromRGB(0,0,0)y.
+            BorderSizePixel=0 y.Size=UDim2.fromScale(0.7,0)local z=Instance.new
+            'UIListLayout'z.Name='UIListLayout'z.FillDirection=Enum.FillDirection.Horizontal
+            z.Padding=UDim.new(0,8)z.SortOrder=Enum.SortOrder.LayoutOrder z.Parent=y y.
+            Parent=x local A=Instance.new'Frame'A.Name='CustomColor'A.AnchorPoint=Vector2.
+            new(1,0)A.AutomaticSize=Enum.AutomaticSize.Y A.BackgroundColor3=Color3.fromRGB(
             255,255,255)A.BackgroundTransparency=1 A.BorderColor3=Color3.fromRGB(0,0,0)A.
-            BorderSizePixel=0 A.FontFace=Font.new('rbxassetid://12187365364',Enum.FontWeight
-            .SemiBold,Enum.FontStyle.Normal)A.Text='Custom'A.TextColor3=Color3.fromRGB(200,
-            200,200)A.TextSize=13 A.TextWrapped=true A.TextXAlignment=Enum.TextXAlignment.
-            Left A.Parent=y local B=Instance.new'ImageButton'B.Name='SuggestionColor'B.
-            BackgroundColor3=Color3.fromRGB(255,255,255)B.BackgroundTransparency=1 B.
-            BorderColor3=Color3.fromRGB(0,0,0)B.BorderSizePixel=0 B.Image=
-            'rbxassetid://79776444663640'B.ImageColor3=Color3.fromRGB(33,182,244)B.
-            LayoutOrder=1 B.Size=UDim2.fromOffset(15,15)local C=Instance.new'ImageLabel'C.
-            Name='Transparency'C.BackgroundColor3=Color3.fromRGB(255,255,255)C.
-            BackgroundTransparency=1 C.BorderColor3=Color3.fromRGB(0,0,0)C.BorderSizePixel=0
-            C.Image='rbxassetid://101467502072089'C.ImageTransparency=1 C.Size=UDim2.
-            fromScale(1,1)C.Parent=B B.Parent=y y.Parent=v v.Parent=j j.Parent=f local D=
-            Instance.new'Frame'D.Name='ColorpickerInput'D.AutomaticSize=Enum.AutomaticSize.X
-            D.BackgroundColor3=Color3.fromRGB(30,30,30)D.BorderColor3=Color3.fromRGB(0,0,0)D
-            .BorderSizePixel=0 D.Position=UDim2.fromScale(0.272,0.732)D.Size=UDim2.
-            fromOffset(0,40)D.Visible=false D.Parent=c.gui local E=Instance.new'UICorner'E.
-            Name='UICorner'E.CornerRadius=UDim.new(0,5)E.Parent=D local F=Instance.new
-            'UIListLayout'F.Name='UIListLayout'F.FillDirection=Enum.FillDirection.Horizontal
-            F.Padding=UDim.new(0,10)F.SortOrder=Enum.SortOrder.LayoutOrder F.
-            VerticalAlignment=Enum.VerticalAlignment.Center F.Parent=D local G=Instance.new
-            'ImageLabel'G.Name='Icon'G.BackgroundColor3=Color3.fromRGB(255,255,255)G.
-            BackgroundTransparency=1 G.BorderColor3=Color3.fromRGB(0,0,0)G.BorderSizePixel=0
-            G.Image='rbxassetid://88238578565569'G.ImageColor3=Color3.fromRGB(156,156,156)G.
-            Size=UDim2.fromOffset(20,20)G.Parent=D local H=Instance.new'UIPadding'H.Name=
-            'UIPadding'H.PaddingLeft=UDim.new(0,15)H.PaddingRight=UDim.new(0,10)H.Parent=D
-            local I=Instance.new'Frame'I.Name='Inputs'I.AutomaticSize=Enum.AutomaticSize.X I
-            .BackgroundColor3=Color3.fromRGB(255,255,255)I.BackgroundTransparency=1 I.
-            BorderColor3=Color3.fromRGB(0,0,0)I.BorderSizePixel=0 I.Size=UDim2.fromScale(0,1
-            )local J=Instance.new'TextBox'J.Name='Alpha'J.AutomaticSize=Enum.AutomaticSize.X
-            J.BackgroundColor3=Color3.fromRGB(30,30,30)J.BorderColor3=Color3.fromRGB(0,0,0)J
-            .BorderSizePixel=0 J.ClearTextOnFocus=false J.ClipsDescendants=true J.
-            CursorPosition=-1 J.FontFace=Font.new('rbxassetid://12187365364',Enum.FontWeight
-            .SemiBold,Enum.FontStyle.Normal)J.LayoutOrder=6 J.PlaceholderColor3=Color3.
-            fromRGB(120,120,120)J.PlaceholderText='Alpha'J.Size=UDim2.fromScale(0,1)J.Text=
-            '255'J.TextColor3=Color3.fromRGB(156,156,156)J.TextSize=15 J.TextXAlignment=Enum
-            .TextXAlignment.Left local K=Instance.new'UICorner'K.Name='UICorner'K.
-            CornerRadius=UDim.new(0,5)K.Parent=J local L=Instance.new'UIPadding'L.Name=
-            'UIPadding'L.PaddingLeft=UDim.new(0,8)L.PaddingRight=UDim.new(0,8)L.Parent=J J.
-            Parent=I local M=Instance.new'TextBox'M.Name='Red'M.AutomaticSize=Enum.
-            AutomaticSize.X M.BackgroundColor3=Color3.fromRGB(30,30,30)M.BorderColor3=Color3
-            .fromRGB(0,0,0)M.BorderSizePixel=0 M.ClearTextOnFocus=false M.ClipsDescendants=
-            true M.CursorPosition=-1 M.FontFace=Font.new('rbxassetid://12187365364',Enum.
-            FontWeight.SemiBold,Enum.FontStyle.Normal)M.PlaceholderColor3=Color3.fromRGB(120
-            ,120,120)M.PlaceholderText='Red'M.Size=UDim2.fromScale(0,1)M.Text='255'M.
-            TextColor3=Color3.fromRGB(156,156,156)M.TextSize=15 M.TextXAlignment=Enum.
-            TextXAlignment.Left local N=Instance.new'UICorner'N.Name='UICorner'N.
-            CornerRadius=UDim.new(0,5)N.Parent=M local O=Instance.new'UIPadding'O.Name=
-            'UIPadding'O.PaddingLeft=UDim.new(0,8)O.PaddingRight=UDim.new(0,8)O.Parent=M M.
-            Parent=I local P=Instance.new'TextBox'P.Name='Blue'P.AutomaticSize=Enum.
-            AutomaticSize.X P.BackgroundColor3=Color3.fromRGB(30,30,30)P.BorderColor3=Color3
-            .fromRGB(0,0,0)P.BorderSizePixel=0 P.ClearTextOnFocus=false P.ClipsDescendants=
-            true P.CursorPosition=-1 P.FontFace=Font.new('rbxassetid://12187365364',Enum.
-            FontWeight.SemiBold,Enum.FontStyle.Normal)P.LayoutOrder=4 P.PlaceholderColor3=
-            Color3.fromRGB(120,120,120)P.PlaceholderText='Blue'P.Size=UDim2.fromScale(0,1)P.
-            Text='255'P.TextColor3=Color3.fromRGB(156,156,156)P.TextSize=15 P.TextXAlignment
-            =Enum.TextXAlignment.Left local Q=Instance.new'UICorner'Q.Name='UICorner'Q.
-            CornerRadius=UDim.new(0,5)Q.Parent=P local R=Instance.new'UIPadding'R.Name=
-            'UIPadding'R.PaddingLeft=UDim.new(0,8)R.PaddingRight=UDim.new(0,8)R.Parent=P P.
-            Parent=I local S=Instance.new'TextBox'S.Name='Green'S.AutomaticSize=Enum.
-            AutomaticSize.X S.BackgroundColor3=Color3.fromRGB(30,30,30)S.BorderColor3=Color3
-            .fromRGB(0,0,0)S.BorderSizePixel=0 S.ClearTextOnFocus=false S.ClipsDescendants=
-            true S.CursorPosition=-1 S.FontFace=Font.new('rbxassetid://12187365364',Enum.
-            FontWeight.SemiBold,Enum.FontStyle.Normal)S.LayoutOrder=2 S.PlaceholderColor3=
-            Color3.fromRGB(120,120,120)S.PlaceholderText='Green'S.Size=UDim2.fromScale(0,1)S
-            .Text='255'S.TextColor3=Color3.fromRGB(156,156,156)S.TextSize=15 S.
-            TextXAlignment=Enum.TextXAlignment.Left local T=Instance.new'UICorner'T.Name=
-            'UICorner'T.CornerRadius=UDim.new(0,5)T.Parent=S local U=Instance.new'UIPadding'
-            U.Name='UIPadding'U.PaddingLeft=UDim.new(0,8)U.PaddingRight=UDim.new(0,8)U.
-            Parent=S S.Parent=I local V=Instance.new'UIListLayout'V.Name='UIListLayout'V.
-            FillDirection=Enum.FillDirection.Horizontal V.SortOrder=Enum.SortOrder.
-            LayoutOrder V.VerticalAlignment=Enum.VerticalAlignment.Center V.Parent=I I.
-            Parent=D function i:SetColor(W,X)local Y=1-(X or 0)i.Settings.Color=W i.Settings
-            .Transparency=Y local Z,_,aa,ab=math.round(W.R*255),math.round(W.G*255),math.
-            round(W.B*255),math.round((1-Y)*255)M.Text=tostring(Z)S.Text=tostring(_)P.Text=
-            tostring(aa)J.Text=tostring(ab)B.ImageColor3=W C.ImageTransparency=1-Y if i.
-            Settings.Callback then e.callback(i.Settings.Callback,i,W,Y)end return i end
-            local aa=function()local aa,ab=B.AbsolutePosition,B.AbsoluteSize local W,X=aa.X+
-            ab.X,aa.Y+(ab.Y*2)+D.AbsoluteSize.Y D.Position=UDim2.fromOffset(W,X)end aa()B:
-            GetPropertyChangedSignal'AbsolutePosition':Connect(aa)B.MouseButton1Click:
-            Connect(function()D.Visible=not D.Visible end)local ab=function()local ab,W,X,Y=
-            tonumber(M.Text),tonumber(S.Text),tonumber(P.Text),tonumber(J.Text)ab=ab and
-            math.clamp(ab,0,255)or(i.Settings.Color.R*255)W=W and math.clamp(W,0,255)or(i.
-            Settings.Color.G*255)X=X and math.clamp(X,0,255)or(i.Settings.Color.B*255)Y=Y
-            and math.clamp(Y,0,255)or(1-i.Settings.Transparency)*255 local Z,_=Color3.
-            fromRGB(ab,W,X),Y/255 i:SetColor(Z,_)end for W,X in pairs(I:GetChildren())do if
-            X:IsA'TextBox'then X.FocusLost:Connect(function(Y)if Y then ab()end end)end end
-            local W=false D.MouseEnter:Connect(function()W=true end)D.MouseLeave:Connect(
-            function()W=false end)d._userInputService.InputBegan:Connect(function(X)if X.
-            UserInputType==Enum.UserInputType.MouseButton1 and not W and D.Visible then D.
-            Visible=false end end)function i:UpdateSettings(X)X=X or{}if X.Visible~=nil then
-            i.Settings.Visible=X.Visible j.Visible=X.Visible end if X.Name then i.Settings.
-            Name=X.Name r.Text=X.Name r.Visible=X.Name and true or false end if X.
-            Description then i.Settings.Description=X.Description t.Text=X.Description or''t
-            .Visible=X.Description and true or false end if X.AlphaEnabled~=nil then i.
-            Settings.AlphaEnabled=X.AlphaEnabled J.Visible=X.AlphaEnabled end if X.Color
-            then i:SetColor(X.Color[1],1-(X.Color[2]or 0))end if X.SuggestionColors then i.
-            Settings.SuggestionColors=X.SuggestionColors for Y,Z in ipairs(w:GetChildren())
-            do if Z:IsA'GuiObject'then Z:Destroy()end end for Y,Z in ipairs(X.
-            SuggestionColors)do local _,ac,ad=Z[1],Z[2]or 0,Instance.new'ImageButton'ad.Name
-            ='SuggestionColor'ad.BackgroundTransparency=1 ad.BorderSizePixel=0 ad.Image=
-            'rbxassetid://79776444663640'ad.ImageColor3=_ ad.Size=UDim2.fromOffset(15,15)ad.
-            LayoutOrder=Y local ae=Instance.new'ImageLabel'ae.Name='Transparency'ae.
-            BackgroundTransparency=1 ae.BorderSizePixel=0 ae.Image=
-            'rbxassetid://101467502072089'ae.ImageTransparency=1-ac ae.Size=UDim2.fromScale(
-            1,1)ae.Parent=ad ad.MouseButton1Click:Connect(function()i:SetColor(_,1-ac)end)ad
-            .Parent=w end end if not X.Name and not X.Description then p.Visible=false m.
-            PaddingTop=UDim.new(0,0)elseif not X.Name and X.Description then m.PaddingTop=
-            UDim.new(0,-5)else p.Visible=true m.PaddingTop=UDim.new(0,8)end end i:
-            UpdateSettings(i.Settings)local ac=Instance.new'Frame'ac.BackgroundColor3=Color3
-            .fromRGB(30,30,30)ac.BorderColor3=Color3.fromRGB(0,0,0)ac.BorderSizePixel=0 ac.
-            Size=UDim2.new(1,0,0,1)ac.Parent=f function i:Continue()ac.Visible=false return
-            i end function i:End()ac.Visible=true return i end if h then b.Components[h]=i
-            end i.Content=f injectComponents(i,'Colorpicker')return i:End()end function
+            BorderSizePixel=0 A.Position=UDim2.fromScale(1,0)A.Size=UDim2.fromScale(0.3,0)
+            local B=Instance.new'UIListLayout'B.Name='UIListLayout'B.FillDirection=Enum.
+            FillDirection.Horizontal B.HorizontalAlignment=Enum.HorizontalAlignment.Right B.
+            Padding=UDim.new(0,8)B.SortOrder=Enum.SortOrder.LayoutOrder B.VerticalAlignment=
+            Enum.VerticalAlignment.Center B.Parent=A local C=Instance.new'TextLabel'C.Name=
+            'Name'C.AutomaticSize=Enum.AutomaticSize.XY C.BackgroundColor3=Color3.fromRGB(
+            255,255,255)C.BackgroundTransparency=1 C.BorderColor3=Color3.fromRGB(0,0,0)C.
+            BorderSizePixel=0 C.FontFace=Font.new('rbxassetid://12187365364',Enum.FontWeight
+            .SemiBold,Enum.FontStyle.Normal)C.Text='Custom'C.TextColor3=Color3.fromRGB(200,
+            200,200)C.TextSize=13 C.TextWrapped=true C.TextXAlignment=Enum.TextXAlignment.
+            Left C.Parent=A local D=Instance.new'ImageButton'D.Name='SuggestionColor'D.
+            BackgroundColor3=Color3.fromRGB(255,255,255)D.BackgroundTransparency=1 D.
+            BorderColor3=Color3.fromRGB(0,0,0)D.BorderSizePixel=0 D.Image=
+            'rbxassetid://79776444663640'D.ImageColor3=Color3.fromRGB(33,182,244)D.
+            LayoutOrder=1 D.Size=UDim2.fromOffset(15,15)local E=Instance.new'ImageLabel'E.
+            Name='Transparency'E.BackgroundColor3=Color3.fromRGB(255,255,255)E.
+            BackgroundTransparency=1 E.BorderColor3=Color3.fromRGB(0,0,0)E.BorderSizePixel=0
+            E.Image='rbxassetid://101467502072089'E.ImageTransparency=1 E.Size=UDim2.
+            fromScale(1,1)E.Parent=D D.Parent=A A.Parent=x x.Parent=l l.Parent=h local F=
+            Instance.new'Frame'F.Name='ColorpickerInput'F.AutomaticSize=Enum.AutomaticSize.X
+            F.BackgroundColor3=Color3.fromRGB(30,30,30)F.BorderColor3=Color3.fromRGB(0,0,0)F
+            .BorderSizePixel=0 F.Position=UDim2.fromScale(0.272,0.732)F.Size=UDim2.
+            fromOffset(0,40)F.Visible=false F.Parent=e.gui local G=Instance.new'UICorner'G.
+            Name='UICorner'G.CornerRadius=UDim.new(0,5)G.Parent=F local H=Instance.new
+            'UIListLayout'H.Name='UIListLayout'H.FillDirection=Enum.FillDirection.Horizontal
+            H.Padding=UDim.new(0,10)H.SortOrder=Enum.SortOrder.LayoutOrder H.
+            VerticalAlignment=Enum.VerticalAlignment.Center H.Parent=F local I=Instance.new
+            'ImageLabel'I.Name='Icon'I.BackgroundColor3=Color3.fromRGB(255,255,255)I.
+            BackgroundTransparency=1 I.BorderColor3=Color3.fromRGB(0,0,0)I.BorderSizePixel=0
+            I.Image='rbxassetid://88238578565569'I.ImageColor3=Color3.fromRGB(156,156,156)I.
+            Size=UDim2.fromOffset(20,20)I.Parent=F local J=Instance.new'UIPadding'J.Name=
+            'UIPadding'J.PaddingLeft=UDim.new(0,15)J.PaddingRight=UDim.new(0,10)J.Parent=F
+            local K=Instance.new'Frame'K.Name='Inputs'K.AutomaticSize=Enum.AutomaticSize.X K
+            .BackgroundColor3=Color3.fromRGB(255,255,255)K.BackgroundTransparency=1 K.
+            BorderColor3=Color3.fromRGB(0,0,0)K.BorderSizePixel=0 K.Size=UDim2.fromScale(0,1
+            )local L=Instance.new'TextBox'L.Name='Alpha'L.AutomaticSize=Enum.AutomaticSize.X
+            L.BackgroundColor3=Color3.fromRGB(30,30,30)L.BorderColor3=Color3.fromRGB(0,0,0)L
+            .BorderSizePixel=0 L.ClearTextOnFocus=false L.ClipsDescendants=true L.
+            CursorPosition=-1 L.FontFace=Font.new('rbxassetid://12187365364',Enum.FontWeight
+            .SemiBold,Enum.FontStyle.Normal)L.LayoutOrder=6 L.PlaceholderColor3=Color3.
+            fromRGB(120,120,120)L.PlaceholderText='Alpha'L.Size=UDim2.fromScale(0,1)L.Text=
+            '255'L.TextColor3=Color3.fromRGB(156,156,156)L.TextSize=15 L.TextXAlignment=Enum
+            .TextXAlignment.Left local M=Instance.new'UICorner'M.Name='UICorner'M.
+            CornerRadius=UDim.new(0,5)M.Parent=L local N=Instance.new'UIPadding'N.Name=
+            'UIPadding'N.PaddingLeft=UDim.new(0,8)N.PaddingRight=UDim.new(0,8)N.Parent=L L.
+            Parent=K local O=Instance.new'TextBox'O.Name='Red'O.AutomaticSize=Enum.
+            AutomaticSize.X O.BackgroundColor3=Color3.fromRGB(30,30,30)O.BorderColor3=Color3
+            .fromRGB(0,0,0)O.BorderSizePixel=0 O.ClearTextOnFocus=false O.ClipsDescendants=
+            true O.CursorPosition=-1 O.FontFace=Font.new('rbxassetid://12187365364',Enum.
+            FontWeight.SemiBold,Enum.FontStyle.Normal)O.PlaceholderColor3=Color3.fromRGB(120
+            ,120,120)O.PlaceholderText='Red'O.Size=UDim2.fromScale(0,1)O.Text='255'O.
+            TextColor3=Color3.fromRGB(156,156,156)O.TextSize=15 O.TextXAlignment=Enum.
+            TextXAlignment.Left local P=Instance.new'UICorner'P.Name='UICorner'P.
+            CornerRadius=UDim.new(0,5)P.Parent=O local Q=Instance.new'UIPadding'Q.Name=
+            'UIPadding'Q.PaddingLeft=UDim.new(0,8)Q.PaddingRight=UDim.new(0,8)Q.Parent=O O.
+            Parent=K local R=Instance.new'TextBox'R.Name='Blue'R.AutomaticSize=Enum.
+            AutomaticSize.X R.BackgroundColor3=Color3.fromRGB(30,30,30)R.BorderColor3=Color3
+            .fromRGB(0,0,0)R.BorderSizePixel=0 R.ClearTextOnFocus=false R.ClipsDescendants=
+            true R.CursorPosition=-1 R.FontFace=Font.new('rbxassetid://12187365364',Enum.
+            FontWeight.SemiBold,Enum.FontStyle.Normal)R.LayoutOrder=4 R.PlaceholderColor3=
+            Color3.fromRGB(120,120,120)R.PlaceholderText='Blue'R.Size=UDim2.fromScale(0,1)R.
+            Text='255'R.TextColor3=Color3.fromRGB(156,156,156)R.TextSize=15 R.TextXAlignment
+            =Enum.TextXAlignment.Left local S=Instance.new'UICorner'S.Name='UICorner'S.
+            CornerRadius=UDim.new(0,5)S.Parent=R local T=Instance.new'UIPadding'T.Name=
+            'UIPadding'T.PaddingLeft=UDim.new(0,8)T.PaddingRight=UDim.new(0,8)T.Parent=R R.
+            Parent=K local U=Instance.new'TextBox'U.Name='Green'U.AutomaticSize=Enum.
+            AutomaticSize.X U.BackgroundColor3=Color3.fromRGB(30,30,30)U.BorderColor3=Color3
+            .fromRGB(0,0,0)U.BorderSizePixel=0 U.ClearTextOnFocus=false U.ClipsDescendants=
+            true U.CursorPosition=-1 U.FontFace=Font.new('rbxassetid://12187365364',Enum.
+            FontWeight.SemiBold,Enum.FontStyle.Normal)U.LayoutOrder=2 U.PlaceholderColor3=
+            Color3.fromRGB(120,120,120)U.PlaceholderText='Green'U.Size=UDim2.fromScale(0,1)U
+            .Text='255'U.TextColor3=Color3.fromRGB(156,156,156)U.TextSize=15 U.
+            TextXAlignment=Enum.TextXAlignment.Left local V=Instance.new'UICorner'V.Name=
+            'UICorner'V.CornerRadius=UDim.new(0,5)V.Parent=U local W=Instance.new'UIPadding'
+            W.Name='UIPadding'W.PaddingLeft=UDim.new(0,8)W.PaddingRight=UDim.new(0,8)W.
+            Parent=U U.Parent=K local X=Instance.new'UIListLayout'X.Name='UIListLayout'X.
+            FillDirection=Enum.FillDirection.Horizontal X.SortOrder=Enum.SortOrder.
+            LayoutOrder X.VerticalAlignment=Enum.VerticalAlignment.Center X.Parent=K K.
+            Parent=F function k:SetColor(Y,Z)local _=1-(Z or 0)k.Settings.Color=Y k.Settings
+            .Transparency=_ local aa,ab,ac,ad=math.round(Y.R*255),math.round(Y.G*255),math.
+            round(Y.B*255),math.round((1-_)*255)O.Text=tostring(aa)U.Text=tostring(ab)R.Text
+            =tostring(ac)L.Text=tostring(ad)D.ImageColor3=Y E.ImageTransparency=1-_ if k.
+            Settings.Callback then g.callback(k.Settings.Callback,k,Y,_)end return k end
+            local aa=function()local aa,ab=D.AbsolutePosition,D.AbsoluteSize local ac,ad=aa.
+            X+ab.X,aa.Y+(ab.Y*2)+F.AbsoluteSize.Y F.Position=UDim2.fromOffset(ac,ad)end aa()
+            D:GetPropertyChangedSignal'AbsolutePosition':Connect(aa)D.MouseButton1Click:
+            Connect(function()F.Visible=not F.Visible end)local ab=function()local ab,ac,ad,
+            Y=tonumber(O.Text),tonumber(U.Text),tonumber(R.Text),tonumber(L.Text)ab=ab and
+            math.clamp(ab,0,255)or(k.Settings.Color.R*255)ac=ac and math.clamp(ac,0,255)or(k
+            .Settings.Color.G*255)ad=ad and math.clamp(ad,0,255)or(k.Settings.Color.B*255)Y=
+            Y and math.clamp(Y,0,255)or(1-k.Settings.Transparency)*255 local Z,_=Color3.
+            fromRGB(ab,ac,ad),Y/255 k:SetColor(Z,_)end for ac,ad in pairs(K:GetChildren())do
+            if ad:IsA'TextBox'then ad.FocusLost:Connect(function(Y)if Y then ab()end end)end
+            end local ac=false F.MouseEnter:Connect(function()ac=true end)F.MouseLeave:
+            Connect(function()ac=false end)f._userInputService.InputBegan:Connect(function(
+            ad)if ad.UserInputType==Enum.UserInputType.MouseButton1 and not ac and F.Visible
+            then F.Visible=false end end)function k:UpdateSettings(ad)ad=ad or{}if ad.
+            Visible~=nil then k.Settings.Visible=ad.Visible l.Visible=ad.Visible end if ad.
+            Name then k.Settings.Name=ad.Name t.Text=ad.Name t.Visible=ad.Name and true or
+            false end if ad.Description then k.Settings.Description=ad.Description v.Text=ad
+            .Description or''v.Visible=ad.Description and true or false end if ad.
+            AlphaEnabled~=nil then k.Settings.AlphaEnabled=ad.AlphaEnabled L.Visible=ad.
+            AlphaEnabled end if ad.Color then k:SetColor(ad.Color[1],1-(ad.Color[2]or 0))end
+            if ad.SuggestionColors then k.Settings.SuggestionColors=ad.SuggestionColors for
+            Y,Z in ipairs(y:GetChildren())do if Z:IsA'GuiObject'then Z:Destroy()end end for
+            Y,Z in ipairs(ad.SuggestionColors)do local _,ae,af=Z[1],Z[2]or 0,Instance.new
+            'ImageButton'af.Name='SuggestionColor'af.BackgroundTransparency=1 af.
+            BorderSizePixel=0 af.Image='rbxassetid://79776444663640'af.ImageColor3=_ af.Size
+            =UDim2.fromOffset(15,15)af.LayoutOrder=Y local ag=Instance.new'ImageLabel'ag.
+            Name='Transparency'ag.BackgroundTransparency=1 ag.BorderSizePixel=0 ag.Image=
+            'rbxassetid://101467502072089'ag.ImageTransparency=1-ae ag.Size=UDim2.fromScale(
+            1,1)ag.Parent=af af.MouseButton1Click:Connect(function()k:SetColor(_,1-ae)end)af
+            .Parent=y end end if not ad.Name and not ad.Description then r.Visible=false o.
+            PaddingTop=UDim.new(0,0)elseif not ad.Name and ad.Description then o.PaddingTop=
+            UDim.new(0,-5)else r.Visible=true o.PaddingTop=UDim.new(0,8)end end k:
+            UpdateSettings(k.Settings)local ad=Instance.new'Frame'ad.BackgroundColor3=Color3
+            .fromRGB(30,30,30)ad.BorderColor3=Color3.fromRGB(0,0,0)ad.BorderSizePixel=0 ad.
+            Size=UDim2.new(1,0,0,1)ad.Parent=h function k:Continue()ad.Visible=false return
+            k end function k:End()ad.Visible=true return k end if j then d.Components[j]=k
+            end k.Content=h injectComponents(k,'Colorpicker')return k:End()end function
             CreateKeybind(aa,ab,ac)local ad,ae={Settings=ab,Type='Keybind'},Instance.new
             'Frame'ae.AutomaticSize=Enum.AutomaticSize.Y ae.BackgroundColor3=Color3.fromRGB(
             0,0,0)ae.BackgroundTransparency=1 ae.BorderColor3=Color3.fromRGB(0,0,0)ae.
             BorderSizePixel=0 ae.Size=UDim2.fromScale(1,0)ae.Visible=ad.Settings.Visible==
-            nil and true or ad.Settings.Visible ae.Parent=aa local f=Instance.new
-            'TextButton'f.AutoButtonColor=false f.AutomaticSize=Enum.AutomaticSize.Y f.
-            BackgroundColor3=Color3.fromRGB(30,30,30)f.BorderColor3=Color3.fromRGB(0,0,0)f.
-            BorderSizePixel=0 f.FontFace=Font.new
-            'rbxasset://fonts/families/SourceSansPro.json'f.Size=UDim2.new(1,0,0,40)f.Text=
-            ''f.TextColor3=Color3.fromRGB(0,0,0)f.TextSize=14 local g=Instance.new
-            'TextLabel'g.AnchorPoint=Vector2.new(0,0.5)g.AutomaticSize=Enum.AutomaticSize.XY
-            g.BackgroundColor3=Color3.fromRGB(255,255,255)g.BackgroundTransparency=1 g.
-            BorderColor3=Color3.fromRGB(0,0,0)g.BorderSizePixel=0 g.FontFace=Font.new(
-            'rbxassetid://12187365364',Enum.FontWeight.SemiBold,Enum.FontStyle.Normal)g.
-            LayoutOrder=1 g.Position=UDim2.fromScale(0,0.5)g.TextColor3=Color3.fromRGB(156,
-            156,156)g.TextSize=15 g.TextWrapped=true g.TextXAlignment=Enum.TextXAlignment.
-            Left g.Text='Unbinded'local h=Instance.new'UIPadding'h.PaddingBottom=UDim.new(0,
-            10)h.PaddingRight=UDim.new(0,50)h.PaddingTop=UDim.new(0,10)h.Parent=g g.Parent=f
-            local i=Instance.new'UIPadding'i.PaddingLeft=UDim.new(0,15)i.Parent=f local j=
-            Instance.new'UIListLayout'j.FillDirection=Enum.FillDirection.Horizontal j.
-            Padding=UDim.new(0,15)j.SortOrder=Enum.SortOrder.LayoutOrder j.VerticalAlignment
-            =Enum.VerticalAlignment.Center j.Parent=f local m=Instance.new'ImageLabel'm.
-            BackgroundColor3=Color3.fromRGB(255,255,255)m.BackgroundTransparency=1 m.
-            BorderColor3=Color3.fromRGB(0,0,0)m.BorderSizePixel=0 m.Image=
-            'rbxassetid://94052787260057'm.ImageColor3=Color3.fromRGB(156,156,156)m.Size=
-            UDim2.fromOffset(20,20)m.Parent=f local p=Instance.new'UICorner'p.CornerRadius=
-            UDim.new(0,5)p.Parent=f f.Parent=ae local q,r,s={Selected=Color3.fromRGB(225,225
-            ,225),Unselected=Color3.fromRGB(156,156,156)},false,function(q)if q then m.
-            Visible=false g.Text='Press a key'g.Size=UDim2.fromScale(1,0)g.TextXAlignment=
-            Enum.TextXAlignment.Center h.PaddingRight=UDim.new(0,15)f.Active=false f.
-            Interactable=false elseif q==false then m.Visible=true g.Size=UDim2.fromScale(0,
-            0)g.TextXAlignment=Enum.TextXAlignment.Left h.PaddingRight=UDim.new(0,50)f.
-            Active=true f.Interactable=true else m.Visible=true g.Text='Unbinded'g.Size=
-            UDim2.fromScale(0,0)g.TextXAlignment=Enum.TextXAlignment.Left h.PaddingRight=
-            UDim.new(0,50)f.Active=true f.Interactable=true end end if ad.Settings.Bind then
-            s(false)if ad.Settings.Bind.EnumType==Enum.KeyCode then g.Text=e.parseKeyCode(ad
-            .Settings.Bind)elseif ad.Settings.Bind==Enum.UserInputType.MouseButton1 or ad.
-            Settings.Bind==Enum.UserInputType.MouseButton2 then g.Text=e.parseKeyCode(ad.
-            Settings.Bind)end else s(nil)end ae.MouseEnter:Connect(function()e.tween(m,
-            TweenInfo.new(0.1,Enum.EasingStyle.Sine),{ImageColor3=q.Selected}):Play()e.
-            tween(g,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{TextColor3=q.Selected}):Play()
-            end)ae.MouseLeave:Connect(function()e.tween(m,TweenInfo.new(0.1,Enum.EasingStyle
-            .Sine),{ImageColor3=q.Unselected}):Play()e.tween(g,TweenInfo.new(0.1,Enum.
-            EasingStyle.Sine),{TextColor3=q.Unselected}):Play()end)f.InputEnded:Connect(
-            function(t)if t.UserInputType==Enum.UserInputType.MouseButton1 or t.
-            UserInputType==Enum.UserInputType.Touch then r=true s(true)end end)d.
-            _userInputService.InputBegan:Connect(function(t,u)if r and not u and not(ad.
-            Settings.Blacklist and(table.find(ad.Settings.Blacklist,t.KeyCode)or table.find(
-            ad.Settings.Blacklist,t.UserInputType)))then if t.UserInputType==Enum.
-            UserInputType.Keyboard then ad.Settings.Bind=t.KeyCode g.Text=e.parseKeyCode(t.
-            KeyCode)s(false)if ad.Settings.onChanged then e.callback(ad.Settings.onChanged,
+            nil and true or ad.Settings.Visible ae.Parent=aa local af=Instance.new
+            'TextButton'af.AutoButtonColor=false af.AutomaticSize=Enum.AutomaticSize.Y af.
+            BackgroundColor3=Color3.fromRGB(30,30,30)af.BorderColor3=Color3.fromRGB(0,0,0)af
+            .BorderSizePixel=0 af.FontFace=Font.new
+            'rbxasset://fonts/families/SourceSansPro.json'af.Size=UDim2.new(1,0,0,40)af.Text
+            =''af.TextColor3=Color3.fromRGB(0,0,0)af.TextSize=14 local ag=Instance.new
+            'TextLabel'ag.AnchorPoint=Vector2.new(0,0.5)ag.AutomaticSize=Enum.AutomaticSize.
+            XY ag.BackgroundColor3=Color3.fromRGB(255,255,255)ag.BackgroundTransparency=1 ag
+            .BorderColor3=Color3.fromRGB(0,0,0)ag.BorderSizePixel=0 ag.FontFace=Font.new(
+            'rbxassetid://12187365364',Enum.FontWeight.SemiBold,Enum.FontStyle.Normal)ag.
+            LayoutOrder=1 ag.Position=UDim2.fromScale(0,0.5)ag.TextColor3=Color3.fromRGB(156
+            ,156,156)ag.TextSize=15 ag.TextWrapped=true ag.TextXAlignment=Enum.
+            TextXAlignment.Left ag.Text='Unbinded'local h=Instance.new'UIPadding'h.
+            PaddingBottom=UDim.new(0,10)h.PaddingRight=UDim.new(0,50)h.PaddingTop=UDim.new(0
+            ,10)h.Parent=ag ag.Parent=af local i=Instance.new'UIPadding'i.PaddingLeft=UDim.
+            new(0,15)i.Parent=af local j=Instance.new'UIListLayout'j.FillDirection=Enum.
+            FillDirection.Horizontal j.Padding=UDim.new(0,15)j.SortOrder=Enum.SortOrder.
+            LayoutOrder j.VerticalAlignment=Enum.VerticalAlignment.Center j.Parent=af local
+            k=Instance.new'ImageLabel'k.BackgroundColor3=Color3.fromRGB(255,255,255)k.
+            BackgroundTransparency=1 k.BorderColor3=Color3.fromRGB(0,0,0)k.BorderSizePixel=0
+            k.Image='rbxassetid://94052787260057'k.ImageColor3=Color3.fromRGB(156,156,156)k.
+            Size=UDim2.fromOffset(20,20)k.Parent=af local l=Instance.new'UICorner'l.
+            CornerRadius=UDim.new(0,5)l.Parent=af af.Parent=ae local o,r,s={Selected=Color3.
+            fromRGB(225,225,225),Unselected=Color3.fromRGB(156,156,156)},false,function(o)if
+            o then k.Visible=false ag.Text='Press a key'ag.Size=UDim2.fromScale(1,0)ag.
+            TextXAlignment=Enum.TextXAlignment.Center h.PaddingRight=UDim.new(0,15)af.Active
+            =false af.Interactable=false elseif o==false then k.Visible=true ag.Size=UDim2.
+            fromScale(0,0)ag.TextXAlignment=Enum.TextXAlignment.Left h.PaddingRight=UDim.
+            new(0,50)af.Active=true af.Interactable=true else k.Visible=true ag.Text=
+            'Unbinded'ag.Size=UDim2.fromScale(0,0)ag.TextXAlignment=Enum.TextXAlignment.Left
+            h.PaddingRight=UDim.new(0,50)af.Active=true af.Interactable=true end end if ad.
+            Settings.Bind then s(false)if ad.Settings.Bind.EnumType==Enum.KeyCode then ag.
+            Text=g.parseKeyCode(ad.Settings.Bind)elseif ad.Settings.Bind==Enum.UserInputType
+            .MouseButton1 or ad.Settings.Bind==Enum.UserInputType.MouseButton2 then ag.Text=
+            g.parseKeyCode(ad.Settings.Bind)end else s(nil)end ae.MouseEnter:Connect(
+            function()g.tween(k,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{ImageColor3=o.
+            Selected}):Play()g.tween(ag,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{TextColor3
+            =o.Selected}):Play()end)ae.MouseLeave:Connect(function()g.tween(k,TweenInfo.new(
+            0.1,Enum.EasingStyle.Sine),{ImageColor3=o.Unselected}):Play()g.tween(ag,
+            TweenInfo.new(0.1,Enum.EasingStyle.Sine),{TextColor3=o.Unselected}):Play()end)af
+            .InputEnded:Connect(function(t)if t.UserInputType==Enum.UserInputType.
+            MouseButton1 or t.UserInputType==Enum.UserInputType.Touch then r=true s(true)end
+            end)f._userInputService.InputBegan:Connect(function(t,u)if r and not u and not(
+            ad.Settings.Blacklist and(table.find(ad.Settings.Blacklist,t.KeyCode)or table.
+            find(ad.Settings.Blacklist,t.UserInputType)))then if t.UserInputType==Enum.
+            UserInputType.Keyboard then ad.Settings.Bind=t.KeyCode ag.Text=g.parseKeyCode(t.
+            KeyCode)s(false)if ad.Settings.onChanged then g.callback(ad.Settings.onChanged,
             ad,ad.Settings.Bind)end r=false elseif t.UserInputType==Enum.UserInputType.
             MouseButton1 or t.UserInputType==Enum.UserInputType.MouseButton2 then ad.
-            Settings.Bind=t.UserInputType g.Text=e.parseKeyCode(t.UserInputType)s(false)if
-            ad.Settings.onChanged then e.callback(ad.Settings.onChanged,ad,ad.Settings.Bind)
-            end r=false end end end)d._userInputService.InputBegan:Connect(function(t,u)if
+            Settings.Bind=t.UserInputType ag.Text=g.parseKeyCode(t.UserInputType)s(false)if
+            ad.Settings.onChanged then g.callback(ad.Settings.onChanged,ad,ad.Settings.Bind)
+            end r=false end end end)f._userInputService.InputBegan:Connect(function(t,u)if
             not r then if t.KeyCode==ad.Settings.Bind or t.UserInputType==ad.Settings.Bind
-            then if ad.Settings.Callback then e.callback(ad.Settings.Callback,ad,u)end if ad
-            .Settings.onHeld then e.callback(ad.Settings.onHeld,ad,true,u)end end end end)d.
+            then if ad.Settings.Callback then g.callback(ad.Settings.Callback,ad,u)end if ad
+            .Settings.onHeld then g.callback(ad.Settings.onHeld,ad,true,u)end end end end)f.
             _userInputService.InputEnded:Connect(function(t,u)if not r and(t.KeyCode==ad.
             Settings.Bind or t.UserInputType==ad.Settings.Bind)then if ad.Settings.onHeld
-            then e.callback(ad.Settings.onHeld,ad,false,u)end end end)function ad:
+            then g.callback(ad.Settings.onHeld,ad,false,u)end end end)function ad:
             UpdateSettings(t)if t.Visible~=nil then ad.Settings.Visible=t.Visible ae.Visible
             =t.Visible end if t.Bind then ad.Settings.Bind=t.Bind s(false)if ad.Settings.
-            Bind.EnumType==Enum.KeyCode then g.Text=e.parseKeyCode(ad.Settings.Bind)elseif
+            Bind.EnumType==Enum.KeyCode then ag.Text=g.parseKeyCode(ad.Settings.Bind)elseif
             ad.Settings.Bind==Enum.UserInputType.MouseButton1 or ad.Settings.Bind==Enum.
-            UserInputType.MouseButton2 then g.Text=e.parseKeyCode(ad.Settings.Bind)end if t.
-            Callback then e.callback(ad.Settings.Callback,ad,false)end end if t.Callback
+            UserInputType.MouseButton2 then ag.Text=g.parseKeyCode(ad.Settings.Bind)end if t
+            .Callback then g.callback(ad.Settings.Callback,ad,false)end end if t.Callback
             then ad.Settings.Callback=t.Callback end if t.onHeld then ad.Settings.onHeld=t.
             onHeld end if t.onChanged then ad.Settings.onChanged=t.onChanged end end local t
             =Instance.new'Frame't.BackgroundColor3=Color3.fromRGB(30,30,30)t.BorderColor3=
             Color3.fromRGB(0,0,0)t.BorderSizePixel=0 t.Size=UDim2.new(1,0,0,1)t.Parent=aa
             function ad:Continue()t.Visible=false return ad end function ad:End()t.Visible=
-            true return ad end ad:UpdateSettings(ad.Settings)if ac then b.Components[ac]=ad
+            true return ad end ad:UpdateSettings(ad.Settings)if ac then d.Components[ac]=ad
             end return ad:End()end function CreateDivider(aa,ab,ac)local ad,ae={Settings=ab}
             ,Instance.new'Frame'ae.BackgroundColor3=Color3.fromRGB(30,30,30)ae.BorderColor3=
             Color3.fromRGB(0,0,0)ae.BorderSizePixel=0 ae.Size=UDim2.new(1,0,0,1)ae.Parent=aa
             ae.Visible=ad.Settings and(ad.Settings.Visible==nil and true or ad.Settings.
-            Visible)or true function ad:UpdateSettings(f)if f.Visible~=nil then ad.Settings.
-            Visible=f.Visible ae.Visible=f.Visible end end if ac then b.Components[ac]=ad
-            end return ad end local aa={Section=CreateSection,Button=CreateButton,Toggle=
-            CreateToggle,Keybind=CreateKeybind,Dropdown=CreateDropdown,Colorpicker=
-            CreateColorpicker,MultiInput=CreateMultiInput,Input=CreateInput,Slider=
-            CreateSlider,Divider=CreateDivider}function injectComponents(ab,ac)for ad,ae in
-            pairs(aa)do if ac and ad==ac then ab[ad]=function(f,...)return ae(f.Content,...)
-            end break else ab[ad]=function(f,...)return ae(f.Content,...)end end end end
-            function b:Window(ab)local ac={Settings=ab}assert(ac.Settings.Title and type(ac.
-            Settings.Title)=='string','Missing window title or wrong type')ac.Settings.
-            Keybind=ac.Settings.Keybind or Enum.KeyCode.RightControl c.winKeybind=ac.
-            Settings.Keybind local ad=Instance.new'ImageLabel'ad.BackgroundColor3=Color3.
+            Visible)or true function ad:UpdateSettings(af)if af.Visible~=nil then ad.
+            Settings.Visible=af.Visible ae.Visible=af.Visible end end if ac then d.
+            Components[ac]=ad end return ad end local aa={Section=CreateSection,Button=
+            CreateButton,Toggle=CreateToggle,Keybind=CreateKeybind,Dropdown=CreateDropdown,
+            Colorpicker=CreateColorpicker,MultiInput=CreateMultiInput,Input=CreateInput,
+            Slider=CreateSlider,Divider=CreateDivider}function injectComponents(ab,ac)for ad
+            ,ae in pairs(aa)do if ac and ad==ac then ab[ad]=function(af,...)return ae(af.
+            Content,...)end break else ab[ad]=function(af,...)return ae(af.Content,...)end
+            end end end function d:Window(ab)local ac={Settings=ab}assert(ac.Settings.Title
+            and type(ac.Settings.Title)=='string','Missing window title or wrong type')ac.
+            Settings.Keybind=ac.Settings.Keybind or Enum.KeyCode.RightControl e.winKeybind=
+            ac.Settings.Keybind local ad=Instance.new'ImageLabel'ad.BackgroundColor3=Color3.
             fromRGB(17,17,17)ad.BorderColor3=Color3.fromRGB(0,0,0)ad.BorderSizePixel=0 ad.
             ClipsDescendants=true ad.Image='rbxassetid://17365187482'ad.ImageTransparency=
             0.96 ad.ScaleType=Enum.ScaleType.Tile ad.Size=UDim2.fromOffset(400,672)ad.
             TileSize=UDim2.fromOffset(500,325)local ae=Instance.new'Frame'ae.AutomaticSize=
             Enum.AutomaticSize.XY ae.BackgroundColor3=Color3.fromRGB(255,255,255)ae.
             BackgroundTransparency=1 ae.BorderColor3=Color3.fromRGB(0,0,0)ae.BorderSizePixel
-            =0 local f=Instance.new'TextLabel'f.AutomaticSize=Enum.AutomaticSize.XY f.
-            BackgroundColor3=Color3.fromRGB(255,255,255)f.BackgroundTransparency=1 f.
-            BorderColor3=Color3.fromRGB(0,0,0)f.BorderSizePixel=0 f.FontFace=Font.new(
-            'rbxassetid://16658237174',Enum.FontWeight.ExtraBold,Enum.FontStyle.Normal)f.
-            RichText=true f.Text=ac.Settings.Title f.TextColor3=Color3.fromRGB(255,255,255)f
-            .TextSize=35 f.TextWrapped=true f.TextXAlignment=Enum.TextXAlignment.Left f.
-            Parent=ae local g=Instance.new'UIPadding'g.PaddingLeft=UDim.new(0,25)g.
-            PaddingRight=UDim.new(0,25)g.Parent=ae local h=Instance.new'Frame'h.AnchorPoint=
-            Vector2.new(0,1)h.BackgroundColor3=Color3.fromRGB(255,255,255)h.
+            =0 local af=Instance.new'TextLabel'af.AutomaticSize=Enum.AutomaticSize.XY af.
+            BackgroundColor3=Color3.fromRGB(255,255,255)af.BackgroundTransparency=1 af.
+            BorderColor3=Color3.fromRGB(0,0,0)af.BorderSizePixel=0 af.FontFace=Font.new(
+            'rbxassetid://16658237174',Enum.FontWeight.ExtraBold,Enum.FontStyle.Normal)af.
+            RichText=true af.Text=ac.Settings.Title af.TextColor3=Color3.fromRGB(255,255,255
+            )af.TextSize=35 af.TextWrapped=true af.TextXAlignment=Enum.TextXAlignment.Left
+            af.Parent=ae local ag=Instance.new'UIPadding'ag.PaddingLeft=UDim.new(0,25)ag.
+            PaddingRight=UDim.new(0,25)ag.Parent=ae local h=Instance.new'Frame'h.AnchorPoint
+            =Vector2.new(0,1)h.BackgroundColor3=Color3.fromRGB(255,255,255)h.
             BackgroundTransparency=0.9 h.BorderColor3=Color3.fromRGB(0,0,0)h.BorderSizePixel
             =0 h.Position=UDim2.new(0,0,1,10)h.Size=UDim2.new(0.95,0,0,1)local i=Instance.
             new'Frame'i.BackgroundColor3=Color3.fromRGB(185,228,255)i.BorderColor3=Color3.
             fromRGB(0,0,0)i.BorderSizePixel=0 i.Size=UDim2.new(0.5,0,0,1)i.Parent=h h.Parent
             =ae local j=Instance.new'UIListLayout'j.Padding=UDim.new(0,10)j.SortOrder=Enum.
             SortOrder.LayoutOrder j.VerticalAlignment=Enum.VerticalAlignment.Center j.Parent
-            =ae ae.Parent=ad local m=Instance.new'UICorner'm.CornerRadius=UDim.new(0,15)m.
-            Parent=ad local p=Instance.new'UIPadding'p.PaddingBottom=UDim.new(0,25)p.
-            PaddingTop=UDim.new(0,25)p.Parent=ad local q=Instance.new'Frame'q.AnchorPoint=
-            Vector2.new(0,1)q.BackgroundColor3=Color3.fromRGB(255,255,255)q.
-            BackgroundTransparency=1 q.BorderColor3=Color3.fromRGB(0,0,0)q.BorderSizePixel=0
-            q.ClipsDescendants=true q.LayoutOrder=1 q.Position=UDim2.fromScale(0,1)q.Size=
+            =ae ae.Parent=ad local k=Instance.new'UICorner'k.CornerRadius=UDim.new(0,15)k.
+            Parent=ad local l=Instance.new'UIPadding'l.PaddingBottom=UDim.new(0,25)l.
+            PaddingTop=UDim.new(0,25)l.Parent=ad local o=Instance.new'Frame'o.AnchorPoint=
+            Vector2.new(0,1)o.BackgroundColor3=Color3.fromRGB(255,255,255)o.
+            BackgroundTransparency=1 o.BorderColor3=Color3.fromRGB(0,0,0)o.BorderSizePixel=0
+            o.ClipsDescendants=true o.LayoutOrder=1 o.Position=UDim2.fromScale(0,1)o.Size=
             UDim2.new(1,0,1,-55)local r=Instance.new'ScrollingFrame'r.Active=true r.
             AutomaticCanvasSize=Enum.AutomaticSize.X r.AutomaticSize=Enum.AutomaticSize.Y r.
             BackgroundColor3=Color3.fromRGB(255,255,255)r.BackgroundTransparency=1 r.
             BorderColor3=Color3.fromRGB(0,0,0)r.BorderSizePixel=0 r.CanvasSize=UDim2.new()r.
-            ScrollBarImageTransparency=1 r.ScrollBarThickness=1 r.ScrollingDirection=Enum.
+            ScrollBarImageTransparency=1 r.ScrollBarThickness=0 r.ScrollingDirection=Enum.
             ScrollingDirection.X r.Size=UDim2.fromScale(1,0)local s=Instance.new
             'UIListLayout's.FillDirection=Enum.FillDirection.Horizontal s.Padding=UDim.new(0
             ,10)s.SortOrder=Enum.SortOrder.LayoutOrder s.Parent=r local t=Instance.new
             'UIPadding't.PaddingBottom=UDim.new(0,10)t.PaddingLeft=UDim.new(0,26)t.
-            PaddingRight=UDim.new(0,26)t.PaddingTop=UDim.new(0,1)t.Parent=r r.Parent=q local
+            PaddingRight=UDim.new(0,26)t.PaddingTop=UDim.new(0,1)t.Parent=r r.Parent=o local
             u=Instance.new'UIListLayout'u.Padding=UDim.new(0,25)u.SortOrder=Enum.SortOrder.
-            LayoutOrder u.Parent=q local v=Instance.new'Frame'v.BackgroundColor3=Color3.
+            LayoutOrder u.Parent=o local v=Instance.new'Frame'v.BackgroundColor3=Color3.
             fromRGB(255,255,255)v.BackgroundTransparency=1 v.BorderColor3=Color3.fromRGB(0,0
-            ,0)v.BorderSizePixel=0 v.Size=UDim2.new(1,0,1,-104)v.Parent=q q.Parent=ad local
+            ,0)v.BorderSizePixel=0 v.Size=UDim2.new(1,0,1,-104)v.Parent=o o.Parent=ad local
             w=Instance.new'UIListLayout'w.Padding=UDim.new(0,30)w.SortOrder=Enum.SortOrder.
-            LayoutOrder w.Parent=ad ad.Parent=c.overlay local x=Instance.new'UIPadding'x.
+            LayoutOrder w.Parent=ad ad.Parent=e.overlay local x=Instance.new'UIPadding'x.
             PaddingBottom=UDim.new(0,15)x.PaddingLeft=UDim.new(0,15)x.PaddingRight=UDim.new(
-            0,15)x.PaddingTop=UDim.new(0,15)x.Parent=c.overlay local y=Instance.new
+            0,15)x.PaddingTop=UDim.new(0,15)x.Parent=e.overlay local y=Instance.new
             'ImageLabel'y.BackgroundColor3=Color3.fromRGB(17,17,17)y.BorderColor3=Color3.
             fromRGB(0,0,0)y.BorderSizePixel=0 y.ClipsDescendants=true y.Image=
             'rbxassetid://17365187482'y.ImageTransparency=0.96 y.ScaleType=Enum.ScaleType.
@@ -943,177 +942,177 @@ local Self = [=====[
             Instance.new'Frame'_.AutomaticSize=Enum.AutomaticSize.XY _.BackgroundColor3=
             Color3.fromRGB(255,255,255)_.BackgroundTransparency=1 _.BorderColor3=Color3.
             fromRGB(0,0,0)_.BorderSizePixel=0 _.LayoutOrder=2 _.Position=UDim2.new(1,5,0,10)
-            _.Size=UDim2.fromOffset(50,0)_.Visible=true local af=Instance.new'TextLabel'af.
-            AnchorPoint=Vector2.new(0,1)af.AutomaticSize=Enum.AutomaticSize.XY af.
-            BackgroundColor3=Color3.fromRGB(255,255,255)af.BackgroundTransparency=1 af.
-            BorderColor3=Color3.fromRGB(0,0,0)af.BorderSizePixel=0 af.FontFace=Font.new(
-            'rbxassetid://12187362578',Enum.FontWeight.SemiBold,Enum.FontStyle.Normal)af.
-            Position=UDim2.fromOffset(0,-5)af.RichText=true af.Text='100M'af.TextColor3=
-            Color3.fromRGB(255,255,255)af.TextSize=13 af.TextWrapped=true af.TextXAlignment=
-            Enum.TextXAlignment.Left af.TextYAlignment=Enum.TextYAlignment.Top af.Parent=_
-            af.Visible=false local ag=Instance.new'TextLabel'ag.AnchorPoint=Vector2.new(0,1)
-            ag.AutomaticSize=Enum.AutomaticSize.XY ag.BackgroundColor3=Color3.fromRGB(255,
-            255,255)ag.BackgroundTransparency=1 ag.BorderColor3=Color3.fromRGB(0,0,0)ag.
-            BorderSizePixel=0 ag.FontFace=Font.new('rbxassetid://12187362578',Enum.
-            FontWeight.SemiBold,Enum.FontStyle.Normal)ag.LayoutOrder=1 ag.Position=UDim2.
-            fromOffset(0,-5)ag.RichText=true ag.Text='BF 30'ag.TextColor3=Color3.fromRGB(255
-            ,255,255)ag.TextSize=13 ag.TextWrapped=true ag.TextXAlignment=Enum.
-            TextXAlignment.Left ag.TextYAlignment=Enum.TextYAlignment.Top ag.Parent=_ ag.
-            Visible=false local ah=Instance.new'TextLabel'ah.AnchorPoint=Vector2.new(0,1)ah.
-            AutomaticSize=Enum.AutomaticSize.XY ah.BackgroundColor3=Color3.fromRGB(255,255,
-            255)ah.BackgroundTransparency=1 ah.BorderColor3=Color3.fromRGB(0,0,0)ah.
-            BorderSizePixel=0 ah.ClipsDescendants=true ah.FontFace=Font.new(
+            _.Size=UDim2.fromOffset(50,0)_.Visible=true local ah=Instance.new'TextLabel'ah.
+            AnchorPoint=Vector2.new(0,1)ah.AutomaticSize=Enum.AutomaticSize.XY ah.
+            BackgroundColor3=Color3.fromRGB(255,255,255)ah.BackgroundTransparency=1 ah.
+            BorderColor3=Color3.fromRGB(0,0,0)ah.BorderSizePixel=0 ah.FontFace=Font.new(
             'rbxassetid://12187362578',Enum.FontWeight.SemiBold,Enum.FontStyle.Normal)ah.
-            LayoutOrder=2 ah.Position=UDim2.fromOffset(0,-5)ah.RichText=true ah.Text='140HP'
-            ah.TextColor3=Color3.fromRGB(255,255,255)ah.TextSize=13 ah.TextWrapped=true ah.
-            TextXAlignment=Enum.TextXAlignment.Left ah.TextYAlignment=Enum.TextYAlignment.
-            Top ah.Parent=_ ah.Visible=false local ai=Instance.new'UIListLayout'ai.SortOrder
-            =Enum.SortOrder.LayoutOrder ai.Parent=_ _.Parent=H local aj=Instance.new
-            'UIListLayout'aj.FillDirection=Enum.FillDirection.Horizontal aj.HorizontalFlex=
-            Enum.UIFlexAlignment.Fill aj.Padding=UDim.new(0,10)aj.SortOrder=Enum.SortOrder.
-            LayoutOrder aj.Parent=H H.Parent=G G.Parent=y y.Parent=c.overlay e.
-            makeDraggable(y)e.makeDraggable(ad)d._userInputService.InputEnded:Connect(
-            function(ak,al)if al then return end if ak.KeyCode==ac.Settings.Keybind then c.
-            overlay.Visible=not c.overlay.Visible end end)local ak=function()local ak=ae.
-            AbsoluteSize.Y+9 q.Size=UDim2.new(1,0,1,-ak)q.Position=UDim2.new(0,0,0,ak)end ae
-            :GetPropertyChangedSignal'AbsoluteSize':Connect(ak)ak()function ac:
-            UpdateSettings(al)if al.Title then ac.Settings.Title=al.Title f.Text=al.Title
-            end if al.Keybind then ac.Settings.Keybind=al.Keybind c.winKeybind=al.Keybind
-            end end function ac:Tab(al)local am={Settings=al}assert(am.Settings.Name and
-            type(am.Settings.Name)=='string','Missing string or wrong type')if not am.
-            Settings.Image or am.Settings.Image==''then am.Settings.Image=b.Assets.
-            DefaultImage end c.tabSystem.tabIndex+=1 local an=Instance.new'Frame'an.
-            AutomaticSize=Enum.AutomaticSize.Y an.BackgroundColor3=Color3.fromRGB(30,34,47)
-            an.BackgroundTransparency=1 an.BorderColor3=Color3.fromRGB(0,0,0)an.
-            BorderSizePixel=0 an.Size=UDim2.fromOffset(50,50)an.Parent=r an.LayoutOrder=c.
-            tabSystem.tabIndex local ao=Instance.new'TextLabel'ao.AutomaticSize=Enum.
-            AutomaticSize.Y ao.BackgroundColor3=Color3.fromRGB(255,255,255)ao.
-            BackgroundTransparency=1 ao.BorderColor3=Color3.fromRGB(0,0,0)ao.BorderSizePixel
-            =0 ao.FontFace=Font.new('rbxassetid://12187365364',Enum.FontWeight.Bold,Enum.
-            FontStyle.Normal)ao.LayoutOrder=1 ao.Position=UDim2.new(0,0,1,10)ao.RichText=
-            true ao.Size=UDim2.fromScale(1,0)ao.Text=am.Settings.Name:upper()ao.TextColor3=
-            Color3.fromRGB(150,150,150)ao.TextSize=11 ao.TextWrapped=true ao.Parent=an local
-            ap=Instance.new'TextButton'ap.AutoButtonColor=false ap.BackgroundColor3=Color3.
-            fromRGB(30,34,47)ap.BorderColor3=Color3.fromRGB(0,0,0)ap.BorderSizePixel=0 ap.
-            FontFace=Font.new'rbxasset://fonts/families/SourceSansPro.json'ap.Size=UDim2.
-            fromOffset(50,50)ap.Text=''ap.TextColor3=Color3.fromRGB(0,0,0)ap.TextSize=14
-            local aq=Instance.new'UICorner'aq.CornerRadius=UDim.new(0,13)aq.Parent=ap local
-            ar=Instance.new'UIStroke'ar.ApplyStrokeMode=Enum.ApplyStrokeMode.Border ar.Color
-            =Color3.fromRGB(185,228,255)ar.Transparency=1 ar.Parent=ap local as=Instance.new
-            'ImageLabel'as.AnchorPoint=Vector2.new(0.5,0.5)as.BackgroundColor3=Color3.
-            fromRGB(255,255,255)as.BackgroundTransparency=1 as.BorderColor3=Color3.fromRGB(0
-            ,0,0)as.BorderSizePixel=0 as.Image=am.Settings.Image as.ImageColor3=Color3.
-            fromRGB(150,150,150)as.Position=UDim2.fromScale(0.5,0.5)as.ScaleType=Enum.
-            ScaleType.Crop as.Size=UDim2.fromOffset(28,28)as.Parent=ap ap.Parent=an local at
-            =Instance.new'UIListLayout'at.Padding=UDim.new(0,10)at.SortOrder=Enum.SortOrder.
-            LayoutOrder at.Parent=an local au=Instance.new'ScrollingFrame'au.Name=
-            'TabContent'au.AutomaticCanvasSize=Enum.AutomaticSize.Y au.BackgroundColor3=
-            Color3.fromRGB(255,255,255)au.BackgroundTransparency=1 au.BorderColor3=Color3.
-            fromRGB(0,0,0)au.BorderSizePixel=0 au.CanvasSize=UDim2.new()au.
-            ScrollBarImageTransparency=1 au.ScrollBarThickness=1 au.Size=UDim2.fromScale(1,1
-            )local av=Instance.new'UIListLayout'av.Name='UIListLayout'av.Padding=UDim.new(0,
-            10)av.SortOrder=Enum.SortOrder.LayoutOrder av.Parent=au local aw=Instance.new
-            'UIPadding'aw.Name='UIPadding'aw.PaddingBottom=UDim.new(0,20)aw.PaddingLeft=UDim
-            .new(0,25)aw.PaddingRight=UDim.new(0,25)aw.Parent=au c.tabSystem.tabInstances[an
-            ]={Name=ao,Stroke=ar,Icon=as,TabContent=au}function am:Select()if c.tabSystem.
-            tabInstances[c.tabSystem.currentTab]then local ax=c.tabSystem.tabInstances[c.
-            tabSystem.currentTab]e.tween(ax.Name,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{
-            TextColor3=Color3.fromRGB(150,150,150)}):Play()e.tween(ax.Icon,TweenInfo.new(0.1
-            ,Enum.EasingStyle.Sine),{ImageColor3=Color3.fromRGB(150,150,150)}):Play()e.
-            tween(ax.Stroke,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{Transparency=1}):Play(
-            )if c.tabSystem.currentContent then c.tabSystem.currentContent.Parent=nil end
-            end if c.tabSystem.tabInstances[an]then local ax=c.tabSystem.tabInstances[an]e.
-            tween(ax.Name,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{TextColor3=Color3.
-            fromRGB(168,193,225)}):Play()e.tween(ax.Icon,TweenInfo.new(0.1,Enum.EasingStyle.
-            Sine),{ImageColor3=Color3.fromRGB(133,192,228)}):Play()e.tween(ax.Stroke,
-            TweenInfo.new(0.1,Enum.EasingStyle.Sine),{Transparency=0}):Play()c.tabSystem.
-            currentTab=an au.Parent=v c.tabSystem.currentContent=au end end ap.
-            MouseButton1Click:Connect(function()am:Select()end)function am:Section(ax,ay)
-            local az,aA={Settings=ax},Instance.new'Frame'aA.Name='Section'aA.AutomaticSize=
-            Enum.AutomaticSize.Y aA.BackgroundColor3=Color3.fromRGB(255,255,255)aA.
-            BackgroundTransparency=1 aA.BorderColor3=Color3.fromRGB(0,0,0)aA.BorderSizePixel
-            =0 aA.Size=UDim2.fromScale(1,0)local aB=Instance.new'TextButton'aB.Name=
-            'Leading'aB.AutoButtonColor=false aB.AutomaticSize=Enum.AutomaticSize.Y aB.
-            BackgroundColor3=Color3.fromRGB(255,255,255)aB.BackgroundTransparency=1 aB.
-            BorderColor3=Color3.fromRGB(0,0,0)aB.BorderSizePixel=0 aB.LayoutOrder=-1 aB.
-            Selectable=false aB.Size=UDim2.fromScale(1,0)aB.Text=''local aC=Instance.new
-            'TextLabel'aC.Name='Name'aC.AutomaticSize=Enum.AutomaticSize.XY aC.
-            BackgroundColor3=Color3.fromRGB(255,255,255)aC.BackgroundTransparency=1 aC.
-            BorderColor3=Color3.fromRGB(0,0,0)aC.BorderSizePixel=0 aC.FontFace=Font.new(
-            'rbxassetid://16658237174',Enum.FontWeight.Bold,Enum.FontStyle.Normal)aC.
-            LayoutOrder=1 aC.Position=UDim2.fromOffset(28,0)aC.RichText=true aC.TextColor3=
-            Color3.fromRGB(225,225,225)aC.TextSize=20 aC.TextWrapped=true aC.TextXAlignment=
-            Enum.TextXAlignment.Left aC.Parent=aB local aD=Instance.new'ImageButton'aD.Name=
-            'Chevron'aD.AnchorPoint=Vector2.new(0,0.5)aD.AutoButtonColor=false aD.
-            BackgroundColor3=Color3.fromRGB(30,34,47)aD.BackgroundTransparency=1 aD.
-            BorderColor3=Color3.fromRGB(0,0,0)aD.BorderSizePixel=0 aD.Image=
-            'rbxassetid://77136690433593'aD.LayoutOrder=1 aD.Position=UDim2.fromScale(0,0.5)
-            aD.Selectable=false aD.Active=false aD.Interactable=false aD.Size=UDim2.
-            fromOffset(18,18)aD.Parent=aB aB.Parent=aA local aE=Instance.new'Frame'aE.Name=
-            'Trailing'aE.BackgroundColor3=Color3.fromRGB(255,255,255)aE.
-            BackgroundTransparency=1 aE.BorderColor3=Color3.fromRGB(0,0,0)aE.BorderSizePixel
-            =0 aE.ClipsDescendants=true aE.Size=UDim2.fromScale(1,0)local aF=Instance.new
-            'UIListLayout'aF.Name='UIListLayout'aF.Padding=UDim.new(0,10)aF.SortOrder=Enum.
-            SortOrder.LayoutOrder aF.Parent=aE local aG=Instance.new'UIPadding'aG.Name=
-            'UIPadding'aG.PaddingLeft=UDim.new(0,12)aG.Parent=aE local aH=Instance.new
-            'Folder'aH.Name='Folder'local aI=Instance.new'Frame'aI.Name='Frame'aI.
-            AnchorPoint=Vector2.new(0,1)aI.BackgroundColor3=Color3.fromRGB(30,30,30)aI.
-            BorderColor3=Color3.fromRGB(0,0,0)aI.BorderSizePixel=0 aI.Position=UDim2.new(0,-
-            12,1,0)aI.Size=UDim2.new(0,1,1,0)aI.Parent=aH aH.Parent=aE aE.Parent=aA local aJ
-            =Instance.new'UIListLayout'aJ.Name='UIListLayout'aJ.Padding=UDim.new(0,10)aJ.
-            SortOrder=Enum.SortOrder.LayoutOrder aJ.Parent=aA local aK=Instance.new
-            'UIPadding'aK.Name='UIPadding'aK.PaddingBottom=UDim.new(0,8)aK.PaddingTop=UDim.
-            new(0,8)aK.Parent=aA aA.Parent=au local aL=function(aL)if aL then local aM,aN={}
-            ,0 for aO,aP in pairs(aE:GetChildren())do if aP:IsA'GuiObject'and aP.Visible
-            then table.insert(aM,aP)aN+=aP.AbsoluteSize.Y end end if#aM>1 then aN+=(#aM-1)*
-            aF.Padding.Offset end e.tween(aE,TweenInfo.new(0.15,Enum.EasingStyle.Sine),{Size
-            =UDim2.new(1,0,0,aN)}):Play()e.tween(aD,TweenInfo.new(0.15,Enum.EasingStyle.Sine
-            ),{Rotation=-180}):Play()else e.tween(aE,TweenInfo.new(0.15,Enum.EasingStyle.
-            Sine),{Size=UDim2.new(1,0,0,0)}):Play()e.tween(aD,TweenInfo.new(0.15,Enum.
-            EasingStyle.Sine),{Rotation=0}):Play()end end aB.MouseButton1Click:Connect(
-            function()az.Settings.Opened=not az.Settings.Opened aL(az.Settings.Opened)end)
-            local aM=function(aM)if not aM:IsA'GuiObject'then return end aM:
-            GetPropertyChangedSignal'Visible':Connect(function()if az.Settings.Opened then
-            aL(true)end end)end for aN,aO in pairs(aE:GetChildren())do aM(aO)end aE.
-            ChildAdded:Connect(function(aN)aM(aN)if az.Settings.Opened then aL(true)end end)
-            aE.ChildRemoved:Connect(function()if az.Settings.Opened then aL(true)end end)
-            function az:UpdateSettings(aN)if aN.Visible~=nil then az.Settings.Visible=aN.
-            Visible aA.Visible=aN.Visible end if aN.Opened~=nil then az.Settings.Opened=aN.
-            Opened aL(aN.Opened)end if aN.Name then az.Settings.Name=aN.Name aC.Text=aN.Name
-            end end if az.Settings.Closed==nil then az.Settings.Closed=true end az:
-            UpdateSettings(az.Settings)if ay then b.Components[ay]=az end az.Content=aE
-            injectComponents(az)return az end am.Content=au injectComponents(am)return am
-            end function ac:VisualPreview(al)local am={N,O,Q,P,S,R,M,L}if al.Enabled~=nil
-            then local an=al.Enabled I.Visible=an af.Visible=an ah.Visible=an ag.Visible=an
-            V.Visible=an Z.Visible=an X.Visible=an K.Visible=an for ao,ap in ipairs(am)do ap
-            .Visible=an end if not an then return end end if al.Visible~=nil then y.Visible=
-            al.Visible end if al.HealthBar then if al.HealthBar.Visible~=nil then I.Visible=
-            al.HealthBar.Visible end if al.HealthBar.Color then I.BackgroundColor3=al.
-            HealthBar.Color[1]or I.BackgroundColor3 if al.HealthBar.Color[2]~=nil then I.
-            Transparency=1-al.HealthBar.Color[2]end end end if al.Distance then if al.
-            Distance.Visible~=nil then af.Visible=al.Distance.Visible end if al.Distance.
-            Color then af.TextColor3=al.Distance.Color[1]or af.TextColor3 if al.Distance.
-            Color[2]~=nil then af.TextTransparency=1-al.Distance.Color[2]end end end if al.
-            Health then if al.Health.Visible~=nil then ah.Visible=al.Health.Visible end if
-            al.Health.Color then ah.TextColor3=al.Health.Color[1]or ah.TextColor3 if al.
-            Health.Color[2]~=nil then ah.TextTransparency=1-al.Health.Color[2]end end end if
-            al.Weapon then if al.Weapon.Visible~=nil then ag.Visible=al.Weapon.Visible end
-            if al.Weapon.Color then ag.TextColor3=al.Weapon.Color[1]or ag.TextColor3 if al.
-            Weapon.Color[2]~=nil then ag.TextTransparency=1-al.Weapon.Color[2]end end end if
-            al.Name then if al.Name.Visible~=nil then V.Visible=al.Name.Visible end if al.
-            Name.Color then V.TextColor3=al.Name.Color[1]or V.TextColor3 if al.Name.Color[2]
-            ~=nil then V.TextTransparency=1-al.Name.Color[2]end end end if al.FillBox then
-            if al.FillBox.Visible~=nil then Z.Visible=al.FillBox.Visible end if al.FillBox.
-            Color then Z.BackgroundColor3=al.FillBox.Color[1]or Z.BackgroundColor3 if al.
-            FillBox.Color[2]~=nil then Z.BackgroundTransparency=1-al.FillBox.Color[2]end end
-            end if al.BoundingBox then if al.BoundingBox.Visible~=nil then X.Visible=al.
-            BoundingBox.Visible end if al.BoundingBox.Color then Y.Color=al.BoundingBox.
-            Color[1]or Y.Color if al.BoundingBox.Color[2]~=nil then Y.Transparency=1-al.
-            BoundingBox.Color[2]end end end if al.CornerBox then if al.CornerBox.Visible~=
-            nil then K.Visible=al.CornerBox.Visible end if al.CornerBox.Color then for an,ao
-            in ipairs(am)do ao.BackgroundColor3=al.CornerBox.Color[1]or ao.BackgroundColor3
-            if al.CornerBox.Color[2]~=nil then ao.BackgroundTransparency=1-al.CornerBox.
-            Color[2]end end end end end return ac end function b:Notification(ab)local ac={
+            Position=UDim2.fromOffset(0,-5)ah.RichText=true ah.Text='100M'ah.TextColor3=
+            Color3.fromRGB(255,255,255)ah.TextSize=13 ah.TextWrapped=true ah.TextXAlignment=
+            Enum.TextXAlignment.Left ah.TextYAlignment=Enum.TextYAlignment.Top ah.Parent=_
+            ah.Visible=false local ai=Instance.new'TextLabel'ai.AnchorPoint=Vector2.new(0,1)
+            ai.AutomaticSize=Enum.AutomaticSize.XY ai.BackgroundColor3=Color3.fromRGB(255,
+            255,255)ai.BackgroundTransparency=1 ai.BorderColor3=Color3.fromRGB(0,0,0)ai.
+            BorderSizePixel=0 ai.FontFace=Font.new('rbxassetid://12187362578',Enum.
+            FontWeight.SemiBold,Enum.FontStyle.Normal)ai.LayoutOrder=1 ai.Position=UDim2.
+            fromOffset(0,-5)ai.RichText=true ai.Text='BF 30'ai.TextColor3=Color3.fromRGB(255
+            ,255,255)ai.TextSize=13 ai.TextWrapped=true ai.TextXAlignment=Enum.
+            TextXAlignment.Left ai.TextYAlignment=Enum.TextYAlignment.Top ai.Parent=_ ai.
+            Visible=false local aj=Instance.new'TextLabel'aj.AnchorPoint=Vector2.new(0,1)aj.
+            AutomaticSize=Enum.AutomaticSize.XY aj.BackgroundColor3=Color3.fromRGB(255,255,
+            255)aj.BackgroundTransparency=1 aj.BorderColor3=Color3.fromRGB(0,0,0)aj.
+            BorderSizePixel=0 aj.ClipsDescendants=true aj.FontFace=Font.new(
+            'rbxassetid://12187362578',Enum.FontWeight.SemiBold,Enum.FontStyle.Normal)aj.
+            LayoutOrder=2 aj.Position=UDim2.fromOffset(0,-5)aj.RichText=true aj.Text='140HP'
+            aj.TextColor3=Color3.fromRGB(255,255,255)aj.TextSize=13 aj.TextWrapped=true aj.
+            TextXAlignment=Enum.TextXAlignment.Left aj.TextYAlignment=Enum.TextYAlignment.
+            Top aj.Parent=_ aj.Visible=false local ak=Instance.new'UIListLayout'ak.SortOrder
+            =Enum.SortOrder.LayoutOrder ak.Parent=_ _.Parent=H local al=Instance.new
+            'UIListLayout'al.FillDirection=Enum.FillDirection.Horizontal al.HorizontalFlex=
+            Enum.UIFlexAlignment.Fill al.Padding=UDim.new(0,10)al.SortOrder=Enum.SortOrder.
+            LayoutOrder al.Parent=H H.Parent=G G.Parent=y y.Parent=e.overlay g.
+            makeDraggable(y)g.makeDraggable(ad)f._userInputService.InputEnded:Connect(
+            function(am,an)if an then return end if am.KeyCode==ac.Settings.Keybind then e.
+            overlay.Visible=not e.overlay.Visible end end)local am=function()local am=ae.
+            AbsoluteSize.Y+9 o.Size=UDim2.new(1,0,1,-am)o.Position=UDim2.new(0,0,0,am)end ae
+            :GetPropertyChangedSignal'AbsoluteSize':Connect(am)am()function ac:
+            UpdateSettings(an)if an.Title then ac.Settings.Title=an.Title af.Text=an.Title
+            end if an.Keybind then ac.Settings.Keybind=an.Keybind e.winKeybind=an.Keybind
+            end end function ac:Tab(an)local ao={Settings=an}assert(ao.Settings.Name and
+            type(ao.Settings.Name)=='string','Missing string or wrong type')if not ao.
+            Settings.Image or ao.Settings.Image==''then ao.Settings.Image=d.Assets.
+            DefaultImage end e.tabSystem.tabIndex+=1 local ap=Instance.new'Frame'ap.
+            AutomaticSize=Enum.AutomaticSize.Y ap.BackgroundColor3=Color3.fromRGB(30,34,47)
+            ap.BackgroundTransparency=1 ap.BorderColor3=Color3.fromRGB(0,0,0)ap.
+            BorderSizePixel=0 ap.Size=UDim2.fromOffset(50,50)ap.Parent=r ap.LayoutOrder=e.
+            tabSystem.tabIndex local aq=Instance.new'TextLabel'aq.AutomaticSize=Enum.
+            AutomaticSize.Y aq.BackgroundColor3=Color3.fromRGB(255,255,255)aq.
+            BackgroundTransparency=1 aq.BorderColor3=Color3.fromRGB(0,0,0)aq.BorderSizePixel
+            =0 aq.FontFace=Font.new('rbxassetid://12187365364',Enum.FontWeight.Bold,Enum.
+            FontStyle.Normal)aq.LayoutOrder=1 aq.Position=UDim2.new(0,0,1,10)aq.RichText=
+            true aq.Size=UDim2.fromScale(1,0)aq.Text=ao.Settings.Name:upper()aq.TextColor3=
+            Color3.fromRGB(150,150,150)aq.TextSize=11 aq.TextWrapped=true aq.Parent=ap local
+            ar=Instance.new'TextButton'ar.AutoButtonColor=false ar.BackgroundColor3=Color3.
+            fromRGB(30,34,47)ar.BorderColor3=Color3.fromRGB(0,0,0)ar.BorderSizePixel=0 ar.
+            FontFace=Font.new'rbxasset://fonts/families/SourceSansPro.json'ar.Size=UDim2.
+            fromOffset(50,50)ar.Text=''ar.TextColor3=Color3.fromRGB(0,0,0)ar.TextSize=14
+            local as=Instance.new'UICorner'as.CornerRadius=UDim.new(0,13)as.Parent=ar local
+            at=Instance.new'UIStroke'at.ApplyStrokeMode=Enum.ApplyStrokeMode.Border at.Color
+            =Color3.fromRGB(185,228,255)at.Transparency=1 at.Parent=ar local au=Instance.new
+            'ImageLabel'au.AnchorPoint=Vector2.new(0.5,0.5)au.BackgroundColor3=Color3.
+            fromRGB(255,255,255)au.BackgroundTransparency=1 au.BorderColor3=Color3.fromRGB(0
+            ,0,0)au.BorderSizePixel=0 au.Image=ao.Settings.Image au.ImageColor3=Color3.
+            fromRGB(150,150,150)au.Position=UDim2.fromScale(0.5,0.5)au.ScaleType=Enum.
+            ScaleType.Crop au.Size=UDim2.fromOffset(28,28)au.Parent=ar ar.Parent=ap local av
+            =Instance.new'UIListLayout'av.Padding=UDim.new(0,10)av.SortOrder=Enum.SortOrder.
+            LayoutOrder av.Parent=ap local aw=Instance.new'ScrollingFrame'aw.Name=
+            'TabContent'aw.AutomaticCanvasSize=Enum.AutomaticSize.Y aw.BackgroundColor3=
+            Color3.fromRGB(255,255,255)aw.BackgroundTransparency=1 aw.BorderColor3=Color3.
+            fromRGB(0,0,0)aw.BorderSizePixel=0 aw.CanvasSize=UDim2.new()aw.
+            ScrollBarImageTransparency=1 aw.ScrollBarThickness=1 aw.Size=UDim2.fromScale(1,1
+            )local ax=Instance.new'UIListLayout'ax.Name='UIListLayout'ax.Padding=UDim.new(0,
+            10)ax.SortOrder=Enum.SortOrder.LayoutOrder ax.Parent=aw local ay=Instance.new
+            'UIPadding'ay.Name='UIPadding'ay.PaddingBottom=UDim.new(0,20)ay.PaddingLeft=UDim
+            .new(0,25)ay.PaddingRight=UDim.new(0,25)ay.Parent=aw e.tabSystem.tabInstances[ap
+            ]={Name=aq,Stroke=at,Icon=au,TabContent=aw}function ao:Select()if e.tabSystem.
+            tabInstances[e.tabSystem.currentTab]then local az=e.tabSystem.tabInstances[e.
+            tabSystem.currentTab]g.tween(az.Name,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{
+            TextColor3=Color3.fromRGB(150,150,150)}):Play()g.tween(az.Icon,TweenInfo.new(0.1
+            ,Enum.EasingStyle.Sine),{ImageColor3=Color3.fromRGB(150,150,150)}):Play()g.
+            tween(az.Stroke,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{Transparency=1}):Play(
+            )if e.tabSystem.currentContent then e.tabSystem.currentContent.Parent=nil end
+            end if e.tabSystem.tabInstances[ap]then local az=e.tabSystem.tabInstances[ap]g.
+            tween(az.Name,TweenInfo.new(0.1,Enum.EasingStyle.Sine),{TextColor3=Color3.
+            fromRGB(168,193,225)}):Play()g.tween(az.Icon,TweenInfo.new(0.1,Enum.EasingStyle.
+            Sine),{ImageColor3=Color3.fromRGB(133,192,228)}):Play()g.tween(az.Stroke,
+            TweenInfo.new(0.1,Enum.EasingStyle.Sine),{Transparency=0}):Play()e.tabSystem.
+            currentTab=ap aw.Parent=v e.tabSystem.currentContent=aw end end ar.
+            MouseButton1Click:Connect(function()ao:Select()end)function ao:Section(az,aA)
+            local aB,aC={Settings=az},Instance.new'Frame'aC.Name='Section'aC.AutomaticSize=
+            Enum.AutomaticSize.Y aC.BackgroundColor3=Color3.fromRGB(255,255,255)aC.
+            BackgroundTransparency=1 aC.BorderColor3=Color3.fromRGB(0,0,0)aC.BorderSizePixel
+            =0 aC.Size=UDim2.fromScale(1,0)local aD=Instance.new'TextButton'aD.Name=
+            'Leading'aD.AutoButtonColor=false aD.AutomaticSize=Enum.AutomaticSize.Y aD.
+            BackgroundColor3=Color3.fromRGB(255,255,255)aD.BackgroundTransparency=1 aD.
+            BorderColor3=Color3.fromRGB(0,0,0)aD.BorderSizePixel=0 aD.LayoutOrder=-1 aD.
+            Selectable=false aD.Size=UDim2.fromScale(1,0)aD.Text=''local aE=Instance.new
+            'TextLabel'aE.Name='Name'aE.AutomaticSize=Enum.AutomaticSize.XY aE.
+            BackgroundColor3=Color3.fromRGB(255,255,255)aE.BackgroundTransparency=1 aE.
+            BorderColor3=Color3.fromRGB(0,0,0)aE.BorderSizePixel=0 aE.FontFace=Font.new(
+            'rbxassetid://16658237174',Enum.FontWeight.Bold,Enum.FontStyle.Normal)aE.
+            LayoutOrder=1 aE.Position=UDim2.fromOffset(28,0)aE.RichText=true aE.TextColor3=
+            Color3.fromRGB(225,225,225)aE.TextSize=20 aE.TextWrapped=true aE.TextXAlignment=
+            Enum.TextXAlignment.Left aE.Parent=aD local aF=Instance.new'ImageButton'aF.Name=
+            'Chevron'aF.AnchorPoint=Vector2.new(0,0.5)aF.AutoButtonColor=false aF.
+            BackgroundColor3=Color3.fromRGB(30,34,47)aF.BackgroundTransparency=1 aF.
+            BorderColor3=Color3.fromRGB(0,0,0)aF.BorderSizePixel=0 aF.Image=
+            'rbxassetid://77136690433593'aF.LayoutOrder=1 aF.Position=UDim2.fromScale(0,0.5)
+            aF.Selectable=false aF.Active=false aF.Interactable=false aF.Size=UDim2.
+            fromOffset(18,18)aF.Parent=aD aD.Parent=aC local aG=Instance.new'Frame'aG.Name=
+            'Trailing'aG.BackgroundColor3=Color3.fromRGB(255,255,255)aG.
+            BackgroundTransparency=1 aG.BorderColor3=Color3.fromRGB(0,0,0)aG.BorderSizePixel
+            =0 aG.ClipsDescendants=true aG.Size=UDim2.fromScale(1,0)local aH=Instance.new
+            'UIListLayout'aH.Name='UIListLayout'aH.Padding=UDim.new(0,10)aH.SortOrder=Enum.
+            SortOrder.LayoutOrder aH.Parent=aG local aI=Instance.new'UIPadding'aI.Name=
+            'UIPadding'aI.PaddingLeft=UDim.new(0,12)aI.Parent=aG local aJ=Instance.new
+            'Folder'aJ.Name='Folder'local aK=Instance.new'Frame'aK.Name='Frame'aK.
+            AnchorPoint=Vector2.new(0,1)aK.BackgroundColor3=Color3.fromRGB(30,30,30)aK.
+            BorderColor3=Color3.fromRGB(0,0,0)aK.BorderSizePixel=0 aK.Position=UDim2.new(0,-
+            12,1,0)aK.Size=UDim2.new(0,1,1,0)aK.Parent=aJ aJ.Parent=aG aG.Parent=aC local aL
+            =Instance.new'UIListLayout'aL.Name='UIListLayout'aL.Padding=UDim.new(0,10)aL.
+            SortOrder=Enum.SortOrder.LayoutOrder aL.Parent=aC local aM=Instance.new
+            'UIPadding'aM.Name='UIPadding'aM.PaddingBottom=UDim.new(0,8)aM.PaddingTop=UDim.
+            new(0,8)aM.Parent=aC aC.Parent=aw local aN=function(aN)if aN then local aO,aP={}
+            ,0 for aQ,aR in pairs(aG:GetChildren())do if aR:IsA'GuiObject'and aR.Visible
+            then table.insert(aO,aR)aP+=aR.AbsoluteSize.Y end end if#aO>1 then aP+=(#aO-1)*
+            aH.Padding.Offset end g.tween(aG,TweenInfo.new(0.15,Enum.EasingStyle.Sine),{Size
+            =UDim2.new(1,0,0,aP)}):Play()g.tween(aF,TweenInfo.new(0.15,Enum.EasingStyle.Sine
+            ),{Rotation=-180}):Play()else g.tween(aG,TweenInfo.new(0.15,Enum.EasingStyle.
+            Sine),{Size=UDim2.new(1,0,0,0)}):Play()g.tween(aF,TweenInfo.new(0.15,Enum.
+            EasingStyle.Sine),{Rotation=0}):Play()end end aD.MouseButton1Click:Connect(
+            function()aB.Settings.Opened=not aB.Settings.Opened aN(aB.Settings.Opened)end)
+            local aO=function(aO)if not aO:IsA'GuiObject'then return end aO:
+            GetPropertyChangedSignal'Visible':Connect(function()if aB.Settings.Opened then
+            aN(true)end end)end for aP,aQ in pairs(aG:GetChildren())do aO(aQ)end aG.
+            ChildAdded:Connect(function(aP)aO(aP)if aB.Settings.Opened then aN(true)end end)
+            aG.ChildRemoved:Connect(function()if aB.Settings.Opened then aN(true)end end)
+            function aB:UpdateSettings(aP)if aP.Visible~=nil then aB.Settings.Visible=aP.
+            Visible aC.Visible=aP.Visible end if aP.Opened~=nil then aB.Settings.Opened=aP.
+            Opened aN(aP.Opened)end if aP.Name then aB.Settings.Name=aP.Name aE.Text=aP.Name
+            end end if aB.Settings.Closed==nil then aB.Settings.Closed=true end aB:
+            UpdateSettings(aB.Settings)if aA then d.Components[aA]=aB end aB.Content=aG
+            injectComponents(aB)return aB end ao.Content=aw injectComponents(ao)return ao
+            end function ac:VisualPreview(an)local ao={N,O,Q,P,S,R,M,L}if an.Enabled~=nil
+            then local ap=an.Enabled I.Visible=ap ah.Visible=ap aj.Visible=ap ai.Visible=ap
+            V.Visible=ap Z.Visible=ap X.Visible=ap K.Visible=ap for aq,ar in ipairs(ao)do ar
+            .Visible=ap end if not ap then return end end if an.Visible~=nil then y.Visible=
+            an.Visible end if an.HealthBar then if an.HealthBar.Visible~=nil then I.Visible=
+            an.HealthBar.Visible end if an.HealthBar.Color then I.BackgroundColor3=an.
+            HealthBar.Color[1]or I.BackgroundColor3 if an.HealthBar.Color[2]~=nil then I.
+            Transparency=1-an.HealthBar.Color[2]end end end if an.Distance then if an.
+            Distance.Visible~=nil then ah.Visible=an.Distance.Visible end if an.Distance.
+            Color then ah.TextColor3=an.Distance.Color[1]or ah.TextColor3 if an.Distance.
+            Color[2]~=nil then ah.TextTransparency=1-an.Distance.Color[2]end end end if an.
+            Health then if an.Health.Visible~=nil then aj.Visible=an.Health.Visible end if
+            an.Health.Color then aj.TextColor3=an.Health.Color[1]or aj.TextColor3 if an.
+            Health.Color[2]~=nil then aj.TextTransparency=1-an.Health.Color[2]end end end if
+            an.Weapon then if an.Weapon.Visible~=nil then ai.Visible=an.Weapon.Visible end
+            if an.Weapon.Color then ai.TextColor3=an.Weapon.Color[1]or ai.TextColor3 if an.
+            Weapon.Color[2]~=nil then ai.TextTransparency=1-an.Weapon.Color[2]end end end if
+            an.Name then if an.Name.Visible~=nil then V.Visible=an.Name.Visible end if an.
+            Name.Color then V.TextColor3=an.Name.Color[1]or V.TextColor3 if an.Name.Color[2]
+            ~=nil then V.TextTransparency=1-an.Name.Color[2]end end end if an.FillBox then
+            if an.FillBox.Visible~=nil then Z.Visible=an.FillBox.Visible end if an.FillBox.
+            Color then Z.BackgroundColor3=an.FillBox.Color[1]or Z.BackgroundColor3 if an.
+            FillBox.Color[2]~=nil then Z.BackgroundTransparency=1-an.FillBox.Color[2]end end
+            end if an.BoundingBox then if an.BoundingBox.Visible~=nil then X.Visible=an.
+            BoundingBox.Visible end if an.BoundingBox.Color then Y.Color=an.BoundingBox.
+            Color[1]or Y.Color if an.BoundingBox.Color[2]~=nil then Y.Transparency=1-an.
+            BoundingBox.Color[2]end end end if an.CornerBox then if an.CornerBox.Visible~=
+            nil then K.Visible=an.CornerBox.Visible end if an.CornerBox.Color then for ap,aq
+            in ipairs(ao)do aq.BackgroundColor3=an.CornerBox.Color[1]or aq.BackgroundColor3
+            if an.CornerBox.Color[2]~=nil then aq.BackgroundTransparency=1-an.CornerBox.
+            Color[2]end end end end end return ac end function d:Notification(ab)local ac={
             Settings=ab}assert(ac.Settings.Title and type(ac.Settings.Title)=='string',
             'Missing notification title or wrong type')local ad=Instance.new'ImageButton'ad.
             AnchorPoint=Vector2.new(1,1)ad.AutoButtonColor=false ad.AutomaticSize=Enum.
@@ -1121,7 +1120,7 @@ local Self = [=====[
             Color3.fromRGB(0,0,0)ad.BorderSizePixel=0 ad.Image='rbxassetid://17365187482'ad.
             ImageTransparency=0.96 ad.Position=UDim2.fromScale(1,1)ad.ScaleType=Enum.
             ScaleType.Tile ad.Size=UDim2.fromOffset(280,0)ad.TileSize=UDim2.fromOffset(500,
-            325)ad.Position=UDim2.new(1,(ad.AbsoluteSize.X+(c.notifSystem.uIpadding and c.
+            325)ad.Position=UDim2.new(1,(ad.AbsoluteSize.X+(e.notifSystem.uIpadding and e.
             notifSystem.uIpadding.PaddingRight.Offset or 0)),1,0)local ae=Instance.new
             'Frame'ae.AutomaticSize=Enum.AutomaticSize.Y ae.BackgroundColor3=Color3.fromRGB(
             255,255,255)ae.BackgroundTransparency=1 ae.BorderColor3=Color3.fromRGB(0,0,0)ae.
@@ -1162,71 +1161,71 @@ local Self = [=====[
             Top an.Parent=ak an.Visible=ac.Settings.Description and true or false an.Text=ac
             .Settings.Description or''local ao=Instance.new'UIPadding'ao.PaddingTop=UDim.
             new(0,-1)ao.Parent=ak ak.Parent=ah local ap=Instance.new'UIPadding'ap.PaddingTop
-            =UDim.new(0,1)ap.Parent=ah ah.Parent=ae ae.Parent=ad table.insert(c.notifSystem.
-            notifInstances,ad)ad.Parent=c.notifSystem.notifications local aq=Instance.new
-            'UICorner'aq.CornerRadius=UDim.new(0,15)aq.Parent=ad e.tween(ad,TweenInfo.new(
+            =UDim.new(0,1)ap.Parent=ah ah.Parent=ae ae.Parent=ad table.insert(e.notifSystem.
+            notifInstances,ad)ad.Parent=e.notifSystem.notifications local aq=Instance.new
+            'UICorner'aq.CornerRadius=UDim.new(0,15)aq.Parent=ad g.tween(ad,TweenInfo.new(
             0.25,Enum.EasingStyle.Exponential),{Position=UDim2.new(1,0,1,0)}):Play()if ac.
             Settings.Lifetime and ac.Settings.Lifetime>0 then task.delay(ac.Settings.
-            Lifetime,function()ac:Cancel()end)end function ac:Cancel()local ar=table.find(c.
-            notifSystem.notifInstances,ad)if not ar then return end table.remove(c.
-            notifSystem.notifInstances,ar)task.spawn(function()e.tween(ad,TweenInfo.new(0.25
-            ,Enum.EasingStyle.Exponential),{Position=UDim2.new(1,ad.AbsoluteSize.X+(c.
-            notifSystem.uIpadding and c.notifSystem.uIpadding.PaddingRight.Offset or 0),1,ad
+            Lifetime,function()ac:Cancel()end)end function ac:Cancel()local ar=table.find(e.
+            notifSystem.notifInstances,ad)if not ar then return end table.remove(e.
+            notifSystem.notifInstances,ar)task.spawn(function()g.tween(ad,TweenInfo.new(0.25
+            ,Enum.EasingStyle.Exponential),{Position=UDim2.new(1,ad.AbsoluteSize.X+(e.
+            notifSystem.uIpadding and e.notifSystem.uIpadding.PaddingRight.Offset or 0),1,ad
             .Position.Y.Offset)}):Play()end)task.delay(0.25,function()ad:Destroy()end)for as
-            =ar-1,1,-1 do task.spawn(function()local at=c.notifSystem.notifInstances[as]e.
+            =ar-1,1,-1 do task.spawn(function()local at=e.notifSystem.notifInstances[as]g.
             tween(at,TweenInfo.new(0.25,Enum.EasingStyle.Exponential),{Position=at.Position+
-            UDim2.new(0,0,0,ad.AbsoluteSize.Y+(c.notifSystem.uIpadding and c.notifSystem.
+            UDim2.new(0,0,0,ad.AbsoluteSize.Y+(e.notifSystem.uIpadding and e.notifSystem.
             uIpadding.PaddingBottom.Offset or 0))}):Play()end)end end return ac end function
-            b:Unload()c.gui:Destroy()end c.localPlayer=d._players.LocalPlayer local ab=
-            function()c.camera=d._workspace.CurrentCamera end ab()d._workspace:
-            GetPropertyChangedSignal'CurrentCamera':Connect(ab)c.gui=e.secureGui{
+            d:Unload()e.gui:Destroy()end e.localPlayer=f._players.LocalPlayer local ab=
+            function()e.camera=f._workspace.CurrentCamera end ab()f._workspace:
+            GetPropertyChangedSignal'CurrentCamera':Connect(ab)e.gui=g.secureGui{
             OnTopOfCoreBlur=true,ScreenInsets=Enum.ScreenInsets.None,ResetOnSpawn=false,
-            ZIndexBehavior=Enum.ZIndexBehavior.Sibling,DisplayOrder=2147483647}c.overlay=
-            Instance.new('Frame',c.gui)c.overlay.BackgroundColor3=Color3.fromRGB(255,255,255
-            )c.overlay.BackgroundTransparency=1 c.overlay.BorderColor3=Color3.fromRGB(0,0,0)
-            c.overlay.BorderSizePixel=0 c.overlay.Size=UDim2.fromScale(1,1)c.overlay.Parent=
-            c.gui c.notifSystem.notifications=Instance.new('Frame',c.gui)c.notifSystem.
-            notifications.BackgroundColor3=Color3.fromRGB(255,255,255)c.notifSystem.
-            notifications.BackgroundTransparency=1 c.notifSystem.notifications.BorderColor3=
-            Color3.fromRGB(0,0,0)c.notifSystem.notifications.BorderSizePixel=0 c.notifSystem
-            .notifications.Size=UDim2.fromScale(1,1)c.notifSystem.notifications.ZIndex=2 c.
-            notifSystem.uIpadding=Instance.new('UIPadding',c.notifSystem.notifications)c.
-            notifSystem.uIpadding.PaddingBottom=UDim.new(0,15)c.notifSystem.uIpadding.
-            PaddingLeft=UDim.new(0,15)c.notifSystem.uIpadding.PaddingRight=UDim.new(0,15)c.
+            ZIndexBehavior=Enum.ZIndexBehavior.Sibling,DisplayOrder=2147483647}e.overlay=
+            Instance.new('Frame',e.gui)e.overlay.BackgroundColor3=Color3.fromRGB(255,255,255
+            )e.overlay.BackgroundTransparency=1 e.overlay.BorderColor3=Color3.fromRGB(0,0,0)
+            e.overlay.BorderSizePixel=0 e.overlay.Size=UDim2.fromScale(1,1)e.overlay.Parent=
+            e.gui e.notifSystem.notifications=Instance.new('Frame',e.gui)e.notifSystem.
+            notifications.BackgroundColor3=Color3.fromRGB(255,255,255)e.notifSystem.
+            notifications.BackgroundTransparency=1 e.notifSystem.notifications.BorderColor3=
+            Color3.fromRGB(0,0,0)e.notifSystem.notifications.BorderSizePixel=0 e.notifSystem
+            .notifications.Size=UDim2.fromScale(1,1)e.notifSystem.notifications.ZIndex=2 e.
+            notifSystem.uIpadding=Instance.new('UIPadding',e.notifSystem.notifications)e.
+            notifSystem.uIpadding.PaddingBottom=UDim.new(0,15)e.notifSystem.uIpadding.
+            PaddingLeft=UDim.new(0,15)e.notifSystem.uIpadding.PaddingRight=UDim.new(0,15)e.
             notifSystem.uIpadding.PaddingTop=UDim.new(0,15)local ac=function(ac)local ad=
-            table.find(c.notifSystem.notifInstances,ac)if ad then for ae,af in pairs(c.
-            notifSystem.notifInstances)do if ae~=ad then e.tween(af,TweenInfo.new(0.25,Enum.
-            EasingStyle.Exponential),{Position=af.Position-UDim2.new(0,0,0,c.notifSystem.
-            notifInstances[ad].AbsoluteSize.Y+10)}):Play()end end end end c.notifSystem.
-            notifications.ChildAdded:Connect(ac)return b end function a.c()local aa=a.load
-            'a'.SecureService local ab,ac,ad,ae,af=aa'RunService',aa'Players',aa'Workspace',
-            aa'UserInputService',gethui and gethui()or aa'CoreGui'local ag,ah=ac.LocalPlayer
-            ,ad.CurrentCamera local ai,aj,ak,al,am,an,ao,ap,aq,ar,as,at,au,av,aw,ax,ay,az,aA
-            ,aB,aC,aD,aE,aF,aG,aH,aI=ah.ViewportSize,math.floor,math.round,math.sin,math.cos
-            ,table.clear,table.unpack,table.find,table.create,CFrame.fromMatrix,ah.
-            WorldToViewportPoint,ad.IsA,ad.GetPivot,ad.FindFirstChild,ad.
-            FindFirstChildOfClass,ad.GetChildren,CFrame.identity.PointToObjectSpace,Color3.
+            table.find(e.notifSystem.notifInstances,ac)if ad then for ae,af in pairs(e.
+            notifSystem.notifInstances)do if ae~=ad then g.tween(af,TweenInfo.new(0.25,Enum.
+            EasingStyle.Exponential),{Position=af.Position-UDim2.new(0,0,0,e.notifSystem.
+            notifInstances[ad].AbsoluteSize.Y+10)}):Play()end end end end e.notifSystem.
+            notifications.ChildAdded:Connect(ac)return d end function a.c()local aa=a.load
+            'a'local ab=aa.SecureService local ac,ad,ae,af,ag=ab'RunService',ab'Players',ab
+            'Workspace',ab'UserInputService',gethui and gethui()or ab'CoreGui'local ah,ai=ad
+            .LocalPlayer,ae.CurrentCamera local aj,ak,al,am,an,ao,ap,aq,ar,as,at,au,av,aw,ax
+            ,ay,az,aA,aB,aC,aD,aE,aF,aG,aH,aI,aJ=ai.ViewportSize,math.floor,math.round,math.
+            sin,math.cos,table.clear,table.unpack,table.find,table.create,CFrame.fromMatrix,
+            ai.WorldToViewportPoint,ae.IsA,ae.GetPivot,ae.FindFirstChild,ae.
+            FindFirstChildOfClass,ae.GetChildren,CFrame.identity.PointToObjectSpace,Color3.
             new().Lerp,Vector2.zero.Min,Vector2.zero.Max,Vector2.zero.Lerp,Vector3.zero.Min,
             Vector3.zero.Max,Vector2.new(0,1),Vector2.new(0,2),Vector2.new(5,0),{Vector3.
             new(-1,-1,-1),Vector3.new(-1,1,-1),Vector3.new(-1,1,1),Vector3.new(-1,-1,1),
             Vector3.new(1,-1,-1),Vector3.new(1,1,-1),Vector3.new(1,1,1),Vector3.new(1,-1,1)}
-            local aJ,aK=function(aJ)local aK,aL for aM=1,#aJ do local aN=aJ[aM]local aO,aP=
-            aN.CFrame,aN.Size aK=aD(aK or aO.Position,(aO-aP*0.5).Position)aL=aE(aL or aO.
-            Position,(aO+aP*0.5).Position)end local aM=(aK+aL)*0.5 local aN=Vector3.new(aM.X
-            ,aM.Y,aL.Z)return CFrame.new(aM,aN),aL-aK end,function(aJ)local aK,aL=as(ah,aJ)
-            return Vector2.new(aK.X,aK.Y),aL,aK.Z end local aL,aM,aN,aO=function(aL,aM)local
-            aN=aq(#aI)for aO=1,#aI do aN[aO]=aK((aL+aM*0.5*aI[aO]).Position)end local aO,aP=
-            aA(ai,ao(aN)),aB(Vector2.zero,ao(aN))return{Corners=aN,TopLeft=Vector2.new(aj(aO
-            .X),aj(aO.Y)),TopRight=Vector2.new(aj(aP.X),aj(aO.Y)),BottomLeft=Vector2.new(aj(
-            aO.X),aj(aP.Y)),BottomRight=Vector2.new(aj(aP.X),aj(aP.Y))}end,function(aL,aM)
-            local aN,aO,aP,b=aL.X,aL.Y,am(aM),al(aM)return Vector2.new(aN*aP-aO*b,aN*b+aO*aP
-            )end,function(aL,aM,aN)if aM=='Team Color'or(aL.Interface.Shared.UseTeamColor
-            and not aN)then return aL.Interface.GetTeamColor(aL.Player)or Color3.new(1,1,1)
-            end return aM end,{}aO.__index=aO function aO.New(aP,b)local c=setmetatable({},
-            aO)c.Player=assert(aP,'Missing argument #1 (Player expected)')c.Interface=
-            assert(b,'Missing argument #2 (table expected)')c:Construct()return c end
-            function aO:_Create(aP,b)local c=Drawing.new(aP)for d,e in next,b do pcall(
-            function()c[d]=e end)end self.Bin[#self.Bin+1]=c return c end function aO:
+            local aK,aL=function(aK)local aL,aM for aN=1,#aK do local aO=aK[aN]local aP,aQ=
+            aO.CFrame,aO.Size aL=aE(aL or aP.Position,(aP-aQ*0.5).Position)aM=aF(aM or aP.
+            Position,(aP+aQ*0.5).Position)end local aN=(aL+aM)*0.5 local aO=Vector3.new(aN.X
+            ,aN.Y,aM.Z)return CFrame.new(aN,aO),aM-aL end,function(aK)local aL,aM=at(ai,aK)
+            return Vector2.new(aL.X,aL.Y),aM,aL.Z end local aM,aN,aO,aP=function(aM,aN)local
+            aO=ar(#aJ)for aP=1,#aJ do aO[aP]=aL((aM+aN*0.5*aJ[aP]).Position)end local aP,aQ=
+            aB(aj,ap(aO)),aC(Vector2.zero,ap(aO))return{Corners=aO,TopLeft=Vector2.new(ak(aP
+            .X),ak(aP.Y)),TopRight=Vector2.new(ak(aQ.X),ak(aP.Y)),BottomLeft=Vector2.new(ak(
+            aP.X),ak(aQ.Y)),BottomRight=Vector2.new(ak(aQ.X),ak(aQ.Y))}end,function(aM,aN)
+            local aO,aP,aQ,aR=aM.X,aM.Y,an(aN),am(aN)return Vector2.new(aO*aQ-aP*aR,aO*aR+aP
+            *aQ)end,function(aM,aN,aO)if aN=='Team Color'or(aM.Interface.Shared.UseTeamColor
+            and not aO)then return aM.Interface.GetTeamColor(aM.Player)or Color3.new(1,1,1)
+            end return aN end,{}aP.__index=aP function aP.New(aQ,aR)local b=setmetatable({},
+            aP)b.Player=assert(aQ,'Missing argument #1 (Player expected)')b.Interface=
+            assert(aR,'Missing argument #2 (table expected)')b:Construct()return b end
+            function aP:_Create(aQ,aR)local b=Drawing.new(aQ)for c,d in next,aR do pcall(
+            function()b[c]=d end)end self.Bin[#self.Bin+1]=b return b end function aP:
             Construct()self.CharCache={}self.ChildCount=0 self.Bin={}self.Drawings={Box3d={{
             self:_Create('Line',{Thickness=1,Visible=false}),self:_Create('Line',{Thickness=
             1,Visible=false}),self:_Create('Line',{Thickness=1,Visible=false})},{self:
@@ -1247,139 +1246,140 @@ local Self = [=====[
             false}),Weapon=self:_Create('Text',{Center=true,Visible=false}),Skeleton={Head=
             self:_Create('Circle',{NumSides=30,Thickness=1,Visible=false})}},Hidden={
             ArrowOutline=self:_Create('Triangle',{Thickness=3,Visible=false}),Arrow=self:
-            _Create('Triangle',{Filled=true,Visible=false})}}for aP=1,8 do table.insert(self
+            _Create('Triangle',{Filled=true,Visible=false})}}for aQ=1,8 do table.insert(self
             .Drawings.Visible.CornerBox,self:_Create('Line',{Thickness=2,Visible=false}))end
-            for aP=1,14 do self.Drawings.Visible.Skeleton[aP]=self:_Create('Line',{Thickness
-            =1,Visible=false})end self.RenderConnection=ab.RenderStepped:Connect(function(aP
-            )self:Update(aP)self:Render(aP)end)end function aO:Destruct()self.
-            RenderConnection:Disconnect()for aP=1,#self.Bin do self.Bin[aP]:Remove()end an(
-            self)end function aO:Update()local aP=self.Interface self.Options=aP.Team[aP.
-            IsFriendly(self.Player)and'Friendly'or'Enemy']self.Character=aP.GetCharacter(
-            self.Player)self.Health,self.MaxHealth=aP.GetHealth(self.Player)self.Weapon=aP.
+            for aQ=1,14 do self.Drawings.Visible.Skeleton[aQ]=self:_Create('Line',{Thickness
+            =1,Visible=false})end self.RenderConnection=ac.RenderStepped:Connect(function(aQ
+            )self:Update(aQ)self:Render(aQ)end)end function aP:Destruct()self.
+            RenderConnection:Disconnect()for aQ=1,#self.Bin do self.Bin[aQ]:Remove()end ao(
+            self)end function aP:Update()local aQ=self.Interface self.Options=aQ.Team[aQ.
+            IsFriendly(self.Player)and'Friendly'or'Enemy']self.Character=aQ.GetCharacter(
+            self.Player)self.Health,self.MaxHealth=aQ.GetHealth(self.Player)self.Weapon=aQ.
             GetWeapon(self.Player)self.Enabled=self.Options.Enabled and self.Character and
-            not(#aP.Whitelist>0 and not ap(aP.Whitelist,self.Player.UserId))local b=self.
-            Enabled and av(self.Character,aP.GetRootPart())if not b then self.CharCache={}
-            self.OnScreen=false return end local c,d,e=aK(b.Position)self.OnScreen=d self.
-            Distance=e if aP.Shared.LimitDistance and e>aP.Shared.MaxDistance then self.
-            OnScreen=false end if self.OnScreen then local f,g=self.CharCache,ax(self.
-            Character)if not f[1]or self.ChildCount~=#g then an(f)for h=1,#g do local i=g[h]
-            if at(i,'BasePart')and aP.IsBodyPart(i.Name)then f[#f+1]=i end end self.
-            ChildCount=#g end self.Corners=aL(aJ(f))elseif self.Options.OffScreenArrow then
-            local f=ah.CFrame local g=ar(f.Position,f.RightVector,Vector3.yAxis)local h=ay(g
-            ,b.Position)self.Direction=Vector2.new(h.X,h.Z).Unit end end function aO:Render(
-            )local aP,b=self.Interface,self.OnScreen or false local c,d,e,f,g,h,i=self.
-            Enabled and aP.GetHealth()>0 or false,self.Drawings.Visible,self.Drawings.Hidden
-            ,self.Drawings.Box3d,self.Interface,self.Options,self.Corners d.Box.Visible=c
-            and b and h.Box d.BoxOutline.Visible=d.Box.Visible and h.BoxOutline if d.Box.
-            Visible then local j=d.Box j.Position=i.TopLeft j.Size=i.BottomRight-i.TopLeft j
-            .Color=aN(self,h.BoxColor[1])j.Transparency=h.BoxColor[2]local m=d.BoxOutline m.
-            Position=j.Position m.Size=j.Size m.Color=aN(self,h.BoxOutlineColor[1],true)m.
-            Transparency=h.BoxOutlineColor[2]end local j=c and b and h.CornerBox for m=1,8
-            do local p=d.CornerBox[m]p.Visible=j end if j then local m,p=(i.TopRight.X-i.
-            TopLeft.X)*0.2,(i.BottomLeft.Y-i.TopLeft.Y)*0.2 m=math.clamp(m,2,30)p=math.
-            clamp(p,2,30)local q=function(q,r,s,t)local u,v=d.CornerBox[q],d.CornerBox[q+1]
-            local w=u.Thickness or 1 local x=(w-1)local y,z=x/2,s.Unit*(s.Magnitude+x)u.From
-            =r-s.Unit*y u.To=r+z-s.Unit*y u.Color=aN(self,h.CornerBoxColor[1])u.Transparency
-            =h.CornerBoxColor[2]local A=t.Unit*(t.Magnitude+x)v.From=r-t.Unit*y v.To=r+A-t.
-            Unit*y v.Color=aN(self,h.CornerBoxColor[1])v.Transparency=h.CornerBoxColor[2]end
-            q(1,i.TopLeft,Vector2.new(m,0),Vector2.new(0,p))q(3,i.TopRight,Vector2.new(-m,0)
-            ,Vector2.new(0,p))q(5,i.BottomRight,Vector2.new(-m,0),Vector2.new(0,-p))q(7,i.
-            BottomLeft,Vector2.new(m,0),Vector2.new(0,-p))end d.BoxFill.Visible=c and b and
-            h.BoxFill if d.BoxFill.Visible then local m=d.BoxFill m.Position=i.TopLeft m.
-            Size=i.BottomRight-i.TopLeft m.Color=aN(self,h.BoxFillColor[1])m.Transparency=h.
-            BoxFillColor[2]end d.HealthBar.Visible=c and b and h.HealthBar d.
-            HealthBarOutline.Visible=d.HealthBar.Visible and h.HealthBarOutline if d.
-            HealthBar.Visible then local m=math.clamp((i.TopRight.X-i.TopLeft.X)*0.03,1,10)
-            local p=Vector2.new((m+3),0)local q,r,s=i.TopLeft-p,i.BottomLeft-p,d.HealthBar s
-            .To=r s.From=aC(r,q,self.Health/self.MaxHealth)s.Color=az(h.DyingColor,h.
-            HealthyColor,self.Health/self.MaxHealth)s.Thickness=m local t=d.HealthBarOutline
-            t.To=r+aF t.From=q-aF t.Color=aN(self,h.HealthBarOutlineColor[1],true)t.
-            Transparency=h.HealthBarOutlineColor[2]t.Thickness=s.Thickness+2 end d.Name.
-            Visible=c and b and h.Name if d.Name.Visible then local m=d.Name m.Size=g.Shared
-            .TextSize m.Font=g.Shared.TextFont m.Color=aN(self,h.NameColor[1])m.Transparency
-            =h.NameColor[2]m.Outline=h.NameOutline m.OutlineColor=aN(self,h.NameOutlineColor
-            ,true)m.Position=(i.TopLeft+i.TopRight)*0.5-Vector2.yAxis*m.TextBounds.Y-aG end
-            local m=i and i.TopRight.Y or 0 d.Distance.Visible=c and b and self.Distance and
-            h.Distance if d.Distance.Visible then local p=d.Distance p.Text=ak(self.Distance
-            *0.28)..'M'p.Size=g.Shared.TextSize p.Font=g.Shared.TextFont p.Color=aN(self,h.
-            DistanceColor[1])p.Transparency=h.DistanceColor[2]p.Outline=h.DistanceOutline p.
-            OutlineColor=aN(self,h.DistanceOutlineColor,true)p.Position=Vector2.new(i.
-            TopRight.X+aH.X+p.TextBounds.X*0.5,m-p.TextBounds.Y*0.5-aH.Y)m=m+p.TextBounds.Y+
-            aH.Y end d.Weapon.Visible=c and b and h.Weapon if d.Weapon.Visible then local p=
-            d.Weapon p.Text=self.Weapon p.Size=g.Shared.TextSize p.Font=g.Shared.TextFont p.
-            Color=aN(self,h.WeaponColor[1])p.Transparency=h.WeaponColor[2]p.Outline=h.
-            WeaponOutline p.OutlineColor=aN(self,h.WeaponOutlineColor,true)p.Position=
-            Vector2.new(i.TopRight.X+aH.X+p.TextBounds.X*0.5,m-p.TextBounds.Y*0.5)m=m+p.
-            TextBounds.Y+aH.Y end d.HealthText.Visible=c and b and h.HealthText if d.
-            HealthText.Visible then local p=d.HealthText p.Text=(self.Health>=(2147483647)
-            and'INF 'or ak(self.Health))..'HP'p.Size=g.Shared.TextSize p.Font=g.Shared.
-            TextFont p.Color=aN(self,h.HealthTextColor[1])p.Transparency=h.HealthTextColor[2
-            ]p.Outline=h.HealthTextOutline p.OutlineColor=aN(self,h.HealthTextOutlineColor,
-            true)p.Position=Vector2.new(i.TopRight.X+aH.X+p.TextBounds.X*0.5,m-p.TextBounds.
-            Y*0.5)end d.Tracer.Visible=c and b and h.Tracer d.TracerOutline.Visible=d.Tracer
-            .Visible and h.TracerOutline if d.Tracer.Visible then local p=d.Tracer p.Color=
-            aN(self,h.TracerColor[1])p.Transparency=h.TracerColor[2]p.To=(i.BottomLeft+i.
-            BottomRight)*0.5 p.From=h.TracerOrigin=='Middle'and ai*0.5 or h.TracerOrigin==
-            'Top'and ai*Vector2.new(0.5,0)or h.TracerOrigin=='Bottom'and ai*Vector2.new(0.5,
-            1)or h.TracerOrigin=='Mouse'and ae:GetMouseLocation()local q=d.TracerOutline q.
-            Color=aN(self,h.TracerOutlineColor[1],true)q.Transparency=h.TracerOutlineColor[2
-            ]q.To=p.To q.From=p.From end e.Arrow.Visible=c and not b and h.OffScreenArrow e.
-            ArrowOutline.Visible=e.Arrow.Visible and h.OffScreenArrowOutline if e.Arrow.
-            Visible and self.Direction then local p=e.Arrow p.PointA=aA(aB(ai*0.5+self.
-            Direction*h.OffScreenArrowRadius,Vector2.one*25),ai-Vector2.one*25)p.PointB=p.
-            PointA-aM(self.Direction,0.45)*h.OffScreenArrowSize p.PointC=p.PointA-aM(self.
-            Direction,-0.45)*h.OffScreenArrowSize p.Color=aN(self,h.OffScreenArrowColor[1])p
-            .Transparency=h.OffScreenArrowColor[2]local q=e.ArrowOutline q.PointA=p.PointA q
-            .PointB=p.PointB q.PointC=p.PointC q.Color=aN(self,h.OffScreenArrowOutlineColor[
-            1],true)q.Transparency=h.OffScreenArrowOutlineColor[2]end local p=c and b and h.
-            Box3d for q=1,#f do local r=f[q]for s=1,#r do local t=r[s]t.Visible=p t.Color=
-            aN(self,h.Box3dColor[1])t.Transparency=h.Box3dColor[2]end if p then local s=r[1]
-            s.From=i.Corners[q]s.To=i.Corners[q==4 and 1 or q+1]local t=r[2]t.From=i.Corners
-            [q==4 and 1 or q+1]t.To=i.Corners[q==4 and 5 or q+5]local u=r[3]u.From=i.Corners
-            [q==4 and 5 or q+5]u.To=i.Corners[q==4 and 8 or q+4]end end local q=c and b and
-            h.Skeleton if q then local r,s=g.GetJoints(self.Character)local t=d.Skeleton.
-            Head t.Visible=false if r.Head then local u,v=aK(r.Head.Position)if v then t.
-            Visible=true t.Position=u t.Radius=math.clamp((i.TopRight.X-i.TopLeft.X)*0.1,2,
-            50)t.Thickness=h.SkeletonThickness t.Color=aN(self,h.SkeletonColor[1])t.
-            Transparency=h.SkeletonColor[2]end end for u,v in ipairs(s)do local w=d.Skeleton
-            [u]w.Visible=false local x,y=v[1],v[2]if x and y then local z,A=aK(x==r.Head and
-            x.Position-Vector3.new(0,x.Size.Y/2,0)or x.Position)local B,C=aK(y.Position)if A
-            and C then w.Visible=true w.From=z w.To=B w.Thickness=h.SkeletonThickness w.
-            Color=aN(self,h.SkeletonColor[1])w.Transparency=h.SkeletonColor[2]end end end
-            else d.Skeleton.Head.Visible=false for r,s in ipairs(d.Skeleton)do if type(s)==
-            'table'then continue end s.Visible=false end end end local b={}b.__index=b
-            function b.New(c,d)local e=setmetatable({},b)e.Player=assert(c,
-            'Missing argument #1 (Player expected)')e.Interface=assert(d,
+            not(#aQ.Whitelist>0 and not aq(aQ.Whitelist,self.Player.UserId))local aR=self.
+            Enabled and aw(self.Character,aQ.GetRootPart())if not aR then self.CharCache={}
+            self.OnScreen=false return end local b,c,d=aL(aR.Position)self.OnScreen=c self.
+            Distance=d if aQ.Shared.LimitDistance and d>aQ.Shared.MaxDistance then self.
+            OnScreen=false end if self.OnScreen then local e,f=self.CharCache,ay(self.
+            Character)if not e[1]or self.ChildCount~=#f then ao(e)for g=1,#f do local h=f[g]
+            if au(h,'BasePart')and aQ.IsBodyPart(h.Name)then e[#e+1]=h end end self.
+            ChildCount=#f end self.Corners=aM(aK(e))elseif self.Options.OffScreenArrow then
+            local e=ai.CFrame local f=as(e.Position,e.RightVector,Vector3.yAxis)local g=az(f
+            ,aR.Position)self.Direction=Vector2.new(g.X,g.Z).Unit end end function aP:Render
+            ()local aQ,aR=self.Interface,self.OnScreen or false local b,c,d,e,f,g,h=self.
+            Enabled and aQ.GetHealth()>0 or false,self.Drawings.Visible,self.Drawings.Hidden
+            ,self.Drawings.Box3d,self.Interface,self.Options,self.Corners c.Box.Visible=b
+            and aR and g.Box c.BoxOutline.Visible=c.Box.Visible and g.BoxOutline if c.Box.
+            Visible then local i=c.Box i.Position=h.TopLeft i.Size=h.BottomRight-h.TopLeft i
+            .Color=aO(self,g.BoxColor[1])i.Transparency=g.BoxColor[2]local j=c.BoxOutline j.
+            Position=i.Position j.Size=i.Size j.Color=aO(self,g.BoxOutlineColor[1],true)j.
+            Transparency=g.BoxOutlineColor[2]end local i=b and aR and g.CornerBox for j=1,8
+            do local k=c.CornerBox[j]k.Visible=i end if i then local j,k=(h.TopRight.X-h.
+            TopLeft.X)*0.2,(h.BottomLeft.Y-h.TopLeft.Y)*0.2 j=math.clamp(j,2,30)k=math.
+            clamp(k,2,30)local l=function(l,o,r,s)local t,u=c.CornerBox[l],c.CornerBox[l+1]
+            local v=t.Thickness or 1 local w=(v-1)local x,y=w/2,r.Unit*(r.Magnitude+w)t.From
+            =o-r.Unit*x t.To=o+y-r.Unit*x t.Color=aO(self,g.CornerBoxColor[1])t.Transparency
+            =g.CornerBoxColor[2]local z=s.Unit*(s.Magnitude+w)u.From=o-s.Unit*x u.To=o+z-s.
+            Unit*x u.Color=aO(self,g.CornerBoxColor[1])u.Transparency=g.CornerBoxColor[2]end
+            l(1,h.TopLeft,Vector2.new(j,0),Vector2.new(0,k))l(3,h.TopRight,Vector2.new(-j,0)
+            ,Vector2.new(0,k))l(5,h.BottomRight,Vector2.new(-j,0),Vector2.new(0,-k))l(7,h.
+            BottomLeft,Vector2.new(j,0),Vector2.new(0,-k))end c.BoxFill.Visible=b and aR and
+            g.BoxFill if c.BoxFill.Visible then local j=c.BoxFill j.Position=h.TopLeft j.
+            Size=h.BottomRight-h.TopLeft j.Color=aO(self,g.BoxFillColor[1])j.Transparency=g.
+            BoxFillColor[2]end c.HealthBar.Visible=b and aR and g.HealthBar c.
+            HealthBarOutline.Visible=c.HealthBar.Visible and g.HealthBarOutline if c.
+            HealthBar.Visible then local j=math.clamp((h.TopRight.X-h.TopLeft.X)*0.03,1,10)
+            local k=Vector2.new((j+3),0)local l,o,r=h.TopLeft-k,h.BottomLeft-k,c.HealthBar r
+            .To=o r.From=aD(o,l,self.Health/self.MaxHealth)r.Color=aA(g.DyingColor,g.
+            HealthyColor,self.Health/self.MaxHealth)r.Thickness=j local s=c.HealthBarOutline
+            s.To=o+aG s.From=l-aG s.Color=aO(self,g.HealthBarOutlineColor[1],true)s.
+            Transparency=g.HealthBarOutlineColor[2]s.Thickness=r.Thickness+2 end c.Name.
+            Visible=b and aR and g.Name if c.Name.Visible then local j=c.Name j.Size=f.
+            Shared.TextSize j.Font=f.Shared.TextFont j.Color=aO(self,g.NameColor[1])j.
+            Transparency=g.NameColor[2]j.Outline=g.NameOutline j.OutlineColor=aO(self,g.
+            NameOutlineColor,true)j.Position=(h.TopLeft+h.TopRight)*0.5-Vector2.yAxis*j.
+            TextBounds.Y-aH end local j=h and h.TopRight.Y or 0 c.Distance.Visible=b and aR
+            and self.Distance and g.Distance if c.Distance.Visible then local k=c.Distance k
+            .Text=al(self.Distance*0.28)..'M'k.Size=f.Shared.TextSize k.Font=f.Shared.
+            TextFont k.Color=aO(self,g.DistanceColor[1])k.Transparency=g.DistanceColor[2]k.
+            Outline=g.DistanceOutline k.OutlineColor=aO(self,g.DistanceOutlineColor,true)k.
+            Position=Vector2.new(h.TopRight.X+aI.X+k.TextBounds.X*0.5,j-k.TextBounds.Y*0.5-
+            aI.Y)j=j+k.TextBounds.Y+aI.Y end c.Weapon.Visible=b and aR and g.Weapon if c.
+            Weapon.Visible then local k=c.Weapon k.Text=self.Weapon k.Size=f.Shared.TextSize
+            k.Font=f.Shared.TextFont k.Color=aO(self,g.WeaponColor[1])k.Transparency=g.
+            WeaponColor[2]k.Outline=g.WeaponOutline k.OutlineColor=aO(self,g.
+            WeaponOutlineColor,true)k.Position=Vector2.new(h.TopRight.X+aI.X+k.TextBounds.X*
+            0.5,j-k.TextBounds.Y*0.5)j=j+k.TextBounds.Y+aI.Y end c.HealthText.Visible=b and
+            aR and g.HealthText if c.HealthText.Visible then local k=c.HealthText k.Text=(
+            self.Health>=(2147483647)and'INF 'or al(self.Health))..'HP'k.Size=f.Shared.
+            TextSize k.Font=f.Shared.TextFont k.Color=aO(self,g.HealthTextColor[1])k.
+            Transparency=g.HealthTextColor[2]k.Outline=g.HealthTextOutline k.OutlineColor=
+            aO(self,g.HealthTextOutlineColor,true)k.Position=Vector2.new(h.TopRight.X+aI.X+k
+            .TextBounds.X*0.5,j-k.TextBounds.Y*0.5)end c.Tracer.Visible=b and aR and g.
+            Tracer c.TracerOutline.Visible=c.Tracer.Visible and g.TracerOutline if c.Tracer.
+            Visible then local k=c.Tracer k.Color=aO(self,g.TracerColor[1])k.Transparency=g.
+            TracerColor[2]k.To=(h.BottomLeft+h.BottomRight)*0.5 k.From=g.TracerOrigin==
+            'Middle'and aj*0.5 or g.TracerOrigin=='Top'and aj*Vector2.new(0.5,0)or g.
+            TracerOrigin=='Bottom'and aj*Vector2.new(0.5,1)or g.TracerOrigin=='Mouse'and af:
+            GetMouseLocation()local l=c.TracerOutline l.Color=aO(self,g.TracerOutlineColor[1
+            ],true)l.Transparency=g.TracerOutlineColor[2]l.To=k.To l.From=k.From end d.Arrow
+            .Visible=b and not aR and g.OffScreenArrow d.ArrowOutline.Visible=d.Arrow.
+            Visible and g.OffScreenArrowOutline if d.Arrow.Visible and self.Direction then
+            local k=d.Arrow k.PointA=aB(aC(aj*0.5+self.Direction*g.OffScreenArrowRadius,
+            Vector2.one*25),aj-Vector2.one*25)k.PointB=k.PointA-aN(self.Direction,0.45)*g.
+            OffScreenArrowSize k.PointC=k.PointA-aN(self.Direction,-0.45)*g.
+            OffScreenArrowSize k.Color=aO(self,g.OffScreenArrowColor[1])k.Transparency=g.
+            OffScreenArrowColor[2]local l=d.ArrowOutline l.PointA=k.PointA l.PointB=k.PointB
+            l.PointC=k.PointC l.Color=aO(self,g.OffScreenArrowOutlineColor[1],true)l.
+            Transparency=g.OffScreenArrowOutlineColor[2]end local k=b and aR and g.Box3d for
+            l=1,#e do local o=e[l]for r=1,#o do local s=o[r]s.Visible=k s.Color=aO(self,g.
+            Box3dColor[1])s.Transparency=g.Box3dColor[2]end if k then local r=o[1]r.From=h.
+            Corners[l]r.To=h.Corners[l==4 and 1 or l+1]local s=o[2]s.From=h.Corners[l==4 and
+            1 or l+1]s.To=h.Corners[l==4 and 5 or l+5]local t=o[3]t.From=h.Corners[l==4 and
+            5 or l+5]t.To=h.Corners[l==4 and 8 or l+4]end end local l=b and aR and g.
+            Skeleton if l then local o,r=f.GetJoints(self.Character)local s=c.Skeleton.Head
+            s.Visible=false if o.Head then local t,u=aL(o.Head.Position)if u then s.Visible=
+            true s.Position=t s.Radius=math.clamp((h.TopRight.X-h.TopLeft.X)*0.1,2,50)s.
+            Thickness=g.SkeletonThickness s.Color=aO(self,g.SkeletonColor[1])s.Transparency=
+            g.SkeletonColor[2]end end for t,u in ipairs(r)do local v=c.Skeleton[t]v.Visible=
+            false local w,x=u[1],u[2]if w and x then local y,z=aL(w==o.Head and w.Position-
+            Vector3.new(0,w.Size.Y/2,0)or w.Position)local A,B=aL(x.Position)if z and B then
+            v.Visible=true v.From=y v.To=A v.Thickness=g.SkeletonThickness v.Color=aO(self,g
+            .SkeletonColor[1])v.Transparency=g.SkeletonColor[2]end end end else c.Skeleton.
+            Head.Visible=false for o,r in ipairs(c.Skeleton)do if type(r)=='table'then
+            continue end r.Visible=false end end end local aR={}aR.__index=aR function aR.
+            New(b,c)local d=setmetatable({},aR)d.Player=assert(b,
+            'Missing argument #1 (Player expected)')d.Interface=assert(c,
+            'Missing argument #2 (table expected)')d:Construct()return d end function aR:
+            Construct()self.Highlight=Instance.new'Highlight'self.UpdateConnection=ac.
+            RenderStepped:Connect(function()self:Update()end)end function aR:Destruct()self.
+            UpdateConnection:Disconnect()self.Highlight:Destroy()ao(self)end function aR:
+            Update()local b,c=self.Highlight,self.Interface local d,e=c.GetCharacter(self.
+            Player),c.Team[c.IsFriendly(self.Player)and'Friendly'or'Enemy']local f=e.Enabled
+            and d and not(#c.Whitelist>0 and not aq(c.Whitelist,self.Player.UserId))b.
+            Enabled=f and e.Chams if b.Enabled then b.Adornee=d b.FillColor=aO(self,e.
+            ChamsFillColor[1])b.FillTransparency=e.ChamsFillColor[2]b.OutlineColor=aO(self,e
+            .ChamsOutlineColor[1],true)b.OutlineTransparency=e.ChamsOutlineColor[2]b.
+            DepthMode=e.ChamsVisibleOnly and'Occluded'or'AlwaysOnTop'b.Parent=ag end end
+            local b={}b.__index=b function b.New(c,d)local e=setmetatable({},b)e.Instance=
+            assert(c,'Missing argument #1 (Instance Expected)')e.Options=assert(d,
             'Missing argument #2 (table expected)')e:Construct()return e end function b:
-            Construct()self.Highlight=Instance.new'Highlight'self.UpdateConnection=ab.
-            RenderStepped:Connect(function()self:Update()end)end function b:Destruct()self.
-            UpdateConnection:Disconnect()self.Highlight:Destroy()an(self)end function b:
-            Update()local c,d=self.Highlight,self.Interface local e,f=d.GetCharacter(self.
-            Player),d.Team[d.IsFriendly(self.Player)and'Friendly'or'Enemy']local g=f.Enabled
-            and e and not(#d.Whitelist>0 and not ap(d.Whitelist,self.Player.UserId))c.
-            Enabled=g and f.Chams if c.Enabled then c.Adornee=e c.FillColor=aN(self,f.
-            ChamsFillColor[1])c.FillTransparency=f.ChamsFillColor[2]c.OutlineColor=aN(self,f
-            .ChamsOutlineColor[1],true)c.OutlineTransparency=f.ChamsOutlineColor[2]c.
-            DepthMode=f.ChamsVisibleOnly and'Occluded'or'AlwaysOnTop'c.Parent=af end end
-            local c={}c.__index=c function c.New(d,e)local f=setmetatable({},c)f.Instance=
-            assert(d,'Missing argument #1 (Instance Expected)')f.Options=assert(e,
-            'Missing argument #2 (table expected)')f:Construct()return f end function c:
-            Construct()local d=self.Options d.Enabled=d.Enabled==nil and true or d.Enabled d
-            .Text=d.Text or'{name}'d.TextColor=d.TextColor or{Color3.new(1,1,1),1}d.
-            TextOutline=d.TextOutline==nil and true or d.TextOutline d.TextOutlineColor=d.
-            TextOutlineColor or Color3.new()d.TextSize=d.TextSize or 13 d.TextFont=d.
-            TextFont or 2 d.LimitDistance=d.LimitDistance or false d.MaxDistance=d.
+            Construct()local c=self.Options c.Enabled=c.Enabled==nil and true or c.Enabled c
+            .Text=c.Text or'{name}'c.TextColor=c.TextColor or{Color3.new(1,1,1),1}c.
+            TextOutline=c.TextOutline==nil and true or c.TextOutline c.TextOutlineColor=c.
+            TextOutlineColor or Color3.new()c.TextSize=c.TextSize or 13 c.TextFont=c.
+            TextFont or 2 c.LimitDistance=c.LimitDistance or false c.MaxDistance=c.
             MaxDistance or 150 self.Text=Drawing.new'Text'self.Text.Center=true self.
-            RenderConnection=ab.Stepped:Connect(function(e)self:Render(e)end)end function c:
-            Destruct()self.RenderConnection:Disconnect()self.Text:Remove()end function c:
-            Render()local d=self.Instance if not d or not d.Parent then return self:
-            Destruct()end local e,f=self.Text,self.Options if not f.Enabled then e.Visible=
-            false return end local g=au(d).Position local h,i,j=aK(g)if f.LimitDistance and
-            j>f.MaxDistance then i=false end e.Visible=i if e.Visible then e.Position=h e.
-            Color=f.TextColor[1]e.Transparency=f.TextColor[2]e.Outline=f.TextOutline e.
-            OutlineColor=f.TextOutlineColor e.Size=f.TextSize e.Font=f.TextFont e.Text=f.
-            Text:gsub('{name}',string.upper(d.Name)):gsub('{distance}',ak(j*0.28)..'M'):
-            gsub('{position}',string.upper(tostring(g)))end return nil end local d={
+            RenderConnection=ac.Stepped:Connect(function(d)self:Render(d)end)end function b:
+            Destruct()self.RenderConnection:Disconnect()self.Text:Remove()end function b:
+            Render()local c=self.Instance if not c or not c.Parent then return self:
+            Destruct()end local d,e=self.Text,self.Options if not e.Enabled then d.Visible=
+            false return end local f=av(c).Position local g,h,i=aL(f)if e.LimitDistance and
+            i>e.MaxDistance then h=false end d.Visible=h if d.Visible then d.Position=g d.
+            Color=e.TextColor[1]d.Transparency=e.TextColor[2]d.Outline=e.TextOutline d.
+            OutlineColor=e.TextOutlineColor d.Size=e.TextSize d.Font=e.TextFont d.Text=e.
+            Text:gsub('{name}',string.upper(c.Name)):gsub('{distance}',al(i*0.28)..'M'):
+            gsub('{position}',string.upper(tostring(f)))end return nil end local c={
             HasLoaded=false,ObjectCache={},Whitelist={},Shared={TextSize=13,TextFont=2,
             LimitDistance=false,MaxDistance=150,UseTeamColor=false,IncludeLocalPlayer=false}
             ,Team={Enemy={Enabled=false,Box=false,BoxColor={Color3.new(1,0,0),1},BoxOutline=
@@ -1416,45 +1416,45 @@ local Self = [=====[
             OffScreenArrowOutline=true,OffScreenArrowOutlineColor={Color3.new(),1},Chams=
             false,ChamsVisibleOnly=false,ChamsFillColor={Color3.new(0.2,0.2,0.2),0.5},
             ChamsOutlineColor={Color3.new(0,1,0),0},Skeleton=false,SkeletonColor={Color3.
-            new(0,1,0),1}}}}function d.AddInstance(e,f)local g=d.ObjectCache if g[e]then
-            warn'Instance handler already exists.'else g[e]={c.New(e,f)}end return g[e][1]
-            end function d.Load()assert(not d.HasLoaded,'Esp has already been loaded.')local
-            e,f,g=function(e)d.ObjectCache[e]={aO.New(e,d),b.New(e,d)}end,function(e)local f
-            =d.ObjectCache[e]if f then for g=1,#f do f[g]:Destruct()end d.ObjectCache[e]=nil
-            end end,ac:GetPlayers()for h=d.Shared.IncludeLocalPlayer and 1 or 2,#g do e(g[h]
-            )end d.PlayerAdded=ac.PlayerAdded:Connect(e)d.PlayerRemoving=ac.PlayerRemoving:
-            Connect(f)d.HasLoaded=true end function d.Unload()assert(d.HasLoaded,
-            'Esp has not been loaded yet.')for e,f in next,d.ObjectCache do for g=1,#f do f[
-            g]:Destruct()end d.ObjectCache[e]=nil end d.PlayerAdded:Disconnect()d.
-            PlayerRemoving:Disconnect()d.HasLoaded=false end function d.GetWeapon(e)local f=
-            'None'if e and e.Character then local g=e.Character:FindFirstChildOfClass'Tool'
-            if g then f=g.Name end end return string.upper(f)end function d.IsFriendly(e)
-            return e.Team and e.Team==ag.Team end function d.GetTeamColor(e)return e.Team
-            and e.Team.TeamColor and e.Team.TeamColor.Color end function d.GetCharacter(e)
-            return e.Character end function d.IsBodyPart(e)return e=='Head'or e:find'Torso'
-            or e:find'Leg'or e:find'Arm'end function d.GetRootPart()return'HumanoidRootPart'
-            end function d.GetHealth(e)local f=e and d.GetCharacter(e)local g=f and aw(f,
-            'Humanoid')if g then return g.Health,g.MaxHealth end return 100,100 end function
-            d.GetJoints(e)local f={Head=e:FindFirstChild'Head',UpperTorso=e:FindFirstChild
-            'UpperTorso'or e:FindFirstChild'Torso',LowerTorso=e:FindFirstChild'LowerTorso'or
-            e:FindFirstChild'Torso',LeftUpperArm=e:FindFirstChild'LeftUpperArm'or e:
-            FindFirstChild'Left Arm',LeftLowerArm=e:FindFirstChild'LeftLowerArm'or e:
-            FindFirstChild'Left Arm',LeftHand=e:FindFirstChild'LeftHand'or e:FindFirstChild
-            'Left Arm',RightUpperArm=e:FindFirstChild'RightUpperArm'or e:FindFirstChild
-            'Right Arm',RightLowerArm=e:FindFirstChild'RightLowerArm'or e:FindFirstChild
-            'Right Arm',RightHand=e:FindFirstChild'RightHand'or e:FindFirstChild'Right Arm',
-            LeftUpperLeg=e:FindFirstChild'LeftUpperLeg'or e:FindFirstChild'Left Leg',
-            LeftLowerLeg=e:FindFirstChild'LeftLowerLeg'or e:FindFirstChild'Left Leg',
-            LeftFoot=e:FindFirstChild'LeftFoot'or e:FindFirstChild'Left Leg',RightUpperLeg=e
-            :FindFirstChild'RightUpperLeg'or e:FindFirstChild'Right Leg',RightLowerLeg=e:
-            FindFirstChild'RightLowerLeg'or e:FindFirstChild'Right Leg',RightFoot=e:
-            FindFirstChild'RightFoot'or e:FindFirstChild'Right Leg'}local g={{f.Head,f.
-            UpperTorso},{f.UpperTorso,f.LowerTorso},{f.UpperTorso,f.LeftUpperArm},{f.
-            LeftUpperArm,f.LeftLowerArm},{f.LeftLowerArm,f.LeftHand},{f.UpperTorso,f.
-            RightUpperArm},{f.RightUpperArm,f.RightLowerArm},{f.RightLowerArm,f.RightHand},{
-            f.LowerTorso,f.LeftUpperLeg},{f.LeftUpperLeg,f.LeftLowerLeg},{f.LeftLowerLeg,f.
-            LeftFoot},{f.LowerTorso,f.RightUpperLeg},{f.RightUpperLeg,f.RightLowerLeg},{f.
-            RightLowerLeg,f.RightFoot}}return f,g end return d end function a.d()local aa,ab
+            new(0,1,0),1}}}}function c.AddInstance(d,e)local f=c.ObjectCache if f[d]then
+            warn'Instance handler already exists.'else f[d]={b.New(d,e)}end return f[d][1]
+            end function c.Load()assert(not c.HasLoaded,'Esp has already been loaded.')local
+            d,e,f=function(d)c.ObjectCache[d]={aP.New(d,c),aR.New(d,c)}end,function(d)local
+            e=c.ObjectCache[d]if e then for f=1,#e do e[f]:Destruct()end c.ObjectCache[d]=
+            nil end end,ad:GetPlayers()for g=c.Shared.IncludeLocalPlayer and 1 or 2,#f do d(
+            f[g])end c.PlayerAdded=ad.PlayerAdded:Connect(d)c.PlayerRemoving=ad.
+            PlayerRemoving:Connect(e)c.HasLoaded=true end function c.Unload()assert(c.
+            HasLoaded,'Esp has not been loaded yet.')for d,e in next,c.ObjectCache do for f=
+            1,#e do e[f]:Destruct()end c.ObjectCache[d]=nil end c.PlayerAdded:Disconnect()c.
+            PlayerRemoving:Disconnect()c.HasLoaded=false end function c.GetWeapon(d)local e=
+            'None'if d and d.Character then local f=d.Character:FindFirstChildOfClass'Tool'
+            if f then e=f.Name end end return string.upper(e)end function c.IsFriendly(d)
+            return d.Team and d.Team==ah.Team end function c.GetTeamColor(d)return d.Team
+            and d.Team.TeamColor and d.Team.TeamColor.Color end function c.GetCharacter(d)
+            return d.Character end function c.IsBodyPart(d)return d=='Head'or d:find'Torso'
+            or d:find'Leg'or d:find'Arm'end function c.GetRootPart()return'HumanoidRootPart'
+            end function c.GetHealth(d)local e=d and c.GetCharacter(d)local f=e and ax(e,
+            'Humanoid')if f then return f.Health,f.MaxHealth end return 100,100 end function
+            c.GetJoints(d)local e={Head=d:FindFirstChild'Head',UpperTorso=d:FindFirstChild
+            'UpperTorso'or d:FindFirstChild'Torso',LowerTorso=d:FindFirstChild'LowerTorso'or
+            d:FindFirstChild'Torso',LeftUpperArm=d:FindFirstChild'LeftUpperArm'or d:
+            FindFirstChild'Left Arm',LeftLowerArm=d:FindFirstChild'LeftLowerArm'or d:
+            FindFirstChild'Left Arm',LeftHand=d:FindFirstChild'LeftHand'or d:FindFirstChild
+            'Left Arm',RightUpperArm=d:FindFirstChild'RightUpperArm'or d:FindFirstChild
+            'Right Arm',RightLowerArm=d:FindFirstChild'RightLowerArm'or d:FindFirstChild
+            'Right Arm',RightHand=d:FindFirstChild'RightHand'or d:FindFirstChild'Right Arm',
+            LeftUpperLeg=d:FindFirstChild'LeftUpperLeg'or d:FindFirstChild'Left Leg',
+            LeftLowerLeg=d:FindFirstChild'LeftLowerLeg'or d:FindFirstChild'Left Leg',
+            LeftFoot=d:FindFirstChild'LeftFoot'or d:FindFirstChild'Left Leg',RightUpperLeg=d
+            :FindFirstChild'RightUpperLeg'or d:FindFirstChild'Right Leg',RightLowerLeg=d:
+            FindFirstChild'RightLowerLeg'or d:FindFirstChild'Right Leg',RightFoot=d:
+            FindFirstChild'RightFoot'or d:FindFirstChild'Right Leg'}local f={{e.Head,e.
+            UpperTorso},{e.UpperTorso,e.LowerTorso},{e.UpperTorso,e.LeftUpperArm},{e.
+            LeftUpperArm,e.LeftLowerArm},{e.LeftLowerArm,e.LeftHand},{e.UpperTorso,e.
+            RightUpperArm},{e.RightUpperArm,e.RightLowerArm},{e.RightLowerArm,e.RightHand},{
+            e.LowerTorso,e.LeftUpperLeg},{e.LeftUpperLeg,e.LeftLowerLeg},{e.LeftLowerLeg,e.
+            LeftFoot},{e.LowerTorso,e.RightUpperLeg},{e.RightUpperLeg,e.RightLowerLeg},{e.
+            RightLowerLeg,e.RightFoot}}return e,f end return c end function a.d()local aa,ab
             ,ac,ad,ae,af,ag,ah,ai,aj,ak=game,workspace,Vector2.new,Vector3.zero,CFrame.new,
             Color3.fromRGB,Drawing.new,TweenInfo.new,mousemoverel or(Input and Input.
             MouseMove),table.find,math.clamp local al=getrawmetatable and getrawmetatable(aa
@@ -1486,56 +1486,57 @@ local Self = [=====[
             IgnoredParts,aL)end end function aF.Aimbot.SetState(aL)aC=aL if not aL then aK()
             end end local aL,aM=function()local aL=aF.Aimbot local aM=aL.LockPart if not aF.
             Locked then aB=aF.FOVSettings.Enabled and aF.FOVSettings.Radius or 2000 for aN,
-            aO in next,aA(as)do local b=aF.GetCharacter(aO)local c=b and aw(b,'Humanoid')if
-            aO~=at and b and aF.GetCharacter(at)and av(b,aM)and c then local d=am(b[aM],
-            'Position')if aL.MaxDistance and(au.CFrame.Position-d).Magnitude>aL.MaxDistance
-            then continue end if aL.TeamCheck and aF.IsFriendly(aO)then continue end if aL.
-            AliveCheck and aF.GetHealth(aO)<0 then continue end if aL.WallCheck==2 or aL.
-            WallCheck==3 then table.clear(aF.BlacklistTable)table.insert(aF.BlacklistTable,
-            aF.GetCharacter(at))table.insert(aF.BlacklistTable,aF.GetCharacter(aO))for e=1,#
-            aF.IgnoredParts do aF.BlacklistTable[e+2]=aF.IgnoredParts[e]end if#ay(au,{d},aF.
-            BlacklistTable)>0 then continue end end local e,f,g=ax(au,d)e=aJ(e)g=(az(aq)-e).
-            Magnitude if g<aB and f then aB,aF.Locked=g,aO end end end else local aN=aF.
-            GetCharacter(aF.Locked)if aN and aF.GetCharacter(at)then local aO=av(aN,aM)if
-            not aO then aK()return end local b=am(aN[aM],'Position')if aL.MaxDistance and(au
-            .CFrame.Position-b).Magnitude>aL.MaxDistance then aK()return end local c,d=ax(au
-            ,b)c=aJ(c)local e=(az(aq)-c).Magnitude if aL.WallCheck==3 then table.clear(aF.
-            BlacklistTable)table.insert(aF.BlacklistTable,aF.GetCharacter(at))table.insert(
-            aF.BlacklistTable,aF.GetCharacter(aF.Locked))for f=1,#aF.IgnoredParts do aF.
-            BlacklistTable[f+2]=aF.IgnoredParts[f]end if#ay(au,{b},aF.BlacklistTable)>0 then
-            aK()return end end if e>aB or not d then aK()end else aK()end end end,function()
-            local aL=aF.Triggerbot if not aL.Enabled or not aF.GetCharacter(at)then aL.
-            TargetChanged()return end local aM=am(at,'GetMouse')and at:GetMouse()if not aM
-            then aL.TargetChanged()return end local aN=ab.CurrentCamera local aO,b=Ray.new(
-            aN.CFrame.Position,(aM.Hit.Position-aN.CFrame.Position).Unit*1000),{aF.
-            GetCharacter(at),aN}for c,d in next,aF.IgnoredParts do b[#b+1]=d end local c=
-            RaycastParams.new()c.FilterDescendantsInstances=b c.FilterType=Enum.
-            RaycastFilterType.Blacklist local d=ab:Raycast(aO.Origin,aO.Direction,c)if not d
-            then aL.TargetChanged()return end local e=d.Instance local f=e:
-            FindFirstAncestorOfClass'Model'if not f then aL.TargetChanged()return end local
-            g=aF.GetPlayerFromCharacter(f)if not g or g==at then aL.TargetChanged()return
-            end if aL.TeamCheck and aF.IsFriendly(g)then aL.TargetChanged()return end if aL.
-            AliveCheck and aF.GetHealth(g)<0 then aL.TargetChanged()end aL.TargetChanged(g)
-            task.wait(aL.Delay)aL.Trigger(true)end local aN=function()aH=am(aq,
-            'MouseDeltaSensitivity')local aN,aO,b,c,d,e=aF.Aimbot,aF.Triggerbot,aF.FOVCircle
-            ,aF.FOVCircleOutline,(aF.FOVSettings)aD.RenderSteppedConnection=aE(am(ap,
-            'RenderStepped'),function()local f,g=aN.OffsetToMoveDirection,aN.LockPart if d.
-            Enabled and aN.Enabled then b.Color=(aF.Locked and d.LockedColor)or d.Color c.
-            Color=d.OutlineColor b.Thickness=d.Thickness c.Thickness=d.Thickness+1 b.
-            Position=az(aq)c.Position=az(aq)b.NumSides=d.NumSides c.NumSides=d.NumSides b.
-            Radius=d.Radius c.Radius=d.Radius b.Transparency=1-d.Transparency c.Transparency
-            =1-d.Transparency b.Visible=d.Visible c.Visible=d.Visible else b.Visible=false c
-            .Visible=false end if aO.Enabled then aM()end if aC and aN.Enabled then aL()e=f
-            and am(aw(aF.GetCharacter(aF.Locked),'Humanoid'),'MoveDirection')*(ak(aN.
-            OffsetIncrement,1,30)/10)or ad if aF.Locked then local h=am(aF.GetCharacter(aF.
-            Locked)[g],'Position')local i=ax(au,h+e)local j,m=(i.X-az(aq).X)/aN.Sensitivity2
-            ,(i.Y-az(aq).Y)/aN.Sensitivity2 if aF.Aimbot.LockMode==2 then ai(j,m)else if aN.
-            Sensitivity>0 then aG=ar:Create(au,ah(aF.Aimbot.Sensitivity,Enum.EasingStyle.
-            Sine,Enum.EasingDirection.Out),{CFrame=ae(au.CFrame.Position,h+e)})aG:Play()else
-            an(au,'CFrame',ae(au.CFrame.Position,h+e))end end end end end)end function aF.
-            Exit(aO)assert(aO,'Aimbot.Exit: Missing parameter #1 "self" <table>.')for b,c in
-            next,aD do aI(aD[b])end aN=nil aJ=nil aK=nil aL=nil aO.FOVCircle:Remove()aO.
-            FOVCircleOutline:Remove()end function aF.Restart()for aO,b in next,aD do aI(aD[
+            aO in next,aA(as)do local aP=aF.GetCharacter(aO)local aR=aP and aw(aP,'Humanoid'
+            )if aO~=at and aP and aF.GetCharacter(at)and av(aP,aM)and aR then local b=am(aP[
+            aM],'Position')if aL.MaxDistance and(au.CFrame.Position-b).Magnitude>aL.
+            MaxDistance then continue end if aL.TeamCheck and aF.IsFriendly(aO)then continue
+            end if aL.AliveCheck and aF.GetHealth(aO)<0 then continue end if aL.WallCheck==2
+            or aL.WallCheck==3 then table.clear(aF.BlacklistTable)table.insert(aF.
+            BlacklistTable,aF.GetCharacter(at))table.insert(aF.BlacklistTable,aF.
+            GetCharacter(aO))for c=1,#aF.IgnoredParts do aF.BlacklistTable[c+2]=aF.
+            IgnoredParts[c]end if#ay(au,{b},aF.BlacklistTable)>0 then continue end end local
+            c,d,e=ax(au,b)c=aJ(c)e=(az(aq)-c).Magnitude if e<aB and d then aB,aF.Locked=e,aO
+            end end end else local aN=aF.GetCharacter(aF.Locked)if aN and aF.GetCharacter(at
+            )then local aO=av(aN,aM)if not aO then aK()return end local aP=am(aN[aM],
+            'Position')if aL.MaxDistance and(au.CFrame.Position-aP).Magnitude>aL.MaxDistance
+            then aK()return end local aR,b=ax(au,aP)aR=aJ(aR)local c=(az(aq)-aR).Magnitude
+            if aL.WallCheck==3 then table.clear(aF.BlacklistTable)table.insert(aF.
+            BlacklistTable,aF.GetCharacter(at))table.insert(aF.BlacklistTable,aF.
+            GetCharacter(aF.Locked))for d=1,#aF.IgnoredParts do aF.BlacklistTable[d+2]=aF.
+            IgnoredParts[d]end if#ay(au,{aP},aF.BlacklistTable)>0 then aK()return end end if
+            c>aB or not b then aK()end else aK()end end end,function()local aL=aF.Triggerbot
+            if not aL.Enabled or not aF.GetCharacter(at)then aL.TargetChanged()return end
+            local aM=am(at,'GetMouse')and at:GetMouse()if not aM then aL.TargetChanged()
+            return end local aN=ab.CurrentCamera local aO,aP=Ray.new(aN.CFrame.Position,(aM.
+            Hit.Position-aN.CFrame.Position).Unit*1000),{aF.GetCharacter(at),aN}for aR,b in
+            next,aF.IgnoredParts do aP[#aP+1]=b end local aR=RaycastParams.new()aR.
+            FilterDescendantsInstances=aP aR.FilterType=Enum.RaycastFilterType.Blacklist
+            local b=ab:Raycast(aO.Origin,aO.Direction,aR)if not b then aL.TargetChanged()
+            return end local c=b.Instance local d=c:FindFirstAncestorOfClass'Model'if not d
+            then aL.TargetChanged()return end local e=aF.GetPlayerFromCharacter(d)if not e
+            or e==at then aL.TargetChanged()return end if aL.TeamCheck and aF.IsFriendly(e)
+            then aL.TargetChanged()return end if aL.AliveCheck and aF.GetHealth(e)<0 then aL
+            .TargetChanged()end aL.TargetChanged(e)task.wait(aL.Delay)aL.Trigger(true)end
+            local aN=function()aH=am(aq,'MouseDeltaSensitivity')local aN,aO,aP,aR,b,c=aF.
+            Aimbot,aF.Triggerbot,aF.FOVCircle,aF.FOVCircleOutline,(aF.FOVSettings)aD.
+            RenderSteppedConnection=aE(am(ap,'RenderStepped'),function()local d,e=aN.
+            OffsetToMoveDirection,aN.LockPart if b.Enabled and aN.Enabled then aP.Color=(aF.
+            Locked and b.LockedColor)or b.Color aR.Color=b.OutlineColor aP.Thickness=b.
+            Thickness aR.Thickness=b.Thickness+1 aP.Position=az(aq)aR.Position=az(aq)aP.
+            NumSides=b.NumSides aR.NumSides=b.NumSides aP.Radius=b.Radius aR.Radius=b.Radius
+            aP.Transparency=1-b.Transparency aR.Transparency=1-b.Transparency aP.Visible=b.
+            Visible aR.Visible=b.Visible else aP.Visible=false aR.Visible=false end if aO.
+            Enabled then aM()end if aC and aN.Enabled then aL()c=d and am(aw(aF.
+            GetCharacter(aF.Locked),'Humanoid'),'MoveDirection')*(ak(aN.OffsetIncrement,1,30
+            )/10)or ad if aF.Locked then local f=am(aF.GetCharacter(aF.Locked)[e],'Position'
+            )local g=ax(au,f+c)local h,i=(g.X-az(aq).X)/aN.Sensitivity2,(g.Y-az(aq).Y)/aN.
+            Sensitivity2 if aF.Aimbot.LockMode==2 then ai(h,i)else if aN.Sensitivity>0 then
+            aG=ar:Create(au,ah(aF.Aimbot.Sensitivity,Enum.EasingStyle.Sine,Enum.
+            EasingDirection.Out),{CFrame=ae(au.CFrame.Position,f+c)})aG:Play()else an(au,
+            'CFrame',ae(au.CFrame.Position,f+c))end end end end end)end function aF.Exit(aO)
+            assert(aO,'Aimbot.Exit: Missing parameter #1 "self" <table>.')for aP,aR in next,
+            aD do aI(aD[aP])end aN=nil aJ=nil aK=nil aL=nil aO.FOVCircle:Remove()aO.
+            FOVCircleOutline:Remove()end function aF.Restart()for aO,aP in next,aD do aI(aD[
             aO])end aN()end aF.Load=aN setmetatable(aF,{__call=aN})return aF end function a.
             e()return function(aa)local ab,ac,ad=a.load'b',a.load'c',a.load'd'local ae,af,ag
             ,ah=ab.Assets,ab.Colors,ac.Shared,ac.Team local ai,aj,ak,al,am,an=ah.Enemy,ah.
@@ -1713,422 +1714,411 @@ local Self = [=====[
             Color=af.SystemDarkRed,Name='Unload Menu',Callback=function(aq)ab:Unload()end}:
             Continue()end do ac.Load()end do ad.Load()end do ao.Legit:Select()ab:
             Notification{Title=`RIOT {RIOT.VERSION} - getriot.cc`,Description=`RIOT for {aa.
-            Name} loaded!`,Lifetime=5}end end end function a.f()local aa={}aa.Load=function(
-            )local ab,ac=game:GetService'ReplicatedFirst':WaitForChild'NewLoader',game:
-            GetService'ReplicatedStorage':WaitForChild'Functions':WaitForChild'Ping'do local
-            ad ad=hookfunction(getrenv().task.spawn,newcclosure(function(ae,...)local af={
-            ...}if af[1]==ac and debug.info(ae,'n')=='InvokeServer'then return task.wait(9e9
-            )end return ad(ae,...)end))end do local ad ad=hookmetamethod(game,'__namecall',
-            newcclosure(function(ae,af,...)if ae.Parent==nil and not checkcaller()and
-            getnamecallmethod()=='Fire'and typeof(af)=='table'then local ag,ah=next(af)if
-            typeof(ag)=='userdata'then hookmetamethod(game,'__namecall',ad)return task.wait(
-            9e9)end end return ad(ae,af,...)end))end do local ad ad=hookmetamethod(game,
-            '__namecall',newcclosure(function(ae,af,...)if ae==game and not checkcaller()and
-            getnamecallmethod()=='FindService'and af=='VirtualUser'then hookmetamethod(game,
-            '__namecall',ad)return task.wait(9e9)end return ad(ae,af,...)end))end do local
-            ad ad=hookmetamethod(game,'__newindex',newcclosure(function(ae,af,ag)if ae==ab
-            and not checkcaller()then return task.wait(9e9)end return ad(ae,af,ag)end))end
-            end return aa end function a.g()local aa,ab,ac,ad,ae,af=game,workspace,Vector2.
-            new,Color3.fromRGB,Drawing.new,table.find local ag=getrawmetatable and
-            getrawmetatable(aa)or{__index=function(ag,ah)return ag[ah]end,__newindex=
-            function(ag,ah,ai)ag[ah]=ai end}local ah=ag.__index local ai=ah(aa,'GetService')
-            local aj,ak,al=ai(aa,'RunService'),ai(aa,'UserInputService'),ai(aa,'Players')
-            local am,an,ao,ap=ah(al,'LocalPlayer'),ah(ab,'CurrentCamera'),ah(aa,
-            'FindFirstChild'),ah(aa,'FindFirstChildOfClass')local aq,ar,as,at,au,av=ah(an,
-            'WorldToViewportPoint'),ah(an,'GetPartsObscuringTarget'),ah(ak,
-            'GetMouseLocation'),ah(al,'GetPlayers'),false,{DeveloperSettings={UpdateMode=
-            'RenderStepped',TeamCheckOption='Team'},SilentAim={Locked=nil,Enabled=true,
-            LockPart='Head',RandomLockPart=false,HitChance=100,MaxDistance=250,WallCheck=
-            true,TeamCheck=true,AliveCheck=true,FOVSettings={Enabled=true,Visible=true,
-            Radius=90,NumSides=60,Thickness=2,Filled=false,Color={ad(255,150,150),0},
+            Name} loaded!`,Lifetime=5}end end end function a.f()local aa,ab,ac,ad,ae,af=game
+            ,workspace,Vector2.new,Color3.fromRGB,Drawing.new,table.find local ag=
+            getrawmetatable and getrawmetatable(aa)or{__index=function(ag,ah)return ag[ah]
+            end,__newindex=function(ag,ah,ai)ag[ah]=ai end}local ah,ai=ag.__index,a.load'a'
+            local aj=ai.SecureService local ak,al,am=aj(aa,'RunService'),aj(aa,
+            'UserInputService'),aj(aa,'Players')local an,ao,ap,aq=ah(am,'LocalPlayer'),ah(ab
+            ,'CurrentCamera'),ah(aa,'FindFirstChild'),ah(aa,'FindFirstChildOfClass')local ar
+            ,as,at,au,av,aw=ah(ao,'WorldToViewportPoint'),ah(ao,'GetPartsObscuringTarget'),
+            ah(al,'GetMouseLocation'),ah(am,'GetPlayers'),false,{DeveloperSettings={
+            UpdateMode='RenderStepped',TeamCheckOption='Team'},SilentAim={Locked=nil,Enabled
+            =true,LockPart='Head',RandomLockPart=false,HitChance=100,MaxDistance=250,
+            WallCheck=true,TeamCheck=true,AliveCheck=true,FOVSettings={Enabled=true,Visible=
+            true,Radius=90,NumSides=60,Thickness=2,Filled=false,Color={ad(255,150,150),0},
             OutlineColor={ad(0,0,0),0}},SnaplineSettings={Enabled=true,Thickness=2,Color={
             ad(255,0,0),0},OutlineColor={ad(0,0,0),0}}},IgnoredParts={},BlacklistTable={},
             FOVCircleOutline=ae'Circle',FOVCircle=ae'Circle',SnaplineOutline=ae'Line',
-            Snapline=ae'Line'}function av.AddToIgnoreQuery(aw)if not af(av.IgnoredParts,aw)
-            then table.insert(av.IgnoredParts,aw)end end function av.SilentAim.SetState(aw)
-            au=aw end local aw=function(aw)return ac(aw.X,aw.Y)end local ax,ay,az,aA=
-            function()local ax=av.SilentAim local ay=ax.RandomLockPart and({'Head',
-            'HumanoidRootPart'})[math.random(1,2)]or ax.LockPart if not ax.Locked then local
-            az=ax.FOVSettings.Enabled and ax.FOVSettings.Radius or 2000 for aA,aB in next,
-            at(al)do local aC=ah(aB,'Character')local aD=aC and ap(aC,'Humanoid')if aB~=am
-            and ah(am,'Character')and aC and ao(aC,ay)and aD then local aE=ah(aC[ay],
-            'Position')if ax.MaxDistance and(an.CFrame.Position-aE).Magnitude>ax.MaxDistance
-            then continue end if ax.TeamCheck and ah(aB,av.DeveloperSettings.TeamCheckOption
-            )and ah(aB,av.DeveloperSettings.TeamCheckOption)==ah(am,av.DeveloperSettings.
-            TeamCheckOption)then continue end if ax.AliveCheck and ah(aD,'Health')<=0 then
-            continue end if ax.WallCheck then table.clear(av.BlacklistTable)table.insert(av.
-            BlacklistTable,am.Character)table.insert(av.BlacklistTable,aC)for aF=1,#av.
-            IgnoredParts do av.BlacklistTable[#av.BlacklistTable+1]=av.IgnoredParts[aF]end
-            if#ar(an,{aE},av.BlacklistTable)>0 then continue end end local aF,aG=aq(an,aE)aF
-            =aw(aF)local aH=(as(ak)-aF).Magnitude if aH<az and aG then az,av.Locked=aH,aB if
-            ax.LockContinueTrigger then task.spawn(ax.LockContinueTrigger,aB)end return aC[
-            ay]end end end else local az,aA=ah(av.Locked,'Character'),ax.FOVSettings.Enabled
-            and ax.FOVSettings.Radius or 2000 if az and ah(am,'Character')then local aB=ao(
-            az,ay)if not aB then ax.Locked=nil return nil end local aC=ah(aB,'Position')if
-            ax.MaxDistance and(an.CFrame.Position-aC).Magnitude>ax.MaxDistance then ax.
-            Locked=nil return nil end if ax.WallCheck then table.clear(av.BlacklistTable)
-            table.insert(av.BlacklistTable,am.Character)table.insert(av.BlacklistTable,az)
-            for aD=1,#av.IgnoredParts do av.BlacklistTable[#av.BlacklistTable+1]=av.
-            IgnoredParts[aD]end if#ar(an,{aC},av.BlacklistTable)>0 then ax.Locked=nil return
-            nil end end local aD,aE=aq(an,aC)aD=aw(aD)local aF=(as(ak)-aD).Magnitude if aF>
-            aA or not aE then ax.Locked=nil return nil end if ax.LockContinueTrigger then
-            task.spawn(ax.LockContinueTrigger,Value)end return aB else ax.Locked=nil return
-            nil end end return nil end,function()if av.SilentAim.Enabled and av.SilentAim.
-            FOVSettings.Enabled then av.FOVCircle.Color=av.SilentAim.FOVSettings.Color[1]av.
-            FOVCircleOutline.Color=av.SilentAim.FOVSettings.OutlineColor[1]av.FOVCircle.
-            Transparency=av.SilentAim.FOVSettings.Color[2]av.FOVCircleOutline.Transparency=
-            av.SilentAim.FOVSettings.OutlineColor[2]av.FOVCircle.Thickness=av.SilentAim.
-            FOVSettings.Thickness av.FOVCircleOutline.Thickness=av.SilentAim.FOVSettings.
-            Thickness+2 av.FOVCircle.Position=as(ak)av.FOVCircleOutline.Position=as(ak)av.
-            FOVCircle.NumSides=av.SilentAim.FOVSettings.NumSides av.FOVCircleOutline.
-            NumSides=av.SilentAim.FOVSettings.NumSides av.FOVCircle.Radius=av.SilentAim.
-            FOVSettings.Radius av.FOVCircleOutline.Radius=av.SilentAim.FOVSettings.Radius av
-            .FOVCircle.Visible=av.SilentAim.FOVSettings.Visible av.FOVCircleOutline.Visible=
-            av.SilentAim.FOVSettings.Visible else av.FOVCircle.Visible=false av.
-            FOVCircleOutline.Visible=false end end,function(ax)if au and av.SilentAim.
-            Enabled and av.SilentAim.SnaplineSettings.Enabled and ax then local ay=as(ak)av.
-            SnaplineOutline.From=ay av.SnaplineOutline.To=ax av.SnaplineOutline.Color=av.
-            SilentAim.SnaplineSettings.OutlineColor[1]av.SnaplineOutline.Transparency=av.
-            SilentAim.SnaplineSettings.OutlineColor[2]av.SnaplineOutline.Thickness=av.
-            SilentAim.SnaplineSettings.Thickness+2 av.SnaplineOutline.Visible=true av.
-            Snapline.From=ay av.Snapline.To=ax av.Snapline.Color=av.SilentAim.
-            SnaplineSettings.Color[1]av.Snapline.Transparency=av.SilentAim.SnaplineSettings.
-            Color[2]av.Snapline.Thickness=av.SilentAim.SnaplineSettings.Thickness av.
-            Snapline.Visible=true else av.Snapline.Visible=false av.SnaplineOutline.Visible=
-            false end end aj.RenderStepped:Connect(function()ay()aA=nil if au and av.
-            SilentAim.Enabled then aA=ax()local aB if aA and av.SilentAim.SnaplineSettings.
-            Enabled then local aC,aD=aq(an,aA.Position)if aD then aB=ac(aC.X,aC.Y)end end
-            az(aB)end end)local aB aB=hookmetamethod(aa,'__index',newcclosure(function(aC,aD
-            )if au and av.SilentAim.Enabled and aC==an and aD=='CoordinateFrame'and string.
+            Snapline=ae'Line'}function aw.AddToIgnoreQuery(ax)if not af(aw.IgnoredParts,ax)
+            then table.insert(aw.IgnoredParts,ax)end end function aw.SilentAim.SetState(ax)
+            av=ax end local ax=function(ax)return ac(ax.X,ax.Y)end local ay,az,aA,aB=
+            function()local ay=aw.SilentAim local az=ay.RandomLockPart and({'Head',
+            'HumanoidRootPart'})[math.random(1,2)]or ay.LockPart if not ay.Locked then local
+            aA=ay.FOVSettings.Enabled and ay.FOVSettings.Radius or 2000 for aB,aC in next,
+            au(am)do local aD=ah(aC,'Character')local aE=aD and aq(aD,'Humanoid')if aC~=an
+            and ah(an,'Character')and aD and ap(aD,az)and aE then local aF=ah(aD[az],
+            'Position')if ay.MaxDistance and(ao.CFrame.Position-aF).Magnitude>ay.MaxDistance
+            then continue end if ay.TeamCheck and ah(aC,aw.DeveloperSettings.TeamCheckOption
+            )and ah(aC,aw.DeveloperSettings.TeamCheckOption)==ah(an,aw.DeveloperSettings.
+            TeamCheckOption)then continue end if ay.AliveCheck and ah(aE,'Health')<=0 then
+            continue end if ay.WallCheck then table.clear(aw.BlacklistTable)table.insert(aw.
+            BlacklistTable,an.Character)table.insert(aw.BlacklistTable,aD)for aG=1,#aw.
+            IgnoredParts do aw.BlacklistTable[#aw.BlacklistTable+1]=aw.IgnoredParts[aG]end
+            if#as(ao,{aF},aw.BlacklistTable)>0 then continue end end local aG,aH=ar(ao,aF)aG
+            =ax(aG)local aI=(at(al)-aG).Magnitude if aI<aA and aH then aA,aw.Locked=aI,aC if
+            ay.LockContinueTrigger then task.spawn(ay.LockContinueTrigger,aC)end return aD[
+            az]end end end else local aA,aB=ah(aw.Locked,'Character'),ay.FOVSettings.Enabled
+            and ay.FOVSettings.Radius or 2000 if aA and ah(an,'Character')then local aC=ap(
+            aA,az)if not aC then ay.Locked=nil return nil end local aD=ah(aC,'Position')if
+            ay.MaxDistance and(ao.CFrame.Position-aD).Magnitude>ay.MaxDistance then ay.
+            Locked=nil return nil end if ay.WallCheck then table.clear(aw.BlacklistTable)
+            table.insert(aw.BlacklistTable,an.Character)table.insert(aw.BlacklistTable,aA)
+            for aE=1,#aw.IgnoredParts do aw.BlacklistTable[#aw.BlacklistTable+1]=aw.
+            IgnoredParts[aE]end if#as(ao,{aD},aw.BlacklistTable)>0 then ay.Locked=nil return
+            nil end end local aE,aF=ar(ao,aD)aE=ax(aE)local aG=(at(al)-aE).Magnitude if aG>
+            aB or not aF then ay.Locked=nil return nil end if ay.LockContinueTrigger then
+            task.spawn(ay.LockContinueTrigger,Value)end return aC else ay.Locked=nil return
+            nil end end return nil end,function()if aw.SilentAim.Enabled and aw.SilentAim.
+            FOVSettings.Enabled then aw.FOVCircle.Color=aw.SilentAim.FOVSettings.Color[1]aw.
+            FOVCircleOutline.Color=aw.SilentAim.FOVSettings.OutlineColor[1]aw.FOVCircle.
+            Transparency=aw.SilentAim.FOVSettings.Color[2]aw.FOVCircleOutline.Transparency=
+            aw.SilentAim.FOVSettings.OutlineColor[2]aw.FOVCircle.Thickness=aw.SilentAim.
+            FOVSettings.Thickness aw.FOVCircleOutline.Thickness=aw.SilentAim.FOVSettings.
+            Thickness+2 aw.FOVCircle.Position=at(al)aw.FOVCircleOutline.Position=at(al)aw.
+            FOVCircle.NumSides=aw.SilentAim.FOVSettings.NumSides aw.FOVCircleOutline.
+            NumSides=aw.SilentAim.FOVSettings.NumSides aw.FOVCircle.Radius=aw.SilentAim.
+            FOVSettings.Radius aw.FOVCircleOutline.Radius=aw.SilentAim.FOVSettings.Radius aw
+            .FOVCircle.Visible=aw.SilentAim.FOVSettings.Visible aw.FOVCircleOutline.Visible=
+            aw.SilentAim.FOVSettings.Visible else aw.FOVCircle.Visible=false aw.
+            FOVCircleOutline.Visible=false end end,function(ay)if av and aw.SilentAim.
+            Enabled and aw.SilentAim.SnaplineSettings.Enabled and ay then local az=at(al)aw.
+            SnaplineOutline.From=az aw.SnaplineOutline.To=ay aw.SnaplineOutline.Color=aw.
+            SilentAim.SnaplineSettings.OutlineColor[1]aw.SnaplineOutline.Transparency=aw.
+            SilentAim.SnaplineSettings.OutlineColor[2]aw.SnaplineOutline.Thickness=aw.
+            SilentAim.SnaplineSettings.Thickness+2 aw.SnaplineOutline.Visible=true aw.
+            Snapline.From=az aw.Snapline.To=ay aw.Snapline.Color=aw.SilentAim.
+            SnaplineSettings.Color[1]aw.Snapline.Transparency=aw.SilentAim.SnaplineSettings.
+            Color[2]aw.Snapline.Thickness=aw.SilentAim.SnaplineSettings.Thickness aw.
+            Snapline.Visible=true else aw.Snapline.Visible=false aw.SnaplineOutline.Visible=
+            false end end ak.RenderStepped:Connect(function()az()aB=nil if av and aw.
+            SilentAim.Enabled then aB=ay()local aC if aB and aw.SilentAim.SnaplineSettings.
+            Enabled then local aD,aE=ar(ao,aB.Position)if aE then aC=ac(aD.X,aD.Y)end end
+            aA(aC)end end)local aC aC=hookmetamethod(aa,'__index',newcclosure(function(aD,aE
+            )if av and aw.SilentAim.Enabled and aD==ao and aE=='CoordinateFrame'and string.
             match(debug.info(3,'s'),'Client.Functions.Weapons')and debug.info(debug.info(3,
-            'f'),'n')~='RotCamera'and math.random(1,100)<=av.SilentAim.HitChance and aA then
-            return CFrame.new(an.CFrame.Position,aA.Position)end return aB(aC,aD)end))return
-            av end function a.h()return function(aa)local ab,ac,ad,ae,af,ag=a.load'f',a.load
-            'a',a.load'b',a.load'c',a.load'd',a.load'g'local ah=ac.SecureService local ai,aj
-            ,ak,al,am,an,ao,ap,aq,ar=ah'Workspace',ah'Lighting',ah'ReplicatedStorage',ah
-            'RunService',ac.GetPlayer(),ad.Components,ad.Assets,ad.Colors,ae.Shared,ae.Team
-            local as,at,au,av,aw,ax=ar.Enemy,ar.Friendly,af.Aimbot,af.Triggerbot,af.
-            FOVSettings,ag.SilentAim local ay,az,aA,aB=ax.FOVSettings,ax.SnaplineSettings,{
-            GetClient=function()local ay=am:FindFirstChild'PlayerGui'and am.PlayerGui:
-            FindFirstChild'GUI'local az=ay and ay:FindFirstChild'Client'return az,getsenv(az
-            )end},ad:Window{Title=aa.Name,Keybind=Enum.KeyCode.RightControl}local aC={Legit=
-            aB:Tab{Name='Legit',Image=ao.ShieldCheck},Rage=aB:Tab{Name='Rage',Image=ao.
-            Shield},Visuals=aB:Tab{Name='Visuals',Image=ao.Bolt},Misc=aB:Tab{Name='Misc',
-            Image=ao.Folder},Cfg=aB:Tab{Name='Cfg',Image=ao.Archive}}do local aD=aC.Legit do
-            local aE=aD:Section{Name='Aimbot'}do local aF=aE:Section{Name='Settings'}aF:
-            Toggle{Name='Enabled',Description='enables aimbot',State=false,Callback=function
-            (aG,aH)au.Enabled=aH end}:Continue()aF:Keybind{Bind=Enum.UserInputType.
-            MouseButton2,Blacklist={Enum.UserInputType.MouseButton1},onHeld=function(aG,aH,
-            aI)if aI then return end au.SetState(aH)end}aF:Dropdown{Name='Wall Check',
-            Description='the method used by wall check',Options={'Off','Sticky','Always On'}
-            ,Value={'Always On'},Limit=1,Minimum=1,Callback=function(aG,aH)au.WallCheck=({
-            Off=1,Sticky=2,['Always On']=3})[aH[1] ]end}aF:Toggle{Name='Team Check',
-            Description='whether to ignore friendlys',State=true,Callback=function(aG,aH)au.
-            TeamCheck=aH end}aF:Slider{Name='Smoothing',Description='aimbot smoothness',
-            Value=1,Minimum=1,Maximum=20,Step=0.1,Precision=1,Callback=function(aG,aH)au.
-            Sensitivity=(aH-1)/(aG.Settings.Maximum-1)*0.15 au.Sensitivity2=aH end}aF:
-            Dropdown{Name='Bone',Description='selects the bone to aim at',Options={'Head',
-            'Torso'},Value={'Head'},Limit=1,Minimum=1,Callback=function(aG,aH)au.LockPart=aH
-            [1]=='Torso'and'HumanoidRootPart'or aH[1]end}aF:Dropdown{Name='Input Method',
-            Description='the input used to lock onto a player',Options={'Camera','Mouse'},
-            Value={'Camera'},Limit=1,Minimum=1,Callback=function(aG,aH)au.LockMode=({Camera=
-            1,Mouse=2})[aH[1] ]end}aF:Slider{Name='Max Distance',Description=
+            'f'),'n')~='RotCamera'and math.random(1,100)<=aw.SilentAim.HitChance and aB then
+            if aw.HitListener then task.spawn(aw.HitListener,aB)end return CFrame.new(ao.
+            CFrame.Position,aB.Position)end return aC(aD,aE)end))return aw end function a.g(
+            )return function(aa)repeat task.wait()until getrenv()._G.ClientLoaded local ab,
+            ac,ad,ae,af=a.load'a',a.load'b',a.load'c',a.load'd',a.load'f'local ag=ab.
+            SecureService local ah,ai,aj,ak,al,am,an,ao,ap,aq=ag'Workspace',ag'Lighting',ag
+            'ReplicatedStorage',ag'RunService',ab.GetPlayer(),ac.Components,ac.Assets,ac.
+            Colors,ad.Shared,ad.Team local ar,as,at,au,av,aw=aq.Enemy,aq.Friendly,ae.Aimbot,
+            ae.Triggerbot,ae.FOVSettings,af.SilentAim local ax,ay,az,aA=aw.FOVSettings,aw.
+            SnaplineSettings,{GetClient=function()local ax=al:FindFirstChild'PlayerGui'and
+            al.PlayerGui:FindFirstChild'GUI'local ay=ax and ax:FindFirstChild'Client'return
+            ay,getsenv(ay)end},ac:Window{Title=aa.Name,Keybind=Enum.KeyCode.RightControl}
+            local aB={Legit=aA:Tab{Name='Legit',Image=an.ShieldCheck},Rage=aA:Tab{Name=
+            'Rage',Image=an.Shield},Visuals=aA:Tab{Name='Visuals',Image=an.Bolt},Misc=aA:Tab
+            {Name='Misc',Image=an.Folder},Cfg=aA:Tab{Name='Cfg',Image=an.Archive}}do local
+            aC=aB.Legit do local aD=aC:Section{Name='Aimbot'}do local aE=aD:Section{Name=
+            'Settings'}aE:Toggle{Name='Enabled',Description='enables aimbot',State=false,
+            Callback=function(aF,aG)at.Enabled=aG end}:Continue()aE:Keybind{Bind=Enum.
+            UserInputType.MouseButton2,Blacklist={Enum.UserInputType.MouseButton1},onHeld=
+            function(aF,aG,aH)if aH then return end at.SetState(aG)end}aE:Dropdown{Name=
+            'Wall Check',Description='the method used by wall check',Options={'Off','Sticky'
+            ,'Always On'},Value={'Always On'},Limit=1,Minimum=1,Callback=function(aF,aG)at.
+            WallCheck=({Off=1,Sticky=2,['Always On']=3})[aG[1] ]end}aE:Toggle{Name=
+            'Team Check',Description='whether to ignore friendlys',State=true,Callback=
+            function(aF,aG)at.TeamCheck=aG end}aE:Slider{Name='Smoothing',Description=
+            'aimbot smoothness',Value=1,Minimum=1,Maximum=20,Step=0.1,Precision=1,Callback=
+            function(aF,aG)at.Sensitivity=(aG-1)/(aF.Settings.Maximum-1)*0.15 at.
+            Sensitivity2=aG end}aE:Dropdown{Name='Bone',Description=
+            'selects the bone to aim at',Options={'Head','Torso'},Value={'Head'},Limit=1,
+            Minimum=1,Callback=function(aF,aG)at.LockPart=aG[1]=='Torso'and
+            'HumanoidRootPart'or aG[1]end}aE:Dropdown{Name='Input Method',Description=
+            'the input used to lock onto a player',Options={'Camera','Mouse'},Value={
+            'Camera'},Limit=1,Minimum=1,Callback=function(aF,aG)at.LockMode=({Camera=1,Mouse
+            =2})[aG[1] ]end}aE:Slider{Name='Max Distance',Description=
             'the distance aimbot stops locking onto players',Value=800,Minimum=1,Maximum=
-            2000,Step=1,Precision=0,Callback=function(aG,aH)au.MaxDistance=aH end}:Continue(
-            )end do local aF=aE:Section{Name='FOV'}aF:Toggle{Name='Enabled',Description=
-            'whether the aimbot radius limit is active',State=true,Callback=function(aG,aH)
-            aw.Enabled=aH end}aF:Toggle{Name='Visible',Description=
+            2000,Step=1,Precision=0,Callback=function(aF,aG)at.MaxDistance=aG end}:Continue(
+            )end do local aE=aD:Section{Name='FOV'}aE:Toggle{Name='Enabled',Description=
+            'whether the aimbot radius limit is active',State=true,Callback=function(aF,aG)
+            av.Enabled=aG end}aE:Toggle{Name='Visible',Description=
             'draws a circle representing the aimbot FOV radius',State=true,Callback=function
-            (aG,aH)aw.Visible=aH end}:Continue():Colorpicker{Description='Unlocked Color',
+            (aF,aG)av.Visible=aG end}:Continue():Colorpicker{Description='Unlocked Color',
             AlphaEnabled=false,Color={Color3.fromRGB(255,150,150),0},SuggestionColors={{
             Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246
             ,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=
-            function(aG,aH)aw.Color=aH end}:Continue():Colorpicker{Description=
+            function(aF,aG)av.Color=aG end}:Continue():Colorpicker{Description=
             'Locked Color',AlphaEnabled=false,Color={Color3.fromRGB(150,255,150),0},
             SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
             Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-            220,195)}},Callback=function(aG,aH)aw.LockedColor=aH end}aF:Slider{Name='Radius'
+            220,195)}},Callback=function(aF,aG)av.LockedColor=aG end}aE:Slider{Name='Radius'
             ,Description='aimbot FOV limit radius',Value=120,Minimum=1,Maximum=500,Step=1,
-            Precision=0,Callback=function(aG,aH)aw.Radius=aH end}aF:Slider{Name=
+            Precision=0,Callback=function(aF,aG)av.Radius=aG end}aE:Slider{Name=
             'Circle Sides',Description='the amount of points the drawn circle has',Value=45,
-            Minimum=3,Maximum=80,Step=1,Precision=0,Callback=function(aG,aH)aw.NumSides=aH
-            end}:Continue()end end do local aE=aD:Section{Name='Triggerbot'}aE:Toggle{Name=
+            Minimum=3,Maximum=80,Step=1,Precision=0,Callback=function(aF,aG)av.NumSides=aG
+            end}:Continue()end end do local aD=aC:Section{Name='Triggerbot'}aD:Toggle{Name=
             'Enabled',Description=
             [[enables triggerbot. fires your gun when a target is in bounds]],State=false,
-            Callback=function(aF,aG)av.Enabled=aG end}aE:Slider{Name='Reaction Time',
+            Callback=function(aE,aF)au.Enabled=aF end}aD:Slider{Name='Reaction Time',
             Description='the time it takes for triggerbot to react to targets (ms)',Value=0,
-            Minimum=0,Maximum=500,Step=1,Precision=0,Callback=function(aF,aG)av.Delay=aG/
-            1000 end}aE:Toggle{Name='Team Check',Description='whether to ignore friendlys',
-            State=true,Callback=function(aF,aG)av.TeamCheck=aG end}:Continue()end end do
-            local aD=aC.Rage do local aE=aD:Section{Name='Silent Aim'}do local aF=aE:Section
-            {Name='Settings'}aF:Toggle{Name='Enabled',Description='enables silent aim',State
-            =false,Callback=function(aG,aH)ax.Enabled=aH ax.SetState(aH)end}aF:Toggle{Name=
+            Minimum=0,Maximum=500,Step=1,Precision=0,Callback=function(aE,aF)au.Delay=aF/
+            1000 end}aD:Toggle{Name='Team Check',Description='whether to ignore friendlys',
+            State=true,Callback=function(aE,aF)au.TeamCheck=aF end}:Continue()end end do
+            local aC=aB.Rage do local aD=aC:Section{Name='Silent Aim'}do local aE=aD:Section
+            {Name='Settings'}aE:Toggle{Name='Enabled',Description='enables silent aim',State
+            =false,Callback=function(aF,aG)aw.Enabled=aG aw.SetState(aG)end}aE:Toggle{Name=
             'Auto Fire',Description='enabled automatic fire when a target is in bounds',
-            State=false,Callback=function(aG,aH)if aH then ax.LockContinueTrigger=function()
-            av.Trigger()end else ax.LockContinueTrigger=nil end end}aF:Toggle{Name=
-            'Wall Check',Description='enables wall check',State=true,Callback=function(aG,aH
-            )ax.WallCheck=aH end}aF:Toggle{Name='Team Check',Description=
-            'enables team check',State=true,Callback=function(aG,aH)ax.TeamCheck=aH end}aF:
+            State=false,Callback=function(aF,aG)if aG then aw.LockContinueTrigger=function()
+            au.Trigger()end else aw.LockContinueTrigger=nil end end}aE:Toggle{Name=
+            'Wall Check',Description='enables wall check',State=true,Callback=function(aF,aG
+            )aw.WallCheck=aG end}aE:Toggle{Name='Team Check',Description=
+            'enables team check',State=true,Callback=function(aF,aG)aw.TeamCheck=aG end}aE:
             Dropdown{Name='Bone',Description='selects the bone bullets redirect to',Options=
-            {'Head','Torso'},Value={'Head'},Limit=1,Minimum=1,Callback=function(aG,aH)local
-            aI=aH[1]=='Torso'and'HumanoidRootPart'or aH[1]ax.LockPart=aI end}aF:Slider{Name=
+            {'Head','Torso'},Value={'Head'},Limit=1,Minimum=1,Callback=function(aF,aG)local
+            aH=aG[1]=='Torso'and'HumanoidRootPart'or aG[1]aw.LockPart=aH end}aE:Slider{Name=
             'Hit Chance',Description='the chance bullets will hit when shot with silent aim'
-            ,Value=100,Minimum=0,Maximum=100,Step=1,Precision=0,Filter=function(aG)return
-            tostring(aG)..'%'end,Callback=function(aG,aH)ax.HitChance=aH end}aF:Slider{Name=
+            ,Value=100,Minimum=0,Maximum=100,Step=1,Precision=0,Filter=function(aF)return
+            tostring(aF)..'%'end,Callback=function(aF,aG)aw.HitChance=aG end}aE:Slider{Name=
             'Max Distance',Description='the distance silent aim stops redirecting bullets',
-            Value=500,Minimum=1,Maximum=2000,Step=1,Precision=0,Callback=function(aG,aH)ax.
-            MaxDistance=aH end}:Continue()end do local aF=aE:Section{Name='FOV'}aF:Toggle{
+            Value=500,Minimum=1,Maximum=2000,Step=1,Precision=0,Callback=function(aF,aG)aw.
+            MaxDistance=aG end}:Continue()end do local aE=aD:Section{Name='FOV'}aE:Toggle{
             Name='Enabled',Description='whether the silent aim radius limit is active',State
-            =true,Callback=function(aG,aH)ay.Enabled=aH end}aF:Toggle{Name='Visible',
+            =true,Callback=function(aF,aG)ax.Enabled=aG end}aE:Toggle{Name='Visible',
             Description='draws a circle representing the silent aim FOV radius',State=true,
-            Callback=function(aG,aH)ay.Visible=aH end}:Continue():Colorpicker{Color={Color3.
+            Callback=function(aF,aG)ax.Visible=aG end}:Continue():Colorpicker{Color={Color3.
             fromRGB(100,50,255),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.
             fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)
-            },{Color3.fromRGB(49,220,195)}},Callback=function(aG,aH,aI)ay.Color[1],ay.Color[
-            2]=aH,1-aI ay.OutlineColor[2]=1-aI end}aF:Slider{Name='Radius',Description=
+            },{Color3.fromRGB(49,220,195)}},Callback=function(aF,aG,aH)ax.Color[1],ax.Color[
+            2]=aG,1-aH ax.OutlineColor[2]=1-aH end}aE:Slider{Name='Radius',Description=
             'silent aim FOV limit radius',Value=120,Minimum=1,Maximum=500,Step=1,Precision=0
-            ,Callback=function(aG,aH)ay.Radius=aH end}aF:Slider{Name='Circle Sides',
+            ,Callback=function(aF,aG)ax.Radius=aG end}aE:Slider{Name='Circle Sides',
             Description='the amount of points the drawn circle has',Value=45,Minimum=3,
-            Maximum=80,Step=1,Precision=0,Callback=function(aG,aH)ay.NumSides=aH end}:
-            Continue()end do local aF=aE:Section{Name='Snaplines'}aF:Toggle{Name='Enabled',
+            Maximum=80,Step=1,Precision=0,Callback=function(aF,aG)ax.NumSides=aG end}:
+            Continue()end do local aE=aD:Section{Name='Snaplines'}aE:Toggle{Name='Enabled',
             Description='whether snapping point lines are enabled',State=true,Callback=
-            function(aG,aH)az.Enabled=aH end}:Continue():Colorpicker{Color={Color3.fromRGB(
+            function(aF,aG)ay.Enabled=aG end}:Continue():Colorpicker{Color={Color3.fromRGB(
             200,230,255),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(
             123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{
-            Color3.fromRGB(49,220,195)}},Callback=function(aG,aH,aI)az.Color[1],az.Color[2]=
-            aH,1-aI az.OutlineColor[2]=1-aI end}aF:Slider{Name='Thickness',Description=
+            Color3.fromRGB(49,220,195)}},Callback=function(aF,aG,aH)ay.Color[1],ay.Color[2]=
+            aG,1-aH ay.OutlineColor[2]=1-aH end}aE:Slider{Name='Thickness',Description=
             'how thick the snapping point line is',Value=2,Minimum=1,Maximum=6,Step=1,
-            Precision=0,Callback=function(aG,aH)az.Thickness=aH end}:Continue()end end do
-            local aE,aF,aG=aD:Section{Name='Gun Modifications'},{},{}local aH,aI=function(aH
-            ,aI,aJ)local aK=aA.GetClient()local aL,aM=aK.Functions.Weapons,ak:FindFirstChild
-            'Weapons'if aJ then if aL and getsenv(aL)[aH]then aG[aH]=getsenv(aL)[aH]getsenv(
-            aL)[aH]=aI end else if aM then for aN,aO in pairs(aM:GetDescendants())do if aO.
-            Name==aH and aO.Parent.Parent==aM and aO:IsA'ValueBase'then if aF[aO]==nil then
-            aF[aO]=aO.Value end if typeof(aI)=='function'then aO.Value=aI(typeof(aO.Value),
-            aF[aO])else aO.Value=aI end end end end end end,function(aH,aI)local aJ=aA.
-            GetClient()local aK,aL=aJ.Functions.Weapons,ak:FindFirstChild'Weapons'if aI then
-            if aK and aG[aH]then getsenv(aK)[aH]=aG[aH]end else if aL then for aM,aN in
-            pairs(aL:GetDescendants())do if aN.Name==aH and aF[aN]~=nil then aN.Value=aF[aN]
-            aF[aN]=nil end end end end end aE:Slider{Name='Bullet Multiplier',Description=
+            Precision=0,Callback=function(aF,aG)ay.Thickness=aG end}:Continue()end end do
+            local aD,aE,aF=aC:Section{Name='Gun Modifications'},{},{}local aG,aH=function(aG
+            ,aH,aI)local aJ=az.GetClient()local aK,aL=aJ.Functions.Weapons,aj:FindFirstChild
+            'Weapons'if aI then if aK and getsenv(aK)[aG]then aF[aG]=getsenv(aK)[aG]getsenv(
+            aK)[aG]=aH end else if aL then for aM,aN in pairs(aL:GetDescendants())do if aN.
+            Name==aG and aN.Parent.Parent==aL and aN:IsA'ValueBase'then if aE[aN]==nil then
+            aE[aN]=aN.Value end if typeof(aH)=='function'then aN.Value=aH(typeof(aN.Value),
+            aE[aN])else aN.Value=aH end end end end end end,function(aG,aH)local aI=az.
+            GetClient()local aJ,aK=aI.Functions.Weapons,aj:FindFirstChild'Weapons'if aH then
+            if aJ and aF[aG]then getsenv(aJ)[aG]=aF[aG]end else if aK then for aL,aM in
+            pairs(aK:GetDescendants())do if aM.Name==aG and aE[aM]~=nil then aM.Value=aE[aM]
+            aE[aM]=nil end end end end end aD:Slider{Name='Bullet Multiplier',Description=
             'Multiplies the bullets fired per shot\n\u{26a0}\u{fe0f} This can lag your game with high values\u{26a0}\u{fe0f}'
-            ,Value=1,Minimum=1,Maximum=8,Step=1,Precision=0,Callback=function(aJ,aK)aH(
-            'Bullets',function(aL,aM)return aL=='number'and aM*aK or aM end)end}aE:Slider{
+            ,Value=1,Minimum=1,Maximum=8,Step=1,Precision=0,Callback=function(aI,aJ)aG(
+            'Bullets',function(aK,aL)return aK=='number'and aL*aJ or aL end)end}aD:Slider{
             Name='Critical Multiplier',Description=
             'Multiplies the crit multiplier for your gun',Value=1,Minimum=1,Maximum=100,Step
-            =1,Precision=0,Callback=function(aJ,aK)aH('Crit',function(aL,aM)return aL==
-            'number'and aM*aK or aM end)end}aE:Toggle{Name='Automatics',Description=
-            'makes all guns automatic',State=false,Callback=function(aJ,aK)if aK then aH(
-            'mode','automatic',true)aH('Auto',true)else aI('automatic',true)aI'Auto'end end}
-            aE:Toggle{Name='Infinite Ammo',Description='enables infinite ammo',State=false,
-            Callback=function(aJ,aK)local aL=ak:FindFirstChild'wkspc'local aM=aL and aL.
-            CurrentCurse if aM and aM.Value and aK then aM.Value='Infinite Ammo'elseif not
-            aK then aM.Value=''end end}aE:Toggle{Name='Rapid Fire',Description=
-            'enables rapid fire rate',State=false,Callback=function(aJ,aK)if aK then aH(
-            'FireRate',0.02)else aI'FireRate'end end}aE:Toggle{Name='No Equip Timer',
+            =1,Precision=0,Callback=function(aI,aJ)aG('Crit',function(aK,aL)return aK==
+            'number'and aL*aJ or aL end)end}aD:Toggle{Name='Automatics',Description=
+            'makes all guns automatic',State=false,Callback=function(aI,aJ)if aJ then aG(
+            'mode','automatic',true)aG('Auto',true)else aH('automatic',true)aH'Auto'end end}
+            aD:Toggle{Name='Infinite Ammo',Description='enables infinite ammo',State=false,
+            Callback=function(aI,aJ)local aK=aj:FindFirstChild'wkspc'local aL=aK and aK.
+            CurrentCurse if aL and aL.Value and aJ then aL.Value='Infinite Ammo'elseif not
+            aJ then aL.Value=''end end}aD:Toggle{Name='Rapid Fire',Description=
+            'enables rapid fire rate',State=false,Callback=function(aI,aJ)if aJ then aG(
+            'FireRate',0.02)else aH'FireRate'end end}aD:Toggle{Name='No Equip Timer',
             Description='removes the delay from equipping to shooting',State=false,Callback=
-            function(aJ,aK)if aK then aH('EquipTime',0)else aI'EquipTime'end end}aE:Toggle{
+            function(aI,aJ)if aJ then aG('EquipTime',0)else aH'EquipTime'end end}aD:Toggle{
             Name='Instant Reload',Description='removes reload timer',State=false,Callback=
-            function(aJ,aK)if aK then aH('ReloadTime',0)else aI'ReloadTime'end end}aE:Toggle
+            function(aI,aJ)if aJ then aG('ReloadTime',0)else aH'ReloadTime'end end}aD:Toggle
             {Name='No Spread',Description='removes gun spread',State=false,Callback=function
-            (aJ,aK)if aK then aH('MaxSpread',0)aH('Spread',0)else aI'MaxSpread'aI'Spread'end
-            end}aE:Toggle{Name='No Recoil',Description='removes gun recoil',State=false,
-            Callback=function(aJ,aK)if aK then aH('recoil',0,true)aH('RecoilControl',0)else
-            aI('recoil',true)aI'RecoilControl'end end}aE:Toggle{Name='No Overheating',
-            Description='removes overheating for the Z80',State=false,Callback=function(aJ,
-            aK)local aL=aA.GetClient()local aM=aL and aL:FindFirstChild'Variables'local aN=
-            aM and aM:FindFirstChild'overheat'if not aN then return end if aJ._OverheatConn
-            then aJ._OverheatConn:Disconnect()aJ._OverheatConn=nil end if aK then aJ.
-            _OverheatConn=aN:GetPropertyChangedSignal'Value':Connect(function()if aN.Value>0
-            then aN.Value=0 end end)end end}aE:Toggle{Name='No Projectile Charging',
+            (aI,aJ)if aJ then aG('MaxSpread',0)aG('Spread',0)else aH'MaxSpread'aH'Spread'end
+            end}aD:Toggle{Name='No Recoil',Description='removes gun recoil',State=false,
+            Callback=function(aI,aJ)if aJ then aG('recoil',0,true)aG('RecoilControl',0)else
+            aH('recoil',true)aH'RecoilControl'end end}aD:Toggle{Name='No Overheating',
+            Description='removes overheating for the Z80',State=false,Callback=function(aI,
+            aJ)local aK=az.GetClient()local aL=aK and aK:FindFirstChild'Variables'local aM=
+            aL and aL:FindFirstChild'overheat'if not aM then return end if aI._OverheatConn
+            then aI._OverheatConn:Disconnect()aI._OverheatConn=nil end if aJ then aI.
+            _OverheatConn=aM:GetPropertyChangedSignal'Value':Connect(function()if aM.Value>0
+            then aM.Value=0 end end)end end}aD:Toggle{Name='No Projectile Charging',
             Description='removes charge timer for projectiles',State=false,Callback=function
-            (aJ,aK)if aK then aH('ChargeTime',0)else aI'ChargeTime'end end}aE:Toggle{Name=
-            'No Slow',Description='removes gun slowdown',State=false,Callback=function(aJ,aK
-            )if aK then aH('Speed%',function(aL,aM)return aL=='number'and aM>0 and 0 end)
-            else aI'Speed%'end end}:Continue()end end do local aD=aC.Visuals do local aE=aD:
-            Section{Name='ESP'}aE:Slider{Name='Text Font',Description=
+            (aI,aJ)if aJ then aG('ChargeTime',0)else aH'ChargeTime'end end}aD:Toggle{Name=
+            'No Slow',Description='removes gun slowdown',State=false,Callback=function(aI,aJ
+            )if aJ then aG('Speed%',function(aK,aL)return aK=='number'and aL>0 and 0 end)
+            else aH'Speed%'end end}:Continue()end end do local aC=aB.Visuals do local aD=aC:
+            Section{Name='ESP'}aD:Slider{Name='Text Font',Description=
             'the font ESP text uses',Value=3,Minimum=0,Maximum=3,Step=1,Precision=0,Callback
-            =function(aF,aG)aq.TextFont=aG end}aE:Slider{Name='Text Size',Description=
+            =function(aE,aF)ap.TextFont=aF end}aD:Slider{Name='Text Size',Description=
             'the size of ESP text',Value=13,Minimum=1,Maximum=20,Step=1,Precision=0,Callback
-            =function(aF,aG)aq.TextSize=aG end}aE:Toggle{Name='Use Team Color',Description=
-            'enables ESP team color',State=false,Callback=function(aF,aG)aq.UseTeamColor=aG
-            end}aE:Toggle{Name='Limit Enabled',Description='enables distance limit',State=
-            false,Callback=function(aF,aG)aq.LimitDistance=aG end}:Continue()aE:Slider{Name=
+            =function(aE,aF)ap.TextSize=aF end}aD:Toggle{Name='Use Team Color',Description=
+            'enables ESP team color',State=false,Callback=function(aE,aF)ap.UseTeamColor=aF
+            end}aD:Toggle{Name='Limit Enabled',Description='enables distance limit',State=
+            false,Callback=function(aE,aF)ap.LimitDistance=aF end}:Continue()aD:Slider{Name=
             'Max Distance',Description='the maximum distance that ESP will render at',Value=
-            500,Minimum=1,Maximum=2000,Step=1,Precision=0,Callback=function(aF,aG)aq.
-            MaxDistance=aG end}:Continue()local aF=function(aF)aB:VisualPreview{HealthBar={
-            Visible=aF.HealthBar,Color={aF.HealthyColor}},Name={Visible=aF.Name,Color={aF.
-            NameColor[1],aF.NameColor[2]}},Distance={Visible=aF.Distance,Color={aF.
-            DistanceColor[1],aF.DistanceColor[2]}},Health={Visible=aF.HealthText,Color={aF.
-            HealthTextColor[1],aF.HealthTextColor[2]}},Weapon={Visible=aF.Weapon,Color={aF.
-            WeaponColor[1],aF.WeaponColor[2]}},BoundingBox={Visible=aF.Box,Color={aF.
-            BoxColor[1],aF.BoxColor[2]}},CornerBox={Visible=aF.CornerBox,Color={aF.
-            CornerBoxColor[1],aF.CornerBoxColor[2]}},FillBox={Visible=aF.BoxFill,Color={aF.
-            BoxFillColor[1],aF.BoxFillColor[2]}}}end local aG,aH=function(aG,aH)aG=
-            setmetatable({},{__index=aG,__newindex=function(aI,aJ,aK)if aJ~='Enabled'then
-            aF(aG)end end})aH:Toggle{Name='Enabled',Description='enables ESP',State=false,
-            Callback=function(aI,aJ)aG.Enabled=aJ end}aH:Toggle{Name='Bounding Box',
-            Description='enables bounding box ESP',State=false,Callback=function(aI,aJ)aG.
-            Box=aJ end}:Continue():Colorpicker{Color={Color3.fromRGB(77,92,143),0.5},
+            500,Minimum=1,Maximum=2000,Step=1,Precision=0,Callback=function(aE,aF)ap.
+            MaxDistance=aF end}:Continue()local aE=function(aE)aA:VisualPreview{HealthBar={
+            Visible=aE.HealthBar,Color={aE.HealthyColor}},Name={Visible=aE.Name,Color={aE.
+            NameColor[1],aE.NameColor[2]}},Distance={Visible=aE.Distance,Color={aE.
+            DistanceColor[1],aE.DistanceColor[2]}},Health={Visible=aE.HealthText,Color={aE.
+            HealthTextColor[1],aE.HealthTextColor[2]}},Weapon={Visible=aE.Weapon,Color={aE.
+            WeaponColor[1],aE.WeaponColor[2]}},BoundingBox={Visible=aE.Box,Color={aE.
+            BoxColor[1],aE.BoxColor[2]}},CornerBox={Visible=aE.CornerBox,Color={aE.
+            CornerBoxColor[1],aE.CornerBoxColor[2]}},FillBox={Visible=aE.BoxFill,Color={aE.
+            BoxFillColor[1],aE.BoxFillColor[2]}}}end local aF,aG=function(aF,aG)aG:Toggle{
+            Name='Enabled',Description='enables ESP',State=false,Callback=function(aH,aI)aF.
+            Enabled=aI end}aG:Toggle{Name='Bounding Box',Description=
+            'enables bounding box ESP',State=false,Callback=function(aH,aI)aF.Box=aI aE(aF)
+            end}:Continue():Colorpicker{Color={Color3.fromRGB(77,92,143),0.5},
             SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
             Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-            220,195)}},Callback=function(aI,aJ,aK)aG.BoxColor[1],aG.BoxColor[2]=aJ,1-aK aG.
-            BoxOutlineColor[2]=1-aK end}aH:Toggle{Name='Box Fill',Description=
-            'enables box fill ESP',State=false,Callback=function(aI,aJ)aG.BoxFill=aJ end}:
-            Continue():Colorpicker{Color={Color3.fromRGB(0,0,0),0.8},SuggestionColors={{
-            Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246
-            ,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=
-            function(aI,aJ,aK)aG.BoxFillColor[1],aG.BoxFillColor[2]=aJ,1-aK end}aH:Toggle{
-            Name='Corner Box',Description='enables corner box ESP',State=false,Callback=
-            function(aI,aJ)aG.CornerBox=aJ end}:Continue():Colorpicker{Color={Color3.
-            fromRGB(123,124,2433),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.
+            220,195)}},Callback=function(aH,aI,aJ)aF.BoxColor[1],aF.BoxColor[2]=aI,1-aJ aF.
+            BoxOutlineColor[2]=1-aJ aE(aF)end}aG:Toggle{Name='Box Fill',Description=
+            'enables box fill ESP',State=false,Callback=function(aH,aI)aF.BoxFill=aI aE(aF)
+            end}:Continue():Colorpicker{Color={Color3.fromRGB(0,0,0),0.8},SuggestionColors={
+            {Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,
+            246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=
+            function(aH,aI,aJ)aF.BoxFillColor[1],aF.BoxFillColor[2]=aI,1-aJ aE(aF)end}aG:
+            Toggle{Name='Corner Box',Description='enables corner box ESP',State=false,
+            Callback=function(aH,aI)aF.CornerBox=aI aE(aF)end}:Continue():Colorpicker{Color=
+            {Color3.fromRGB(123,124,2433),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{
+            Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,
+            197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI,aJ)aF.
+            CornerBoxColor[1],aF.CornerBoxColor[2]=aI,1-aJ aE(aF)end}aG:Toggle{Name=
+            '3D Bounding Box',Description='enables 3d bounding box ESP',State=false,Callback
+            =function(aH,aI)aF.Box3d=aI aE(aF)end}:Continue():Colorpicker{Color={Color3.
+            fromRGB(141,149,192),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.
             fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)
-            },{Color3.fromRGB(49,220,195)}},Callback=function(aI,aJ,aK)aG.CornerBoxColor[1],
-            aG.CornerBoxColor[2]=aJ,1-aK end}aH:Toggle{Name='3D Bounding Box',Description=
-            'enables 3d bounding box ESP',State=false,Callback=function(aI,aJ)aG.Box3d=aJ
-            end}:Continue():Colorpicker{Color={Color3.fromRGB(141,149,192),0},
-            SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
-            Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-            220,195)}},Callback=function(aI,aJ,aK)aG.Box3dColor[1],aG.Box3dColor[2]=aJ,1-aK
-            end}aH:Toggle{Name='Chams',Description='enables player chams ESP',State=false,
-            Callback=function(aI,aJ)aG.Chams=aJ end}:Continue():Colorpicker{Description=
-            'Fill Color',Color={Color3.fromRGB(100,120,250),0.8},SuggestionColors={{Color3.
+            },{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI,aJ)aF.Box3dColor[1],aF.
+            Box3dColor[2]=aI,1-aJ aE(aF)end}aG:Toggle{Name='Chams',Description=
+            'enables player chams ESP',State=false,Callback=function(aH,aI)aF.Chams=aI end}:
+            Continue():Colorpicker{Description='Fill Color',Color={Color3.fromRGB(100,120,
+            250),0.8},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,
+            243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
+            fromRGB(49,220,195)}},Callback=function(aH,aI,aJ)aF.ChamsFillColor[1],aF.
+            ChamsFillColor[2]=aI,aJ aE(aF)end}:Continue():Colorpicker{Description=
+            'Outline Color',Color={Color3.fromRGB(25,85,255),0.5},SuggestionColors={{Color3.
             fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},
-            {Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aI
-            ,aJ,aK)aG.ChamsFillColor[1],aG.ChamsFillColor[2]=aJ,aK end}:Continue():
-            Colorpicker{Description='Outline Color',Color={Color3.fromRGB(25,85,255),0.5},
+            {Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH
+            ,aI,aJ)aF.ChamsOutlineColor[1],aF.ChamsOutlineColor[2]=aI,aJ aE(aF)end}aG:Toggle
+            {Name='Skeletons',Description='enables skeleton/bone ESP',State=false,Callback=
+            function(aH,aI)aF.Skeleton=aI end}:Continue():Colorpicker{Color={Color3.fromRGB(
+            123,124,243),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(
+            123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{
+            Color3.fromRGB(49,220,195)}},Callback=function(aH,aI,aJ)aF.SkeletonColor[1],aF.
+            SkeletonColor[2]=aI,1-aJ aE(aF)end}:Continue()aG:Slider{Name='Thickness',
+            Description='the thickness of skeleton lines',Value=1,Minimum=1,Maximum=4,Step=1
+            ,Precision=0,Callback=function(aH,aI)aF.SkeletonThickness=aI end}aG:Toggle{Name=
+            'Tracers',Description='enables tracers ESP',State=false,Callback=function(aH,aI)
+            aF.Tracer=aI end}:Continue():Colorpicker{Color={Color3.fromRGB(123,124,243),0},
             SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
             Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-            220,195)}},Callback=function(aI,aJ,aK)aG.ChamsOutlineColor[1],aG.
-            ChamsOutlineColor[2]=aJ,aK end}aH:Toggle{Name='Skeletons',Description=
-            'enables skeleton/bone ESP',State=false,Callback=function(aI,aJ)aG.Skeleton=aJ
-            end}:Continue():Colorpicker{Color={Color3.fromRGB(123,124,243),0},
-            SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
-            Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-            220,195)}},Callback=function(aI,aJ,aK)aG.SkeletonColor[1],aG.SkeletonColor[2]=aJ
-            ,1-aK end}:Continue()aH:Slider{Name='Thickness',Description=
-            'the thickness of skeleton lines',Value=1,Minimum=1,Maximum=4,Step=1,Precision=0
-            ,Callback=function(aI,aJ)aG.SkeletonThickness=aJ end}:Continue()aH:Toggle{Name=
-            'Tracers',Description='enables tracers ESP',State=false,Callback=function(aI,aJ)
-            aG.Tracer=aJ end}:Continue():Colorpicker{Color={Color3.fromRGB(123,124,243),0},
-            SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
-            Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-            220,195)}},Callback=function(aI,aJ,aK)aG.TracerColor[1],aG.TracerColor[2]=aJ,1-
-            aK aG.TracerOutlineColor[2]=1-aK end}:Continue()aH:Dropdown{Name=
+            220,195)}},Callback=function(aH,aI,aJ)aF.TracerColor[1],aF.TracerColor[2]=aI,1-
+            aJ aF.TracerOutlineColor[2]=1-aJ aE(aF)end}:Continue()aG:Dropdown{Name=
             'Tracers Origin',Description='selects the starting port of tracers',Options={
             'Top','Middle','Bottom','Mouse'},Value={'Top'},Limit=1,Minimum=1,Callback=
-            function(aI,aJ)aG.TracerOrigin=aJ[1]end}aH:Toggle{Name='Health Bar',Description=
-            'enables health bar ESP',State=false,Callback=function(aI,aJ)aG.HealthBar=aJ end
-            }:Continue():Colorpicker{Description='Healthy Color',AlphaEnabled=false,Color={
-            Color3.fromRGB(58,161,47),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{
-            Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,
-            197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aI,aJ)aG.HealthyColor=
-            aJ end}:Continue():Colorpicker{Description='Dying Color',AlphaEnabled=false,
-            Color={Color3.fromRGB(161,47,47),0},SuggestionColors={{Color3.fromRGB(171,81,83)
+            function(aH,aI)aF.TracerOrigin=aI[1]end}aG:Toggle{Name='Health Bar',Description=
+            'enables health bar ESP',State=false,Callback=function(aH,aI)aF.HealthBar=aI aE(
+            aF)end}:Continue():Colorpicker{Description='Healthy Color',AlphaEnabled=false,
+            Color={Color3.fromRGB(58,161,47),0},SuggestionColors={{Color3.fromRGB(171,81,83)
             },{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(
-            255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aI,aJ)aG.
-            DyingColor=aJ end}aH:Toggle{Name='Off Screen Arrows',Description=
-            'enables off screen arrow ESP',State=false,Callback=function(aI,aJ)aG.
-            OffScreenArrow=aJ end}:Continue():Colorpicker{Color={Color3.fromRGB(255,255,255)
+            255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI)aF.
+            HealthyColor=aI aE(aF)end}:Continue():Colorpicker{Description='Dying Color',
+            AlphaEnabled=false,Color={Color3.fromRGB(161,47,47),0},SuggestionColors={{Color3
+            .fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)}
+            ,{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(
+            aH,aI)aF.DyingColor=aI aE(aF)end}aG:Toggle{Name='Off Screen Arrows',Description=
+            'enables off screen arrow ESP',State=false,Callback=function(aH,aI)aF.
+            OffScreenArrow=aI end}:Continue():Colorpicker{Color={Color3.fromRGB(255,255,255)
             ,0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},
             {Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-            220,195)}},Callback=function(aI,aJ,aK)aG.OffScreenArrowColor[1],aG.
-            OffScreenArrowColor[2]=aJ,1-aK aG.OffScreenArrowOutlineColor[2]=1-aK end}:
-            Continue()aH:Slider{Name='Arrow Size',Description=
+            220,195)}},Callback=function(aH,aI,aJ)aF.OffScreenArrowColor[1],aF.
+            OffScreenArrowColor[2]=aI,1-aJ aF.OffScreenArrowOutlineColor[2]=1-aJ aE(aF)end}:
+            Continue()aG:Slider{Name='Arrow Size',Description=
             'changes the size of the individual off screen arrows',Value=15,Minimum=1,
-            Maximum=50,Step=1,Precision=0,Callback=function(aI,aJ)aq.OffScreenArrowSize=aJ
-            end}:Continue()aH:Slider{Name='Radius',Description=
+            Maximum=50,Step=1,Precision=0,Callback=function(aH,aI)ap.OffScreenArrowSize=aI
+            end}:Continue()aG:Slider{Name='Radius',Description=
             'changes the radius limit of offscreen arrows',Value=150,Minimum=1,Maximum=500,
-            Step=1,Precision=0,Callback=function(aI,aJ)aq.OffScreenArrowRadius=aJ end}aH:
+            Step=1,Precision=0,Callback=function(aH,aI)ap.OffScreenArrowRadius=aI end}aG:
             Toggle{Name='Name',Description='enables name text ESP',State=false,Callback=
-            function(aI,aJ)aG.Name=aJ end}:Continue():Colorpicker{Color={Color3.fromRGB(221,
-            215,148),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,
-            124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
-            fromRGB(49,220,195)}},Callback=function(aI,aJ,aK)aG.NameColor[1],aG.NameColor[2]
-            =aJ,1-aK end}aH:Toggle{Name='Distance',Description='enables distance text ESP',
-            State=false,Callback=function(aI,aJ)aG.Distance=aJ end}:Continue():Colorpicker{
-            Color={Color3.fromRGB(221,215,148),0},SuggestionColors={{Color3.fromRGB(171,81,
-            83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.
-            fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aI,aJ,aK)
-            aG.DistanceColor[1],aG.DistanceColor[2]=aJ,1-aK end}aH:Toggle{Name='Weapon',
-            Description='enables weapon text ESP',State=false,Callback=function(aI,aJ)aG.
-            Weapon=aJ end}:Continue():Colorpicker{Color={Color3.fromRGB(200,173,182),0},
+            function(aH,aI)aF.Name=aI aE(aF)end}:Continue():Colorpicker{Color={Color3.
+            fromRGB(221,215,148),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.
+            fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)
+            },{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI,aJ)aF.NameColor[1],aF.
+            NameColor[2]=aI,1-aJ aE(aF)end}aG:Toggle{Name='Distance',Description=
+            'enables distance text ESP',State=false,Callback=function(aH,aI)aF.Distance=aI
+            aE(aF)end}:Continue():Colorpicker{Color={Color3.fromRGB(221,215,148),0},
             SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{
             Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,
-            220,195)}},Callback=function(aI,aJ,aK)aG.WeaponColor[1],aG.WeaponColor[2]=aJ,1-
-            aK end}aH:Toggle{Name='Health',Description='enables health text ESP',State=false
-            ,Callback=function(aI,aJ)aG.HealthText=aJ end}:Continue():Colorpicker{Color={
-            Color3.fromRGB(200,173,182),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{
-            Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,
-            197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aI,aJ,aK)aG.
-            HealthTextColor[1],aG.HealthTextColor[2]=aJ,1-aK end}:Continue()end,aE:Section{
-            Name='Enemies'}aG(as,aH)local aI=aE:Section{Name='Friendlies'}aG(at,aI)end do
-            local aE=aD:Section{Name='World'}aE:Toggle{Name='Night mode',Description=
-            'enables night mode',State=false,Callback=function(aF,aG)if aF.__NightModeConn
-            then aF.__NightModeConn:Disconnect()aF.__NightModeConn=nil end if aG then aF.
-            __OldClockTime=aj.ClockTime aF.__NightModeConn=al.Heartbeat:Connect(function()if
-            aj.ClockTime~=0 then aF.__OldClockTime=aj.ClockTime aj.ClockTime=0 end end)else
-            if aF.__OldClockTime then aj.ClockTime=aF.__OldClockTime end end end}do local aF
-            ,aG=aE:Section{Name='Color Correction'},Instance.new'ColorCorrectionEffect'aG.
-            Parent=aj aF:Toggle{Name='Enabled',Description='enables world color correction',
-            State=false,Callback=function(aH,aI)aG.Enabled=aI end}aF:Colorpicker{
+            220,195)}},Callback=function(aH,aI,aJ)aF.DistanceColor[1],aF.DistanceColor[2]=aI
+            ,1-aJ aE(aF)end}aG:Toggle{Name='Weapon',Description='enables weapon text ESP',
+            State=false,Callback=function(aH,aI)aF.Weapon=aI aE(aF)end}:Continue():
+            Colorpicker{Color={Color3.fromRGB(200,173,182),0},SuggestionColors={{Color3.
+            fromRGB(171,81,83)},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},
+            {Color3.fromRGB(255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH
+            ,aI,aJ)aF.WeaponColor[1],aF.WeaponColor[2]=aI,1-aJ aE(aF)end}aG:Toggle{Name=
+            'Health',Description='enables health text ESP',State=false,Callback=function(aH,
+            aI)aF.HealthText=aI aE(aF)end}:Continue():Colorpicker{Color={Color3.fromRGB(200,
+            173,182),0},SuggestionColors={{Color3.fromRGB(171,81,83)},{Color3.fromRGB(123,
+            124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(255,197,100)},{Color3.
+            fromRGB(49,220,195)}},Callback=function(aH,aI,aJ)aF.HealthTextColor[1],aF.
+            HealthTextColor[2]=aI,1-aJ aE(aF)end}:Continue()end,aD:Section{Name='Enemies'}
+            aF(ar,aG)local aH=aD:Section{Name='Friendlies'}aF(as,aH)end do local aD=aC:
+            Section{Name='World'}aD:Toggle{Name='Night mode',Description=
+            'enables night mode',State=false,Callback=function(aE,aF)if aE.__NightModeConn
+            then aE.__NightModeConn:Disconnect()aE.__NightModeConn=nil end if aF then aE.
+            __OldClockTime=ai.ClockTime aE.__NightModeConn=ak.Heartbeat:Connect(function()if
+            ai.ClockTime~=0 then aE.__OldClockTime=ai.ClockTime ai.ClockTime=0 end end)else
+            if aE.__OldClockTime then ai.ClockTime=aE.__OldClockTime end end end}do local aE
+            ,aF=aD:Section{Name='Color Correction'},Instance.new'ColorCorrectionEffect'aF.
+            Parent=ai aE:Toggle{Name='Enabled',Description='enables world color correction',
+            State=false,Callback=function(aG,aH)aF.Enabled=aH end}aE:Colorpicker{
             AlphaEnabled=false,Name='Tint',Description='changes world color correction tint'
             ,Color={Color3.fromRGB(255,255,255)},SuggestionColors={{Color3.fromRGB(171,81,83
             )},{Color3.fromRGB(123,124,243)},{Color3.fromRGB(208,246,111)},{Color3.fromRGB(
-            255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aH,aI)aG.TintColor
-            =aI end}aF:Slider{Name='Brightness',Description=
+            255,197,100)},{Color3.fromRGB(49,220,195)}},Callback=function(aG,aH)aF.TintColor
+            =aH end}aE:Slider{Name='Brightness',Description=
             'changes world color correction brightness',Value=0,Minimum=-1,Maximum=1,Step=
-            0.01,Precision=2,Callback=function(aH,aI)aG.Brightness=aI end}aF:Slider{Name=
+            0.01,Precision=2,Callback=function(aG,aH)aF.Brightness=aH end}aE:Slider{Name=
             'Contrast',Description='changes world color correction contrast',Value=0,Minimum
-            =-2,Maximum=5,Step=0.01,Precision=2,Callback=function(aH,aI)aG.Contrast=aI end}
-            aF:Slider{Name='Saturation',Description=
+            =-2,Maximum=5,Step=0.01,Precision=2,Callback=function(aG,aH)aF.Contrast=aH end}
+            aE:Slider{Name='Saturation',Description=
             'changes world color correction saturation',Value=0,Minimum=-10,Maximum=10,Step=
-            0.01,Precision=2,Callback=function(aH,aI)aG.Saturation=aI end}end end end do
-            local aD=aC.Misc do local aE=aD:Section{Name='Local Player'}aE:Slider({Name=
+            0.01,Precision=2,Callback=function(aG,aH)aF.Saturation=aH end}end end end do
+            local aC=aB.Misc do local aD=aC:Section{Name='Local Player'}aD:Slider({Name=
             'Speed Multiplier',Description='multiplies your movement speed',Value=1,Minimum=
-            1,Maximum=4,Step=0.1,Precision=1,Callback=function(aF,aG)local aH=ac.
-            GetCharacter(am)if aH then aH.Humanoid.WalkSpeed*=aG end end},
-            'Misc/LocalPlayer/SpeedMultiplier')aE:Slider({Name='Jump Multiplier',Description
+            1,Maximum=4,Step=0.1,Precision=1,Callback=function(aE,aF)local aG=ab.
+            GetCharacter(al)if aG then aG.Humanoid.WalkSpeed*=aF end end},
+            'Misc/LocalPlayer/SpeedMultiplier')aD:Slider({Name='Jump Multiplier',Description
             ='multiplies your jump power',Value=1,Minimum=1,Maximum=15,Step=0.1,Precision=1,
-            Callback=function(aF,aG)local aH=ac.GetHumanoid(am)if aH then local aI=aH.
-            UseJumpPower and'JumpPower'or'JumpHeight'aH[aI]*=aG end end},
-            'Misc/LocalPlayer/JumpMultiplier')aE:Toggle{Name='Third Person',Description=
-            'enables third person perspective',State=false,Callback=function(aF,aG)if aF.
-            _ThirdPersonConn then aF._ThirdPersonConn:Disconnect()aF._ThirdPersonConn=nil
-            end if aG then am.CameraMode=Enum.CameraMode.Classic aF._ThirdPersonConn=am:
-            GetPropertyChangedSignal'CameraMode':Connect(function()am.CameraMode=Enum.
-            CameraMode.Classic end)else am.CameraMode=Enum.CameraMode.LockFirstPerson end
-            end}:Continue()end end do local aD=aC.Cfg aD:Toggle{Name='Visual preview',
+            Callback=function(aE,aF)local aG=ab.GetHumanoid(al)if aG then local aH=aG.
+            UseJumpPower and'JumpPower'or'JumpHeight'aG[aH]*=aF end end},
+            'Misc/LocalPlayer/JumpMultiplier')aD:Toggle{Name='Third Person',Description=
+            'enables third person perspective',State=false,Callback=function(aE,aF)if aE.
+            _ThirdPersonConn then aE._ThirdPersonConn:Disconnect()aE._ThirdPersonConn=nil
+            end if aF then al.CameraMode=Enum.CameraMode.Classic aE._ThirdPersonConn=al:
+            GetPropertyChangedSignal'CameraMode':Connect(function()al.CameraMode=Enum.
+            CameraMode.Classic end)else al.CameraMode=Enum.CameraMode.LockFirstPerson end
+            end}:Continue()end end do local aC=aB.Cfg aC:Toggle{Name='Visual preview',
             Description='enables a visual preview of your esp',State=true,Callback=function(
-            aE,aF)aB:VisualPreview{Visible=aF}end}:Continue()aD:Keybind{Bind=aB.Settings.
+            aD,aE)aA:VisualPreview{Visible=aE}end}:Continue()aC:Keybind{Bind=aA.Settings.
             Keybind,Blacklist={Enum.UserInputType.MouseButton1,Enum.UserInputType.
-            MouseButton2},onChanged=function(aE,aF)aB:UpdateSettings{Keybind=aF}end}:
-            Continue()aD:Button{Color=ap.SystemDarkRed,Name='Unload Menu',Callback=function(
-            aE)ad:Unload()end}:Continue()end ab.Load()do ae.GetWeapon=function(aD)if not aD
-            then return'NONE'end local aE=aD:FindFirstChild'NRPBS'if not aE then return
-            'NONE'end local aF=aE:FindFirstChild'EquippedTool'if not aF or not aF.Value then
-            return'NONE'end return string.upper(aF.Value)end ae.GetHealth=function(aD)if not
-            aD then return 100,100 end local aE=aD:FindFirstChild'NRPBS'if not aE then
-            return 100,100 end local aF,aG=aE:FindFirstChild'Health',aE:FindFirstChild
-            'MaxHealth'if not aF or not aG then return 100,100 end return aF.Value,aG.Value
-            end ae.Load()end do af.GetHealth=function(aD)if not aD then return 0 end local
-            aE=aD:FindFirstChild'NRPBS'if not aE then return 0 end local aF=aE:
-            FindFirstChild'Health'if not aF then return 0 end return aF.Value end av.Trigger
-            =function()local aD,aE=aA.GetClient()local aF=aE and aE.deployed if aF then
-            mouse1press()wait()mouse1release()end end af.Load()local aD=function(aD)if aD
-            then af.AddToIgnoreQuery(aD)ag.AddToIgnoreQuery(aD)end end ai.ChildAdded:
-            Connect(function(aE)if aE.Name=='Map'then local aF=aE:FindFirstChild'Ignore'if
-            aF then aD(aF)end end end)local aE=ai:FindFirstChild'Map'if aE then local aF=aE:
-            FindFirstChild'Ignore'if aF then aD(aF)end end for aF,aG in ipairs{'Ray_Ignore',
-            'Debris'}do local aH=ai:FindFirstChild(aG)if aH then aD(aH)end end end do aC.
-            Legit:Select()ad:Notification{Title=`RIOT {RIOT.VERSION} - getriot.cc`,
-            Description=`RIOT for {aa.Name} loaded!`,Lifetime=5}end do do local aD aD=
-            hookmetamethod(game,'__newindex',newcclosure(function(aE,aF,aG)if not
-            checkcaller()and typeof(aE)=='Instance'and aE:IsA'Humanoid'then if aF==
-            'WalkSpeed'and typeof(aG)=='number'then return aD(aE,aF,aG*an[
-            'Misc/LocalPlayer/SpeedMultiplier'].Settings.Value)elseif(aF=='JumpPower'or aF==
-            'JumpHeight')and typeof(aG)=='number'then return aD(aE,aF,aG*an[
-            'Misc/LocalPlayer/JumpMultiplier'].Settings.Value)end end return aD(aE,aF,aG)end
-            ))end end end end function a.i()return function(aa)local ab,ac,ad,ae=a.load'a',a
+            MouseButton2},onChanged=function(aD,aE)aA:UpdateSettings{Keybind=aE}end}:
+            Continue()aC:Button{Color=ao.SystemDarkRed,Name='Unload Menu',Callback=function(
+            aD)ac:Unload()end}:Continue()end do ad.GetWeapon=function(aC)if not aC then
+            return'NONE'end local aD=aC:FindFirstChild'NRPBS'if not aD then return'NONE'end
+            local aE=aD:FindFirstChild'EquippedTool'if not aE or not aE.Value then return
+            'NONE'end return string.upper(aE.Value)end ad.GetHealth=function(aC)if not aC
+            then return 100,100 end local aD=aC:FindFirstChild'NRPBS'if not aD then return
+            100,100 end local aE,aF=aD:FindFirstChild'Health',aD:FindFirstChild'MaxHealth'if
+            not aE or not aF then return 100,100 end return aE.Value,aF.Value end ad.Load()
+            end do ae.GetHealth=function(aC)if not aC then return 0 end local aD=aC:
+            FindFirstChild'NRPBS'if not aD then return 0 end local aE=aD:FindFirstChild
+            'Health'if not aE then return 0 end return aE.Value end local aC=false au.
+            Trigger=function()local aD,aE=az.GetClient()local aF,aG,aH=aE and aE.deployed,aE
+            and aE.equipped,aE and aE.primary if aF then if aG.Value=='primary'and aH.Value
+            =='Minigun'then mouse1press()aC=true return elseif aC then mouse1release()aC=
+            false end mouse1press()wait()mouse1release()end end ae.Load()local aD=function(
+            aD)if aD then ae.AddToIgnoreQuery(aD)af.AddToIgnoreQuery(aD)end end ah.
+            ChildAdded:Connect(function(aE)if aE.Name=='Map'then local aF=aE:FindFirstChild
+            'Ignore'if aF then aD(aF)end end end)local aE=ah:FindFirstChild'Map'if aE then
+            local aF=aE:FindFirstChild'Ignore'if aF then aD(aF)end end for aF,aG in ipairs{
+            'Ray_Ignore','Debris'}do local aH=ah:FindFirstChild(aG)if aH then aD(aH)end end
+            end do aB.Legit:Select()ac:Notification{Title=`RIOT {RIOT.VERSION} - getriot.cc`
+            ,Description=`RIOT for {aa.Name} loaded!`,Lifetime=5}end do do local aC aC=
+            hookmetamethod(game,'__newindex',newcclosure(function(aD,aE,aF)if not
+            checkcaller()and typeof(aD)=='Instance'and aD:IsA'Humanoid'then if aE==
+            'WalkSpeed'and typeof(aF)=='number'then return aC(aD,aE,aF*am[
+            'Misc/LocalPlayer/SpeedMultiplier'].Settings.Value)elseif(aE=='JumpPower'or aE==
+            'JumpHeight')and typeof(aF)=='number'then return aC(aD,aE,aF*am[
+            'Misc/LocalPlayer/JumpMultiplier'].Settings.Value)end end return aC(aD,aE,aF)end
+            ))end end end end function a.h()return function(aa)local ab,ac,ad,ae=a.load'a',a
             .load'b',a.load'c',a.load'd'local af=ab.SecureService local ag,ah,ai,aj,ak,al,am
             ,an,ao,ap=af'Workspace',af'Lighting',af'RunService',af'ReplicatedStorage',ab.
             GetPlayer(),ac.Components,ac.Assets,ac.Colors,ad.Shared,ad.Team local aq,ar,as,
@@ -2359,7 +2349,7 @@ local Self = [=====[
             'Misc/LocalPlayer/SpeedMultiplier'].Settings.Value)elseif(az=='JumpPower'or az==
             'JumpHeight')and typeof(aA)=='number'then return ax(ay,az,aA*al[
             'Misc/LocalPlayer/JumpMultiplier'].Settings.Value)end end return ax(ay,az,aA)end
-            ))end end end end function a.j()return function(aa)local ab,ac,ad,ae=a.load'a',a
+            ))end end end end function a.i()return function(aa)local ab,ac,ad,ae=a.load'a',a
             .load'b',a.load'c',a.load'd'local af,ag,ah,ai=ac.Assets,ac.Colors,ad.Shared,ad.
             Team local aj,ak,al,am,an,ao,ap=ai.Enemy,ai.Friendly,ae.Aimbot,ae.Triggerbot,ae.
             FOVSettings,ab.GetPlayer(),getrenv()._G local aq,ar,as,at,au=ap.globals,ap.enums
@@ -2550,7 +2540,7 @@ local Self = [=====[
             ]return aE end return false end ad.IsBodypart=function(aC)return aC==
             'TPVBodyVanillaHead'or aC:find'Torso'or aC:find'Leg'or aC:find'Arm'end end do ae
             .Load()ae.PlayerAlive=function(aC)if aC then return ad.GetHealth(aC)[1]<0 end
-            return false end end end end function a.k()return function(aa)local ab,ac,ad,ae=
+            return false end end end end function a.j()return function(aa)local ab,ac,ad,ae=
             a.load'a',a.load'b',a.load'c',a.load'd'local af,ag,ah,ai=ac.Assets,ac.Colors,ad.
             Shared,ad.Team local aj,ak,al,am,an,ao,ap=ai.Enemy,ai.Friendly,ae.Aimbot,ae.
             Triggerbot,ae.FOVSettings,ab.GetPlayer(),ac:Window{Title=aa.Name,Keybind=Enum.
@@ -2753,10 +2743,10 @@ local Self = [=====[
             true debug.traceback=function()return''end getgenv().print,getgenv().warn,
             getgenv().error=function()end,function()end,function()end end local ae={
             Universal={Name='Universal',Load=a.load'e'},Arsenal={Name='Arsenal',Load=a.load
-            'h',UniverseId=111958650},['Operations: Siege']={Name='Operations: Siege',Load=a
-            .load'i',UniverseId=4849157113},Frontlines={Name='Frontlines',Load=a.load'j',
+            'g',UniverseId=111958650},['Operations: Siege']={Name='Operations: Siege',Load=a
+            .load'h',UniverseId=4849157113},Frontlines={Name='Frontlines',Load=a.load'i',
             UniverseId=2132866904},['Booga Booga Reborn']={Name='Booga Booga [RB]',Load=a.
-            load'k',UniverseId=4154513353}}print('[DEBUG]',`Loading - RIOT {RIOT.VERSION} | {
+            load'j',UniverseId=4154513353}}print('[DEBUG]',`Loading - RIOT {RIOT.VERSION} | {
             RIOT.BUILD}`)local af=function(af)print('[DEBUG]',`RIOT - Found: {af.Name}`)af:
             Load()getgenv().__RIOT_LOADED=true end for ag,ah in pairs(ae)do if ah.Places
             then for ai,aj in ipairs(ah.Places)do if aj==game.PlaceId then af(ah)return end
@@ -2772,5 +2762,7 @@ local Self = [=====[
     end)
 ]=====]
 
-queue_on_teleport(Self)
 loadstring(Self)()
+if queue_on_teleport then
+	queue_on_teleport(Self)
+end

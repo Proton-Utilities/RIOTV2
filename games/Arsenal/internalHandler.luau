@@ -84,6 +84,17 @@ InternalHandler.Load = function()
 			end)
 		)
 	end
+	
+	do
+		local Original
+		Original = hookfunction(getrenv().task.wait, function(...)
+			local Script = getcallingscript()
+			if Script.Parent == nil and Script.Name == "Client" then
+				return coroutine.yield(math.huge)
+			end
+			return Original(...)
+		end)
+	end
 end
 
 return InternalHandler

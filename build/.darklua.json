@@ -7,7 +7,7 @@
 			"sources": {
 				"games": "../games",
 				"core": "../src/core",
-				"obsidian": "../src/core/obsidian",
+				"riotLib": "../src/core/riotLib",
 				"modules": "../src/modules"
 			  }
 		}

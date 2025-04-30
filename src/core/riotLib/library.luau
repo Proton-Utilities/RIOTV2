@@ -1,6 +1,9 @@
 --!nocheck
 --!nolint
 
+local Functions = require("core/functions.luau")
+local GetService = Functions.SecureService
+
 local library = {
 	Components = {},
 	Assets = {
@@ -54,18 +57,14 @@ local libData = {
 		[Enum.KeyCode.Backspace] = "VK_BACK",
 		[Enum.KeyCode.Space] = "VK_SPACE",
 	},
-
-	GetService = function(service)
-		return cloneref and cloneref(game:GetService(service)) or game:GetService(service)
-	end,
 }
 
 local services = {
-	_players = libData.GetService("Players"),
-	_runService = libData.GetService("RunService"),
-	_userInputService = libData.GetService("UserInputService"),
-	_tweenService = libData.GetService("TweenService"),
-	_workspace = libData.GetService("Workspace"),
+	_players = GetService("Players"),
+	_runService = GetService("RunService"),
+	_userInputService = GetService("UserInputService"),
+	_tweenService = GetService("TweenService"),
+	_workspace = GetService("Workspace"),
 }
 
 local utilities = {
@@ -93,7 +92,7 @@ local utilities = {
 	end,
 
 	secureGui = function(properties)
-		local gui = Instance.new("ScreenGui")
+		local gui = Functions.ProtectGui(Instance.new("ScreenGui"))
 
 		for property, value in pairs(properties) do
 			if property ~= "Parent" then
@@ -102,12 +101,6 @@ local utilities = {
 				end)
 			end
 		end
-
-		gui.Parent = (
-			services._runService:IsStudio() and libData.localPlayer:FindFirstChild("PlayerGui")
-				or gethui and gethui()
-				or libData.GetService("CoreGui")
-		)
 
 		return gui
 	end,
@@ -2959,7 +2952,7 @@ function library:Window(Settings)
 	tabs.BorderSizePixel = 0
 	tabs.CanvasSize = UDim2.new()
 	tabs.ScrollBarImageTransparency = 1
-	tabs.ScrollBarThickness = 1
+	tabs.ScrollBarThickness = 0
 	tabs.ScrollingDirection = Enum.ScrollingDirection.X
 	tabs.Size = UDim2.fromScale(1, 0)
 
@@ -3391,6 +3384,147 @@ function library:Window(Settings)
 			libData.winKeybind = Settings.Keybind
 		end
 	end
+
+	--[[ function _window:TabView(Parent, Settings, Flag)
+		local _tabView = { Settings = Settings }
+	
+		local tabView = Instance.new("Frame")
+		tabView.Name = "TabView"
+		tabView.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		tabView.BackgroundTransparency = 1
+		tabView.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		tabView.BorderSizePixel = 0
+		tabView.ClipsDescendants = true
+		tabView.LayoutOrder = -1
+		tabView.Position = UDim2.fromOffset(0, -10)
+		tabView.Size = UDim2.new(1, 0, 1, 10)
+	
+		local uIListLayout = Instance.new("UIListLayout")
+		uIListLayout.Name = "UIListLayout"
+		uIListLayout.Padding = UDim.new(0, 10)
+		uIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+		uIListLayout.Parent = tabView
+	
+		local leading = Instance.new("ScrollingFrame")
+		leading.Name = "Leading"
+		leading.Active = true
+		leading.AutomaticCanvasSize = Enum.AutomaticSize.X
+		leading.AutomaticSize = Enum.AutomaticSize.Y
+		leading.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		leading.BackgroundTransparency = 1
+		leading.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		leading.BorderSizePixel = 0
+		leading.CanvasSize = UDim2.new()
+		leading.LayoutOrder = -1
+		leading.ScrollBarImageTransparency = 1
+		leading.ScrollBarThickness = 0
+		leading.ScrollingDirection = Enum.ScrollingDirection.X
+		leading.Size = UDim2.fromScale(1, 0)
+	
+		local uIListLayout1 = Instance.new("UIListLayout")
+		uIListLayout1.Name = "UIListLayout"
+		uIListLayout1.FillDirection = Enum.FillDirection.Horizontal
+		uIListLayout1.Padding = UDim.new(0, 10)
+		uIListLayout1.SortOrder = Enum.SortOrder.LayoutOrder
+		uIListLayout1.Parent = leading
+	
+		local uIPadding = Instance.new("UIPadding")
+		uIPadding.Name = "UIPadding"
+		uIPadding.PaddingBottom = UDim.new(0, 1)
+		uIPadding.PaddingLeft = UDim.new(0, 1)
+		uIPadding.PaddingRight = UDim.new(0, 1)
+		uIPadding.PaddingTop = UDim.new(0, 1)
+		uIPadding.Parent = leading
+	
+		leading.Parent = tabView
+	
+		local trailing = Instance.new("ScrollingFrame")
+		trailing.Name = "Trailing"
+		trailing.AutomaticCanvasSize = Enum.AutomaticSize.Y
+		trailing.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		trailing.BackgroundTransparency = 1
+		trailing.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		trailing.BorderSizePixel = 0
+		trailing.CanvasSize = UDim2.new()
+		trailing.ScrollBarImageTransparency = 1
+		trailing.ScrollBarThickness = 1
+		trailing.Size = UDim2.new(1, 0, 1, -15)
+	
+		local uIListLayout2 = Instance.new("UIListLayout")
+		uIListLayout2.Name = "UIListLayout"
+		uIListLayout2.Padding = UDim.new(0, 10)
+		uIListLayout2.SortOrder = Enum.SortOrder.LayoutOrder
+		uIListLayout2.Parent = trailing
+	
+		local uIPadding1 = Instance.new("UIPadding")
+		uIPadding1.Name = "UIPadding"
+		uIPadding1.PaddingRight = UDim.new(0, 1)
+		uIPadding1.Parent = trailing
+	
+		trailing.Parent = tabView
+	
+		local uIPadding2 = Instance.new("UIPadding")
+		uIPadding2.Name = "UIPadding"
+		uIPadding2.PaddingBottom = UDim.new(0, 20)
+		uIPadding2.PaddingLeft = UDim.new(0, 25)
+		uIPadding2.PaddingRight = UDim.new(0, 25)
+		uIPadding2.Parent = tabView
+	
+		function _tabView:UpdateSettings(Settings)
+			if Settings.Visible ~= nil then
+				_tabView.Settings.Visible = Settings.Visible
+				tabView.Visible = Settings.Visible
+			end
+		end
+	
+		function _tabView:SubTab(Settings, Flag)
+			local tab = Instance.new("TextButton")
+			tab.AutoButtonColor = false
+			tab.AutomaticSize = Enum.AutomaticSize.XY
+			tab.BackgroundColor3 = Color3.fromRGB(30, 34, 47)
+			tab.BorderColor3 = Color3.fromRGB(0, 0, 0)
+			tab.BorderSizePixel = 0
+			tab.FontFace = Font.new(
+				"rbxassetid://12187365364",
+				Enum.FontWeight.SemiBold,
+				Enum.FontStyle.Normal
+			)
+			tab.Text = Settings.Name or "Tab"
+			tab.TextColor3 = Color3.fromRGB(150, 150, 150)
+			tab.TextSize = 12
+			tab.TextWrapped = true
+			tab.Parent = leading
+	
+			local uICorner = Instance.new("UICorner")
+			uICorner.CornerRadius = UDim.new(1, 0)
+			uICorner.Parent = tab
+	
+			local uIStroke = Instance.new("UIStroke")
+			uIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+			uIStroke.Color = Color3.fromRGB(168, 193, 225)
+			uIStroke.Transparency = 1
+			uIStroke.Parent = tab
+	
+			local uIPadding = Instance.new("UIPadding")
+			uIPadding.PaddingBottom = UDim.new(0, 5)
+			uIPadding.PaddingLeft = UDim.new(0, 10)
+			uIPadding.PaddingRight = UDim.new(0, 10)
+			uIPadding.PaddingTop = UDim.new(0, 5)
+			uIPadding.Parent = tab
+	
+			tab.MouseButton1Click:Connect(function()
+				
+			end)
+		end
+	
+		_tabView:UpdateSettings(_tabView.Settings)
+	
+		if Flag then
+			library.Components[Flag] = _tabView
+		end
+	
+		return _tabView
+	end ]]
 
 	function _window:Tab(Settings)
 		local _tab = { Settings = Settings }

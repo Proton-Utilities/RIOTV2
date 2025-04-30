@@ -1,5 +1,14 @@
 local Functions = {}
 
+Functions.Clone = function(object: Instance): Instance
+	local _game = cloneref and cloneref(game) or game
+	local success, result = pcall(function()
+		return cloneref and cloneref(object) or object:Clone()
+	end)
+	return success and result or error("Failed to clone object: " .. tostring(object))
+end
+
+
 Functions.ProtectGui = function(Gui: ScreenGui)
 	local _game = cloneref and cloneref(game) or game
 	local success, err = pcall(function()
@@ -11,27 +20,27 @@ Functions.ProtectGui = function(Gui: ScreenGui)
 end
 Functions.ProtectGui = newcclosure and newcclosure(Functions.ProtectGui) or Functions.ProtectGui
 
-Functions.SecureService = function(service: string): Instance
+Functions.SecureService = function(Service: string): Instance
 	local _game = cloneref and cloneref(game) or game
-	local success, result = pcall(function()
-		return cloneref and cloneref(_game:GetService(service)) or _game:GetService(service)
+	local Success, Result = pcall(function()
+		return cloneref and cloneref(_game:GetService(Service)) or _game:GetService(Service)
 	end)
-	return success and result or error("Unable to retrieve service: " .. service)
+	return Success and Result or error("Unable to retrieve service: " .. Service)
 end
 Functions.SecureService = newcclosure and newcclosure(Functions.SecureService) or Functions.SecureService
 
 function Functions.GetPlayer(): Player?
-	local success, result = pcall(function()
+	local Success, Result = pcall(function()
 		return Functions.SecureService("Players") :: Players
 	end)
-	return success and (result :: Players).LocalPlayer or nil
+	return Success and (Result :: Players).LocalPlayer or nil
 end
 
 function Functions.GetCharacter(player: Player?): Model?
-	local success, result = pcall(function()
+	local Success, Result = pcall(function()
 		return player and player.Character or nil
 	end)
-	return success and result or nil
+	return Success and Result or nil
 end
 
 function Functions.GetHumanoid(player: Player?): Humanoid?

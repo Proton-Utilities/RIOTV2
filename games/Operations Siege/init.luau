@@ -5,7 +5,7 @@
 return function(self)
 	--// Imports
 	local Functions = require("core/functions.luau")
-	local Interface = require("core/riotUi.luau")
+	local Interface = require("riotLib/library.luau")
 
 	local Esp = require("modules/esp.luau")
 	local Aiming = require("modules/aiming.luau")

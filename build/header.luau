@@ -16,7 +16,6 @@ local Self = [=====[
     local Resolution = game:GetService("GuiService"):GetScreenResolution()
 
     local Loading = Drawing.new("Text")
-    Loading.Text = "Loading RIOT - Waiting on game..."
     Loading.Size = 30
     Loading.Color = Color3.fromRGB(255, 80, 0)
     Loading.Center = true
@@ -27,7 +26,7 @@ local Self = [=====[
     Loading.Position = Vector2.new(Resolution.X / 2, Resolution.Y / 2)
 
     repeat
-        task.wait()
+        Loading.Text = "Loading RIOT - Waiting on game..."; task.wait()
     until game:IsLoaded()
 
     local ROA_Id = {
@@ -69,5 +68,5 @@ local Self = [=====[
 
 loadstring(Self)()
 if queue_on_teleport then
-    queue_on_teleport(Self)
+	queue_on_teleport(Self)
 end

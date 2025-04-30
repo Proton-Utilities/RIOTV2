@@ -2,21 +2,22 @@
 --!nolint UnknownGlobal
 --!nocheck
 
-local GetService = require("core/functions.luau").SecureService
+local Functions = require("core/functions.luau")
+local GetService = Functions.SecureService
 
--- services
+--// Services
 local RunService = GetService("RunService")
 local Players = GetService("Players")
 local Workspace = GetService("Workspace")
-local UIS = GetService("UserInputService")
+local UserInputService = GetService("UserInputService")
 local CoreGui = gethui and gethui() or GetService("CoreGui")
 
--- variables
+--// Variables
 local LocalPlayer = Players.LocalPlayer
 local Camera = Workspace.CurrentCamera
 local ViewportSize = Camera.ViewportSize
 
--- locals
+--// Locals
 local Floor = math.floor
 local Round = math.round
 local Sin = math.sin
@@ -27,8 +28,8 @@ local Find = table.find
 local Create = table.create
 local FromMatrix = CFrame.fromMatrix
 
--- methods
-local WTVP = Camera.WorldToViewportPoint
+--// Methods
+local WorldToViewportPoint = Camera.WorldToViewportPoint
 local IsA = Workspace.IsA
 local GetPivot = Workspace.GetPivot
 local FindFirstChild = Workspace.FindFirstChild
@@ -42,10 +43,10 @@ local Lerp2 = Vector2.zero.Lerp
 local Min3 = Vector3.zero.Min
 local Max3 = Vector3.zero.Max
 
--- constants
+--// Constants
 local HEALTH_BAR_OUTLINE_OFFSET = Vector2.new(0, 1)
-local NAME_OFFSET = Vector2.new(0, 2)
-local DISTANCE_OFFSET = Vector2.new(5, 0)
+local TEXT_TOP_OFFSET = Vector2.new(0, 2)
+local TEXT_RIGHT_OFFSET = Vector2.new(5, 0)
 local VERTICES = {
 	Vector3.new(-1, -1, -1),
 	Vector3.new(-1, 1, -1),
@@ -57,7 +58,7 @@ local VERTICES = {
 	Vector3.new(1, -1, 1),
 }
 
--- functions
+--// Functions
 local function GetBoundingBox(Parts)
 	local Min, Max
 	for i = 1, #Parts do
@@ -74,7 +75,7 @@ local function GetBoundingBox(Parts)
 end
 
 local function WorldToScreen(World)
-	local Screen, InBounds = WTVP(Camera, World)
+	local Screen, InBounds = WorldToViewportPoint(Camera, World)
 	return Vector2.new(Screen.X, Screen.Y), InBounds, Screen.Z
 end
 
@@ -108,6 +109,7 @@ local function ParseColor(self, Color, IsOutline)
 	return Color
 end
 
+--// Esp Object
 local EspObject = {}
 EspObject.__index = EspObject
 
@@ -367,7 +369,7 @@ function EspObject:Render()
 		Name.Transparency = Options.NameColor[2]
 		Name.Outline = Options.NameOutline
 		Name.OutlineColor = ParseColor(self, Options.NameOutlineColor, true)
-		Name.Position = (Corners.TopLeft + Corners.TopRight) * 0.5 - Vector2.yAxis * Name.TextBounds.Y - NAME_OFFSET
+		Name.Position = (Corners.TopLeft + Corners.TopRight) * 0.5 - Vector2.yAxis * Name.TextBounds.Y - TEXT_TOP_OFFSET
 	end
 
 	local ListYOffset = Corners and Corners.TopRight.Y or 0
@@ -384,11 +386,11 @@ function EspObject:Render()
 		Distance.OutlineColor = ParseColor(self, Options.DistanceOutlineColor, true)
 
 		Distance.Position = Vector2.new(
-			Corners.TopRight.X + DISTANCE_OFFSET.X + Distance.TextBounds.X * 0.5,
-			ListYOffset - Distance.TextBounds.Y * 0.5 - DISTANCE_OFFSET.Y
+			Corners.TopRight.X + TEXT_RIGHT_OFFSET.X + Distance.TextBounds.X * 0.5,
+			ListYOffset - Distance.TextBounds.Y * 0.5 - TEXT_RIGHT_OFFSET.Y
 		)
 
-		ListYOffset = ListYOffset + Distance.TextBounds.Y + DISTANCE_OFFSET.Y
+		ListYOffset = ListYOffset + Distance.TextBounds.Y + TEXT_RIGHT_OFFSET.Y
 	end
 
 	Visible.Weapon.Visible = Enabled and OnScreen and Options.Weapon
@@ -403,11 +405,11 @@ function EspObject:Render()
 		Weapon.OutlineColor = ParseColor(self, Options.WeaponOutlineColor, true)
 
 		Weapon.Position = Vector2.new(
-			Corners.TopRight.X + DISTANCE_OFFSET.X + Weapon.TextBounds.X * 0.5,
+			Corners.TopRight.X + TEXT_RIGHT_OFFSET.X + Weapon.TextBounds.X * 0.5,
 			ListYOffset - Weapon.TextBounds.Y * 0.5
 		)
 
-		ListYOffset = ListYOffset + Weapon.TextBounds.Y + DISTANCE_OFFSET.Y
+		ListYOffset = ListYOffset + Weapon.TextBounds.Y + TEXT_RIGHT_OFFSET.Y
 	end
 
 	Visible.HealthText.Visible = Enabled and OnScreen and Options.HealthText
@@ -422,7 +424,7 @@ function EspObject:Render()
 		HealthText.OutlineColor = ParseColor(self, Options.HealthTextOutlineColor, true)
 
 		HealthText.Position = Vector2.new(
-			Corners.TopRight.X + DISTANCE_OFFSET.X + HealthText.TextBounds.X * 0.5,
+			Corners.TopRight.X + TEXT_RIGHT_OFFSET.X + HealthText.TextBounds.X * 0.5,
 			ListYOffset - HealthText.TextBounds.Y * 0.5
 		)
 	end
@@ -437,7 +439,7 @@ function EspObject:Render()
 		Tracer.From = Options.TracerOrigin == "Middle" and ViewportSize * 0.5
 			or Options.TracerOrigin == "Top" and ViewportSize * Vector2.new(0.5, 0)
 			or Options.TracerOrigin == "Bottom" and ViewportSize * Vector2.new(0.5, 1)
-			or Options.TracerOrigin == "Mouse" and UIS:GetMouseLocation()
+			or Options.TracerOrigin == "Mouse" and UserInputService:GetMouseLocation()
 
 		local TracerOutline = Visible.TracerOutline
 		TracerOutline.Color = ParseColor(self, Options.TracerOutlineColor[1], true)
@@ -545,6 +547,7 @@ function EspObject:Render()
 	end
 end
 
+--// Cham Object
 local ChamObject = {}
 ChamObject.__index = ChamObject
 
@@ -591,7 +594,7 @@ function ChamObject:Update()
 	end
 end
 
--- instance class
+--// Instance class
 local InstanceObject = {}
 InstanceObject.__index = InstanceObject
 
@@ -665,7 +668,7 @@ function InstanceObject:Render()
 	return nil
 end
 
--- interface
+--// Interface
 local EspInterface = {
 	HasLoaded = false,
 	ObjectCache = {},
