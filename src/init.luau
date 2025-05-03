@@ -160,6 +160,12 @@ local Files = {
 		Load = require("games/Booga Booga Reborn/init.luau"),
 		UniverseId = 4154513353,
 	},
+
+	["Lone Survival"] = {
+		Name = "Lone Survival",
+		Load = require("games/Lone Survival/init.luau"),
+		UniverseId = 4712109542,
+	},
 }
 
 print("[DEBUG]", `Loading - RIOT {RIOT.VERSION} | {RIOT.BUILD}`)
