@@ -3,10 +3,6 @@
 --!nolint UnknownGlobal
 
 return function(self)
-	repeat
-		task.wait()
-	until getrenv()._G.ClientLoaded
-
 	--// Imports
 	local Functions = require("core/functions.luau")
 	local Interface = require("riotLib/library.luau")
