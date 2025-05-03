@@ -139,7 +139,7 @@ return function(self)
 				AimbotSettingsSection:Dropdown({
 					Name = "Bone",
 					Description = "selects the bone to aim at",
-					Options = { "Head", "Chest", "Stomach", "Left Arm", "Right Arm", "Left Leg", "Right Leg" },
+					Options = { "Head", "Torso" },
 					Value = { "Head" },
 					Limit = 1,
 					Minimum = 1,
