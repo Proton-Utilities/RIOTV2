@@ -4,17 +4,25 @@
 
 return function(self)
 	--// Imports
+	local Functions = require("core/functions.luau")
 	local Interface = require("riotLib/library.luau")
 
-	local ESP = require("modules/esp.luau")
+	local Esp = require("modules/esp.luau")
 	local Aiming = require("modules/aiming.luau")
+
+	--// Methods
+	local GetService = Functions.SecureService
+
+	--// Services
+	local Lighting: Lighting = GetService("Lighting")
+	local RunService: RunService = GetService("RunService")
 
 	--// Variables
 	local Assets = Interface.Assets
 	local Colors = Interface.Colors
 
-	local ESPShared = ESP.Shared
-	local ESPTeam = ESP.Team
+	local ESPShared = Esp.Shared
+	local ESPTeam = Esp.Team
 	local ESPEnemy = ESPTeam.Enemy
 	local ESPFriendly = ESPTeam.Friendly
 
@@ -103,7 +111,7 @@ return function(self)
 				AimbotSettingsSection:Dropdown({
 					Name = "Bone",
 					Description = "selects the bone to aim at",
-					Options = { "All", "Head", "Chest", "Stomach", "Left Arm", "Right Arm", "Left Leg", "Right Leg" },
+					Options = { "Head", "Torso" },
 					Value = { "Head" },
 					Limit = 1,
 					Minimum = 1,
@@ -833,6 +841,110 @@ return function(self)
 			local FriendliesSection = ESPSection:Section({ Name = "Friendlies" })
 			AddTeamSettings(ESPFriendly, FriendliesSection)
 		end
+
+		-- World
+		do
+			local WorldSection = Tab:Section({ Name = "World" })
+
+			WorldSection:Toggle({
+				Name = "Night mode",
+				Description = "enables night mode",
+				State = false,
+				Callback = function(self, Value)
+					if self.__NightModeConn then
+						self.__NightModeConn:Disconnect()
+						self.__NightModeConn = nil
+					end
+
+					if Value then
+						self.__OldClockTime = Lighting.ClockTime
+						self.__NightModeConn = RunService.Heartbeat:Connect(function()
+							if Lighting.ClockTime ~= 0 then
+								self.__OldClockTime = Lighting.ClockTime
+								Lighting.ClockTime = 0
+							end
+						end)
+					else
+						if self.__OldClockTime then
+							Lighting.ClockTime = self.__OldClockTime
+						end
+					end
+				end,
+			})
+
+			-- Color Correction
+			do
+				local ColorCorrectionSection = WorldSection:Section({ Name = "Color Correction" })
+
+				local Effect: ColorCorrectionEffect = Instance.new("ColorCorrectionEffect")
+				Effect.Parent = Lighting
+
+				ColorCorrectionSection:Toggle({
+					Name = "Enabled",
+					Description = "enables world color correction",
+					State = false,
+					Callback = function(self, Value)
+						Effect.Enabled = Value
+					end,
+				})
+
+				ColorCorrectionSection:Colorpicker({
+					AlphaEnabled = false,
+					Name = "Tint",
+					Description = "changes world color correction tint",
+					Color = { Color3.fromRGB(255, 255, 255) },
+					SuggestionColors = {
+						{ Color3.fromRGB(171, 81, 83) },
+						{ Color3.fromRGB(123, 124, 243) },
+						{ Color3.fromRGB(208, 246, 111) },
+						{ Color3.fromRGB(255, 197, 100) },
+						{ Color3.fromRGB(49, 220, 195) },
+					},
+					Callback = function(self, Color)
+						Effect.TintColor = Color
+					end,
+				})
+
+				ColorCorrectionSection:Slider({
+					Name = "Brightness",
+					Description = "changes world color correction brightness",
+					Value = 0,
+					Minimum = -1,
+					Maximum = 1,
+					Step = 0.01,
+					Precision = 2,
+					Callback = function(self, Value)
+						Effect.Brightness = Value
+					end,
+				})
+
+				ColorCorrectionSection:Slider({
+					Name = "Contrast",
+					Description = "changes world color correction contrast",
+					Value = 0,
+					Minimum = -2,
+					Maximum = 5,
+					Step = 0.01,
+					Precision = 2,
+					Callback = function(self, Value)
+						Effect.Contrast = Value
+					end,
+				})
+
+				ColorCorrectionSection:Slider({
+					Name = "Saturation",
+					Description = "changes world color correction saturation",
+					Value = 0,
+					Minimum = -10,
+					Maximum = 10,
+					Step = 0.01,
+					Precision = 2,
+					Callback = function(self, Value)
+						Effect.Saturation = Value
+					end,
+				})
+			end
+		end
 	end
 
 	-- [[ Tabs.Cfg ]] --
@@ -873,7 +985,7 @@ return function(self)
 
 	-- ESP
 	do
-		ESP.Load()
+		Esp.Load()
 	end
 
 	-- Aiming
