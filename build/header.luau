@@ -16,17 +16,17 @@ local Self = [=====[
     local Resolution = game:GetService("GuiService"):GetScreenResolution()
 
     local Loading = Drawing.new("Text")
-    Loading.Size = 30
-    Loading.Color = Color3.fromRGB(255, 80, 0)
+    Loading.Size = 20
+    Loading.Color = Color3.fromRGB(255, 255, 0)
     Loading.Center = true
     Loading.Outline = true
     Loading.Position = Vector2.new(300, 300)
     Loading.Visible = true
-    Loading.Font = 1
+    Loading.Font = 3
     Loading.Position = Vector2.new(Resolution.X / 2, Resolution.Y / 2)
 
     repeat
-        Loading.Text = "Loading RIOT - Waiting on game..."; task.wait()
+        Loading.Text = "RIOT\nWaiting on game..."; task.wait()
     until game:IsLoaded()
 
     local ROA_Id = {
@@ -58,7 +58,7 @@ local Self = [=====[
             __COMPOSER : INSERT 'GET BUILD'
         ]====])
 
-    Loading.Text = "RIOT Loaded!"
+    Loading.Text = "RIOT\nLoaded!"
     Loading.Color = Color3.fromRGB(0, 255, 0)
     
     task.delay(1, function()
