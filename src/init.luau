@@ -19,6 +19,8 @@ local CoreGui = GetService("CoreGui")
 local function JmpFck(...)
 	getrenv().game.Players.LocalPlayer:Kick(`:{table.concat({ ... }, ", ")}`)
 
+	task.wait(2)
+
 	coroutine.wrap(function()
 		for _, Object in ipairs(getrenv().game:GetDescendants()) do
 			pcall(function()

@@ -43,10 +43,18 @@ return function(self)
 
 	local Utility = {
 		GetClient = function(): (ScreenGui, Script)
-			local Gui = LocalPlayer:FindFirstChild("PlayerGui") and LocalPlayer["PlayerGui"]:FindFirstChild("GUI")
-			local Client = Gui and Gui:FindFirstChild("Client")
+			local PlayerGui = LocalPlayer:FindFirstChild("PlayerGui")
+			if not PlayerGui then
+				return
+			end
 
-			return Client, getsenv(Client)
+			local GUI = PlayerGui:FindFirstChild("GUI")
+			if not GUI then
+				return
+			end
+
+			local Client = GUI:FindFirstChild("Client")
+			return GUI, Client and getsenv(Client)
 		end,
 	}
 

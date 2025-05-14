@@ -14,11 +14,11 @@ function Push-Marker {
     $script:Markers[$name] = "__COMPOSER : INSERT '$pattern'"
 }
 
-function BType-Input {
+function Get-BuildTypeInput {
     while ($true) {
         Write-Host "[INPUT] Build type (R/Release) (D/Debug):"
-        $input = Read-Host
-        switch -Regex ($input.ToLower()) {
+        $userInput = Read-Host
+        switch -Regex ($userInput.ToLower()) {
             '^r(elease)?$' { return 'Release' }
             '^d(ebug)?$'   { return 'Debug' }
             default        {
@@ -28,42 +28,40 @@ function BType-Input {
         }
     }
 }
-function BVersion-Input {
+function Get-BuildVersion {
     Write-Host "[INPUT] Build version (v.MAJOR.MINOR.PATCH eg: v1.0.0/v1.0.0-beta.2)"
     return Read-Host
 }
 
-function Release-Input {
+function Publish-Input {
     if (-not $config.deployment.enabled) {
         Write-Host "`n[INFO] Deployment is disabled."
         return $false
     }
 
     Write-Host "`n[INPUT] Do you want to release this build to the public? (Y/N):"
-    $input = Read-Host
-    if ($input.ToLower() -notmatch '^y(es)?$') {
+    $userInput = Read-Host
+    if ($userInput.ToLower() -notmatch '^y(es)?$') {
         return $false
     }
 
     Write-Host "`n[INPUT] Are you sure? (Y/N):"
-    $input = Read-Host
-    if ($input.ToLower() -notmatch '^y(es)?$') {
+    $userConfirmation = Read-Host
+    if ($userConfirmation.ToLower() -notmatch '^y(es)?$') {
         return $false
     }
 
     $expected = "$($config.deployment.github.owner)/$($config.deployment.github.repo)"
     Write-Host "[INPUT] Type '$expected' to proceed:"
-    $input = Read-Host
-
-    
-    if ($input -ne $expected) {
+    $userInput = Read-Host
+    if ($userInput -ne $expected) {
         return $false
     }    
 
     return $true
 }
 
-function Rep-Markers ($content, $buildType, $buildVersion) {
+function Update-Markers ($content, $buildType, $buildVersion) {
     $result = $content
     $result = $result -replace $script:Markers["BUILD_TYPE"], "'$buildType'"
     $result = $result -replace $script:Markers["BUILD_VERSION"], $(if ($buildVersion) { "'$buildVersion'" } else { "nil" })
@@ -88,17 +86,14 @@ function Extract {
     $pre = [System.Collections.ArrayList]::new()
     $post = [System.Collections.ArrayList]::new()
     $isMarker = $false
-    $inMLComment = $false
     $indentation = ''
     
     foreach ($line in $lines) {
         if ($line -match '--\[\[') {
-            $inMLComment = $true
             $pre.Add($line) | Out-Null
             continue
         }
         if ($line -match '\]\]') {
-            $inMLComment = $false
             if (-not $isMarker) {
                 $pre.Add($line) | Out-Null
             } else {
@@ -123,7 +118,7 @@ function Extract {
     return @($pre, $post, $indentation)
 }
 
-function Distribute-Github {
+function Publish-Github {
     param (
         [string]$version,
         [string]$distPath
@@ -178,7 +173,7 @@ function Distribute-Github {
         $uploadUrl += "?name=dist.luau"
 
         $fileBytes = [System.IO.File]::ReadAllBytes($distPath)
-        $response = Invoke-RestMethod -Uri $uploadUrl -Method Post -Headers $headers -Body $fileBytes -ContentType "application/octet-stream"
+        Invoke-RestMethod -Uri $uploadUrl -Method Post -Headers $headers -Body $fileBytes -ContentType "application/octet-stream"
         Write-Host "[GITHUB] File uploaded successfully"
 
         Write-Host "[SUCCESS] Release $version published to GitHub"
@@ -200,7 +195,7 @@ function Distribute-Github {
     }
 }
 
-function Distribute-Luarmor {
+function Publish-Luarmor {
     param (
         [string]$version,
         [string]$distPath
@@ -228,7 +223,7 @@ function Distribute-Luarmor {
         } | ConvertTo-Json
 
         $luarmorUrl = "https://api.luarmor.net/v3/projects/$($config.deployment.luarmor.projectId)/scripts/$($config.deployment.luarmor.scriptId)"
-        $response = Invoke-RestMethod -Uri $luarmorUrl -Method Put -Headers $headers -Body $body
+        Invoke-RestMethod -Uri $luarmorUrl -Method Put -Headers $headers -Body $body
 
         Write-Host "[SUCCESS] Luarmor script updated to version $version"
         return $true
@@ -253,8 +248,8 @@ Push-Marker "BUILD_TYPE" "GET BUILD_TYPE"
 Push-Marker "BUILD_VERSION" "GET BUILD_VERSION"
 Push-Marker "SPLIT" "GET BUILD"
 
-$buildType     = BType-Input
-$buildVersion  = if ($buildType -eq 'Release') { BVersion-Input } else { $null }
+$buildType     = Get-BuildTypeInput
+$buildVersion  = if ($buildType -eq 'Release') { Get-BuildVersion } else { $null }
 
 Write-Host "[PROCESSING] Bundling $buildType build..."
 
@@ -274,7 +269,7 @@ $rawContent += $splitSegments[0]
 $rawContent += $distContent
 $rawContent += $splitSegments[1]
 
-$distribution = Rep-Markers $rawContent $buildType $buildVersion
+$distribution = Update-Markers $rawContent $buildType $buildVersion
 $distribution | Set-Content ../dist.luau -Encoding UTF8
 
 Remove-Item $tempDist -Force
@@ -282,16 +277,16 @@ Remove-Item $tempDist -Force
 Write-Host "[SUCCESS] Build complete! Output: ..\dist.luau"
 
 if ($buildType -eq 'Release') {
-    if (Release-Input) {
+    if (Publish-Input) {
         $distPath = (Resolve-Path "..\dist.luau").Path
         $success = $true
         
-        if (-not (Distribute-Github -version $buildVersion -distPath $distPath)) {
+        if (-not (Publish-Github -version $buildVersion -distPath $distPath)) {
             Write-Host "`n[ERROR] Failed to distribute build to GitHub"
             $success = $false
         }
         
-        if (-not (Distribute-Luarmor -version $buildVersion -distPath $distPath)) {
+        if (-not (Publish-Luarmor -version $buildVersion -distPath $distPath)) {
             Write-Host "`n[ERROR] Failed to distribute build to Luarmor"
             $success = $false
         }
