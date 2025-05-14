@@ -126,9 +126,6 @@ if RIOT.BUILD == "Release" and not RIOT.VERSION:find("-") then
 	end
 	getgenv().__RIOT_LOADED = true
 
-	debug.traceback = function()
-		return ""
-	end
 	getgenv().print, getgenv().warn, getgenv().error = function() end, function() end, function() end
 end
 
