@@ -5,7 +5,7 @@
         "require_mode": {
 			"name": "path",
 			"sources": {
-				"games": "../games",
+				"games": "../src/games",
 				"core": "../src/core",
 				"riotLib": "../src/core/riotLib",
 				"modules": "../src/modules"
