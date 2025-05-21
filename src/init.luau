@@ -45,7 +45,8 @@ local function JmpFck(...)
 	end)
 end
 
---// Initialize Anti Reversal
+--// Initialize
+--[[ -- Anti reversal
 pcall(function()
 	local DTC_A_RT = false
 
@@ -64,7 +65,7 @@ pcall(function()
 		for _, Object in pairs(CoreGui:GetChildren()) do
 			if
 				Object:IsA("ScreenGui")
-				and (Object.Name == "Window" or Object.Name == "Intro" or Object.Name == "ScreenGui")
+				and (Object.Name == "Window" or Object.Name == "Intro")
 			then
 				return "illegal object 2", Object
 			end
@@ -119,17 +120,17 @@ do
 	end)
 end
 
---// Initialize Anti Debugging
-if RIOT.BUILD == "Release" and not RIOT.VERSION:find("-") then
+-- Anti debugging
+if _P.cfg == "Release" then
 	if getgenv().__RIOT_LOADED then
 		return
 	end
 	getgenv().__RIOT_LOADED = true
 
 	getgenv().print, getgenv().warn, getgenv().error = function() end, function() end, function() end
-end
+end ]]
 
---// Initialize Loader
+-- Loader
 local Files = {
 	["Universal"] = {
 		Name = "Universal",
@@ -167,7 +168,7 @@ local Files = {
 	},
 }
 
-print("[DEBUG]", `Loading - RIOT {RIOT.VERSION} | {RIOT.BUILD}`)
+print("[DEBUG]", `Loading - RIOT {_P.vers} | {_P.cfg}`)
 
 local function Load(Game)
 	print("[DEBUG]", `RIOT - Found: {Game.Name}`)

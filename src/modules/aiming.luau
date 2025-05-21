@@ -2,12 +2,14 @@
 --!nolint UnknownGlobal
 --!nocheck
 
+local Functions = require("core/functions.luau")
+local GetService = Functions.SecureService
 local game, workspace = game, workspace
 
 local Vector2new, Vector3zero, CFramenew, Color3RGB, Drawingnew, TweenInfonew =
 	Vector2.new, Vector3.zero, CFrame.new, Color3.fromRGB, Drawing.new, TweenInfo.new
-local mousemoverel, tablefind, mathclamp =
-	mousemoverel or (Input and Input.MouseMove), table.find, math.clamp
+local mousemoverel, mathclamp =
+	mousemoverel or (Input and Input.MouseMove), math.clamp
 
 local GameMetatable = getrawmetatable and getrawmetatable(game)
 	or {
@@ -24,12 +26,10 @@ local GameMetatable = getrawmetatable and getrawmetatable(game)
 local __index = GameMetatable.__index
 local __newindex = GameMetatable.__newindex
 
-local GetService = __index(game, "GetService")
-
-local RunService = GetService(game, "RunService")
-local UserInputService = GetService(game, "UserInputService")
-local TweenService = GetService(game, "TweenService")
-local Players = GetService(game, "Players")
+local RunService = GetService("RunService")
+local UserInputService = GetService("UserInputService")
+local TweenService = GetService("TweenService")
+local Players = GetService("Players")
 
 local LocalPlayer = __index(Players, "LocalPlayer")
 local Camera = __index(workspace, "CurrentCamera")

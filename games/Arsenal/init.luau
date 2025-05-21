@@ -1741,7 +1741,7 @@ return function(self)
 	do
 		Tabs.Legit:Select()
 		Interface:Notification({
-			Title = `RIOT {RIOT.VERSION} - getriot.cc`,
+			Title = `RIOT {_P.vers} - getriot.cc`,
 			Description = `RIOT for {self.Name} loaded!`,
 			Lifetime = 5,
 		})
