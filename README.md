@@ -12,6 +12,6 @@ Authored by biggaboy212
 
 ### To Build
 
-Install [DarkLua](https://github.com/seaofvoices/darklua/releases/tag/v0.16.0)
+Install Lune and Darklua, as this uses ProCMP
 
 Use the keybind ***Ctrl + Shift + B*** to build
