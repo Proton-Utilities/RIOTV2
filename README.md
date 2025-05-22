@@ -2,6 +2,12 @@
 
 Authored by biggaboy212
 
+## Script
+
+```luau
+loadstring(game:HttpGetAsync("https://github.com/Proton-Utilities/Myriad/releases/latest/download/release.luau"))()
+```
+
 ## Project Setup
 
 ### Extensions used (biggaboy212)
