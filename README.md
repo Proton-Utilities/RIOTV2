@@ -5,7 +5,7 @@ Authored by biggaboy212
 ## Script
 
 ```luau
-loadstring(game:HttpGetAsync("https://github.com/Proton-Utilities/Myriad/releases/latest/download/release.luau"))()
+loadstring(game:HttpGetAsync("https://github.com/Proton-Utilities/RIOTV2/releases/latest/download/release.luau"))()
 ```
 
 ## Project Setup
